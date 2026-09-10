@@ -1147,14 +1147,35 @@
             return str;
         }
 
+        function isBomLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['bom.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         // Update single cell in currentData
         function updateCell(index, field, value) {
+            if (isBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit cells.', 'warn');
+                return;
+            }
             if (!currentData[index]) return;
             currentData[index][field] = value.trim();
             showToast(`Updated ${currentData[index].name} (${field})`);
         }
 
         function updateSFGCell(index, sfgCode, value) {
+            if (isBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit SFG ratios.', 'warn');
+                return;
+            }
             if (!currentData[index]) return;
             if (!currentData[index].sfg) currentData[index].sfg = {};
             currentData[index].sfg[sfgCode] = value.trim();
@@ -1163,6 +1184,10 @@
 
         // Save to localStorage
         function saveBOMData() {
+            if (isBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save BOM data.', 'warn');
+                return;
+            }
             localStorage.setItem("mep_bom_data_custom", JSON.stringify(currentData));
             localStorage.setItem("mep_bom_last_updated", Date.now().toString());
             showToast("✓ BOM changes saved successfully!");
@@ -1170,12 +1195,16 @@
 
         // Reset to Default Factory Data
         function resetToDefaultData() {
+            if (isBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to reset data.', 'warn');
+                return;
+            }
             if (confirm("Are you sure you want to reset all BOM data to the factory default? Any unsaved edits will be cleared.")) {
                 localStorage.removeItem("mep_bom_data_custom");
                 localStorage.setItem("mep_bom_last_updated", Date.now().toString());
                 currentData = JSON.parse(JSON.stringify(DEFAULT_BOM_DATA));
                 updatePillCounts();
-            populateBOMMasterDatalist();
+                populateBOMMasterDatalist();
                 renderTable();
                 showToast("✓ Reset to default BOM factory data.");
             }
@@ -1183,6 +1212,10 @@
 
         // Add New Item Modal
         function openAddItemModal() {
+            if (isBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             document.getElementById('addItemModal').classList.add('active');
             const cat = activeCategoryFilter === 'All' ? 'Raw Material' : activeCategoryFilter;
             document.getElementById('newItemCategory').value = cat;
@@ -1204,6 +1237,10 @@
         }
 
         function submitNewItem() {
+            if (isBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             const cat = document.getElementById('newItemCategory').value;
             const sl = parseInt(document.getElementById('newItemSL').value) || (currentData.length + 1);
             const code = document.getElementById('newItemCode').value.trim();
@@ -1319,6 +1356,10 @@
 
         // Paste Modal Functions
         function openPasteModal() {
+            if (isBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste BOM data.', 'warn');
+                return;
+            }
             document.getElementById('pasteModal').classList.add('active');
             document.getElementById('pasteInput').value = '';
             document.getElementById('pasteInput').focus();
@@ -1329,6 +1370,10 @@
         }
 
         function processBulkPaste() {
+            if (isBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste BOM data.', 'warn');
+                return;
+            }
             const raw = document.getElementById('pasteInput').value.trim();
             if (!raw) {
                 alert("Please paste data first!");

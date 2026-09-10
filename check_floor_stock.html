@@ -2749,10 +2749,27 @@
             return `<span class="warning-badge badge-red" title="Critical: Stock is under 2 Days!">${displayDays}</span>`;
         }
 
+        function isFloorStockLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['check_floor_stock.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         // ==========================================
-        // âž• ADD NEW ITEM (MASTER INTEGRATED ENGINE)
+        // ➕ ADD NEW ITEM (MASTER INTEGRATED ENGINE)
         // ==========================================
         function openAddItemModal() {
+            if (isFloorStockLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             document.getElementById('addItemModal').classList.add('active');
             const cat = activeCategoryFilter === 'All' ? 'Raw Material' : activeCategoryFilter;
             document.getElementById('newItemCategory').value = cat;
@@ -2830,6 +2847,10 @@
         }
 
         function submitNewItem() {
+            if (isFloorStockLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             const cat = document.getElementById('newItemCategory').value;
             const sl = parseInt(document.getElementById('newItemSL').value) || (currentData.length + 1);
             const code = document.getElementById('newItemCode').value.trim();
@@ -2939,10 +2960,18 @@
         }
 
         function saveStockData() {
+            if (isFloorStockLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save stock data.', 'warn');
+                return;
+            }
             localStorage.setItem("mep_check_floor_stock_custom", JSON.stringify(currentData));
         }
 
         function resetToDefaultData() {
+            if (isFloorStockLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to reset data.', 'warn');
+                return;
+            }
             if (confirm("Are you sure you want to reset Check Floor Stock to the factory default dataset? All newly added items will be cleared.")) {
                 localStorage.removeItem("mep_check_floor_stock_custom");
                 currentData = JSON.parse(JSON.stringify(DEFAULT_FLOOR_STOCK_DATA));

@@ -11,6 +11,67 @@
     let currentActiveSubPage = 'dashboard'; // 'dashboard' or 'new_entry'
 
     /**
+     * Check if HRM Database New Entry page is locked via MIS Module Option 5
+     */
+    function isHrmEntryLocked() {
+        try {
+            const raw = localStorage.getItem('portal_page_lock_states');
+            if (raw) {
+                const map = JSON.parse(raw);
+                if (map['hrm_database_new_entry'] !== undefined) {
+                    return map['hrm_database_new_entry'] === true;
+                }
+            }
+        } catch (e) {}
+        return true; // Default locked as per system security policy
+    }
+
+    /**
+     * Update locked visual banner and action buttons in HRM New Entry pane
+     */
+    function updateHrmLockUI() {
+        const locked = isHrmEntryLocked();
+        const entryPane = document.getElementById('hrmDatabaseNewEntryPane');
+        if (!entryPane) return;
+
+        let banner = document.getElementById('hrmLockedPageBanner');
+        if (locked) {
+            if (!banner) {
+                banner = document.createElement('div');
+                banner.id = 'hrmLockedPageBanner';
+                banner.className = 'smart-locked-page-banner';
+                banner.style.cssText = 'background:#fff1f2; border:1px solid #fecdd3; border-left:5px solid #e11d48; padding:10px 16px; border-radius:8px; margin-bottom:14px; display:flex; align-items:center; gap:10px; color:#9f1239; font-family:"Times New Roman", serif;';
+                banner.innerHTML = `
+                    <span style="font-size:1.3rem;">🔒</span>
+                    <div>
+                        <strong style="font-size:14px; letter-spacing:0.5px;">PAGE ACCESS LOCKED (READ-ONLY)</strong>
+                        <div style="font-size:12px; color:#881337; margin-top:2px;">Employee Database is in read-only mode. Adding, editing, replacing, or deleting records is prohibited until unlocked from <strong>MIS Module > Option 5</strong>. Searching, filtering, export, and print remain active.</div>
+                    </div>
+                `;
+                entryPane.insertBefore(banner, entryPane.firstChild);
+            }
+        } else {
+            if (banner) banner.remove();
+        }
+
+        // Disable/enable "+ Add New Employee" and "Reset" buttons
+        const addBtn = entryPane.querySelector('.btn-hrm-icon-action.btn-add');
+        const resetBtn = entryPane.querySelector('.btn-hrm-icon-action.btn-reset');
+        if (addBtn) {
+            addBtn.disabled = locked;
+            addBtn.style.opacity = locked ? '0.45' : '';
+            addBtn.style.cursor = locked ? 'not-allowed' : '';
+            addBtn.title = locked ? 'Locked (Read-Only) from MIS Option 5' : 'Add New Employee';
+        }
+        if (resetBtn) {
+            resetBtn.disabled = locked;
+            resetBtn.style.opacity = locked ? '0.45' : '';
+            resetBtn.style.cursor = locked ? 'not-allowed' : '';
+            resetBtn.title = locked ? 'Locked (Read-Only) from MIS Option 5' : 'Reset (107 Records)';
+        }
+    }
+
+    /**
      * Initialize HRM Module Engine
      */
     function initHrmModule() {
@@ -25,6 +86,7 @@
         } catch (e) {}
         renderHrmDashboard();
         renderHrmNewEntryTable();
+        updateHrmLockUI();
     }
 
     /**
@@ -47,6 +109,7 @@
             if (parentDb) parentDb.classList.add('is-open');
             if (breadcrumbPage) breadcrumbPage.textContent = 'Data Base > New Entry';
             renderHrmNewEntryTable();
+            updateHrmLockUI();
         } else {
             if (dashPane) dashPane.style.setProperty('display', 'block', 'important');
             if (entryPane) entryPane.style.setProperty('display', 'none', 'important');
@@ -151,8 +214,16 @@
                     </td>
                 </tr>
             `;
+            updateHrmLockUI();
             return;
         }
+
+        const isLocked = isHrmEntryLocked();
+        const actionStyle = isLocked ? 'style="opacity:0.4; cursor:not-allowed;"' : '';
+        const actionDisabled = isLocked ? 'disabled' : '';
+        const editTitle = isLocked ? 'Locked (Read-Only) from MIS Option 5' : 'Edit Employee Details';
+        const replaceTitle = isLocked ? 'Locked (Read-Only) from MIS Option 5' : 'Replace this Employee';
+        const deleteTitle = isLocked ? 'Locked (Read-Only) from MIS Option 5' : 'Delete Employee Record';
 
         let html = '';
         filtered.forEach((emp) => {
@@ -195,14 +266,14 @@
                     </td>
                     <td class="col-actions">
                         <div class="hrm-row-actions">
-                            <button type="button" class="btn-hrm-action btn-hrm-edit" onclick="openHrmEditModal(${emp.sl})" title="Edit Employee Details" aria-label="Edit">
+                            <button type="button" class="btn-hrm-action btn-hrm-edit" ${actionDisabled} ${actionStyle} onclick="openHrmEditModal(${emp.sl})" title="${editTitle}" aria-label="Edit">
                                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                 </svg>
                                 <span>Edit</span>
                             </button>
-                            <button type="button" class="btn-hrm-action btn-hrm-replace" onclick="openHrmReplaceModal(${emp.sl})" title="Replace this Employee" aria-label="Replace">
+                            <button type="button" class="btn-hrm-action btn-hrm-replace" ${actionDisabled} ${actionStyle} onclick="openHrmReplaceModal(${emp.sl})" title="${replaceTitle}" aria-label="Replace">
                                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="23 4 23 10 17 10"></polyline>
                                     <polyline points="1 20 1 14 7 14"></polyline>
@@ -210,7 +281,7 @@
                                 </svg>
                                 <span>Replace</span>
                             </button>
-                            <button type="button" class="btn-hrm-action btn-hrm-delete" onclick="openHrmDeleteModal(${emp.sl})" title="Delete Employee Record" aria-label="Delete">
+                            <button type="button" class="btn-hrm-action btn-hrm-delete" ${actionDisabled} ${actionStyle} onclick="openHrmDeleteModal(${emp.sl})" title="${deleteTitle}" aria-label="Delete">
                                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="3 6 5 6 21 6"></polyline>
                                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -226,6 +297,7 @@
         });
 
         tbody.innerHTML = html;
+        updateHrmLockUI();
     }
 
     /**
@@ -322,6 +394,10 @@
      * Modals: Add New Employee
      */
     function openHrmAddModal() {
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         const form = document.getElementById('hrmAddEmployeeForm');
         if (form) form.reset();
         
@@ -341,6 +417,10 @@
 
     function submitHrmAddEmployee(event) {
         if (event) event.preventDefault();
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         const id = document.getElementById('hrmAddId').value.trim();
         const name = document.getElementById('hrmAddName').value.trim();
         const designation = document.getElementById('hrmAddDesignation').value.trim();
@@ -372,6 +452,10 @@
      * Modals: Edit Employee
      */
     function openHrmEditModal(sl) {
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         const list = window.HRM_DATABASE.getStoredEmployees();
         const emp = list.find(it => Number(it.sl) === Number(sl));
         if (!emp) return;
@@ -395,6 +479,10 @@
 
     function submitHrmEditEmployee(event) {
         if (event) event.preventDefault();
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         const sl = document.getElementById('hrmEditSl').value;
         const id = document.getElementById('hrmEditId').value.trim();
         const name = document.getElementById('hrmEditName').value.trim();
@@ -428,6 +516,10 @@
      */
     let replacingSl = null;
     function openHrmReplaceModal(sl) {
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         replacingSl = sl;
         const list = window.HRM_DATABASE.getStoredEmployees();
         const emp = list.find(it => Number(it.sl) === Number(sl));
@@ -458,6 +550,10 @@
 
     function submitHrmReplaceEmployee(event) {
         if (event) event.preventDefault();
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         if (!replacingSl) return;
 
         const newId = document.getElementById('hrmReplaceInId').value.trim();
@@ -493,6 +589,10 @@
      */
     let deletingSl = null;
     function openHrmDeleteModal(sl) {
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         deletingSl = sl;
         const list = window.HRM_DATABASE.getStoredEmployees();
         const emp = list.find(it => Number(it.sl) === Number(sl));
@@ -512,6 +612,10 @@
     }
 
     function confirmHrmDeleteEmployee() {
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         if (!deletingSl) return;
         window.HRM_DATABASE.deleteEmployee(deletingSl);
         closeHrmDeleteModal();
@@ -524,6 +628,10 @@
      * Reset database to default 107 records
      */
     function resetHrmDatabaseToDefault() {
+        if (isHrmEntryLocked()) {
+            showHrmToast('This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.', 'error');
+            return;
+        }
         if (confirm('Are you sure you want to reset the Employee Database to the initial 107 records?')) {
             window.HRM_DATABASE.resetToDefaultEmployees();
             renderHrmNewEntryTable();
@@ -635,8 +743,23 @@
         exportCSV: exportHrmDatabaseCSV,
         print: printHrmDatabase,
         toggleDatabaseMenu: toggleHrmDatabaseMenu,
-        filterBySection: filterHrmBySection
+        filterBySection: filterHrmBySection,
+        updateLockUI: updateHrmLockUI,
+        isLocked: isHrmEntryLocked
     };
+
+    // Listen for lock state changes broadcasted from MIS Option 5 or cross-tab storage
+    window.addEventListener('portal_lock_change', function(e) {
+        if (!e.detail || e.detail.file === 'hrm_database_new_entry') {
+            renderHrmNewEntryTable();
+        }
+    });
+
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'portal_page_lock_states') {
+            renderHrmNewEntryTable();
+        }
+    });
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initHrmModule);

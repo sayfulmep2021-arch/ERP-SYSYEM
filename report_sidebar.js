@@ -328,6 +328,118 @@
         } catch(e) {}
     }
 
+    function injectLockedPageBanner(show) {
+        let banner = document.getElementById('smartLockedPageBanner');
+        if (!show) {
+            if (banner) banner.style.display = 'none';
+            return;
+        }
+        if (!banner) {
+            banner = document.createElement('div');
+            banner.id = 'smartLockedPageBanner';
+            banner.className = 'smart-locked-page-banner';
+            banner.innerHTML = `
+                <div class="banner-icon">🔒</div>
+                <div class="banner-text">
+                    <span class="banner-tag">Locked / Read-Only</span>
+                    This page is currently locked by Administrator. All data modifications, entries, additions, and deletions are strictly disabled. To unlock, open <strong>MIS Module &gt; Lock and Unlock Page</strong>.
+                </div>
+            `;
+            const targetContainer = document.querySelector('.report-container, .main-container, .dashboard-container, .container-fluid, .content') || document.body;
+            if (targetContainer === document.body) {
+                const nav = document.querySelector('.portal-nav, nav, header');
+                if (nav && nav.nextSibling) {
+                    nav.parentNode.insertBefore(banner, nav.nextSibling);
+                } else {
+                    document.body.insertBefore(banner, document.body.firstChild);
+                }
+            } else {
+                targetContainer.insertBefore(banner, targetContainer.firstChild);
+            }
+        }
+        banner.style.display = 'flex';
+    }
+
+    function enforceDomLockState(isLocked) {
+        if (!isPageEditable(getCurrentPage())) return;
+
+        injectLockedPageBanner(isLocked);
+
+        // Freeze / unfreeze data inputs and textareas
+        const formFields = document.querySelectorAll('input:not([type="hidden"]), select, textarea, [contenteditable="true"]');
+        formFields.forEach(el => {
+            if (isSearchOrFilterControl(el)) return; // Never freeze search or filter elements
+
+            if (isLocked) {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    if (el.type === 'checkbox' || el.type === 'radio') {
+                        el.disabled = true;
+                    } else {
+                        el.readOnly = true;
+                        el.setAttribute('readonly', 'readonly');
+                    }
+                    el.classList.add('dom-locked-field');
+                } else if (el.tagName === 'SELECT') {
+                    el.disabled = true;
+                    el.classList.add('dom-locked-field');
+                } else if (el.isContentEditable || el.getAttribute('contenteditable') === 'true') {
+                    el.setAttribute('contenteditable', 'false');
+                    el.setAttribute('data-was-contenteditable', 'true');
+                }
+            } else {
+                if (el.classList.contains('dom-locked-field')) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        if (el.type === 'checkbox' || el.type === 'radio') {
+                            el.disabled = false;
+                        } else {
+                            el.readOnly = false;
+                            el.removeAttribute('readonly');
+                        }
+                    } else if (el.tagName === 'SELECT') {
+                        el.disabled = false;
+                    }
+                    el.classList.remove('dom-locked-field');
+                }
+                if (el.getAttribute('data-was-contenteditable') === 'true') {
+                    el.setAttribute('contenteditable', 'true');
+                    el.removeAttribute('data-was-contenteditable');
+                }
+            }
+        });
+
+        // Disable / restore edit action buttons
+        const actionButtons = document.querySelectorAll('button, .btn, a.btn, input[type="button"], input[type="submit"]');
+        actionButtons.forEach(btn => {
+            if (isSearchOrFilterControl(btn)) return;
+            if (isEditActionButton(btn)) {
+                if (isLocked) {
+                    btn.disabled = true;
+                    btn.setAttribute('data-dom-locked-btn', 'true');
+                } else {
+                    if (btn.getAttribute('data-dom-locked-btn') === 'true') {
+                        btn.disabled = false;
+                        btn.removeAttribute('data-dom-locked-btn');
+                    }
+                }
+            }
+        });
+    }
+
+    let _lockMutationObserver = null;
+    function setupLockMutationObserver() {
+        if (_lockMutationObserver || !window.MutationObserver) return;
+        _lockMutationObserver = new MutationObserver(function() {
+            if (!isPageLocked || !isPageEditable(getCurrentPage())) return;
+            clearTimeout(window._lockDomObserverTimer);
+            window._lockDomObserverTimer = setTimeout(function() {
+                enforceDomLockState(true);
+            }, 60);
+        });
+        if (document.body) {
+            _lockMutationObserver.observe(document.body, { childList: true, subtree: true });
+        }
+    }
+
     function applyCentralLockState() {
         const curPage = getCurrentPage();
         if (!isPageEditable(curPage)) {
@@ -342,11 +454,14 @@
                 document.body.classList.add('page-locked');
                 document.body.classList.remove('page-unlocked');
             }
+            enforceDomLockState(true);
+            setupLockMutationObserver();
         } else {
             if (document.body) {
                 document.body.classList.remove('page-locked');
                 document.body.classList.add('page-unlocked');
             }
+            enforceDomLockState(false);
         }
         removePageLockBtns(); // Ensure zero lock buttons exist in any page header or toolbar
     }
@@ -387,7 +502,11 @@
         return !!(
             el.closest('#searchInput') ||
             el.closest('.search-box') ||
+            el.closest('#searchBtn') ||
+            el.closest('.btn-search') ||
+            el.closest('.btn-clear-search') ||
             el.closest('#monthFilter') ||
+            el.closest('#yearFilter') ||
             el.closest('.filter-select') ||
             el.closest('.period-select') ||
             el.closest('.filter-date-input') ||
@@ -395,17 +514,20 @@
             el.closest('.date-mode-pills') ||
             el.closest('.pagination-bar') ||
             el.closest('.btn-page') ||
-            el.closest('.btn-action-light') ||
-            el.closest('.btn-action-link') ||
             el.closest('.btn-export') ||
             el.closest('.btn-action-export') ||
+            el.closest('.btn-print') ||
+            el.closest('.btn-action-print') ||
             el.closest('#smartPageLockBtn') ||
             el.closest('.btn-nav-notif') ||
             el.closest('.header-logout-btn') ||
             el.closest('.btn-nav-tab') ||
             el.closest('.btn-header-pill') ||
             el.closest('.frozen-sidebar-wrapper') ||
-            el.closest('.portal-nav')
+            el.closest('.portal-nav') ||
+            el.closest('.modal-close-btn') ||
+            el.closest('.btn-modal-cancel') ||
+            el.closest('.btn-close')
         );
     }
 
@@ -414,10 +536,10 @@
         if (isSearchOrFilterControl(el)) return false;
 
         if (el.isContentEditable || el.getAttribute('contenteditable') === 'true' || el.closest('[contenteditable="true"]')) return true;
-        if (el.closest('.excel-table tbody, .data-table tbody, table tbody, .data-row, tr.data-row, table.bom-table tbody')) return true;
-        if (el.matches('.excel-cell-input, .excel-cell-text, .cell-input, .cell-editable, [contenteditable="true"]')) return true;
+        if (el.closest('.excel-table tbody, .data-table tbody, table tbody, .data-row, tr.data-row, table.bom-table tbody, .planning-table tbody, .damage-table tbody, #planTable tbody, #damageTable tbody, #entryTable tbody, #masterTable tbody')) return true;
+        if (el.matches('.excel-cell-input, .excel-cell-text, .cell-input, .cell-editable, [contenteditable="true"], .plan-input, .damage-input, .bom-input')) return true;
 
-        if (el.closest('.modal-backdrop, .entry-modal, #newEntryModal, #pasteModal, #componentModal')) {
+        if (el.closest('.modal-backdrop, .entry-modal, #newEntryModal, #pasteModal, #componentModal, #addMasterModal, #bulkPasteModal, #damageModal, #addDamageModal')) {
             if (el.closest('.modal-close-btn, .btn-modal-cancel, .btn-close')) return false;
             return true;
         }
@@ -431,22 +553,22 @@
         const btn = el.closest('button, .btn, a.btn, [role="button"], input[type="button"], input[type="submit"]');
         if (!btn) return false;
 
-        if (btn.matches('.btn-action-link, .btn-action-light, .btn-action-export, .btn-export, .btn-page, .smart-page-lock-btn, .btn-nav-notif, .header-logout-btn, .btn-nav-tab, .btn-header-pill, .modal-close-btn, .btn-close, .btn-modal-cancel')) {
+        if (btn.matches('.btn-action-export, .btn-export, .btn-print, .btn-action-print, .btn-page, .smart-page-lock-btn, .btn-nav-notif, .header-logout-btn, .btn-nav-tab, .btn-header-pill, .modal-close-btn, .btn-close, .btn-modal-cancel')) {
             return false;
         }
 
         const text = (btn.textContent || '').trim().toLowerCase();
-        if (text.includes('export') || text.includes('print') || text.includes('download') || text.includes('csv')) {
+        if (text.includes('export') || text.includes('print') || text.includes('download') || text.includes('csv') || text.includes('close') || text.includes('cancel')) {
             return false;
         }
 
-        if (btn.matches('.btn-save, .btn-save-plan, .btn-add, .btn-add-item, .btn-paste, .btn-replace, .btn-reset, .btn-action-paste, .btn-action-replace, .btn-action-reset, .btn-action-import, .btn-del-row, .btn-table-del, .btn-row-del, .btn-action-delete, .btn-action-edit, .btn-action-primary, .btn-action-add')) {
+        if (btn.matches('.btn-save, .btn-save-plan, .btn-add, .btn-add-item, .btn-paste, .btn-replace, .btn-reset, .btn-action-paste, .btn-action-replace, .btn-action-reset, .btn-action-import, .btn-del-row, .btn-table-del, .btn-row-del, .btn-action-delete, .btn-action-edit, .btn-action-primary, .btn-action-add, .btn-action-purple, .btn-table-action, .btn-delete')) {
             return true;
         }
 
         const oc = btn.getAttribute('onclick') || '';
-        if (/(openNewEntryModal|openPasteModal|openAddItemModal|openReplaceItemModal|openDamageModal|openAddComponentModal|save|Save|del|delete|Delete|addRow|removeRow|editRow|clearAll|updateRow|resetToDefaultData)/i.test(oc)) {
-            if (!/export/i.test(oc)) {
+        if (/(open.*Modal|save|Save|del|delete|Delete|add|Add|edit|Edit|paste|Paste|import|Import|sync|Sync|replace|Replace|reset|Reset|remove|clear|update)/i.test(oc)) {
+            if (!/export|print|download|close|cancel/i.test(oc)) {
                 return true;
             }
         }
@@ -548,8 +670,11 @@
 
     // Expose Global mepPageLock API unconditionally
     window.mepPageLock = {
-        isLocked: function() { return isPageEditable(getCurrentPage()) ? isPageLocked : false; },
-        getState: function() { return getCentralPageLockState(getCurrentPage()); },
+        isLocked: function(page) {
+            const p = (page || getCurrentPage() || '').toLowerCase().split('?')[0].split('#')[0];
+            return isPageEditable(p) ? getCentralPageLockState(p) : false;
+        },
+        getState: function(page) { return getCentralPageLockState(page || getCurrentPage()); },
         sync: applyCentralLockState,
         showToast: showPageLockToast
     };
@@ -2307,25 +2432,21 @@
         initFrozenSidebar();
         enforceViewOnlyRestrictions();
         initPageLockProtection();
-        injectPageLockBtn();
-        updateLockBtnUI();
         guardLiveTimeElements();
         if (!window._universalLiveClockInterval) {
             window._universalLiveClockInterval = setInterval(updateUniversalLiveClock, 1000);
         }
         updateUniversalLiveClock();
-        setTimeout(injectPageLockBtn, 120);
-        setTimeout(injectPageLockBtn, 450);
         setTimeout(guardLiveTimeElements, 500);
 
         // Realtime sync for centralized lock/unlock changes
         window.addEventListener('storage', function(e) {
             if (e.key === 'portal_page_lock_states' || e.key === 'portal_view_only') {
-                updateLockStateUI();
+                applyCentralLockState();
             }
         });
         window.addEventListener('portal_lock_change', function() {
-            updateLockStateUI();
+            applyCentralLockState();
         });
     }
 

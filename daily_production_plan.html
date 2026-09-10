@@ -949,14 +949,33 @@
             renderExcelTable();
         }
 
+        function isDailyPlanLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['daily_production_plan.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function saveCurrentPlan(showFeedback = false) {
+            if (isDailyPlanLocked()) {
+                if (showFeedback && window.mepPageLock) {
+                    window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save changes.', 'warn');
+                }
+                return;
+            }
             if (!currentPlanData) return;
             const dateStr = document.getElementById('planDateInput').value || currentPlanData.planDate;
             currentPlanData.planDate = dateStr;
             localStorage.setItem(STORAGE_KEY_PREFIX + dateStr, JSON.stringify(currentPlanData));
 
             if (showFeedback) {
-                showToast(`?? Daily Production Plan for [${dateStr}] Saved!`);
+                showToast(`💾 Daily Production Plan for [${dateStr}] Saved!`);
             }
         }
 
@@ -1045,6 +1064,10 @@
         }
 
         function onNumberCellInput(inputElem, catIdx, itemIdx) {
+            if (isDailyPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit plan targets.', 'warn');
+                return;
+            }
             const raw = inputElem.value.trim();
             const val = parseFloat(raw) || 0;
             currentPlanData.categories[catIdx].items[itemIdx].preDay = val;
@@ -1093,23 +1116,29 @@
         }
 
         function autoSavePlanPerDayMap() {
+            if (isDailyPlanLocked()) return;
             const map = getPlanPerDayMap();
             localStorage.setItem('mep_daily_plan_per_day', JSON.stringify(map));
             localStorage.setItem('mep_daily_plan_per_day_updated_at', new Date().toISOString());
         }
 
         function submitPlanToBOMFloorStock(showNotification) {
+            if (isDailyPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to submit targets.', 'warn');
+                return;
+            }
             saveCurrentPlan(false);
             autoSavePlanPerDayMap();
             const map = getPlanPerDayMap();
             let activeCount = 0;
             Object.values(map).forEach(v => { if (v > 0) activeCount++; });
             if (showNotification) {
-                showToast(`? Daily Plan Per Day Submitted to BOM & Check Floor Stock! (${activeCount} Active SFG Targets)`);
+                showToast(`🚀 Daily Plan Per Day Submitted to BOM & Check Floor Stock! (${activeCount} Active SFG Targets)`);
             }
         }
 
         function updateItemField(catIdx, itemIdx, field, val) {
+            if (isDailyPlanLocked()) return;
             if (currentPlanData && currentPlanData.categories[catIdx]?.items[itemIdx]) {
                 currentPlanData.categories[catIdx].items[itemIdx][field] = val;
                 saveCurrentPlan(false);
@@ -1139,6 +1168,10 @@
 
         // Add Item Modal
         function openAddItemModal() {
+            if (isDailyPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             document.getElementById('addItemModal').classList.add('active');
             document.getElementById('newItemCode').value = '';
             document.getElementById('newItemName').value = '';
@@ -1151,6 +1184,10 @@
         }
 
         function saveNewItem() {
+            if (isDailyPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             const catName = document.getElementById('newItemCategory').value;
             const code = document.getElementById('newItemCode').value.trim();
             const name = document.getElementById('newItemName').value.trim();
@@ -1186,15 +1223,19 @@
             saveCurrentPlan(true);
             renderExcelTable();
             closeAddItemModal();
-            showToast(`? Added new item "${name}" to ${catName}!`);
+            showToast(`✅ Added new item "${name}" to ${catName}!`);
         }
 
         function deleteItemRow(catIdx, itemIdx) {
+            if (isDailyPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to delete rows.', 'warn');
+                return;
+            }
             if (confirm("Are you sure you want to remove this item row?")) {
                 currentPlanData.categories[catIdx].items.splice(itemIdx, 1);
                 saveCurrentPlan(true);
                 renderExcelTable();
-                showToast("??? Item row removed!");
+                showToast("🗑️ Item row removed!");
             }
         }
 

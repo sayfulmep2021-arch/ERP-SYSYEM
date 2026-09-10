@@ -1418,16 +1418,32 @@
             }
         }
 
+        function isClosingSfgLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['closing_all_sfg.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function saveDataset() {
+            if (isClosingSfgLocked()) return;
             if (itemsList) {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(itemsList));
                 localStorage.setItem('mep_closing_all_sfg_last_updated', Date.now().toString());
             }
         }
 
-
-
         function restoreDefaultSFG() {
+            if (isClosingSfgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to restore default data.', 'warn');
+                return;
+            }
             if (confirm("Are you sure you want to restore original default SFG baseline (117 items)?")) {
                 localStorage.removeItem(STORAGE_KEY);
                 itemsList = sanitizeDataset(JSON.parse(JSON.stringify(RAW_CLOSING_ALL_SFG_DATA)));
@@ -1637,6 +1653,10 @@
 
         // Paste ERP Modal Handlers (100% Data Integrity - ZERO FILTERING)
         function openPasteModal() {
+            if (isClosingSfgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste ERP data.', 'warn');
+                return;
+            }
             document.getElementById('pasteModal').classList.add('active');
             document.getElementById('pasteInput').value = '';
             document.getElementById('pasteInput').focus();
@@ -1647,6 +1667,10 @@
         }
 
         function processBulkPaste() {
+            if (isClosingSfgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste ERP data.', 'warn');
+                return;
+            }
             const text = document.getElementById('pasteInput').value.trim();
             if (!text) {
                 alert("Please paste spreadsheet text first.");

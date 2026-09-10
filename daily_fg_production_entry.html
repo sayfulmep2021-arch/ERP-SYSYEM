@@ -2137,8 +2137,25 @@
             }
         }
 
+        function isPageEntryLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['daily_fg_production_entry.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         // Modal Handlers
         function openNewEntryModal() {
+            if (isPageEntryLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add entries.', 'warn');
+                return;
+            }
             document.getElementById('newEntryModal').classList.add('active');
             const today = new Date();
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -2156,6 +2173,10 @@
 
         function handleSaveNewEntry(event) {
             event.preventDefault();
+            if (isPageEntryLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save entries.', 'warn');
+                return;
+            }
             const date = document.getElementById('inputDate').value.trim();
             const qty = parseInt(document.getElementById('inputQty').value, 10) || 0;
             const month = document.getElementById('inputMonth').value;
@@ -2237,6 +2258,10 @@
 
         // Bulk Paste / Import Handlers
         function openPasteModal() {
+            if (isPageEntryLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste entries.', 'warn');
+                return;
+            }
             document.getElementById('pasteModal').classList.add('active');
             document.getElementById('bulkPasteInput').value = '';
             document.getElementById('bulkPasteInput').focus();
@@ -2247,6 +2272,10 @@
         }
 
         function processBulkPaste() {
+            if (isPageEntryLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste entries.', 'warn');
+                return;
+            }
             const rawText = document.getElementById('bulkPasteInput').value.trim();
             if (!rawText) {
                 alert("Please paste your spreadsheet data first.");
@@ -2621,6 +2650,10 @@
 
         // Action Handlers: Edit Entry
         function openEditEntryModal(entryIndex) {
+            if (isPageEntryLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit records.', 'warn');
+                return;
+            }
             const strId = String(entryIndex);
             const entry = allProductionData.find(r => String(r._entryIndex) === strId);
             if (!entry) {
@@ -2654,6 +2687,10 @@
 
         function handleSaveEditedEntry(event) {
             event.preventDefault();
+            if (isPageEntryLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save changes.', 'warn');
+                return;
+            }
             const entryIndex = document.getElementById('editEntryIndex').value;
             const itemCode = document.getElementById('editItemCode').value.trim();
             const itemName = document.getElementById('editItemName').value.trim();
@@ -2730,6 +2767,10 @@
 
         // Action Handlers: Delete Entry
         function deleteEntry(entryIndex) {
+            if (isPageEntryLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to delete records.', 'warn');
+                return;
+            }
             if (!confirm("Are you sure you want to delete this production entry?")) {
                 return;
             }

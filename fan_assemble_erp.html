@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1528,7 +1528,24 @@
             tfoot.innerHTML = tfootHtml;
         }
 
+        function isFanAssembleLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['fan_assemble_erp.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function openPasteModal() {
+            if (isFanAssembleLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste ERP data.', 'warn');
+                return;
+            }
             document.getElementById('pasteModal').classList.add('active');
             document.getElementById('erpRawInput').value = '';
             document.getElementById('erpRawInput').focus();
@@ -1539,6 +1556,10 @@
         }
 
         function processErpPaste() {
+            if (isFanAssembleLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste ERP data.', 'warn');
+                return;
+            }
             const rawText = document.getElementById('erpRawInput').value.trim();
             if (!rawText) {
                 alert("Please paste your ERP Stock Movement data first.");
@@ -1651,6 +1672,10 @@
 
         // Auto-Sync to Assemble Summary (`assemble_summary.html`)
         function syncToAssembleSummary(showNotification = true) {
+            if (isFanAssembleLocked()) {
+                if (showNotification && window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to sync data.', 'warn');
+                return;
+            }
             if (!allMovementData || allMovementData.length === 0) return;
 
             if (typeof MEP_ERP_ENGINE !== 'undefined' && typeof MEP_ERP_ENGINE.saveSourceErpData === 'function') {

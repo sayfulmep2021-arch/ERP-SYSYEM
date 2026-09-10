@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1477,7 +1477,24 @@
             if (document.getElementById('kpiItemCount')) document.getElementById('kpiItemCount').innerText = `${data.length} Items`;
         }
 
+        function isStorePositionLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['store_position_report.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function openPasteModal() {
+            if (isStorePositionLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste store position data.', 'warn');
+                return;
+            }
             document.getElementById('pasteInput').value = '';
             document.getElementById('pasteModal').classList.add('show');
             document.getElementById('pasteModal').classList.add('active');
@@ -1490,6 +1507,10 @@
         }
 
         function processBulkPaste() {
+            if (isStorePositionLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste store position data.', 'warn');
+                return;
+            }
             const rawText = document.getElementById('pasteInput').value.trim();
             if (!rawText) {
                 alert("Please paste spreadsheet text first.");

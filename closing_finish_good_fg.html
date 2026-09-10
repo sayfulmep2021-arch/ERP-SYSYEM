@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1633,7 +1633,24 @@
             if (document.getElementById('kpiItemCount')) document.getElementById('kpiItemCount').innerText = `${data.length} Items`;
         }
 
+        function isClosingFgLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['closing_finish_good_fg.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function openPasteModal() {
+            if (isClosingFgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste ERP data.', 'warn');
+                return;
+            }
             document.getElementById('pasteInput').value = '';
             document.getElementById('pasteModal').classList.add('show');
             document.getElementById('pasteModal').classList.add('active');
@@ -1646,6 +1663,10 @@
         }
 
         function processBulkPaste() {
+            if (isClosingFgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste ERP data.', 'warn');
+                return;
+            }
             const rawText = document.getElementById('pasteInput').value.trim();
             if (!rawText) {
                 showToast('⚠️ Please paste table data from ERP.');

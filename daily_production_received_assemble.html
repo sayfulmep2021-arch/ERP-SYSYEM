@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1109,7 +1109,21 @@
             }
         }
 
+        function isDailyReceivedLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['daily_production_received_assemble.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function saveDataset() {
+            if (isDailyReceivedLocked()) return;
             if (dataset) {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(dataset));
             }
@@ -1527,6 +1541,10 @@
 
         // Live Cell Editing Handlers
         function handleCellEdit(catIdx, itemIdx, dayKey, val) {
+            if (isDailyReceivedLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit entries.', 'warn');
+                return;
+            }
             const num = parseFloat(val) || 0;
             dataset.categories[catIdx].items[itemIdx].days[dayKey] = num;
             saveDataset();
@@ -1534,6 +1552,10 @@
         }
 
         function handleOpeningEdit(catIdx, itemIdx, val) {
+            if (isDailyReceivedLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit opening quantities.', 'warn');
+                return;
+            }
             const num = parseFloat(val) || 0;
             dataset.categories[catIdx].items[itemIdx].opening = num;
             saveDataset();
@@ -1641,6 +1663,10 @@
 
         // Bulk Paste Modal
         function openBulkModal() {
+            if (isDailyReceivedLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste data.', 'warn');
+                return;
+            }
             document.getElementById('bulkModal').classList.add('active');
             document.getElementById('bulkPasteInput').value = '';
             document.getElementById('bulkPasteInput').focus();
@@ -1651,6 +1677,10 @@
         }
 
         function processBulkPaste() {
+            if (isDailyReceivedLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste data.', 'warn');
+                return;
+            }
             const text = document.getElementById('bulkPasteInput').value;
             if (!text.trim()) {
                 alert("Please paste tabular data from Excel.");
@@ -1693,6 +1723,10 @@
         }
 
         function resetToDefaults() {
+            if (isDailyReceivedLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to reset data.', 'warn');
+                return;
+            }
             if (!confirm("Are you sure you want to reset all edits to factory defaults?")) return;
             localStorage.removeItem(STORAGE_KEY);
             loadDataset();

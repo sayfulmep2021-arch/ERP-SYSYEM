@@ -46,6 +46,7 @@
         'mep_notification_history',
         'mep_notification_unread',
         'portal_view_page_permissions',
+        'portal_page_lock_states',
         'mep_daily_prod_assemble_manual_month',
         'mep_daily_prod_assemble_manual_year'
     ];
@@ -258,7 +259,8 @@
                         'mep_bom_data_custom': { page: 'BOM Details', module: 'All Report Summary', type: 'BOM Ratio Updated' },
                         'mep_bom_with_sfg_data': { page: 'BOM with SFG', module: 'All Report Summary', type: 'SFG Formulation Modified' },
                         'mep_assemble_custom_data': { page: 'Assemble Summary', module: 'All Report Summary', type: 'Assemble Data Updated' },
-                        'mep_armature_custom_data': { page: 'Armature Summary', module: 'All Report Summary', type: 'Armature Data Updated' }
+                        'mep_armature_custom_data': { page: 'Armature Summary', module: 'All Report Summary', type: 'Armature Data Updated' },
+                        'portal_page_lock_states': { page: 'Lock and Unlock Page', module: 'MIS Module', type: 'Operational Locks Updated' }
                     };
                     const meta = keyFriendlyNames[key] || { page: 'System Database', module: 'ERP Core', type: 'Data Record Updated' };
                     window.logSystemChange({

@@ -901,9 +901,47 @@
             updateServiceDuration();
         }
 
+        function isUserProfileLocked() {
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                if (raw) {
+                    const map = JSON.parse(raw);
+                    if (map['user_profile_management'] !== undefined) {
+                        return map['user_profile_management'] === true;
+                    }
+                }
+            } catch (e) {}
+            return true; // Default locked as per system security policy
+        }
+
+        function updateUserProfileLockBanner(locked) {
+            const pane = document.getElementById('paneUserProfileManagement');
+            if (!pane) return;
+            let banner = document.getElementById('userProfileLockedBanner');
+            if (locked) {
+                if (!banner) {
+                    banner = document.createElement('div');
+                    banner.id = 'userProfileLockedBanner';
+                    banner.className = 'smart-locked-page-banner';
+                    banner.style.cssText = 'background:#fff1f2; border:1px solid #fecdd3; border-left:5px solid #e11d48; padding:10px 16px; border-radius:8px; margin-bottom:14px; display:flex; align-items:center; gap:10px; color:#9f1239; font-family:"Times New Roman", serif;';
+                    banner.innerHTML = `
+                        <span style="font-size:1.3rem;">🔒</span>
+                        <div>
+                            <strong style="font-size:14px; letter-spacing:0.5px;">PAGE ACCESS LOCKED (READ-ONLY)</strong>
+                            <div style="font-size:12px; color:#881337; margin-top:2px;">User Profile & Security Access is in read-only mode. Updating profile information, changing photo, or changing credentials/PIN is prohibited until unlocked from <strong>MIS Module > Option 5</strong>.</div>
+                        </div>
+                    `;
+                    pane.insertBefore(banner, pane.firstChild);
+                }
+            } else {
+                if (banner) banner.remove();
+            }
+        }
+
         function loadUserProfileIntoForm() {
             const prof = getUserProfile();
             const isViewOnly = isCurrentUserViewOnly();
+            const isPageLocked = isUserProfileLocked();
 
             const nameInp = document.getElementById('editProfName');
             const roleInp = document.getElementById('editProfRole');
@@ -933,7 +971,10 @@
             const preview = document.getElementById('userProfilePhotoPreview');
             if (preview) preview.src = isViewOnly ? 'sayful_logo.png' : (prof.photo || 'profile.jpg');
 
-            if (isViewOnly) {
+            // Banner injection for locked user module
+            updateUserProfileLockBanner(isPageLocked);
+
+            if (isViewOnly || isPageLocked) {
                 [nameInp, roleInp, idInp, phoneInp, sectionInp, joinDateInp].forEach(inp => {
                     if (inp) {
                         inp.disabled = true;
@@ -944,12 +985,13 @@
                     saveBtn.disabled = true;
                     saveBtn.style.opacity = '0.5';
                     saveBtn.style.cursor = 'not-allowed';
-                    saveBtn.title = "View-Only users cannot edit profile";
+                    saveBtn.title = isPageLocked ? "Locked (Read-Only) from MIS Option 5" : "View-Only users cannot edit profile";
                 }
                 if (resetBtn) {
                     resetBtn.disabled = true;
                     resetBtn.style.opacity = '0.5';
                     resetBtn.style.cursor = 'not-allowed';
+                    resetBtn.title = isPageLocked ? "Locked (Read-Only) from MIS Option 5" : "View-Only users cannot reset profile";
                 }
                 if (photoBtn) {
                     photoBtn.style.display = 'none';
@@ -977,6 +1019,21 @@
                 }
             }
 
+            // Also lock or unlock the 3 credential buttons in user module
+            document.querySelectorAll('.btn-sec-action').forEach(btn => {
+                if (isViewOnly || isPageLocked) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                    btn.title = isPageLocked ? "Locked (Read-Only) from MIS Option 5" : "View-Only users cannot change credentials";
+                } else {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                    btn.title = "";
+                }
+            });
+
             syncAllProfileNameplates(prof);
         }
 
@@ -984,6 +1041,10 @@
             if (event) event.preventDefault();
             if (isCurrentUserViewOnly()) {
                 showToast("Access Denied: View-Only accounts cannot save profile changes.", "error");
+                return;
+            }
+            if (isUserProfileLocked()) {
+                showToast("This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.", "error");
                 return;
             }
 
@@ -1032,6 +1093,10 @@
                 showToast("Access Denied: View-Only accounts cannot reset profile.", "error");
                 return;
             }
+            if (isUserProfileLocked()) {
+                showToast("This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.", "error");
+                return;
+            }
             if (confirm("Reset profile details back to default values?")) {
                 localStorage.removeItem('mep_user_profile');
                 loadUserProfileIntoForm();
@@ -1041,6 +1106,10 @@
         function handleProfilePhotoUpload(event) {
             if (isCurrentUserViewOnly()) {
                 showToast("Access Denied: View-Only accounts cannot upload photo.", "error");
+                return;
+            }
+            if (isUserProfileLocked()) {
+                showToast("This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.", "error");
                 return;
             }
             const file = event.target && event.target.files && event.target.files[0];
@@ -1075,6 +1144,10 @@
         function openChangeCredentialModal(credType) {
             if (isCurrentUserViewOnly()) {
                 showToast("Access Denied: View-Only accounts cannot modify system credentials.", "error");
+                return;
+            }
+            if (isUserProfileLocked()) {
+                showToast("This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.", "error");
                 return;
             }
 
@@ -1166,6 +1239,10 @@
         function confirmAndSaveCredential() {
             if (isCurrentUserViewOnly()) {
                 showToast("Access Denied: View-Only accounts cannot modify system credentials.", "error");
+                return;
+            }
+            if (isUserProfileLocked()) {
+                showToast("This page is locked (Read-Only). Unlocking is required from MIS Module Option 5.", "error");
                 return;
             }
 
@@ -2120,6 +2197,28 @@ window.confirmAndSaveCredential = confirmAndSaveCredential;
 window.syncSecurityStatusDisplays = syncSecurityStatusDisplays;
 window.getDynamicCurrentModuleName = getDynamicCurrentModuleName;
 window.updateDynamicModuleHeader = updateDynamicModuleHeader;
+
+window.isUserProfileLocked = isUserProfileLocked;
+window.updateUserProfileLockBanner = updateUserProfileLockBanner;
+
+// Listen for lock state changes broadcasted from MIS Option 5 or cross-tab storage
+window.addEventListener('portal_lock_change', function(e) {
+    if (!e.detail || e.detail.file === 'user_profile_management') {
+        const userView = document.getElementById('userModuleView');
+        if (userView && userView.style.display !== 'none') {
+            loadUserProfileIntoForm();
+        }
+    }
+});
+
+window.addEventListener('storage', function(e) {
+    if (e.key === 'portal_page_lock_states') {
+        const userView = document.getElementById('userModuleView');
+        if (userView && userView.style.display !== 'none') {
+            loadUserProfileIntoForm();
+        }
+    }
+});
 
 // Auto-initialize Dynamic Module Header on Load
 if (document.readyState === 'loading') {

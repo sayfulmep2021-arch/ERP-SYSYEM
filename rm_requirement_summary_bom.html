@@ -1260,8 +1260,21 @@
             }
         }
 
+        function isRmSummaryBomLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['rm_requirement_summary_bom.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function saveBOMData() {
-            if (isViewOnly) return;
+            if (isViewOnly || isRmSummaryBomLocked()) return;
             try {
                 localStorage.setItem('mep_rm_requirement_bom_data', JSON.stringify(bomItems));
                 localStorage.setItem('mep_bom_last_updated', Date.now().toString());
@@ -1273,6 +1286,10 @@
 
         function resetToDefaultData() {
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to reset data.', 'warn');
+                return;
+            }
             if (!confirm('Are you sure you want to reset all BOM items back to factory default? Any custom items or edits will be restored.')) {
                 return;
             }
@@ -1550,10 +1567,15 @@
         }
 
         // =========================================================================
+        // =========================================================================
         // CRUD: ADD ITEM
         // =========================================================================
         function openAddItemModal() {
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             const grid = document.getElementById('addBOMRatiosGrid');
             const modelsConfig = FAN_MODELS_CONFIG;
             let inputsHtml = '';
@@ -1574,6 +1596,10 @@
         function handleAddItemSubmit(e) {
             e.preventDefault();
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
 
             const category = document.getElementById('addCategory').value;
             const code = document.getElementById('addCode').value.trim();
@@ -1612,6 +1638,10 @@
         // =========================================================================
         function openEditItemModal(idx) {
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit items.', 'warn');
+                return;
+            }
             const item = bomItems[idx];
             if (!item) return;
 
@@ -1642,6 +1672,10 @@
         function handleEditItemSubmit(e) {
             e.preventDefault();
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit items.', 'warn');
+                return;
+            }
 
             const idx = parseInt(document.getElementById('editItemIndex').value, 10);
             const item = bomItems[idx];
@@ -1666,6 +1700,10 @@
         // Inline BOM ratio quick edit for ADMIN
         function inlineEditBOMRatio(idx, modelKey, curVal) {
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit ratios.', 'warn');
+                return;
+            }
             const item = bomItems[idx];
             if (!item) return;
 
@@ -1688,6 +1726,10 @@
         // =========================================================================
         function openReplaceItemModal(targetIdx) {
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to replace items.', 'warn');
+                return;
+            }
 
             const selectEl = document.getElementById('replaceOldSelect');
             let optsHtml = '';
@@ -1736,6 +1778,10 @@
         function handleReplaceItemSubmit(e) {
             e.preventDefault();
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to replace items.', 'warn');
+                return;
+            }
 
             const oldIdx = parseInt(document.getElementById('replaceOldSelect').value, 10);
             const oldItem = bomItems[oldIdx];
@@ -1772,6 +1818,10 @@
         // =========================================================================
         function openDeleteConfirmModal(idx) {
             if (isViewOnly) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to delete items.', 'warn');
+                return;
+            }
             const item = bomItems[idx];
             if (!item) return;
 
@@ -1782,6 +1832,10 @@
 
         function executeDeleteItem() {
             if (isViewOnly || pendingDeleteIndex < 0) return;
+            if (isRmSummaryBomLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to delete items.', 'warn');
+                return;
+            }
             const deletedItem = bomItems[pendingDeleteIndex];
             if (deletedItem) {
                 bomItems.splice(pendingDeleteIndex, 1);

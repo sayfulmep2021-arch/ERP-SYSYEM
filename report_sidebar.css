@@ -3315,12 +3315,18 @@ body.page-locked .smart-page-lock-btn {
 /* Block and style editable data inputs/cells */
 body.page-locked .excel-table tbody td input,
 body.page-locked .data-table tbody td input,
+body.page-locked .planning-table tbody td input,
+body.page-locked .damage-table tbody td input,
+body.page-locked .bom-table tbody td input,
+body.page-locked table tbody td input:not(.search-box input):not(#searchInput):not(.filter-date-input):not(#filterDate):not(#singleDateInput):not(#fromDateInput):not(#toDateInput),
 body.page-locked .excel-cell-input,
 body.page-locked .excel-cell-text,
-body.page-locked td input:not(.search-box input):not(#searchInput):not(.filter-date-input):not(#filterDate),
-body.page-locked td select:not(#monthFilter):not(.filter-select):not(.period-select),
+body.page-locked td input:not(.search-box input):not(#searchInput):not(.filter-date-input):not(#filterDate):not(#singleDateInput):not(#fromDateInput):not(#toDateInput),
+body.page-locked td select:not(#monthFilter):not(.filter-select):not(.period-select):not(#fromMonthSelect):not(#toMonthSelect):not(#fromYearSelect):not(#toYearSelect):not(#pageSizeSelect):not(#categoryFilter):not(#unitFilter):not(.month-select),
 body.page-locked td textarea,
-body.page-locked [contenteditable="true"] {
+body.page-locked [contenteditable="true"],
+body.page-locked .td-qty [contenteditable="true"],
+body.page-locked .cell-editable {
     pointer-events: none !important;
     user-select: none !important;
     cursor: not-allowed !important;
@@ -3338,7 +3344,7 @@ body.page-locked .excel-cell-text:focus {
     box-shadow: none !important;
 }
 
-/* Visually dim data-modifying action buttons */
+/* Visually dim data-modifying action buttons & disable pointer events */
 body.page-locked .btn-save,
 body.page-locked .btn-save-plan,
 body.page-locked .btn-add,
@@ -3350,16 +3356,80 @@ body.page-locked .btn-table-del,
 body.page-locked .btn-row-del,
 body.page-locked .btn-action-delete,
 body.page-locked .btn-action-edit,
+body.page-locked .btn-table-action,
+body.page-locked .btn-table-action.btn-delete,
+body.page-locked .btn-action-purple,
+body.page-locked .btn-action-reset,
 body.page-locked .damage-actions-group .btn-action-icon.btn-add,
 body.page-locked .damage-actions-group .btn-action-icon.btn-save,
 body.page-locked .damage-actions-group .btn-action-icon.btn-paste,
+body.page-locked .damage-actions-group .btn-action-icon.btn-reset,
 body.page-locked .header-actions button.btn-action-primary,
 body.page-locked .header-actions button.btn-action-paste,
-body.page-locked .header-actions button.btn-action-import {
+body.page-locked .header-actions button.btn-action-import,
+body.page-locked .header-actions button.btn-action-purple,
+body.page-locked .btn-plan.btn-save-plan,
+body.page-locked .btn-plan.btn-add-item {
     opacity: 0.45 !important;
     cursor: not-allowed !important;
-    filter: grayscale(0.55) !important;
+    filter: grayscale(0.65) !important;
+    pointer-events: none !important;
     transition: opacity 0.2s ease, filter 0.2s ease !important;
+}
+
+/* Persistent Lock Status Banner */
+.smart-locked-page-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, #fef2f2 0%, #fff1f2 100%);
+    border: 1.5px solid #fca5a5;
+    color: #991b1b;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);
+    animation: fadeInLockBanner 0.3s ease-out;
+}
+.smart-locked-page-banner .banner-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.smart-locked-page-banner .banner-icon {
+    font-size: 1.15rem;
+}
+.smart-locked-page-banner .banner-tag {
+    background: #dc2626;
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.smart-locked-page-banner .banner-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    padding: 5px 12px;
+    border-radius: 7px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.smart-locked-page-banner .banner-link-btn:hover {
+    background: #b91c1c;
+    color: #ffffff;
+    border-color: #b91c1c;
 }
 
 /* Ensure Search, Filters, Paging, and Export/Print are always accessible */
@@ -3902,4 +3972,154 @@ body.page-locked .btn-action-export {
 .damage-actions-group button:hover::after {
     opacity: 1;
     visibility: visible;
+}
+
+/* ==========================================================================
+   AIRTIGHT EDIT LOCKING SYSTEM FOR ERP PAGES (MIS MODULE OPTION 5)
+   ========================================================================== */
+.smart-locked-page-banner {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: linear-gradient(135deg, #fff1f2 0%, #fef2f2 100%);
+    border: 1px solid #fecdd3;
+    border-left: 5px solid #e11d48;
+    color: #9f1239;
+    padding: 8px 16px;
+    margin: 8px 16px 12px 16px;
+    border-radius: 6px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(225, 29, 72, 0.08);
+    animation: mepSlideDown 0.25s ease-out;
+    z-index: 100;
+}
+
+@keyframes mepSlideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.smart-locked-page-banner .banner-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.smart-locked-page-banner .banner-text {
+    flex: 1;
+    line-height: 1.35;
+}
+
+.smart-locked-page-banner .banner-tag {
+    display: inline-block;
+    background: #e11d48;
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    text-transform: uppercase;
+}
+
+body.page-locked .smart-locked-page-banner {
+    display: flex !important;
+}
+
+/* Visual Indicators on Locked Pages */
+body.page-locked .excel-table tbody td input,
+body.page-locked .excel-cell-input,
+body.page-locked .cell-editable,
+body.page-locked .planning-table tbody input,
+body.page-locked .damage-table tbody input,
+body.page-locked .bom-table tbody input,
+body.page-locked table tbody td input:not([type="checkbox"]):not([type="radio"]),
+body.page-locked table tbody td textarea,
+body.page-locked table tbody td select {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    cursor: not-allowed !important;
+    border-color: #e2e8f0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    user-select: text !important;
+}
+
+body.page-locked [contenteditable="true"] {
+    cursor: not-allowed !important;
+    user-select: text !important;
+}
+
+/* Disable Action & Edit Buttons when Page is Locked */
+body.page-locked .btn-save,
+body.page-locked .btn-save-plan,
+body.page-locked .btn-add,
+body.page-locked .btn-add-item,
+body.page-locked .btn-paste,
+body.page-locked .btn-replace,
+body.page-locked .btn-reset,
+body.page-locked .btn-action-paste,
+body.page-locked .btn-action-replace,
+body.page-locked .btn-action-reset,
+body.page-locked .btn-action-import,
+body.page-locked .btn-del-row,
+body.page-locked .btn-table-del,
+body.page-locked .btn-row-del,
+body.page-locked .btn-action-delete,
+body.page-locked .btn-action-edit,
+body.page-locked .btn-action-primary,
+body.page-locked .btn-action-add,
+body.page-locked .btn-action-purple,
+body.page-locked .btn-table-action,
+body.page-locked .btn-delete,
+body.page-locked button[onclick*="openNewEntryModal"],
+body.page-locked button[onclick*="openPasteModal"],
+body.page-locked button[onclick*="openAddItemModal"],
+body.page-locked button[onclick*="openAddDamageModal"],
+body.page-locked button[onclick*="openAddMasterModal"],
+body.page-locked button[onclick*="openBulkPasteModal"],
+body.page-locked button[onclick*="save"],
+body.page-locked button[onclick*="Save"] {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    filter: grayscale(85%) !important;
+}
+
+/* Ensure Search, Filter, Export, Print and Navigation are ALWAYS functional */
+body.page-locked #searchInput,
+body.page-locked .search-box,
+body.page-locked .search-box input,
+body.page-locked #monthFilter,
+body.page-locked .filter-select,
+body.page-locked .period-select,
+body.page-locked .filter-date-input,
+body.page-locked #filterDate,
+body.page-locked .date-mode-pills,
+body.page-locked .pagination-bar,
+body.page-locked .btn-page,
+body.page-locked .btn-export,
+body.page-locked .btn-action-export,
+body.page-locked .btn-action-link,
+body.page-locked .header-logout-btn,
+body.page-locked .frozen-sidebar-wrapper,
+body.page-locked .portal-nav,
+body.page-locked .nav-brand-title {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    cursor: default !important;
+    filter: none !important;
+}
+
+body.page-locked .btn-export,
+body.page-locked .btn-action-export,
+body.page-locked .btn-page,
+body.page-locked .btn-action-link,
+body.page-locked .filter-select,
+body.page-locked .header-logout-btn {
+    cursor: pointer !important;
 }

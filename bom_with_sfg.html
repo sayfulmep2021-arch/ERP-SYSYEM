@@ -1099,8 +1099,25 @@
             applyFilters();
         }
 
+        function isBomWithSfgLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['bom_with_sfg.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         // 4. Modal Operations (Add / Edit)
         function openAddItemModal() {
+            if (isBomWithSfgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             document.getElementById('modalTitle').innerText = 'Add New BOM Item';
             document.getElementById('btnSubmitModal').innerText = 'Add Item';
             document.getElementById('editItemId').value = '';
@@ -1113,6 +1130,10 @@
         }
 
         function editItem(id) {
+            if (isBomWithSfgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit items.', 'warn');
+                return;
+            }
             const item = bomItems.find(i => i.id === id);
             if (!item) return;
 
@@ -1131,6 +1152,10 @@
 
         function handleFormSubmit(e) {
             e.preventDefault();
+            if (isBomWithSfgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save changes.', 'warn');
+                return;
+            }
             const editId = document.getElementById('editItemId').value;
             const model = document.getElementById('formModel').value;
             const category = document.getElementById('formCategory').value;
@@ -1174,6 +1199,10 @@
         }
 
         function deleteItem(id) {
+            if (isBomWithSfgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to delete items.', 'warn');
+                return;
+            }
             const item = bomItems.find(i => i.id === id);
             if (!item) return;
             if (confirm(`Are you sure you want to delete "${item.name}" (${item.code}) for model ${item.model}?`)) {
@@ -1185,6 +1214,10 @@
         }
 
         function resetToBaseline() {
+            if (isBomWithSfgLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to reset data.', 'warn');
+                return;
+            }
             if (confirm("Reset all BOM items back to the factory baseline (254 items)? All custom edits and added items will be reset.")) {
                 bomItems = JSON.parse(JSON.stringify(DEFAULT_BOM_WITH_SFG_ITEMS));
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(bomItems));

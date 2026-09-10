@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1420,8 +1420,25 @@
             applyFilters();
         }
 
+        function isMasterLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['master.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         // Add / Edit Modal Handlers
         function openAddMasterModal() {
+            if (isMasterLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add master items.', 'warn');
+                return;
+            }
             document.getElementById('modalTitle').innerText = '+ Add New Master Item';
             document.getElementById('editingOriginalCode').value = '';
             document.getElementById('masterForm').reset();
@@ -1430,6 +1447,10 @@
         }
 
         function openEditMasterModal(code) {
+            if (isMasterLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit master items.', 'warn');
+                return;
+            }
             const item = getMasterItem(code);
             if (!item) return;
 
@@ -1450,6 +1471,10 @@
 
         function handleSaveMaster(event) {
             event.preventDefault();
+            if (isMasterLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save changes.', 'warn');
+                return;
+            }
             const originalCode = document.getElementById('editingOriginalCode').value.trim();
             const code = document.getElementById('inputMasterCode').value.trim();
             const name = document.getElementById('inputMasterName').value.trim();
@@ -1473,6 +1498,10 @@
         }
 
         function handleDeleteMaster(code) {
+            if (isMasterLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to delete master items.', 'warn');
+                return;
+            }
             if (!confirm(`Are you sure you want to delete Master item [${code}]?`)) return;
 
             deleteMasterItem(code);
@@ -1483,6 +1512,10 @@
 
         // Bulk Import
         function openBulkPasteModal() {
+            if (isMasterLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to import items.', 'warn');
+                return;
+            }
             document.getElementById('bulkModal').classList.add('active');
             document.getElementById('bulkMasterInput').value = '';
             document.getElementById('bulkMasterInput').focus();
@@ -1493,6 +1526,10 @@
         }
 
         function processBulkMaster() {
+            if (isMasterLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to import items.', 'warn');
+                return;
+            }
             const rawText = document.getElementById('bulkMasterInput').value.trim();
             if (!rawText) {
                 alert("Please paste your spreadsheet data first.");

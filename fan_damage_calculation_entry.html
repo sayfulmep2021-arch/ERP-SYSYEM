@@ -1384,16 +1384,37 @@
             if (footInfo) footInfo.innerText = `${filteredCount} Entries Listed`;
         }
 
+        function isDamagePageLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['fan_damage_calculation_entry.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function updateDamageQty(index, newQty) {
+            if (isDamagePageLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit quantities.', 'warn');
+                return;
+            }
             const clean = newQty.trim();
             if (damageRecords[index]) {
                 damageRecords[index].qty = clean;
                 renderTable();
-                showToast(`âœ“ Updated quantity for ${damageRecords[index].fgName} to ${clean}`);
+                showToast(`✓ Updated quantity for ${damageRecords[index].fgName} to ${clean}`);
             }
         }
 
         function deleteDamageRecord(index) {
+            if (isDamagePageLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to delete entries.', 'warn');
+                return;
+            }
             const item = damageRecords[index];
             if (!item) return;
 
@@ -1401,7 +1422,7 @@
                 damageRecords.splice(index, 1);
                 renderTable();
                 saveDamageData();
-                showToast(`âœ“ Deleted damage entry!`);
+                showToast(`✓ Deleted damage entry!`);
             }
         }
 
@@ -1426,6 +1447,10 @@
         // ADD NEW DAMAGE ENTRY MODAL
         // ==========================================
         function openAddDamageModal() {
+            if (isDamagePageLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add damage logs.', 'warn');
+                return;
+            }
             document.getElementById('addDamageModal').classList.add('active');
             
             // Set date to today
@@ -1486,6 +1511,10 @@
         }
 
         function submitNewDamageEntry() {
+            if (isDamagePageLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to submit damage entries.', 'warn');
+                return;
+            }
             const fgCode = document.getElementById('newDamageFGCode').value.trim();
             const fgName = document.getElementById('newDamageFGName').value.trim();
             const dateRaw = document.getElementById('newDamageDate').value;
@@ -1543,11 +1572,19 @@
         }
 
         function saveDamageData() {
+            if (isDamagePageLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save changes.', 'warn');
+                return;
+            }
             localStorage.setItem("mep_fan_damage_custom", JSON.stringify(damageRecords));
             showToast("✓ Fan Damage entries saved successfully!");
         }
 
         function resetToDefaultData() {
+            if (isDamagePageLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to reset logs.', 'warn');
+                return;
+            }
             if (confirm("Are you sure you want to reset Fan Damage Calculation Entry back to default logs? All custom additions will be lost.")) {
                 localStorage.removeItem("mep_fan_damage_custom");
                 damageRecords = JSON.parse(JSON.stringify(DEFAULT_FAN_DAMAGE_DATA));
@@ -1559,6 +1596,10 @@
         }
 
         function openPasteModal() {
+            if (isDamagePageLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste records.', 'warn');
+                return;
+            }
             document.getElementById('pasteModal').classList.add('active');
             document.getElementById('pasteInput').value = '';
             document.getElementById('pasteInput').focus();
@@ -1569,6 +1610,10 @@
         }
 
         function processBulkPaste() {
+            if (isDamagePageLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste records.', 'warn');
+                return;
+            }
             const text = document.getElementById('pasteInput').value.trim();
             if (!text) {
                 alert("Please paste text first!");

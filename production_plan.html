@@ -1133,7 +1133,26 @@
             }
         }
 
+        function isPlanLocked() {
+            if (window.mepPageLock && typeof window.mepPageLock.isLocked === 'function') {
+                return window.mepPageLock.isLocked();
+            }
+            try {
+                const raw = localStorage.getItem('portal_page_lock_states');
+                const states = raw ? JSON.parse(raw) : {};
+                return states['production_plan.html'] !== false;
+            } catch(e) {
+                return true;
+            }
+        }
+
         function saveCurrentPlan(showFeedback = false) {
+            if (isPlanLocked()) {
+                if (showFeedback && window.mepPageLock) {
+                    window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to save.', 'warn');
+                }
+                return;
+            }
             if (!currentPlanData) return;
             const key = getSelectedPeriodKey();
             const allPlans = getAllStoredPlans();
@@ -1158,7 +1177,7 @@
             const tbody = document.getElementById('tableBody');
             const tfoot = document.getElementById('tableFoot');
 
-            const isAdmin = isUserAdmin();
+            const isAdmin = isUserAdmin() && !isPlanLocked();
 
             // 1. Build Header Row
             let headHTML = `
@@ -1294,6 +1313,10 @@
         }
 
         function onCellInput(inputElem, catIdx, itemIdx, monthIdx) {
+            if (isPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to edit.', 'warn');
+                return;
+            }
             const rawVal = inputElem.value.trim();
             const val = parseFloat(rawVal) || 0;
             currentPlanData.categories[catIdx].items[itemIdx].months[monthIdx] = val;
@@ -1336,6 +1359,7 @@
         }
 
         function updateItemMeta(catIdx, itemIdx, field, val) {
+            if (isPlanLocked()) return;
             if (currentPlanData && currentPlanData.categories[catIdx]?.items[itemIdx]) {
                 currentPlanData.categories[catIdx].items[itemIdx][field] = val;
                 saveCurrentPlan(false);
@@ -1376,6 +1400,10 @@
 
         // Add Item Modal
         function openAddItemModal() {
+            if (isPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             document.getElementById('addItemModal').classList.add('active');
             document.getElementById('newItemCode').value = '';
             document.getElementById('newItemName').value = '';
@@ -1387,6 +1415,10 @@
         }
 
         function saveNewItem() {
+            if (isPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to add items.', 'warn');
+                return;
+            }
             const catName = document.getElementById('newItemCategory').value;
             const code = document.getElementById('newItemCode').value.trim();
             const name = document.getElementById('newItemName').value.trim();
@@ -1428,6 +1460,10 @@
         }
 
         function deleteItemRow(catIdx, itemIdx) {
+            if (isPlanLocked()) {
+                if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to delete rows.', 'warn');
+                return;
+            }
             if (confirm("Are you sure you want to remove this item from the production plan?")) {
                 currentPlanData.categories[catIdx].items.splice(itemIdx, 1);
                 saveCurrentPlan(true);
