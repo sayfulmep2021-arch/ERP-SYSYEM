@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <link rel="stylesheet" href="report_sidebar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BOM With SFG | MEP FAN LTD.</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --border-soft: #cbd5e1;
+            --border-cell: #e2e8f0;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-size: 15px;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            padding: 6px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-brand-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            text-transform: uppercase;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-live-clock {
+            padding: 4px 10px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #15803d;
+        }
+
+        /* Workspace Main Layout */
+        .page-content {
+            padding: 12px 18px 24px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Top Header Card */
+        .page-header-card {
+            background: linear-gradient(135deg, #0f2942 0%, #1e3a5f 100%);
+            border-radius: 12px;
+            padding: 10px 18px;
+            color: #ffffff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 16px rgba(15, 41, 66, 0.12);
+        }
+
+        .page-header-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: -0.3px;
+        }
+
+        .page-header-subtitle {
+            font-size: 0.75rem;
+            color: #93c5fd;
+            margin-top: 2px;
+        }
+
+        /* Executive ERP Action Buttons */
+        .header-actions {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        .header-actions button,
+        .btn-action-icon {
+            position: relative !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            min-height: 36px !important;
+            border-radius: 9px !important;
+            padding: 0 !important;
+            font-size: 0 !important;
+            color: transparent !important;
+            cursor: pointer !important;
+            border: 1.5px solid transparent !important;
+            outline: none !important;
+            user-select: none !important;
+            box-sizing: border-box !important;
+            transform: none !important;
+            transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+        }
+
+        .header-actions button:hover,
+        .header-actions button:active,
+        .header-actions button:focus,
+        .btn-action-icon:hover,
+        .btn-action-icon:active,
+        .btn-action-icon:focus {
+            transform: none !important;
+        }
+
+        .header-actions button svg,
+        .btn-action-icon svg {
+            width: 17px !important;
+            height: 17px !important;
+            pointer-events: none !important;
+            flex-shrink: 0 !important;
+            transform: none !important;
+        }
+
+        .header-actions button span,
+        .btn-action-icon span {
+            display: none !important;
+        }
+
+        /* Color Schemes */
+        .header-actions .btn-action-link,
+        .btn-action-link {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+            color: #ffffff !important;
+            border-color: #0284c7 !important;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3) !important;
+        }
+        .header-actions .btn-action-link:hover,
+        .btn-action-link:hover {
+            background: #0369a1 !important;
+            border-color: #075985 !important;
+            color: #ffffff !important;
+        }
+
+        .header-actions .btn-action-csv,
+        .btn-action-csv {
+            background: #f0fdf4 !important;
+            border-color: #bbf7d0 !important;
+            color: #15803d !important;
+            box-shadow: 0 1px 3px rgba(21, 128, 61, 0.08) !important;
+        }
+        .header-actions .btn-action-csv:hover,
+        .btn-action-csv:hover {
+            background: #15803d !important;
+            border-color: #166534 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(21, 128, 61, 0.25) !important;
+        }
+
+        .header-actions .btn-action-reset,
+        .btn-action-reset {
+            background: #fff1f2 !important;
+            border-color: #fecdd3 !important;
+            color: #e11d48 !important;
+            box-shadow: 0 1px 3px rgba(225, 29, 72, 0.08) !important;
+        }
+        .header-actions .btn-action-reset:hover,
+        .btn-action-reset:hover {
+            background: #e11d48 !important;
+            border-color: #be123c !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25) !important;
+        }
+
+        .header-actions .btn-action-add,
+        .btn-action-add {
+            background: #ede9fe !important;
+            border-color: #ddd6fe !important;
+            color: #7c3aed !important;
+            box-shadow: 0 1px 3px rgba(124, 58, 237, 0.12) !important;
+        }
+        .header-actions .btn-action-add:hover,
+        .btn-action-add:hover {
+            background: #7c3aed !important;
+            border-color: #6d28d9 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.25) !important;
+        }
+
+        /* KPI Cards Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(15, 41, 66, 0.04);
+        }
+
+        .kpi-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .kpi-label {
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .kpi-value {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #0f2942;
+            line-height: 1.1;
+        }
+
+        .kpi-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        /* Filter Toolbar Card */
+        .filter-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 8px 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(15, 41, 66, 0.04);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-label {
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+        }
+
+        .filter-select {
+            padding: 5px 10px;
+            font-size: 0.80rem;
+            font-weight: 700;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            background: #f8fafc;
+            color: #0f2942;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .filter-select:focus {
+            border-color: #0284c7;
+            background: #ffffff;
+        }
+
+        .search-input-wrap {
+            flex: 1;
+            min-width: 220px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 5px 10px 5px 30px;
+            font-size: 0.80rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            background: #ffffff;
+            color: #0f2942;
+            box-sizing: border-box;
+        }
+
+        .search-input:focus {
+            border-color: #0284c7;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 9px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .btn-reset {
+            padding: 5px 12px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+        }
+
+        .btn-reset:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* Table Card Container */
+        .table-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(15, 41, 66, 0.06);
+            overflow: hidden;
+        }
+
+        .table-header-strip {
+            padding: 6px 14px;
+            background: #f8fafc;
+            border-bottom: 1.2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto !important;
+            overflow-y: auto;
+            max-height: calc(100vh - 310px);
+            min-height: 280px;
+            position: relative;
+        }
+
+        /* 10px Prominent Horizontal Scrollbar */
+        .table-responsive::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #0284c7;
+            border-radius: 5px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #0369a1;
+        }
+
+        .data-table {
+            width: max-content;
+            min-width: 100%;
+            border-collapse: separate !important;
+            border-spacing: 0;
+            font-size: 13.5px;
+            table-layout: auto;
+            background: #ffffff;
+        }
+
+        .data-table th {
+            position: sticky;
+            top: 0;
+            background: #0f2942;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 13px;
+            padding: 7px 8px;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 2px solid #0284c7;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            z-index: 30;
+        }
+
+        .data-table td {
+            padding: 5px 8px;
+            border-bottom: 1px solid var(--border-cell);
+            border-right: 1px solid var(--border-cell);
+            color: #1e293b;
+            vertical-align: middle;
+            background: #ffffff;
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr:hover td {
+            background: #f0fdf4 !important;
+        }
+
+        /* ========================================================= */
+        /* FREEZE PANES UP TO UNIT COLUMN                            */
+        /* SL (1) -> Category (2) -> Code (3) -> Name (4) -> Unit (5) */
+        /* ========================================================= */
+        .sticky-col-1 {
+            position: sticky !important;
+            left: 0px !important;
+            width: 45px !important;
+            min-width: 45px !important;
+            max-width: 45px !important;
+            z-index: 15 !important;
+            background: #ffffff !important;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-2 {
+            position: sticky !important;
+            left: 45px !important;
+            width: 120px !important;
+            min-width: 120px !important;
+            max-width: 120px !important;
+            z-index: 15 !important;
+            background: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-3 {
+            position: sticky !important;
+            left: 165px !important;
+            width: 110px !important;
+            min-width: 110px !important;
+            max-width: 110px !important;
+            z-index: 15 !important;
+            background: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-4 {
+            position: sticky !important;
+            left: 275px !important;
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            z-index: 15 !important;
+            background: #ffffff !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-sizing: border-box;
+        }
+
+        /* Column 5: Unit - The Boundary Wall */
+        .sticky-col-5 {
+            position: sticky !important;
+            left: 535px !important;
+            width: 60px !important;
+            min-width: 60px !important;
+            max-width: 60px !important;
+            z-index: 15 !important;
+            background: #ffffff !important;
+            text-align: center;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            box-sizing: border-box;
+        }
+
+        .data-table thead th.sticky-col-1,
+        .data-table thead th.sticky-col-2,
+        .data-table thead th.sticky-col-3,
+        .data-table thead th.sticky-col-4 {
+            background: #0a1e33 !important;
+            z-index: 35 !important;
+        }
+
+        .data-table thead th.sticky-col-5 {
+            background: #0a1e33 !important;
+            z-index: 36 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        /* Badges & Tags */
+        .code-tag {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #0284c7;
+            background: #f0f9ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #bae6fd;
+            display: inline-block;
+        }
+
+        .cat-tag {
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .cat-ceiling { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .cat-packing { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .cat-sfg { background: #ede9fe; color: #6d28d9; border: 1px solid #ddd6fe; }
+        .cat-exhaust { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
+
+        .unit-tag {
+            background: #f1f5f9;
+            color: #0f2942;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.76rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        .model-pill {
+            background: #0f2942;
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            display: inline-block;
+        }
+
+        /* Action Buttons */
+        .btn-table-edit {
+            padding: 3px 8px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            border-radius: 4px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-table-edit:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .btn-table-del {
+            padding: 3px 8px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 4px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 4px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-table-del:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        /* Modal Dialog */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 41, 66, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: 12px;
+            width: 520px;
+            max-width: 95%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1.5px solid #cbd5e1;
+            overflow: hidden;
+            animation: modalPop 0.2s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #0f2942 0%, #1e3a5f 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .modal-header h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.2px;
+        }
+
+        .modal-body {
+            padding: 16px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group-full {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: #0284c7;
+        }
+
+        .modal-footer {
+            padding: 10px 18px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Portal Top Navbar -->
+    <nav class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="btn-action-light" style="padding:4px 10px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Hub Dashboard
+                </a>
+                <div>
+                    <div class="nav-brand-title">INDIVIDUAL CHECK</div>
+                    <div class="nav-brand-sub">BOM WITH SFG SPECIFICATION MATRIX</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Populated dynamically by report_sidebar.js -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="page-content">
+
+        <!-- Top Header Card -->
+        <div class="page-header-card">
+            <div>
+                <div class="page-header-title" style="display:flex; align-items:center; gap:8px;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#38bdf8" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    BOM With SFG (Component &amp; Material Master)
+                </div>
+                <div class="page-header-subtitle">Model-specific Component Breakdown, Raw Material Ratios &amp; SFG Bill of Materials</div>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="btn-action-icon btn-action-csv" onclick="exportToCSV()" data-tooltip="Export CSV">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export Excel/CSV</span>
+                </button>
+                <button type="button" class="btn-action-icon btn-action-reset" onclick="resetToBaseline()" data-tooltip="Reset Baseline">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    <span>Reset Baseline</span>
+                </button>
+                <button type="button" class="btn-action-icon btn-action-add" onclick="openAddItemModal()" data-tooltip="Add Item">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>Add New BOM Item</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <div class="kpi-label">Active SFG Models</div>
+                    <div class="kpi-value" id="kpiModelsCount" style="color:#0284c7;">7 Models</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#e0f2fe; color:#0369a1;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <div class="kpi-label">Total BOM Items</div>
+                    <div class="kpi-value" id="kpiTotalItems" style="color:#0f2942;">254 Items</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#f0fdf4; color:#16a34a;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <div class="kpi-label">Filtered View Items</div>
+                    <div class="kpi-value" id="kpiFilteredCount" style="color:#7c3aed;">254 Shown</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#f5f3ff; color:#7c3aed;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <div class="kpi-label">Component Categories</div>
+                    <div class="kpi-value" id="kpiCategoriesCount" style="color:#ea580c;">4 Types</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#fff7ed; color:#ea580c;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-card">
+            <div class="filter-group">
+                <span class="filter-label">Model (SFG):</span>
+                <select class="filter-select" id="filterModel" onchange="applyFilters()">
+                    <option value="ALL">All Models (7 Models)</option>
+                    <option value="SFG1010079">SFG1010079 - 5601 Premium</option>
+                    <option value="SFG1010080">SFG1010080 - 5602 Speed King</option>
+                    <option value="SFG1010097">SFG1010097 - 5603 Premium Gold</option>
+                    <option value="SFG1010135">SFG1010135 - 5607 Crown</option>
+                    <option value="SFG1010078">SFG1010078 - 4801 Popular</option>
+                    <option value="SFG1010077">SFG1010077 - 3601 Hero</option>
+                    <option value="SFG1010076">SFG1010076 - 2401 Super</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">Category:</span>
+                <select class="filter-select" id="filterCategory" onchange="applyFilters()">
+                    <option value="ALL">All Categories</option>
+                    <option value="Ceiling Raw">Ceiling Raw</option>
+                    <option value="Packing Materials">Packing Materials</option>
+                    <option value="FAN SFG">FAN SFG</option>
+                    <option value="Exhaust Raw">Exhaust Raw</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">Unit:</span>
+                <select class="filter-select" id="filterUnit" onchange="applyFilters()">
+                    <option value="ALL">All Units</option>
+                    <option value="Pcs">Pcs</option>
+                    <option value="KG">KG</option>
+                    <option value="Mtr">Mtr</option>
+                    <option value="Ltr">Ltr</option>
+                    <option value="Set">Set</option>
+                </select>
+            </div>
+
+            <div class="search-input-wrap">
+                <svg class="search-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" id="filterSearch" placeholder="Search Item Code, Name, Category, or Model..." oninput="applyFilters()">
+            </div>
+
+            <button type="button" class="btn-reset" onclick="resetFilters()">Reset Filters</button>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-card">
+            <div class="table-header-strip">
+                <div>
+                    <span>Showing </span>
+                    <strong id="badgeFilteredRows">254</strong>
+                    <span> of </span>
+                    <strong id="badgeTotalRows">254</strong>
+                    <span> BOM specifications</span>
+                </div>
+                <div style="font-size:0.75rem; color:#64748b;">
+                    Freeze Pane Active: <strong style="color:#0284c7;">Columns 1 to 5 (Up to Unit)</strong> | Slide bottom scrollbar for Quantity &amp; Model
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table" id="bomTable">
+                    <thead>
+                        <tr>
+                            <th class="sticky-col-1">SL</th>
+                            <th class="sticky-col-2">Category</th>
+                            <th class="sticky-col-3">Item Code</th>
+                            <th class="sticky-col-4">Item Description</th>
+                            <th class="sticky-col-5">Unit</th>
+                            <th style="width: 110px; text-align:right;">Quantity</th>
+                            <th style="width: 130px; text-align:center;">Model / SFG</th>
+                            <th style="width: 120px; text-align:center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bomTableBody">
+                        <!-- Rendered via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal: Add or Edit Item -->
+    <div class="modal-overlay" id="itemModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New BOM Item</h3>
+            </div>
+            <form id="itemForm" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="editItemId" value="">
+                <div class="modal-body">
+                    <div>
+                        <label class="form-label">Model (SFG Code) *</label>
+                        <select class="form-select" id="formModel" required>
+                            <option value="SFG1010079">SFG1010079 (5601 Premium)</option>
+                            <option value="SFG1010080">SFG1010080 (5602 Speed King)</option>
+                            <option value="SFG1010097">SFG1010097 (5603 Premium Gold)</option>
+                            <option value="SFG1010135">SFG1010135 (5607 Crown)</option>
+                            <option value="SFG1010078">SFG1010078 (4801 Popular)</option>
+                            <option value="SFG1010077">SFG1010077 (3601 Hero)</option>
+                            <option value="SFG1010076">SFG1010076 (2401 Super)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Category *</label>
+                        <select class="form-select" id="formCategory" required>
+                            <option value="Ceiling Raw">Ceiling Raw</option>
+                            <option value="Packing Materials">Packing Materials</option>
+                            <option value="FAN SFG">FAN SFG</option>
+                            <option value="Exhaust Raw">Exhaust Raw</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Item Code *</label>
+                        <input type="text" class="form-input" id="formCode" placeholder="e.g. 3101010135" oninput="lookupMasterCode(this.value)" required>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Unit *</label>
+                        <select class="form-select" id="formUnit" required>
+                            <option value="Pcs">Pcs</option>
+                            <option value="KG">KG</option>
+                            <option value="Mtr">Mtr</option>
+                            <option value="Ltr">Ltr</option>
+                            <option value="Set">Set</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label class="form-label">Item Description *</label>
+                        <input type="text" class="form-input" id="formName" placeholder="Full name of raw material or SFG component" required>
+                    </div>
+
+                    <div class="form-group-full">
+                        <label class="form-label">BOM Quantity / Consumption *</label>
+                        <input type="number" step="0.00001" class="form-input" id="formQty" placeholder="e.g. 1 or 0.036" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-action-light" onclick="closeItemModal()">Cancel</button>
+                    <button type="submit" class="btn-action-primary" id="btnSubmitModal">Save Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="master_database.js"></script>
+    <script src="bom_with_sfg_data.js"></script>
+    <script src="report_sidebar.js"></script>
+
+    <script>
+        const STORAGE_KEY = 'mep_bom_with_sfg_data';
+        let bomItems = [];
+
+        // Master Central DB Lookup
+        function lookupMasterCode(val) {
+            if (!val) return;
+            const clean = val.trim();
+            if (typeof getMasterItem === 'function') {
+                const item = getMasterItem(clean);
+                if (item) {
+                    if (item.name) document.getElementById('formName').value = item.name;
+                    if (item.unit) {
+                        const unitSel = document.getElementById('formUnit');
+                        let found = false;
+                        for (let opt of unitSel.options) {
+                            if (opt.value.toLowerCase() === item.unit.toLowerCase()) {
+                                unitSel.value = opt.value;
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            const newOpt = new Option(item.unit, item.unit);
+                            unitSel.add(newOpt);
+                            unitSel.value = item.unit;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 1. Initialize Data
+        function initData() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    bomItems = JSON.parse(saved);
+                } else if (typeof DEFAULT_BOM_WITH_SFG_ITEMS !== 'undefined') {
+                    bomItems = JSON.parse(JSON.stringify(DEFAULT_BOM_WITH_SFG_ITEMS));
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(bomItems));
+                }
+            } catch (e) {
+                console.error("Error reading localStorage", e);
+                bomItems = (typeof DEFAULT_BOM_WITH_SFG_ITEMS !== 'undefined') ? DEFAULT_BOM_WITH_SFG_ITEMS : [];
+            }
+            updateKpiStats();
+            applyFilters();
+        }
+
+        // 2. Update KPI Stats
+        function updateKpiStats() {
+            const models = new Set(bomItems.map(i => i.model));
+            const categories = new Set(bomItems.map(i => i.category));
+
+            document.getElementById('kpiModelsCount').innerText = `${models.size} Models`;
+            document.getElementById('kpiTotalItems').innerText = `${bomItems.length} Items`;
+            document.getElementById('kpiCategoriesCount').innerText = `${categories.size} Types`;
+            document.getElementById('badgeTotalRows').innerText = bomItems.length;
+        }
+
+        // 3. Render Table with Filters
+        function applyFilters() {
+            const modelFilter = document.getElementById('filterModel').value;
+            const catFilter = document.getElementById('filterCategory').value;
+            const unitFilter = document.getElementById('filterUnit').value;
+            const searchTxt = (document.getElementById('filterSearch').value || '').toLowerCase().trim();
+
+            let filtered = bomItems.filter(item => {
+                if (modelFilter !== 'ALL' && item.model !== modelFilter) return false;
+                if (catFilter !== 'ALL' && item.category !== catFilter) return false;
+                if (unitFilter !== 'ALL' && item.unit !== unitFilter) return false;
+                if (searchTxt) {
+                    const match = (item.code + ' ' + item.name + ' ' + item.category + ' ' + item.model).toLowerCase();
+                    if (!match.includes(searchTxt)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById('kpiFilteredCount').innerText = `${filtered.length} Shown`;
+            document.getElementById('badgeFilteredRows').innerText = filtered.length;
+
+            const tbody = document.getElementById('bomTableBody');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align:center; padding: 30px; color:#64748b; font-weight:700;">
+                            No BOM items match the selected filter criteria.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach((item, idx) => {
+                let catClass = 'cat-ceiling';
+                if (item.category === 'Packing Materials') catClass = 'cat-packing';
+                else if (item.category === 'FAN SFG') catClass = 'cat-sfg';
+                else if (item.category === 'Exhaust Raw') catClass = 'cat-exhaust';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="sticky-col-1" style="font-weight:700; color:#64748b;">${idx + 1}</td>
+                    <td class="sticky-col-2"><span class="cat-tag ${catClass}">${item.category}</span></td>
+                    <td class="sticky-col-3"><span class="code-tag">${item.code}</span></td>
+                    <td class="sticky-col-4" style="font-weight:600;" title="${item.name}">${item.name}</td>
+                    <td class="sticky-col-5"><span class="unit-tag">${item.unit}</span></td>
+                    <td style="text-align:right; font-weight:800; font-family:'Times New Roman', Times, serif; color:#0f2942;">
+                        ${Number(item.quantity).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 5 })}
+                    </td>
+                    <td style="text-align:center;">
+                        <span class="model-pill">${item.model}</span>
+                    </td>
+                    <td style="text-align:center;">
+                        <button type="button" class="btn-table-edit" onclick="editItem(${item.id})">Edit</button>
+                        <button type="button" class="btn-table-del" onclick="deleteItem(${item.id})">Del</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function resetFilters() {
+            document.getElementById('filterModel').value = 'ALL';
+            document.getElementById('filterCategory').value = 'ALL';
+            document.getElementById('filterUnit').value = 'ALL';
+            document.getElementById('filterSearch').value = '';
+            applyFilters();
+        }
+
+        // 4. Modal Operations (Add / Edit)
+        function openAddItemModal() {
+            document.getElementById('modalTitle').innerText = 'Add New BOM Item';
+            document.getElementById('btnSubmitModal').innerText = 'Add Item';
+            document.getElementById('editItemId').value = '';
+            document.getElementById('itemForm').reset();
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function closeItemModal() {
+            document.getElementById('itemModal').style.display = 'none';
+        }
+
+        function editItem(id) {
+            const item = bomItems.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('modalTitle').innerText = `Edit BOM Item: ${item.code}`;
+            document.getElementById('btnSubmitModal').innerText = 'Save Changes';
+            document.getElementById('editItemId').value = item.id;
+            document.getElementById('formModel').value = item.model;
+            document.getElementById('formCategory').value = item.category;
+            document.getElementById('formCode').value = item.code;
+            document.getElementById('formName').value = item.name;
+            document.getElementById('formUnit').value = item.unit;
+            document.getElementById('formQty').value = item.quantity;
+
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editItemId').value;
+            const model = document.getElementById('formModel').value;
+            const category = document.getElementById('formCategory').value;
+            const code = document.getElementById('formCode').value.trim();
+            const name = document.getElementById('formName').value.trim();
+            const unit = document.getElementById('formUnit').value;
+            const qty = parseFloat(document.getElementById('formQty').value) || 0;
+
+            if (editId) {
+                // Update existing item
+                const id = parseInt(editId);
+                const idx = bomItems.findIndex(i => i.id === id);
+                if (idx !== -1) {
+                    bomItems[idx].model = model;
+                    bomItems[idx].category = category;
+                    bomItems[idx].code = code;
+                    bomItems[idx].name = name;
+                    bomItems[idx].unit = unit;
+                    bomItems[idx].quantity = qty;
+                }
+            } else {
+                // Add new item
+                const maxId = bomItems.reduce((max, i) => Math.max(max, i.id || 0), 0);
+                const newItem = {
+                    id: maxId + 1,
+                    sl: bomItems.length + 1,
+                    category: category,
+                    code: code,
+                    name: name,
+                    unit: unit,
+                    quantity: qty,
+                    model: model
+                };
+                bomItems.push(newItem);
+            }
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(bomItems));
+            closeItemModal();
+            updateKpiStats();
+            applyFilters();
+        }
+
+        function deleteItem(id) {
+            const item = bomItems.find(i => i.id === id);
+            if (!item) return;
+            if (confirm(`Are you sure you want to delete "${item.name}" (${item.code}) for model ${item.model}?`)) {
+                bomItems = bomItems.filter(i => i.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(bomItems));
+                updateKpiStats();
+                applyFilters();
+            }
+        }
+
+        function resetToBaseline() {
+            if (confirm("Reset all BOM items back to the factory baseline (254 items)? All custom edits and added items will be reset.")) {
+                bomItems = JSON.parse(JSON.stringify(DEFAULT_BOM_WITH_SFG_ITEMS));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(bomItems));
+                updateKpiStats();
+                applyFilters();
+            }
+        }
+
+        // 5. CSV Export
+        function exportToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "SL,Category,Item Code,Item Description,Unit,Quantity,Model\n";
+
+            bomItems.forEach((item, idx) => {
+                const row = [
+                    idx + 1,
+                    `"${item.category}"`,
+                    `"${item.code}"`,
+                    `"${item.name.replace(/"/g, '""')}"`,
+                    `"${item.unit}"`,
+                    item.quantity,
+                    `"${item.model}"`
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `BOM_With_SFG_${new Date().toISOString().slice(0, 10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Modal Dismissal Helpers (Outside Click & ESC Key)
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalEl = document.getElementById('itemModal');
+            if (modalEl) {
+                modalEl.addEventListener('click', (e) => {
+                    if (e.target === modalEl) closeItemModal();
+                });
+            }
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modalEl && modalEl.style.display === 'flex') {
+                    closeItemModal();
+                }
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+            initData();
+
+            // Direct URL query support for testing and deep linking
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const editCode = urlParams.get('edit');
+                if (editCode) {
+                    const target = bomItems.find(i => String(i.code).trim() === String(editCode).trim());
+                    if (target) editItem(target.id);
+                } else if (urlParams.get('openModal') === 'true') {
+                    openAddItemModal();
+                }
+            } catch(e) {}
+        });
+    </script>
+</body>
+</html>

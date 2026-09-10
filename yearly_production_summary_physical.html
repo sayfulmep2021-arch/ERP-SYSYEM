@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yearly Production Summary (Physical) - Executive Production Analytics | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --border-soft: #cbd5e1;
+            --border-light: #e2e8f0;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --text-muted: #64748b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* Excel Matrix Colors */
+            --th-peach-bg: #ffedd5;
+            --th-peach-border: #fed7aa;
+            --th-total-bg: #10b981;
+            --th-total-dark: #059669;
+            --cat-yellow: #fef08a;
+            --cat-yellow-border: #facc15;
+            --cat-yellow-text: #713f12;
+            --row-alt: #fcfdfe;
+
+            /* Frozen Column Exact Pixel Coordinates */
+            --w-sl: 50px;
+            --w-code: 140px;
+            --w-name: 300px;
+            --w-unit: 60px;
+            --w-total: 100px;
+            --w-month: 100px;
+            
+            --left-sl: 0px;
+            --left-code: 50px;
+            --left-name: 190px;
+            --left-unit: 490px;
+            --left-total: 550px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-back-portal:hover {
+            background: #f0f7ff;
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: translateX(-2px);
+        }
+
+        .nav-brand-title {
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .auto-live-tag {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .auto-live-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Top Right Live Clock */
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0 4px 0 0;
+            box-shadow: none;
+            user-select: none;
+            height: auto;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.22;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .live-day-text {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: -0.1px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono, monospace);
+            font-size: 1.18rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.6px;
+        }
+
+        /* Workspace Main */
+        .workspace-main {
+            padding: 16px 20px 32px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* ==========================================================================
+           1. Professional Executive Report Header Section
+           ========================================================================== */
+        .report-header-section {
+            background: #ffffff;
+            border: 1.5px solid var(--border-light);
+            border-radius: 12px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 3px 12px rgba(15, 41, 66, 0.03);
+        }
+
+        .report-header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .report-header-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .report-header-title-row h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .report-header-sub {
+            font-size: 0.80rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .report-header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .audit-scope-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding: 4px 12px;
+            background: #f0f9ff;
+            border: 1.5px solid #bae6fd;
+            border-radius: 8px;
+        }
+
+        .audit-scope-label {
+            font-size: 0.64rem;
+            font-weight: 800;
+            color: #0369a1;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .audit-scope-years {
+            font-family: var(--font-mono);
+            font-size: 0.96rem;
+            font-weight: 900;
+            color: #0c4a6e;
+        }
+
+        .report-action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-corp {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.80rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .btn-corp-primary {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-corp-primary:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-corp-outline {
+            background: #ffffff;
+            color: #334155;
+            border: 1.5px solid #cbd5e1;
+        }
+
+        .btn-corp-outline:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        /* ==========================================================================
+           2. Separate Professional "FILTER REPORT" Card
+           ========================================================================== */
+        .filter-report-card {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 16px rgba(15, 41, 66, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .filter-report-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1.5px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .filter-report-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: #0f2942;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .filter-report-subtitle {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .filter-report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .filter-field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+        }
+
+        .filter-field-label {
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-select-trigger {
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            user-select: none;
+        }
+
+        .filter-select-trigger:hover {
+            border-color: #0284c7;
+            background: #f0f9ff;
+        }
+
+        .filter-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            width: 100%;
+            min-width: 250px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(15, 41, 66, 0.15);
+            padding: 10px;
+            z-index: 60;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .filter-dropdown-menu.show {
+            display: flex;
+        }
+
+        .filter-search-box {
+            padding: 6px 10px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-family: inherit;
+            outline: none;
+            width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .filter-search-box:focus {
+            border-color: #0284c7;
+        }
+
+        .filter-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+            max-height: 180px;
+        }
+
+        .filter-option-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            user-select: none;
+        }
+
+        .filter-option-item:hover {
+            background: #f1f5f9;
+        }
+
+        .filter-option-item input[type="checkbox"] {
+            accent-color: #0284c7;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .filter-quick-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 4px;
+        }
+
+        .btn-link-action {
+            background: transparent;
+            border: none;
+            color: #0284c7;
+            font-size: 0.70rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .btn-link-action:hover {
+            color: #0369a1;
+        }
+
+        /* Filter Report Footer with Actions & Active Pills */
+        .filter-report-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1.5px solid #f1f5f9;
+        }
+
+        .active-pills-wrap {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            border: 1px solid #bae6fd;
+        }
+
+        .filter-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-corp-sm {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .btn-corp-accent {
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-corp-accent:hover {
+            background: #0369a1;
+        }
+
+        .btn-corp-subtle {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-corp-subtle:hover {
+            background: #e2e8f0;
+        }
+
+        /* KPI Counters Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 6px rgba(15, 41, 66, 0.02);
+        }
+
+        .kpi-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .kpi-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kpi-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #0f2942;
+            line-height: 1.15;
+        }
+
+        /* ==========================================================================
+           3. Modern Professional Data Table & Airtight Solid Frozen Column Architecture
+           ========================================================================== */
+        .table-card-container {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(15, 41, 66, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-responsive-box {
+            width: 100%;
+            max-height: calc(100vh - 280px);
+            min-height: 480px;
+            overflow-x: auto;
+            overflow-y: auto;
+            position: relative;
+            background: #ffffff;
+        }
+
+        /* Fixed Table Layout for Mathematical Coordinate Locking */
+        .production-matrix-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            table-layout: fixed;
+            width: max-content;
+            font-size: 0.80rem;
+            white-space: nowrap;
+            background: #ffffff;
+        }
+
+        /* Header Rows */
+        .production-matrix-table th {
+            padding: 9px 10px;
+            border-bottom: 2px solid #334155;
+            border-right: 1px solid #cbd5e1;
+            text-align: center;
+            user-select: none;
+            font-weight: 800;
+            position: sticky;
+            top: 0;
+            z-index: 25;
+            box-sizing: border-box;
+        }
+
+        /* Frozen Column Base Coordinates & 100% Solid Backgrounds */
+        .col-freeze-sl {
+            position: sticky !important;
+            left: var(--left-sl) !important;
+            width: var(--w-sl) !important;
+            min-width: var(--w-sl) !important;
+            max-width: var(--w-sl) !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            text-align: center;
+            font-weight: 700;
+            z-index: 15;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .col-freeze-code {
+            position: sticky !important;
+            left: var(--left-code) !important;
+            width: var(--w-code) !important;
+            min-width: var(--w-code) !important;
+            max-width: var(--w-code) !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            font-family: var(--font-mono);
+            font-weight: 800;
+            color: #0284c7;
+            z-index: 15;
+            border-right: 1px solid #e2e8f0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .col-freeze-name {
+            position: sticky !important;
+            left: var(--left-name) !important;
+            width: var(--w-name) !important;
+            min-width: var(--w-name) !important;
+            max-width: var(--w-name) !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            font-weight: 700;
+            color: #0f2942;
+            z-index: 15;
+            border-right: 1px solid #e2e8f0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .col-freeze-unit {
+            position: sticky !important;
+            left: var(--left-unit) !important;
+            width: var(--w-unit) !important;
+            min-width: var(--w-unit) !important;
+            max-width: var(--w-unit) !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            text-align: center;
+            font-weight: 700;
+            color: #64748b;
+            z-index: 15;
+            border-right: 1px solid #cbd5e1;
+        }
+
+        /* Solid Right Divider Wall on Total Column */
+        .col-freeze-total {
+            position: sticky !important;
+            left: var(--left-total) !important;
+            width: var(--w-total) !important;
+            min-width: var(--w-total) !important;
+            max-width: var(--w-total) !important;
+            box-sizing: border-box;
+            background-color: #e6fffa !important;
+            font-family: var(--font-mono);
+            font-weight: 900;
+            font-size: 0.84rem;
+            color: #065f46;
+            text-align: right;
+            border-right: 2.5px solid #059669 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16);
+            z-index: 16;
+        }
+
+        /* Frozen Headers Overrides (Layer Priority z-index: 35) */
+        .production-matrix-table th.col-freeze-sl {
+            z-index: 35 !important;
+            background-color: var(--th-peach-bg) !important;
+            color: #0f2942 !important;
+        }
+
+        .production-matrix-table th.col-freeze-code {
+            z-index: 35 !important;
+            background-color: var(--th-peach-bg) !important;
+            color: #0f2942 !important;
+        }
+
+        .production-matrix-table th.col-freeze-name {
+            z-index: 35 !important;
+            background-color: var(--th-peach-bg) !important;
+            color: #0f2942 !important;
+        }
+
+        .production-matrix-table th.col-freeze-unit {
+            z-index: 35 !important;
+            background-color: #e2e8f0 !important;
+            color: #0f2942 !important;
+        }
+
+        .production-matrix-table th.col-freeze-total {
+            z-index: 36 !important;
+            background-color: var(--th-total-bg) !important;
+            color: #ffffff !important;
+            border-right: 2.5px solid var(--th-total-dark) !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16);
+        }
+
+        /* Month Header Columns */
+        .th-month-col {
+            width: var(--w-month);
+            min-width: var(--w-month);
+            max-width: var(--w-month);
+            box-sizing: border-box;
+            background: #f1f5f9 !important;
+            color: #1e293b !important;
+            font-size: 0.76rem !important;
+            z-index: 20;
+        }
+
+        /* Table Data Cells */
+        .production-matrix-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            font-size: 0.78rem;
+            color: #1e293b;
+            box-sizing: border-box;
+        }
+
+        /* Hover State with Full Solid Opacity */
+        .production-matrix-table tbody tr:hover td {
+            background-color: #f0f9ff !important;
+        }
+        .production-matrix-table tbody tr:hover td.col-freeze-total {
+            background-color: #d1fae5 !important;
+        }
+
+        /* Month Data Cells */
+        .td-qty-num {
+            text-align: right;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .td-qty-zero {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        /* Category Subtotal Row - Completely Solid Opaque Yellow */
+        .tr-category-header td {
+            background-color: var(--cat-yellow) !important;
+            color: var(--cat-yellow-text);
+            font-weight: 900;
+            border-top: 1.5px solid var(--cat-yellow-border) !important;
+            border-bottom: 1.5px solid var(--cat-yellow-border) !important;
+            padding: 8px 10px;
+        }
+
+        .tr-category-header td.col-freeze-sl,
+        .tr-category-header td.col-freeze-code,
+        .tr-category-header td.col-freeze-name,
+        .tr-category-header td.col-freeze-unit {
+            background-color: var(--cat-yellow) !important;
+            z-index: 18 !important;
+        }
+
+        .tr-category-header td.col-freeze-total {
+            background-color: var(--cat-yellow) !important;
+            color: #854d0e !important;
+            border-right: 2.5px solid #ca8a04 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16);
+            z-index: 19 !important;
+        }
+
+        /* Grand Total Row at Bottom - Sticky Footer */
+        .tr-grand-total td {
+            background-color: #fef08a !important;
+            color: #713f12 !important;
+            font-weight: 900 !important;
+            font-size: 0.88rem !important;
+            border-top: 2.5px solid #ca8a04 !important;
+            border-bottom: 2.5px solid #ca8a04 !important;
+            padding: 9px 10px;
+            position: sticky;
+            bottom: 0;
+            z-index: 25;
+        }
+
+        .tr-grand-total td.col-freeze-sl,
+        .tr-grand-total td.col-freeze-code,
+        .tr-grand-total td.col-freeze-name,
+        .tr-grand-total td.col-freeze-unit {
+            z-index: 28 !important;
+            background-color: #fef08a !important;
+        }
+
+        .tr-grand-total td.col-freeze-total {
+            z-index: 29 !important;
+            background-color: #fef08a !important;
+            border-right: 2.5px solid #ca8a04 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16);
+        }
+
+        /* Toast Feedback */
+        .toast-box {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f2942;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.25s ease;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .toast-box.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media print {
+            .portal-nav, .filter-report-card, .report-action-buttons, .mep-frozen-sidebar {
+                display: none !important;
+            }
+            body, .workspace-main {
+                padding: 0 !important;
+                background: #ffffff !important;
+            }
+            .table-responsive-box {
+                max-height: none !important;
+                overflow: visible !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- 1. Top Navigation Bar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html?view=hub" class="btn-back-portal" title="Return to Department Hub">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <span>Choose Your Report</span>
+                </a>
+                <div>
+                    <div class="nav-brand-title">MEP FAN LIMITED</div>
+                    <div class="nav-brand-sub">
+                        <span>All Yearly Report › Yearly Production Summary (Physical)</span>
+                        <span class="auto-live-tag">LIVE AUDITED</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading date...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- 1. Professional Executive Report Header Section -->
+        <div class="report-header-section">
+            <div class="report-header-left">
+                <div class="report-header-title-row">
+                    <h1>
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                        <span>Yearly Production Summary (Physical)</span>
+                    </h1>
+                </div>
+                <div class="report-header-sub">Production Performance &amp; Yearly Physical Finished Goods (FG) Analysis</div>
+            </div>
+
+            <div class="report-header-right">
+                <div class="audit-scope-chip">
+                    <span class="audit-scope-label">Audit Scope</span>
+                    <span class="audit-scope-years">2022 – 2030</span>
+                </div>
+                <div class="report-action-buttons">
+                    <button type="button" class="btn-corp btn-corp-outline" onclick="resetAllFilters()" title="Reset All Filters">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+                        <span>Reset Filters</span>
+                    </button>
+                    <button type="button" class="btn-corp btn-corp-primary" onclick="exportToCSV()" title="Export Filtered Data to CSV/Excel">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Export Excel</span>
+                    </button>
+                    <button type="button" class="btn-corp btn-corp-outline" onclick="window.print()" title="Print Current View">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        <span>Print</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Separate Professional "FILTER REPORT" Card -->
+        <div class="filter-report-card">
+            <div class="filter-report-header">
+                <div class="filter-report-title">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                    <span>FILTER REPORT</span>
+                </div>
+                <div class="filter-report-subtitle">
+                    Select dynamic criteria to customize report view
+                </div>
+            </div>
+
+            <div class="filter-report-grid">
+                <!-- 1. Year Filter (2022–2030) -->
+                <div class="filter-field-group">
+                    <div class="filter-field-label">
+                        <span>Year</span>
+                        <span id="yearSelectionBadge" style="color:#0284c7; font-weight:800;">2026</span>
+                    </div>
+                    <button type="button" class="filter-select-trigger" onclick="toggleDropdown('yearDropdownMenu')">
+                        <span id="yearSelectText">Year: 2026</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="filter-dropdown-menu" id="yearDropdownMenu">
+                        <div class="filter-quick-actions">
+                            <button type="button" class="btn-link-action" onclick="selectAllYears(true)">Select All</button>
+                            <button type="button" class="btn-link-action" onclick="selectAllYears(false)">Clear</button>
+                        </div>
+                        <div class="filter-options-list" id="yearOptionsList">
+                            <!-- 2022 to 2030 checkboxes -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Month Filter -->
+                <div class="filter-field-group">
+                    <div class="filter-field-label">
+                        <span>Month</span>
+                        <span id="monthSelectionBadge" style="color:#0284c7; font-weight:800;">All Months (12)</span>
+                    </div>
+                    <button type="button" class="filter-select-trigger" onclick="toggleDropdown('monthDropdownMenu')">
+                        <span id="monthSelectText">All Months (12)</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="filter-dropdown-menu" id="monthDropdownMenu">
+                        <div class="filter-quick-actions">
+                            <button type="button" class="btn-link-action" onclick="selectAllMonths(true)">Select All</button>
+                            <button type="button" class="btn-link-action" onclick="selectYtdMonths()">YTD (Jan-Aug)</button>
+                            <button type="button" class="btn-link-action" onclick="selectAllMonths(false)">Clear</button>
+                        </div>
+                        <div class="filter-options-list" id="monthOptionsList">
+                            <!-- Jan to Dec checkboxes -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Category Filter -->
+                <div class="filter-field-group">
+                    <div class="filter-field-label">
+                        <span>Category</span>
+                        <span id="catSelectionBadge" style="color:#0284c7; font-weight:800;">All Categories (5)</span>
+                    </div>
+                    <button type="button" class="filter-select-trigger" onclick="toggleDropdown('catDropdownMenu')">
+                        <span id="catSelectText">All Categories (5)</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="filter-dropdown-menu" id="catDropdownMenu">
+                        <div class="filter-quick-actions">
+                            <button type="button" class="btn-link-action" onclick="selectAllCategories(true)">Select All</button>
+                            <button type="button" class="btn-link-action" onclick="selectAllCategories(false)">Clear</button>
+                        </div>
+                        <div class="filter-options-list" id="catOptionsList">
+                            <!-- Categories checkboxes -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Item Search & Multi-Select -->
+                <div class="filter-field-group">
+                    <div class="filter-field-label">
+                        <span>Item</span>
+                        <span id="itemSelectionBadge" style="color:#0284c7; font-weight:800;">All Items (32)</span>
+                    </div>
+                    <button type="button" class="filter-select-trigger" onclick="toggleDropdown('itemDropdownMenu')">
+                        <span id="itemSelectText">All Items (32)</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="filter-dropdown-menu" id="itemDropdownMenu" style="min-width: 290px;">
+                        <input type="text" class="filter-search-box" id="itemSearchInput" placeholder="🔍 Search Code or Name..." oninput="filterItemOptionsList()">
+                        <div class="filter-quick-actions">
+                            <button type="button" class="btn-link-action" onclick="selectAllItems(true)">Select All</button>
+                            <button type="button" class="btn-link-action" onclick="selectAllItems(false)">Clear</button>
+                        </div>
+                        <div class="filter-options-list" id="itemOptionsList">
+                            <!-- Item options checkboxes -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Card Footer: Active Pills & Action Buttons -->
+            <div class="filter-report-footer">
+                <div class="active-pills-wrap" id="activeFilterPills">
+                    <span style="font-size:0.72rem; font-weight:800; color:#64748b;">Active Filters:</span>
+                    <span class="filter-pill">Year: 2026</span>
+                    <span class="filter-pill">All Months</span>
+                    <span class="filter-pill">All Items</span>
+                </div>
+                <div class="filter-card-actions">
+                    <button type="button" class="btn-corp-sm btn-corp-subtle" onclick="resetAllFilters()">Reset</button>
+                    <button type="button" class="btn-corp-sm btn-corp-accent" onclick="applyFilterAction()">Apply Filter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Quick Counters -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#e0f2fe; color:#0284c7;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-label">Filtered Production</span>
+                    <span class="kpi-value" id="kpiTotalProduction">0 Units</span>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#dcfce7; color:#16a34a;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-label">Active Items</span>
+                    <span class="kpi-value" id="kpiActiveItems">32</span>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#fef3c7; color:#d97706;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-label">Selected Months</span>
+                    <span class="kpi-value" id="kpiSelectedMonths">12</span>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#f3e8ff; color:#9333ea;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-label">Top Category</span>
+                    <span class="kpi-value" id="kpiTopCategory" style="font-size:0.95rem;">Ceiling Fan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Main Data Table Container with Airtight Solid Frozen Columns -->
+        <div class="table-card-container">
+            <div class="table-responsive-box" id="tableScrollBox">
+                <table class="production-matrix-table" id="yearlyMatrixTable">
+                    <colgroup id="tableColGroup">
+                        <col style="width: var(--w-sl); min-width: var(--w-sl); max-width: var(--w-sl);">
+                        <col style="width: var(--w-code); min-width: var(--w-code); max-width: var(--w-code);">
+                        <col style="width: var(--w-name); min-width: var(--w-name); max-width: var(--w-name);">
+                        <col style="width: var(--w-unit); min-width: var(--w-unit); max-width: var(--w-unit);">
+                        <col style="width: var(--w-total); min-width: var(--w-total); max-width: var(--w-total);">
+                        <!-- Month cols will be inserted dynamically here -->
+                    </colgroup>
+                    <thead>
+                        <tr class="tr-col-headers" id="trColHeaders">
+                            <th class="col-freeze-sl">Sl No</th>
+                            <th class="col-freeze-code">Code</th>
+                            <th class="col-freeze-name">Item Name</th>
+                            <th class="col-freeze-unit">Unit</th>
+                            <th class="col-freeze-total">Total</th>
+                            <!-- Month headers dynamically inserted -->
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated dynamically with individual, solid cells -->
+                    </tbody>
+                    <tfoot id="tableFoot">
+                        <!-- Populated dynamically with individual, solid cells -->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="toast-box" id="toastBox">Filter updated</div>
+
+    <!-- Master Database, Daily FG Production Data & Report Sidebar Scripts -->
+    <script src="master_database.js"></script>
+    <script src="daily_fg_production_data.js"></script>
+    <script>
+        const ALL_MONTHS = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        const ALL_YEARS = ["2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"];
+
+        // Baseline Item Catalog & Standard Categories (Metadata Only - No Hardcoded Quantities)
+        const BASE_PRODUCTION_TEMPLATE = [
+            {
+                category: "Ceiling Fan",
+                items: [
+                    { sl: 1, code: "CF5601/CF5601IV", name: "56 Inch Premium Ceiling Fan - Ivory", unit: "Pcs" },
+                    { sl: 2, code: "CF5601WH/CF5601WH", name: "56 Inch Premium Ceiling Fan - White", unit: "Pcs" },
+                    { sl: 3, code: "CF5602/CF5602IV", name: "56 Inch Speed King Ceiling Fan - Ivory", unit: "Pcs" },
+                    { sl: 4, code: "CF5603/CF5603IV", name: "56 Inch Premium Gold Ceiling Fan - Ivory", unit: "Pcs" },
+                    { sl: 5, code: "CF5606/CF5606IV", name: "56 Inch Premium Plus Ceiling Fan - Ivory", unit: "Pcs" },
+                    { sl: 6, code: "CF5607/CF5607IV", name: "56 Inch Crown Ceiling Fan - Ivory", unit: "Pcs" },
+                    { sl: 7, code: "CF4801/CF4801IV", name: "48 Inch Popular Ceiling Fan - Ivory", unit: "Pcs" },
+                    { sl: 8, code: "CF3601/CF3601IV", name: "36 Inch Hero Ceiling Fan - Ivory", unit: "Pcs" },
+                    { sl: 9, code: "CF2401/CF2401IV", name: "24 Inch Super Ceiling Fan - Ivory", unit: "Pcs" },
+                    { sl: 10, code: "CR5601IV", name: "56 Inch Premium Ceiling Fan- Ivory (Without Regulator)", unit: "Pcs" },
+                    { sl: 11, code: "CR5601WH", name: "56 Inch Premium Ceiling Fan- White (Without Regulator)", unit: "Pcs" },
+                    { sl: 12, code: "CG5601/CG5601IV", name: "56 Inch Premium Ceiling Fan With Gang Regulator - Ivory", unit: "Pcs" },
+                    { sl: 13, code: "CR5603IV", name: "56 Inch Premium Gold Ceiling Fan- Ivory (Without Regulator)", unit: "Pcs" },
+                    { sl: 14, code: "CR5606IV", name: "56 Inch Premium Plus Ceiling Fan- Ivory (Without Regulator)", unit: "Pcs" },
+                    { sl: 15, code: "CG5606/CG5606IV", name: "56 Inch Premium Plus Ceiling Fan With Gang Regulator - Ivory", unit: "Pcs" },
+                    { sl: 16, code: "CR4801IV", name: "48 Inch Popular Ceiling Fan- Ivory (Without Regulator)", unit: "Pcs" },
+                    { sl: 17, code: "CR3601IV", name: "36 Inch Hero Ceiling Fan- Ivory (Without Regulator)", unit: "Pcs" }
+                ]
+            },
+            {
+                category: "MEP Capacitor",
+                items: [
+                    { sl: 1, code: "CFCP001", name: "Ceiling Fan Capacitor 2.5 uf", unit: "Pcs" },
+                    { sl: 2, code: "CFCP002", name: "Ceiling Fan Capacitor 3.5 uf", unit: "Pcs" }
+                ]
+            },
+            {
+                category: "Exhaust Fan",
+                items: [
+                    { sl: 1, code: "EF1001OW/EF1001OW", name: "10 Inch Fresh Air Exhaust Fan Off White", unit: "Pcs" },
+                    { sl: 2, code: "EF0801OW/EF0801OW", name: "08 Inch Fresh Air Exhaust Fan Off White", unit: "Pcs" }
+                ]
+            },
+            {
+                category: "Rechargeable Table Fan",
+                items: [
+                    { sl: 1, code: "MRTF1201", name: "12 Inch Swasti Rechargeable Table Fan", unit: "Pcs" },
+                    { sl: 2, code: "MRTF1601", name: "16 Inch Swasti Rechargeable Table Fan", unit: "Pcs" }
+                ]
+            },
+            {
+                category: "Blade",
+                items: [
+                    { sl: 1, code: "SFG1010074", name: "5601 Premium Ceiling Fan Blade - Ivory", unit: "Set" },
+                    { sl: 2, code: "SFG1010109", name: "5601 Premium Ceiling Fan Blade - White", unit: "Set" },
+                    { sl: 3, code: "SFG1010075", name: "5602 Speed King Ceiling Fan Blade - Ivory", unit: "Set" },
+                    { sl: 4, code: "SFG1010096", name: "5603 Premium Gold Ceiling Fan Blade", unit: "Set" },
+                    { sl: 5, code: "SFG1010139", name: "5606 Premium Plus Ceiling Fan Blade - Ivory", unit: "Set" },
+                    { sl: 6, code: "SFG1010136", name: "5607 Crown Ceiling Fan Blade - Ivory", unit: "Set" },
+                    { sl: 7, code: "SFG1010073", name: "4801 Popular Ceiling Fan Blade - Ivory", unit: "Set" },
+                    { sl: 8, code: "SFG1010072", name: "3601 Hero Ceiling Fan Blade - Ivory", unit: "Set" },
+                    { sl: 9, code: "SFG1010071", name: "2401 Super Ceiling Fan Blade - Ivory", unit: "Set" }
+                ]
+            }
+        ];
+
+        /**
+         * Helper: Normalize item code for exact comparison
+         */
+        function normalizeProductCode(code) {
+            return String(code || '').trim().toUpperCase();
+        }
+
+        /**
+         * Helper: Parse Month string or date string to 0-indexed month (0 = January, 11 = December)
+         */
+        function parseProductionMonthIndex(mStr, dateStr) {
+            if (mStr) {
+                const clean = String(mStr).trim().toLowerCase();
+                for (let i = 0; i < ALL_MONTHS.length; i++) {
+                    const mName = ALL_MONTHS[i].toLowerCase();
+                    if (mName === clean || mName.startsWith(clean.substring(0, 3))) {
+                        return i;
+                    }
+                }
+                const num = parseInt(clean, 10);
+                if (!isNaN(num) && num >= 1 && num <= 12) return num - 1;
+            }
+            if (dateStr) {
+                const parts = String(dateStr).trim().split(/[-/.\s]+/);
+                if (parts.length === 3) {
+                    if (parts[0].length === 4) { // YYYY-MM-DD
+                        const mo = parseInt(parts[1], 10);
+                        if (!isNaN(mo) && mo >= 1 && mo <= 12) return mo - 1;
+                    } else { // DD-MMM-YY or DD-MM-YYYY
+                        const mPart = parts[1].toLowerCase();
+                        for (let i = 0; i < ALL_MONTHS.length; i++) {
+                            if (ALL_MONTHS[i].toLowerCase().startsWith(mPart.substring(0, 3))) return i;
+                        }
+                        const mo = parseInt(mPart, 10);
+                        if (!isNaN(mo) && mo >= 1 && mo <= 12) return mo - 1;
+                    }
+                }
+            }
+            return -1;
+        }
+
+        /**
+         * Helper: Parse Year string or date string to 4-digit year string
+         */
+        function parseProductionYear(yrStr, dateStr) {
+            if (yrStr) {
+                const clean = String(yrStr).trim();
+                if (clean.length === 4) return clean;
+                if (clean.length === 2) return '20' + clean;
+            }
+            if (dateStr) {
+                const parts = String(dateStr).trim().split(/[-/.\s]+/);
+                if (parts.length === 3) {
+                    if (parts[0].length === 4) return parts[0];
+                    const yPart = parts[2];
+                    if (yPart.length === 4) return yPart;
+                    if (yPart.length === 2) return '20' + yPart;
+                }
+            }
+            return '';
+        }
+
+        /**
+         * Helper: Find matching item in the year's data by Exact Code Matching
+         * Supports:
+         * 1. Exact string match (case-insensitive, trimmed)
+         * 2. Compound code slash match (e.g. CF5601/CF5601IV matches CF5601/CF5601IV, CF5601, or CF5601IV)
+         */
+        function findItemInYearData(yearCategories, sourceItemCode, sourceCode) {
+            const rawCode = normalizeProductCode(sourceItemCode || sourceCode);
+            if (!rawCode) return null;
+
+            for (const cat of yearCategories) {
+                for (const item of cat.items) {
+                    const targetCode = normalizeProductCode(item.code);
+                    if (targetCode === rawCode) return item;
+
+                    // Compound code slash matching
+                    if (targetCode.includes('/')) {
+                        const parts = targetCode.split('/').map(p => p.trim());
+                        if (parts.includes(rawCode)) return item;
+                    } else if (rawCode.includes('/')) {
+                        const parts = rawCode.split('/').map(p => p.trim());
+                        if (parts.includes(targetCode)) return item;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Premium Dynamic Production Aggregator:
+         * Pure dynamic source linking from Daily FG Production Entry (Single Source of Truth)
+         * Triple Key: Exact Code + Month + Year
+         * Duplicate Protected, Zero Protected, No Missing Data
+         */
+        function buildYearlyProductionData() {
+            const dataByYear = {};
+
+            // Initialize catalog for all years with all 12 months initialized to 0
+            ALL_YEARS.forEach(yr => {
+                dataByYear[yr] = BASE_PRODUCTION_TEMPLATE.map(cat => ({
+                    category: cat.category,
+                    items: cat.items.map((it, idx) => ({
+                        sl: idx + 1,
+                        code: it.code,
+                        name: it.name,
+                        unit: it.unit,
+                        months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    }))
+                }));
+            });
+
+            // Gather all daily production entries from Single Source of Truth
+            let dailyEntries = [];
+            if (typeof getUnifiedDailyFGProductionData === 'function') {
+                dailyEntries = getUnifiedDailyFGProductionData();
+            } else {
+                if (typeof RAW_PRODUCTION_DATA !== 'undefined' && Array.isArray(RAW_PRODUCTION_DATA)) {
+                    dailyEntries = [...RAW_PRODUCTION_DATA];
+                }
+                try {
+                    const custom = localStorage.getItem('custom_fg_production_entries');
+                    if (custom) {
+                        const parsed = JSON.parse(custom);
+                        if (Array.isArray(parsed)) {
+                            dailyEntries = [...parsed, ...dailyEntries];
+                        }
+                    }
+                } catch(e) {
+                    console.error("Error reading custom_fg_production_entries", e);
+                }
+            }
+
+            // Iterate through every valid daily production record (Single pass for Duplicate Protection)
+            dailyEntries.forEach(entry => {
+                const qty = parseFloat(entry.qty);
+                if (isNaN(qty) || qty === 0) return; // Zero or invalid quantities skipped
+
+                const itemCode = (entry.item_code || '').trim();
+                const code = (entry.code || '').trim();
+                if (!itemCode && !code) return;
+
+                const yr = parseProductionYear(entry.year, entry.date);
+                const mIdx = parseProductionMonthIndex(entry.month, entry.date);
+
+                if (!yr || mIdx < 0 || mIdx > 11) return;
+
+                // Ensure data array exists for this year
+                if (!dataByYear[yr]) {
+                    dataByYear[yr] = BASE_PRODUCTION_TEMPLATE.map(cat => ({
+                        category: cat.category,
+                        items: cat.items.map((it, idx) => ({
+                            sl: idx + 1,
+                            code: it.code,
+                            name: it.name,
+                            unit: it.unit,
+                            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                        }))
+                    }));
+                }
+
+                // Match item by Exact Code
+                let foundItem = findItemInYearData(dataByYear[yr], itemCode, code);
+
+                // If not in standard catalog, dynamically discover and auto-categorize
+                if (!foundItem) {
+                    let targetCatName = "Ceiling Fan";
+                    const codeU = normalizeProductCode(itemCode || code);
+                    const nameL = String(entry.item_name || '').toLowerCase();
+                    if (codeU.startsWith('SFG') || nameL.includes('blade')) targetCatName = "Blade";
+                    else if (codeU.startsWith('EF') || nameL.includes('exhaust')) targetCatName = "Exhaust Fan";
+                    else if (codeU.startsWith('MRTF') || nameL.includes('rechargeable') || nameL.includes('table fan')) targetCatName = "Rechargeable Table Fan";
+                    else if (codeU.startsWith('CFCP') || nameL.includes('capacitor')) targetCatName = "MEP Capacitor";
+
+                    let catObj = dataByYear[yr].find(c => c.category === targetCatName);
+                    if (!catObj) {
+                        catObj = { category: targetCatName, items: [] };
+                        dataByYear[yr].push(catObj);
+                    }
+                    const primaryCode = itemCode || code;
+                    foundItem = {
+                        sl: catObj.items.length + 1,
+                        code: primaryCode,
+                        name: entry.item_name || (typeof getMasterName === 'function' ? getMasterName(primaryCode) : primaryCode),
+                        unit: typeof getMasterUnit === 'function' ? getMasterUnit(primaryCode) : 'Pcs',
+                        months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    };
+                    catObj.items.push(foundItem);
+                }
+
+                // Aggregate quantity (ALL valid matching entries are summed - No Missing Data)
+                foundItem.months[mIdx] += qty;
+            });
+
+            return dataByYear;
+        }
+
+        let RAW_DATA = buildYearlyProductionData();
+
+        /**
+         * Real-time Synchronization from Source Page
+         */
+        function syncProductionData() {
+            RAW_DATA = buildYearlyProductionData();
+            initFilters();
+            renderTable();
+        }
+
+        // 1. Cross-tab storage change listener
+        window.addEventListener('storage', (e) => {
+            if (!e.key || e.key === 'custom_fg_production_entries' || e.key === 'RAW_DAILY_FG_PRODUCTION_DATA' || e.key === 'deleted_fg_production_entry_ids' || e.key === 'fg_production_last_updated') {
+                syncProductionData();
+                showToast("🔄 Live synced from Daily FG Production Entry!");
+            }
+        });
+
+        // 2. Real-time Firebase / Cloud sync listener
+        window.addEventListener('smart_cloud_sync', (e) => {
+            if (!e.detail || e.detail.key === 'custom_fg_production_entries' || e.detail.key === 'RAW_DAILY_FG_PRODUCTION_DATA' || e.detail.key === 'deleted_fg_production_entry_ids') {
+                syncProductionData();
+                showToast("☁️ Real-time cloud sync updated!");
+            }
+        });
+
+        // 3. Tab focus listener (ensures fresh data whenever user returns to tab)
+        window.addEventListener('focus', () => {
+            RAW_DATA = buildYearlyProductionData();
+            renderTable();
+        });
+
+
+        // Active Filter States
+        const filterState = {
+            selectedYears: ["2026"],
+            selectedMonths: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // 0-indexed: Jan to Dec
+            selectedCategories: ["Ceiling Fan", "MEP Capacitor", "Exhaust Fan", "Rechargeable Table Fan", "Blade"],
+            selectedItems: [], // empty means all selected
+            searchQuery: ""
+        };
+
+        // Initialize Filter Options
+        function initFilters() {
+            // URL parameter pre-selection support
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('months')) {
+                const moVal = urlParams.get('months');
+                if (moVal.toLowerCase() === 'aug_sep') {
+                    filterState.selectedMonths = [7, 8];
+                } else {
+                    const parsed = moVal.split(',').map(m => parseInt(m, 10)).filter(n => !isNaN(n));
+                    if (parsed.length > 0) filterState.selectedMonths = parsed;
+                }
+            }
+            if (urlParams.has('years')) {
+                filterState.selectedYears = urlParams.get('years').split(',').map(y => y.trim());
+            }
+
+            // 1. Year Options (Strict Range: 2022 to 2030)
+            const yearListEl = document.getElementById('yearOptionsList');
+            yearListEl.innerHTML = ALL_YEARS.map(yr => `
+                <label class="filter-option-item">
+                    <input type="checkbox" value="${yr}" ${filterState.selectedYears.includes(yr) ? 'checked' : ''} onchange="onYearChange()">
+                    <span>${yr}</span>
+                </label>
+            `).join('');
+
+            // 2. Month Options
+            const monthListEl = document.getElementById('monthOptionsList');
+            monthListEl.innerHTML = ALL_MONTHS.map((m, idx) => `
+                <label class="filter-option-item">
+                    <input type="checkbox" value="${idx}" ${filterState.selectedMonths.includes(idx) ? 'checked' : ''} onchange="onMonthChange()">
+                    <span>${m}</span>
+                </label>
+            `).join('');
+
+            // 3. Category Options
+            const catListEl = document.getElementById('catOptionsList');
+            const allKnownCats = getKnownCategories();
+            catListEl.innerHTML = allKnownCats.map(c => `
+                <label class="filter-option-item">
+                    <input type="checkbox" value="${c}" ${filterState.selectedCategories.includes(c) ? 'checked' : ''} onchange="onCategoryChange()">
+                    <span>${c}</span>
+                </label>
+            `).join('');
+
+            // 4. Item Options
+            populateItemOptions();
+
+            updateFilterUIBadges();
+        }
+
+        function getKnownCategories() {
+            const cats = new Set();
+            BASE_PRODUCTION_TEMPLATE.forEach(c => cats.add(c.category));
+            if (RAW_DATA) {
+                Object.values(RAW_DATA).forEach(yearCats => {
+                    if (Array.isArray(yearCats)) {
+                        yearCats.forEach(c => cats.add(c.category));
+                    }
+                });
+            }
+            return Array.from(cats);
+        }
+
+        function populateItemOptions() {
+            const itemListEl = document.getElementById('itemOptionsList');
+            const itemMap = new Map();
+            const allItems = [];
+
+            // Base template items
+            BASE_PRODUCTION_TEMPLATE.forEach(cat => {
+                cat.items.forEach(it => {
+                    if (!itemMap.has(it.code)) {
+                        itemMap.set(it.code, true);
+                        allItems.push(it);
+                    }
+                });
+            });
+
+            // Dynamically added items in RAW_DATA
+            if (RAW_DATA) {
+                Object.values(RAW_DATA).forEach(yearCats => {
+                    if (Array.isArray(yearCats)) {
+                        yearCats.forEach(cat => {
+                            cat.items.forEach(it => {
+                                if (!itemMap.has(it.code)) {
+                                    itemMap.set(it.code, true);
+                                    allItems.push(it);
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+
+            itemListEl.innerHTML = allItems.map(it => `
+                <label class="filter-option-item item-option-row" data-code="${it.code.toLowerCase()}" data-name="${it.name.toLowerCase()}">
+                    <input type="checkbox" value="${it.code}" ${filterState.selectedItems.length === 0 || filterState.selectedItems.includes(it.code) ? 'checked' : ''} onchange="onItemChange()">
+                    <div style="display:flex; flex-direction:column; gap:1px; line-height:1.2;">
+                        <span style="font-weight:700; color:#0284c7;">${it.code}</span>
+                        <span style="font-size:0.70rem; color:#64748b;">${it.name}</span>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function filterItemOptionsList() {
+            const q = document.getElementById('itemSearchInput').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('.item-option-row');
+            rows.forEach(r => {
+                const code = r.getAttribute('data-code');
+                const name = r.getAttribute('data-name');
+                if (!q || code.includes(q) || name.includes(q)) {
+                    r.style.display = 'flex';
+                } else {
+                    r.style.display = 'none';
+                }
+            });
+        }
+
+        // Toggle Filter Dropdowns
+        function toggleDropdown(id) {
+            const el = document.getElementById(id);
+            const isShown = el.classList.contains('show');
+            document.querySelectorAll('.filter-dropdown-menu').forEach(m => m.classList.remove('show'));
+            if (!isShown) el.classList.add('show');
+        }
+
+        // Close dropdown when clicked outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.filter-field-group')) {
+                document.querySelectorAll('.filter-dropdown-menu').forEach(m => m.classList.remove('show'));
+            }
+        });
+
+        // Filter Handlers
+        function onYearChange() {
+            const checked = Array.from(document.querySelectorAll('#yearOptionsList input:checked')).map(i => i.value);
+            filterState.selectedYears = checked.length > 0 ? checked : ["2026"];
+            updateFilterUIBadges();
+            renderTable();
+        }
+
+        function selectAllYears(selectAll) {
+            document.querySelectorAll('#yearOptionsList input').forEach(i => i.checked = selectAll);
+            onYearChange();
+        }
+
+        function onMonthChange() {
+            const checked = Array.from(document.querySelectorAll('#monthOptionsList input:checked')).map(i => parseInt(i.value));
+            filterState.selectedMonths = checked.length > 0 ? checked : [0];
+            updateFilterUIBadges();
+            renderTable();
+        }
+
+        function selectAllMonths(selectAll) {
+            document.querySelectorAll('#monthOptionsList input').forEach(i => i.checked = selectAll);
+            onMonthChange();
+        }
+
+        function selectYtdMonths() {
+            document.querySelectorAll('#monthOptionsList input').forEach((i, idx) => {
+                i.checked = (idx <= 7); // Jan to Aug
+            });
+            onMonthChange();
+        }
+
+        function onCategoryChange() {
+            const checked = Array.from(document.querySelectorAll('#catOptionsList input:checked')).map(i => i.value);
+            filterState.selectedCategories = checked;
+            updateFilterUIBadges();
+            renderTable();
+        }
+
+        function selectAllCategories(selectAll) {
+            document.querySelectorAll('#catOptionsList input').forEach(i => i.checked = selectAll);
+            onCategoryChange();
+        }
+
+        function onItemChange() {
+            const totalInputs = document.querySelectorAll('#itemOptionsList input').length;
+            const checked = Array.from(document.querySelectorAll('#itemOptionsList input:checked')).map(i => i.value);
+            if (checked.length === totalInputs || checked.length === 0) {
+                filterState.selectedItems = []; // all
+            } else {
+                filterState.selectedItems = checked;
+            }
+            updateFilterUIBadges();
+            renderTable();
+        }
+
+        function selectAllItems(selectAll) {
+            document.querySelectorAll('#itemOptionsList input').forEach(i => i.checked = selectAll);
+            onItemChange();
+        }
+
+        function applyFilterAction() {
+            document.querySelectorAll('.filter-dropdown-menu').forEach(m => m.classList.remove('show'));
+            renderTable();
+            showToast("Filters applied successfully");
+        }
+
+        function resetAllFilters() {
+            filterState.selectedYears = ["2026"];
+            filterState.selectedMonths = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+            filterState.selectedCategories = ["Ceiling Fan", "MEP Capacitor", "Exhaust Fan", "Rechargeable Table Fan", "Blade"];
+            filterState.selectedItems = [];
+            filterState.searchQuery = "";
+
+            initFilters();
+            renderTable();
+            showToast("Filters reset to default view");
+        }
+
+        function updateFilterUIBadges() {
+            // Year text
+            const yrTxt = filterState.selectedYears.length === ALL_YEARS.length ? "All Years (2022–2030)" : filterState.selectedYears.join(', ');
+            document.getElementById('yearSelectText').textContent = yrTxt;
+            document.getElementById('yearSelectionBadge').textContent = yrTxt;
+
+            // Month text
+            const mTxt = filterState.selectedMonths.length === 12 ? "All Months (12)" : `${filterState.selectedMonths.length} Months Selected`;
+            document.getElementById('monthSelectText').textContent = mTxt;
+            document.getElementById('monthSelectionBadge').textContent = mTxt;
+
+            // Cat text
+            const knownCats = getKnownCategories();
+            const cTxt = filterState.selectedCategories.length === knownCats.length ? `All Categories (${knownCats.length})` : `${filterState.selectedCategories.length} Categories`;
+            document.getElementById('catSelectText').textContent = cTxt;
+            document.getElementById('catSelectionBadge').textContent = cTxt;
+
+            // Item text
+            const totalItems = document.querySelectorAll('#itemOptionsList input').length;
+            const itTxt = filterState.selectedItems.length === 0 ? `All Items (${totalItems})` : `${filterState.selectedItems.length} Items Selected`;
+            document.getElementById('itemSelectText').textContent = itTxt;
+            document.getElementById('itemSelectionBadge').textContent = itTxt;
+
+            // Active filter pills
+            const pillsContainer = document.getElementById('activeFilterPills');
+            let pillsHtml = `<span style="font-size:0.72rem; font-weight:800; color:#64748b;">Active Filters:</span>`;
+            pillsHtml += `<span class="filter-pill">Year: ${yrTxt}</span>`;
+            pillsHtml += `<span class="filter-pill">${mTxt}</span>`;
+            if (filterState.selectedCategories.length < knownCats.length) {
+                pillsHtml += `<span class="filter-pill">${cTxt}</span>`;
+            }
+            if (filterState.selectedItems.length > 0) {
+                pillsHtml += `<span class="filter-pill">${itTxt}</span>`;
+            }
+            pillsContainer.innerHTML = pillsHtml;
+        }
+
+        /**
+         * Render Table Columns & Filtered Data with Airtight Solid Cells
+         * Pulls 100% dynamically from Single Source of Truth
+         */
+        function renderTable() {
+            const theadTr = document.getElementById('trColHeaders');
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+            const colGroup = document.getElementById('tableColGroup');
+
+            const activeMonths = filterState.selectedMonths; // Array of 0-indexed month integers
+            const activeYears = filterState.selectedYears;
+
+            // 1. Render ColGroup
+            let colGroupHtml = `
+                <col style="width: var(--w-sl); min-width: var(--w-sl); max-width: var(--w-sl);">
+                <col style="width: var(--w-code); min-width: var(--w-code); max-width: var(--w-code);">
+                <col style="width: var(--w-name); min-width: var(--w-name); max-width: var(--w-name);">
+                <col style="width: var(--w-unit); min-width: var(--w-unit); max-width: var(--w-unit);">
+                <col style="width: var(--w-total); min-width: var(--w-total); max-width: var(--w-total);">
+            `;
+            activeMonths.forEach(() => {
+                colGroupHtml += `<col style="width: var(--w-month); min-width: var(--w-month); max-width: var(--w-month);">`;
+            });
+            colGroup.innerHTML = colGroupHtml;
+
+            // 2. Render Table Column Headers
+            let headersHtml = `
+                <th class="col-freeze-sl">Sl No</th>
+                <th class="col-freeze-code">Code</th>
+                <th class="col-freeze-name">Item Name</th>
+                <th class="col-freeze-unit">Unit</th>
+                <th class="col-freeze-total">Total</th>
+            `;
+
+            activeMonths.forEach(mIdx => {
+                const mName = ALL_MONTHS[mIdx];
+                const yrStr = activeYears.length === 1 ? activeYears[0] : "";
+                headersHtml += `<th class="th-month-col">${mName}${yrStr ? '' + yrStr : ''}</th>`;
+            });
+
+            theadTr.innerHTML = headersHtml;
+
+            // 3. Aggregate Categories and Items across Selected Years
+            let grandTotal = 0;
+            let grandMonthTotals = new Array(activeMonths.length).fill(0);
+            let totalRenderedItems = 0;
+            let tbodyHtml = '';
+            let topCategoryName = "Ceiling Fan";
+            let maxCategoryQuantity = -1;
+
+            // Form canonical list of categories
+            const categoryOrder = [];
+            const seenCats = new Set();
+
+            BASE_PRODUCTION_TEMPLATE.forEach(c => {
+                if (!seenCats.has(c.category)) {
+                    seenCats.add(c.category);
+                    categoryOrder.push(c.category);
+                }
+            });
+
+            activeYears.forEach(yr => {
+                if (RAW_DATA && RAW_DATA[yr]) {
+                    RAW_DATA[yr].forEach(c => {
+                        if (!seenCats.has(c.category)) {
+                            seenCats.add(c.category);
+                            categoryOrder.push(c.category);
+                        }
+                    });
+                }
+            });
+
+            // Process each category
+            categoryOrder.forEach(catName => {
+                if (!filterState.selectedCategories.includes(catName)) return;
+
+                // Collect all items belonging to this category
+                const itemMap = new Map();
+                const catItemsList = [];
+
+                // 1. From BASE_PRODUCTION_TEMPLATE
+                const baseCat = BASE_PRODUCTION_TEMPLATE.find(c => c.category === catName);
+                if (baseCat) {
+                    baseCat.items.forEach(it => {
+                        const norm = normalizeProductCode(it.code);
+                        if (!itemMap.has(norm)) {
+                            const itemObj = { sl: it.sl, code: it.code, name: it.name, unit: it.unit };
+                            itemMap.set(norm, itemObj);
+                            catItemsList.push(itemObj);
+                        }
+                    });
+                }
+
+                // 2. From RAW_DATA active years
+                activeYears.forEach(yr => {
+                    if (RAW_DATA && RAW_DATA[yr]) {
+                        const yrCat = RAW_DATA[yr].find(c => c.category === catName);
+                        if (yrCat) {
+                            yrCat.items.forEach(it => {
+                                const norm = normalizeProductCode(it.code);
+                                if (!itemMap.has(norm)) {
+                                    const itemObj = { sl: catItemsList.length + 1, code: it.code, name: it.name, unit: it.unit };
+                                    itemMap.set(norm, itemObj);
+                                    catItemsList.push(itemObj);
+                                }
+                            });
+                        }
+                    }
+                });
+
+                // Filter items by search / selected items
+                const filteredItems = catItemsList.filter(item => {
+                    if (filterState.selectedItems.length > 0 && !filterState.selectedItems.includes(item.code)) {
+                        return false;
+                    }
+                    if (filterState.searchQuery) {
+                        const q = filterState.searchQuery.toLowerCase();
+                        const mCode = item.code.toLowerCase().includes(q);
+                        const mName = item.name.toLowerCase().includes(q);
+                        if (!mCode && !mName) return false;
+                    }
+                    return true;
+                });
+
+                if (filteredItems.length === 0) return;
+
+                // Compute Category Subtotals
+                let catTotal = 0;
+                let catMonthTotals = new Array(activeMonths.length).fill(0);
+                let catItemsHtml = '';
+
+                filteredItems.forEach((item, itemIdx) => {
+                    totalRenderedItems++;
+                    let itemMonthVals = new Array(activeMonths.length).fill(0);
+
+                    activeYears.forEach(yr => {
+                        if (RAW_DATA && RAW_DATA[yr]) {
+                            const yrCat = RAW_DATA[yr].find(c => c.category === catName);
+                            if (yrCat) {
+                                const yrItem = yrCat.items.find(i => {
+                                    const tCode = normalizeProductCode(i.code);
+                                    const mCode = normalizeProductCode(item.code);
+                                    if (tCode === mCode) return true;
+                                    if (tCode.includes('/') && tCode.split('/').map(p=>p.trim()).includes(mCode)) return true;
+                                    if (mCode.includes('/') && mCode.split('/').map(p=>p.trim()).includes(tCode)) return true;
+                                    return false;
+                                });
+                                if (yrItem && Array.isArray(yrItem.months)) {
+                                    activeMonths.forEach((mIdx, colIdx) => {
+                                        const val = yrItem.months[mIdx] || 0;
+                                        itemMonthVals[colIdx] += val;
+                                    });
+                                }
+                            }
+                        }
+                    });
+
+                    const itemTotal = itemMonthVals.reduce((acc, v) => acc + v, 0);
+                    catTotal += itemTotal;
+                    itemMonthVals.forEach((v, colIdx) => {
+                        catMonthTotals[colIdx] += v;
+                    });
+
+                    // Build Month TD cells
+                    const monthTds = itemMonthVals.map(v => {
+                        const isZero = (v === 0);
+                        return `<td class="td-qty-num ${isZero ? 'td-qty-zero' : ''}">${v.toLocaleString('en-US')}</td>`;
+                    }).join('');
+
+                    catItemsHtml += `
+                        <tr>
+                            <td class="col-freeze-sl">${itemIdx + 1}</td>
+                            <td class="col-freeze-code" title="${item.code}">${item.code}</td>
+                            <td class="col-freeze-name" title="${item.name}">${item.name}</td>
+                            <td class="col-freeze-unit">${item.unit}</td>
+                            <td class="col-freeze-total">${itemTotal.toLocaleString('en-US')}</td>
+                            ${monthTds}
+                        </tr>
+                    `;
+                });
+
+                // Add to Grand Totals
+                grandTotal += catTotal;
+                catMonthTotals.forEach((v, colIdx) => {
+                    grandMonthTotals[colIdx] += v;
+                });
+
+                if (catTotal > maxCategoryQuantity) {
+                    maxCategoryQuantity = catTotal;
+                    topCategoryName = catName;
+                }
+
+                // Build Category Header Row
+                const catMonthTds = catMonthTotals.map(v => `
+                    <td class="td-qty-num">${v.toLocaleString('en-US')}</td>
+                `).join('');
+
+                tbodyHtml += `
+                    <tr class="tr-category-header">
+                        <td class="col-freeze-sl"></td>
+                        <td class="col-freeze-code"></td>
+                        <td class="col-freeze-name" style="text-align:left; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">${catName}</td>
+                        <td class="col-freeze-unit" style="text-align:center; font-weight:700;">Total</td>
+                        <td class="col-freeze-total">${catTotal.toLocaleString('en-US')}</td>
+                        ${catMonthTds}
+                    </tr>
+                    ${catItemsHtml}
+                `;
+            });
+
+            tbody.innerHTML = tbodyHtml;
+
+            // 4. Build Grand Total Row
+            const grandMonthTds = grandMonthTotals.map(v => `
+                <td class="td-qty-num">${v.toLocaleString('en-US')}</td>
+            `).join('');
+
+            tfoot.innerHTML = `
+                <tr class="tr-grand-total">
+                    <td class="col-freeze-sl"></td>
+                    <td class="col-freeze-code"></td>
+                    <td class="col-freeze-name" style="text-align:left; font-weight:900; font-size:0.92rem; text-transform:uppercase;">TOTAL PRODUCTION</td>
+                    <td class="col-freeze-unit" style="text-align:center; font-weight:800;">All</td>
+                    <td class="col-freeze-total">${grandTotal.toLocaleString('en-US')}</td>
+                    ${grandMonthTds}
+                </tr>
+            `;
+
+            // 5. Update KPI Metrics
+            document.getElementById('kpiTotalProduction').textContent = `${grandTotal.toLocaleString('en-US')} Units`;
+            document.getElementById('kpiActiveItems').textContent = totalRenderedItems;
+            document.getElementById('kpiSelectedMonths').textContent = activeMonths.length;
+            const topCatEl = document.getElementById('kpiTopCategory');
+            if (topCatEl) topCatEl.textContent = topCategoryName;
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const table = document.getElementById('yearlyMatrixTable');
+            let csv = [];
+            const rows = table.querySelectorAll('tr');
+
+            rows.forEach(r => {
+                const cols = r.querySelectorAll('th, td');
+                let row = [];
+                cols.forEach(c => {
+                    let text = c.innerText.replace(/"/g, '""').trim();
+                    row.push(`"${text}"`);
+                });
+                if (row.length > 0) csv.push(row.join(','));
+            });
+
+            const csvFile = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(csvFile);
+            link.setAttribute('download', `Yearly_Production_Summary_Physical_${filterState.selectedYears.join('_')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("CSV file exported successfully");
+        }
+
+        // Live Clock
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = String(now.getDate()).padStart(2, '0');
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+            
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayEl = document.getElementById('liveDayText');
+            const timeEl = document.getElementById('liveTimeText');
+            if (dayEl) dayEl.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            if (timeEl) timeEl.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Initialize Page & Verify Authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+            
+            initFilters();
+            renderTable();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>

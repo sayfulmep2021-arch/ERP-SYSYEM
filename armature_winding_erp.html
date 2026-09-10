@@ -1,0 +1,1713 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Armature & Winding - Stock Movement Report (ERP) | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-primary-hover: #0369a1;
+            --brand-dark: #0f2942;
+            --brand-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            --header-gradient: linear-gradient(135deg, #0a1e33 0%, #0f2942 50%, #1e3a5f 100%);
+            --bg-page: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-soft: rgba(186, 215, 243, 0.7);
+            --border-subtle: #e2e8f0;
+            --text-heading: #0f2942;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --accent-success: #059669;
+            --accent-danger: #e11d48;
+            --accent-amber: #d97706;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(15, 41, 66, 0.06) 0%, transparent 45%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1.5px solid var(--border-soft);
+            box-shadow: 0 4px 20px rgba(15, 41, 66, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-back-portal:hover {
+            background: #f0f7ff;
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: translateX(-2px);
+        }
+
+        .nav-brand-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Live Day & Time Top Corner - Seamless Clean Blue Typography */
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0 4px 0 0;
+            box-shadow: none;
+            user-select: none;
+            height: auto;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.22;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .live-day-text {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: -0.1px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono, monospace);
+            font-size: 1.18rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.6px;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px 4px 5px;
+            background: #f0f7ff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        .user-avatar-mini {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Main Workspace Container */
+        .main-container {
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Report Header Banner */
+        .report-header-banner {
+            background: var(--header-gradient);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(15, 41, 66, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .company-header-group h1 {
+            font-size: 1.55rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .date-interval-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(2, 132, 199, 0.4);
+            border: 1px solid #38bdf8;
+            color: #e0f2fe;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .date-interval-badge:hover {
+            background: rgba(2, 132, 199, 0.6);
+            border-color: #7dd3fc;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+
+        .btn-action-paste {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            border: 1px solid #34d399;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-action-paste:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-action-light {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #ffffff;
+            color: var(--brand-dark);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-action-light:hover {
+            background: #f0f7ff;
+            color: var(--brand-primary);
+            transform: translateY(-1px);
+        }
+
+        /* Top KPI Stats */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.03);
+        }
+
+        .kpi-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .kpi-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .kpi-value {
+            font-size: 1.35rem;
+            font-weight: 900;
+            font-family: var(--font-mono);
+            color: var(--text-heading);
+            line-height: 1.1;
+        }
+
+        /* Toolbar & Search */
+        .filter-toolbar {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 260px;
+            flex: 1;
+            max-width: 380px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 7px 12px 7px 34px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            color: var(--text-heading);
+            background: #f8fafc;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            background: #ffffff;
+            border-color: var(--brand-primary);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            stroke: #94a3b8;
+            stroke-width: 2.2;
+            fill: none;
+            pointer-events: none;
+        }
+
+        .filter-select {
+            padding: 7px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            background: #f8fafc;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Table Card */
+        .table-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(15, 41, 66, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-header-bar {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-stats-count {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .table-stats-count strong {
+            color: var(--brand-primary);
+            font-weight: 800;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            max-height: 720px;
+            position: relative;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        /* ==========================================================================
+           PROFESSIONAL FREEZE PANE SYSTEM (Columns 0 to 6: Up to Unit Column Frozen)
+           ========================================================================== */
+        :root {
+            --w-col-sl: 40px;
+            --w-col-comp: 55px;
+            --w-col-cat: 95px;
+            --w-col-erp: 85px;
+            --w-col-code: 130px;
+            --w-col-name: 260px;
+            --w-col-unit: 48px;
+
+            --left-col-sl: 0px;
+            --left-col-comp: 40px;                          /* 0 + 40 */
+            --left-col-cat: 95px;                           /* 40 + 55 */
+            --left-col-erp: 190px;                          /* 95 + 95 */
+            --left-col-code: 275px;                         /* 190 + 85 */
+            --left-col-name: 405px;                         /* 275 + 130 */
+            --left-col-unit: 665px;                         /* 405 + 260 */
+            --total-frozen-w: 713px;                        /* 665 + 48 */
+        }
+
+        .data-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: max-content;
+            min-width: 100%;
+            font-size: 0.76rem;
+            table-layout: fixed;
+            background: #ffffff;
+        }
+
+        .data-table thead th {
+            background: #0f2942;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 8px 6px;
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 2px solid #0284c7;
+            text-align: right;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .data-table thead th.th-left { text-align: left; }
+        .data-table thead th.th-center { text-align: center; }
+
+        /* Screenshot 1 Exact Table Header Themes */
+        .th-erp-normal {
+            background: #ffffff !important;
+            color: #0f2942 !important;
+            border-top: 1.5px solid #334155 !important;
+            border-bottom: 1.5px solid #334155 !important;
+            border-right: 1px solid #cbd5e1 !important;
+            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        .th-erp-cyan {
+            background: #009688 !important; /* Receive Group Vibrant Teal from Screenshot 1 */
+            color: #ffffff !important;
+            border-top: 1.5px solid #00796b !important;
+            border-bottom: 1.5px solid #00796b !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.25) !important;
+            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            text-align: right !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        .th-erp-pink {
+            background: #e91e63 !important; /* Issue Group Vibrant Pink/Rose from Screenshot 1 */
+            color: #ffffff !important;
+            border-top: 1.5px solid #c2185b !important;
+            border-bottom: 1.5px solid #c2185b !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.25) !important;
+            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            text-align: right !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        /* Frozen Thead Columns (Top + Left Sticky, z-index: 35) */
+        .data-table thead th.th-frozen-0 {
+            position: sticky !important;
+            left: var(--left-col-sl) !important;
+            width: var(--w-col-sl) !important;
+            min-width: var(--w-col-sl) !important;
+            max-width: var(--w-col-sl) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-1 {
+            position: sticky !important;
+            left: var(--left-col-comp) !important;
+            width: var(--w-col-comp) !important;
+            min-width: var(--w-col-comp) !important;
+            max-width: var(--w-col-comp) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-2 {
+            position: sticky !important;
+            left: var(--left-col-cat) !important;
+            width: var(--w-col-cat) !important;
+            min-width: var(--w-col-cat) !important;
+            max-width: var(--w-col-cat) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-3 {
+            position: sticky !important;
+            left: var(--left-col-erp) !important;
+            width: var(--w-col-erp) !important;
+            min-width: var(--w-col-erp) !important;
+            max-width: var(--w-col-erp) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-4 {
+            position: sticky !important;
+            left: var(--left-col-code) !important;
+            width: var(--w-col-code) !important;
+            min-width: var(--w-col-code) !important;
+            max-width: var(--w-col-code) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-5 {
+            position: sticky !important;
+            left: var(--left-col-name) !important;
+            width: var(--w-col-name) !important;
+            min-width: var(--w-col-name) !important;
+            max-width: var(--w-col-name) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-6 {
+            position: sticky !important;
+            left: var(--left-col-unit) !important;
+            width: var(--w-col-unit) !important;
+            min-width: var(--w-col-unit) !important;
+            max-width: var(--w-col-unit) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.18);
+        }
+
+        /* Frozen Body Columns (Left Sticky, 100% Solid Opaque Background, z-index: 15) */
+        .data-table tbody td.td-frozen-0 {
+            position: sticky !important;
+            left: var(--left-col-sl) !important;
+            width: var(--w-col-sl) !important;
+            min-width: var(--w-col-sl) !important;
+            max-width: var(--w-col-sl) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-1 {
+            position: sticky !important;
+            left: var(--left-col-comp) !important;
+            width: var(--w-col-comp) !important;
+            min-width: var(--w-col-comp) !important;
+            max-width: var(--w-col-comp) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-2 {
+            position: sticky !important;
+            left: var(--left-col-cat) !important;
+            width: var(--w-col-cat) !important;
+            min-width: var(--w-col-cat) !important;
+            max-width: var(--w-col-cat) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-3 {
+            position: sticky !important;
+            left: var(--left-col-erp) !important;
+            width: var(--w-col-erp) !important;
+            min-width: var(--w-col-erp) !important;
+            max-width: var(--w-col-erp) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-4 {
+            position: sticky !important;
+            left: var(--left-col-code) !important;
+            width: var(--w-col-code) !important;
+            min-width: var(--w-col-code) !important;
+            max-width: var(--w-col-code) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-5 {
+            position: sticky !important;
+            left: var(--left-col-name) !important;
+            width: var(--w-col-name) !important;
+            min-width: var(--w-col-name) !important;
+            max-width: var(--w-col-name) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-6 {
+            position: sticky !important;
+            left: var(--left-col-unit) !important;
+            width: var(--w-col-unit) !important;
+            min-width: var(--w-col-unit) !important;
+            max-width: var(--w-col-unit) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.18);
+        }
+
+        /* Hover Solid Preservation on Frozen Columns */
+        .data-table tbody tr:hover td.td-frozen-0,
+        .data-table tbody tr:hover td.td-frozen-1,
+        .data-table tbody tr:hover td.td-frozen-2,
+        .data-table tbody tr:hover td.td-frozen-3,
+        .data-table tbody tr:hover td.td-frozen-4,
+        .data-table tbody tr:hover td.td-frozen-5,
+        .data-table tbody tr:hover td.td-frozen-6 {
+            background-color: #f0fdf4 !important;
+        }
+
+        /* Tfoot Frozen Total Cell */
+        .data-table tfoot td.tfoot-frozen {
+            position: sticky !important;
+            left: 0 !important;
+            z-index: 25 !important;
+            background-color: #0f2942 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.25);
+        }
+
+        .badge-category {
+            display: inline-block;
+            font-size: 0.70rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .badge-category-fg {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+        }
+
+        .badge-category-sfg {
+            background: #f5f3ff;
+            color: #7c3aed;
+            border: 1px solid #ddd6fe;
+        }
+
+        .badge-category-rm {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .data-table tbody tr {
+            transition: background-color 0.15s ease;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #fcfdfe;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f0f9ff !important;
+        }
+
+        .data-table td {
+            padding: 5px 4px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+            font-weight: 500;
+            vertical-align: middle;
+            border-right: 1px solid #f8fafc;
+            text-align: right;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+        }
+
+        .data-table td.cell-left {
+            text-align: left;
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+        }
+
+        .data-table td.cell-center {
+            text-align: center;
+            font-family: var(--font-sans);
+        }
+
+        .cell-serial {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .code-pill {
+            display: inline-flex;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #0369a1;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            padding: 1px 4px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .erp-pill {
+            display: inline-flex;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #475569;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 1px 4px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .item-name-cell {
+            font-weight: 700;
+            color: #0f2942;
+            font-size: 0.78rem;
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .unit-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #047857;
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+            padding: 1px 4px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .cell-closing-stock {
+            font-weight: 800;
+            color: #0284c7;
+            background: rgba(2, 132, 199, 0.05);
+        }
+
+        .grand-total-row td {
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.80rem !important;
+            padding: 8px 4px !important;
+            border-top: 2px solid #0284c7 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+            text-align: right;
+            font-family: var(--font-mono);
+        }
+
+        .grand-total-row td.grand-title {
+            text-align: left;
+            letter-spacing: 0.5px;
+            font-family: var(--font-sans);
+            font-size: 0.84rem !important;
+            color: #38bdf8 !important;
+            padding-left: 6px !important;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 20px 40px rgba(15, 41, 66, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-header {
+            padding: 14px 20px;
+            background: var(--header-gradient);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+        }
+
+        .btn-modal-close {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--brand-dark);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+            .btn-nav-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0f2942;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            font-family: inherit;
+            line-height: 1.2;
+        }
+
+        .btn-nav-action:hover {
+            background: #f0f7ff;
+            border-color: #0284c7;
+            color: #0284c7;
+            transform: translateX(-2px);
+        }
+
+        .btn-nav-dash {
+            background: #f8fafc;
+            color: #0369a1;
+            border-color: #bae6fd;
+        }
+
+        .btn-nav-dash:hover {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                                                
+                <div>
+                    <div class="nav-brand-title">INVENTORY MOVEMENT REPORT ERP</div>
+                    <div class="nav-brand-sub">Armature &amp; Winding Division</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Live Day & Time Top Corner (Seamless Clean Blue Typography) -->
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-container">
+
+        <!-- Report Header Banner -->
+        <div class="report-header-banner">
+            <div class="company-header-group">
+                <h1 style="font-size: 1.55rem; font-weight: 900; letter-spacing: -0.5px; color: #ffffff; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <span>Stock Movement Report</span>
+                    <span class="date-interval-badge" id="reportDateBadge" onclick="changeDateInterval()" title="Click to Change Date Interval" style="cursor:pointer;">📅 2026-08-01 to 2026-08-26</span>
+                </h1>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" class="btn-action-paste" onclick="openPasteModal()" title="Copy from ERP and Paste here to Auto-Sync!">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    <span>📋 Paste ERP Report (Auto-Sync)</span>
+                </button>
+                <button type="button" class="btn-action-light" onclick="syncToArmatureSummary()" title="Force Sync to Armature Summary">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    <span>🔄 Sync to Summary</span>
+                </button>
+                <button type="button" class="btn-action-light" onclick="exportMovementCSV()" title="Export CSV">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export CSV</span>
+                </button>
+                <button type="button" class="btn-action-light" onclick="window.print()" title="Print">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4 Top Executive KPI Stat Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <span class="kpi-label">Total Opening Stock</span>
+                    <span class="kpi-value" id="kpiOpening" style="color: #0284c7;">175,997.34</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <span class="kpi-label">Total Received (Store+Sec+Prd)</span>
+                    <span class="kpi-value" id="kpiReceived" style="color: #059669;">174,907.30</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <span class="kpi-label">Total Consumption / Issues</span>
+                    <span class="kpi-value" id="kpiConsumption" style="color: #d97706;">173,578.18</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <span class="kpi-label">Total Bin Closing Stock</span>
+                    <span class="kpi-value" id="kpiBinClosing" style="color: #7c3aed;">177,381.81</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="filter-toolbar">
+            <div class="toolbar-left">
+                <!-- Search Box -->
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="searchInput" placeholder="Search Code, ERP Code, Product / Material Name..." oninput="applyMovementFilters()">
+                </div>
+
+                <!-- Primary Category-wise Filter Dropdown -->
+                <div class="filter-group" style="display:inline-flex; align-items:center; gap:8px;">
+                    <span class="filter-label" style="color: #0f2942; font-weight: 800; font-size: 0.78rem;">📁 Category:</span>
+                    <select id="categoryFilter" class="filter-select" onchange="applyMovementFilters()" style="min-width: 220px; font-weight: 800; border: 1.5px solid #0284c7; background: #f0f9ff; color: #0369a1; padding: 7px 12px; border-radius: 8px; outline: none;">
+                        <option value="ALL">All Categories</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn-action-light" onclick="resetMovementFilters()">Reset</button>
+            </div>
+        </div>
+
+        <!-- Table Container Card -->
+        <div class="table-card">
+            <div style="text-align: center; padding: 14px 10px 10px 10px; border-bottom: 1px solid #cbd5e1; background: #ffffff;">
+                <h2 style="font-size: 1.35rem; font-weight: 800; color: #0f2942; margin-bottom: 3px; font-family: var(--font-sans);">Stock Movement Report (Armature &amp; Winding)</h2>
+                <div style="font-size: 0.88rem; font-weight: 700; color: #475569; font-family: var(--font-sans);" id="erpDateIntervalDisplay">Date Interval: 2026-08-01 to 2026-08-29</div>
+            </div>
+
+            <div class="table-header-bar">
+                <div class="table-stats-count" id="tableRecordStats">
+                    Showing <strong>0</strong> of <strong>0</strong> ERP Movement records
+                </div>
+                <div style="font-size: 0.76rem; font-weight: 700; color: #059669; display: flex; align-items: center; gap: 6px;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+                    <span>Auto-Sync Connected with Armature Summary</span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table" id="movementTable">
+                    <thead>
+                        <!-- Populated dynamically with exact 24 ERP columns matching Screenshot 1 -->
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                    <tfoot id="tableFoot">
+                        <!-- Populated by JavaScript -->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Paste Modal -->
+    <div class="modal-backdrop" id="pasteModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">📋 Paste Armature &amp; Winding ERP Stock Report (Auto-Sync)</div>
+                <button type="button" class="btn-modal-close" onclick="closePasteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="font-size: 0.82rem; color: #475569; line-height: 1.45;">
+                    Copy rows directly from your <strong>ERP / Excel Stock Movement Report</strong> and paste below.
+                    <br>
+                    <strong style="color:#059669;">✨ When you click "Import &amp; Auto-Sync", it will automatically update this page AND your Armature Summary page instantly!</strong>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-heading); text-transform: uppercase;">Paste Spreadsheet Text *</label>
+                    <textarea id="erpRawInput" rows="12" placeholder="S/L&#9;Company&#9;Category&#9;ERP CODE&#9;Code&#9;Item Name&#9;Unit&#9;Opening&#9;Opening Adjust&#9;Store Receive&#9;Section Receive&#9;Production Receive&#9;Damage Receive&#9;Others Receive&#9;Total Receive&#9;Consumption...&#10;1&#9;FAN&#9;Ceiling Raw&#9;200100063&#9;3101010062&#9;Armature Coton Tap&#9;Mtr&#9;1967..." style="font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.35; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; outline: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-action-light" onclick="closePasteModal()">Cancel</button>
+                <button type="button" class="btn-action-paste" onclick="processErpPaste()">⚡ Import &amp; Auto-Sync to Summary</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastBox">Notification Message</div>
+
+    <!-- Scripts -->
+    <script src="master_database.js"></script>
+    <script src="armature_winding_erp_data.js"></script>
+    <script src="erp_engine.js"></script>
+    <script>
+        let allMovementData = [];
+        let filteredMovementData = [];
+        const ARMATURE_ERP_STORAGE_KEY = 'mep_armature_winding_erp_data';
+        const ARMATURE_SUMMARY_STORAGE_KEY = 'mep_armature_custom_data';
+
+        // Exact 24 columns definition matching ERP Stock Movement Report (Screenshot 1)
+        const ERP_COLUMNS_DEF = [
+            { key: 'origSl', name: 'S/L', align: 'center', type: 'normal', width: '40px' },
+            { key: 'company', name: 'Company', align: 'left', type: 'normal', width: '55px' },
+            { key: 'category', name: 'Category', align: 'left', type: 'normal', width: '95px' },
+            { key: 'erpCode', name: 'ERP CODE', align: 'left', type: 'normal', width: '85px' },
+            { key: 'code', name: 'Code', align: 'left', type: 'normal', width: '130px' },
+            { key: 'itemName', name: 'Item Name', align: 'left', type: 'normal', width: '260px' },
+            { key: 'unit', name: 'Unit', align: 'center', type: 'normal', width: '48px' },
+            // Teal / Cyan Receive Group (Columns 8 - 15)
+            { key: 'opening', name: 'Opening', align: 'right', type: 'cyan', width: '85px' },
+            { key: 'openingAdjust', name: 'Opening Adjust', align: 'right', type: 'cyan', width: '85px' },
+            { key: 'storeReceive', name: 'Store Receive', align: 'right', type: 'cyan', width: '85px' },
+            { key: 'sectionReceive', name: 'Section Receive', align: 'right', type: 'cyan', width: '95px' },
+            { key: 'productionReceive', name: 'Production Receive', align: 'right', type: 'cyan', width: '105px' },
+            { key: 'damageReceive', name: 'Damage Receive', align: 'right', type: 'cyan', width: '85px' },
+            { key: 'othersReceive', name: 'Others Receive', align: 'right', type: 'cyan', width: '85px' },
+            { key: 'totalReceive', name: 'Total Receive', align: 'right', type: 'cyan', width: '95px' },
+            // Pink / Rose Issue Group (Columns 16 - 22)
+            { key: 'consumption', name: 'Consumption', align: 'right', type: 'pink', width: '85px' },
+            { key: 'wipIssue', name: 'WIP Issue', align: 'right', type: 'pink', width: '85px' },
+            { key: 'openingAdjustIssue', name: 'Opening Adjust', align: 'right', type: 'pink', width: '85px' },
+            { key: 'issueToRepair', name: 'Issue To Repair', align: 'right', type: 'pink', width: '85px' },
+            { key: 'issueToDamage', name: 'Issue To Damage', align: 'right', type: 'pink', width: '85px' },
+            { key: 'inTransit', name: 'In Transit', align: 'right', type: 'pink', width: '85px' },
+            { key: 'totalIssue', name: 'Total Issue', align: 'right', type: 'pink', width: '95px' },
+            // Closing Group (Columns 23 - 24)
+            { key: 'closing', name: 'Closing', align: 'right', type: 'normal', width: '85px' },
+            { key: 'binClosing', name: 'Bin Closing', align: 'right', type: 'normal', width: '85px' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+
+            loadMovementData();
+            loadDateInterval();
+            buildCategoryFilter();
+            applyMovementFilters();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+
+        function loadDateInterval() {
+            const savedDate = localStorage.getItem('mep_armature_winding_date_interval') || localStorage.getItem('mep_erp_date_interval') || '2026-08-01 to 2026-08-29';
+            const badge = document.getElementById('reportDateBadge');
+            if (badge) badge.innerText = '📅 Date Interval: ' + savedDate;
+            const display = document.getElementById('erpDateIntervalDisplay');
+            if (display) display.innerText = 'Date Interval: ' + savedDate;
+        }
+
+        function changeDateInterval() {
+            const current = localStorage.getItem('mep_armature_winding_date_interval') || localStorage.getItem('mep_erp_date_interval') || '2026-08-01 to 2026-08-29';
+            const newDate = prompt("Enter Date Interval for Armature Stock Reports:", current);
+            if (newDate && newDate.trim()) {
+                localStorage.setItem('mep_armature_winding_date_interval', newDate.trim());
+                localStorage.setItem('mep_erp_date_interval', newDate.trim());
+                localStorage.setItem('closingDate_armature_winding', newDate.trim());
+                loadDateInterval();
+                showToast(`📅 Date Interval updated to ${newDate.trim()}`);
+            }
+        }
+
+        function sanitizeDataset(items) {
+            if (!Array.isArray(items)) return [];
+
+            return items.filter(item => {
+                const name = (item.itemName || item.name || '').trim().toLowerCase();
+                const code = (item.code || '').trim().toLowerCase();
+                const erpCode = (item.erpCode || '').trim().toLowerCase();
+                const sl = String(item.origSl || item.sl || '').trim().toLowerCase();
+
+                if (code === 'code' || erpCode === 'erp code' || name === 'item name' || sl === 's/l' || sl === 'sl') return false;
+                if ((name === 'item' || name === '') && !code && !erpCode) return false;
+                if (name.includes('stock movement report') || name.includes('date interval')) return false;
+                return true;
+            }).map((item, idx) => {
+                item.sl = idx + 1;
+                item.origSl = String(idx + 1);
+                item.itemName = item.itemName || item.name || 'Item';
+                item.name = item.itemName;
+
+                if (item.rawCols && Array.isArray(item.rawCols)) {
+                    if ((!item.company || item.company === '') && item.rawCols[1]) item.company = item.rawCols[1].trim();
+                    if ((!item.category || item.category === '' || item.category === 'General') && item.rawCols[2]) item.category = item.rawCols[2].trim();
+                }
+
+                if (!item.company || item.company.trim() === '') item.company = 'FAN';
+
+                if (!item.category || item.category.trim() === '' || item.category === 'General') {
+                    const c = (item.code || '').toUpperCase();
+                    const n = (item.itemName || '').toUpperCase();
+                    if (c.startsWith('EF') || n.includes('EXHAUST') || c.startsWith('MRTF') || n.includes('TABLE FAN')) {
+                        item.category = 'Finished Goods';
+                    } else if (c.startsWith('CF') && !c.startsWith('CFB')) {
+                        item.category = 'Finished Goods';
+                    } else if (c.startsWith('CR') || c.startsWith('CG')) {
+                        item.category = 'Finished Goods';
+                    } else if (c.startsWith('CFB') || c.startsWith('FB') || n.includes('BLADE')) {
+                        item.category = 'FAN SFG';
+                    } else if (n.includes('BODY') || c.startsWith('SFG1010076')) {
+                        item.category = 'FAN SFG';
+                    } else if (n.includes('ARMATURE') || c.startsWith('SFG1010079')) {
+                        item.category = 'FAN SFG';
+                    } else if (c.startsWith('SFG')) {
+                        item.category = 'FAN SFG';
+                    } else if (c.startsWith('RM') || n.includes('RAW')) {
+                        item.category = 'Raw Material';
+                    } else if (c.startsWith('PM') || n.includes('PACK')) {
+                        item.category = 'Packing Material';
+                    } else {
+                        item.category = 'Finished Goods';
+                    }
+                }
+                return item;
+            });
+        }
+
+        function loadMovementData() {
+            let base = [];
+            if (typeof RAW_ARMATURE_WINDING_ERP_DATA !== 'undefined' && Array.isArray(RAW_ARMATURE_WINDING_ERP_DATA)) {
+                base = RAW_ARMATURE_WINDING_ERP_DATA;
+            }
+
+            const saved = localStorage.getItem(ARMATURE_ERP_STORAGE_KEY);
+            if (saved) {
+                try {
+                    const list = JSON.parse(saved);
+                    if (Array.isArray(list) && list.length > 0) {
+                        allMovementData = sanitizeDataset(list);
+                        localStorage.setItem(ARMATURE_ERP_STORAGE_KEY, JSON.stringify(allMovementData));
+                        return;
+                    }
+                } catch(e) {
+                    console.error("Error loading armature ERP data:", e);
+                }
+            }
+
+            allMovementData = sanitizeDataset(JSON.parse(JSON.stringify(base)));
+            localStorage.setItem(ARMATURE_ERP_STORAGE_KEY, JSON.stringify(allMovementData));
+        }
+
+        function buildCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            if (!select) return;
+
+            const catCounts = {};
+            allMovementData.forEach(item => {
+                const cat = (item.category || 'Uncategorized').trim();
+                if (cat) catCounts[cat] = (catCounts[cat] || 0) + 1;
+            });
+
+            let html = `<option value="ALL">📁 All Categories (${allMovementData.length} Items)</option>`;
+            Object.keys(catCounts).sort().forEach(cat => {
+                html += `<option value="${escapeHTML(cat)}">📂 ${escapeHTML(cat)} (${catCounts[cat]} Items)</option>`;
+            });
+
+            select.innerHTML = html;
+            select.value = 'ALL';
+        }
+
+        function applyMovementFilters() {
+            const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+            const catVal = document.getElementById('categoryFilter') ? document.getElementById('categoryFilter').value : 'ALL';
+
+            filteredMovementData = allMovementData.filter(item => {
+                if (searchVal) {
+                    const mCode = item.code && item.code.toLowerCase().includes(searchVal);
+                    const mErpCode = item.erpCode && item.erpCode.toLowerCase().includes(searchVal);
+                    const mName = (item.itemName || item.name || '').toLowerCase().includes(searchVal);
+                    const mCat = item.category && item.category.toLowerCase().includes(searchVal);
+                    if (!mCode && !mErpCode && !mName && !mCat) return false;
+                }
+
+                if (catVal !== 'ALL') {
+                    if ((item.category || '').trim() !== catVal) return false;
+                }
+
+                return true;
+            });
+
+            renderKPIs();
+            renderMovementTable();
+        }
+
+        function renderKPIs() {
+            let op = 0;
+            let rec = 0;
+            let con = 0;
+            let bin = 0;
+
+            filteredMovementData.forEach(i => {
+                op += Number(i.opening) || 0;
+                rec += Number(i.totalReceive) || ((Number(i.storeReceive) || 0) + (Number(i.sectionReceive) || 0) + (Number(i.productionReceive) || 0) + (Number(i.damageReceive) || 0) + (Number(i.othersReceive) || 0));
+                con += Number(i.totalIssue) || ((Number(i.consumption) || 0) + (Number(i.wipIssue) || 0) + (Number(i.issueToDamage) || 0) + (Number(i.inTransit) || 0));
+                bin += Number(i.binClosing) || (Number(i.closing) || 0);
+            });
+
+            document.getElementById('kpiOpening').innerText = formatNum(op);
+            document.getElementById('kpiReceived').innerText = formatNum(rec);
+            document.getElementById('kpiConsumption').innerText = formatNum(con);
+            document.getElementById('kpiBinClosing').innerText = formatNum(bin);
+
+            const catNotice = document.getElementById('categoryFilter') && document.getElementById('categoryFilter').value !== 'ALL' ? ` (Category: ${document.getElementById('categoryFilter').value})` : '';
+            document.getElementById('tableRecordStats').innerHTML = `Showing <strong>${filteredMovementData.length.toLocaleString()}</strong> of <strong>${allMovementData.length.toLocaleString()}</strong> ERP Movement records${catNotice}`;
+        }
+
+        function formatCellNum(val) {
+            if (val === null || val === undefined || val === '') return '';
+            const s = String(val).trim();
+            if (s === '' || s === '0' || s === '0.00000000' || s === '0.0000' || s === '0.00') return '0';
+            const num = parseFloat(s.replace(/,/g, ''));
+            if (isNaN(num)) return escapeHTML(s);
+            if (num === 0) return '0';
+            return num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 4 });
+        }
+
+        function renderMovementTable() {
+            const table = document.getElementById('movementTable');
+            const thead = table.querySelector('thead');
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+
+            // 1. Exact 24 columns Header matching Screenshot 1
+            let theadHtml = '<tr>';
+            ERP_COLUMNS_DEF.forEach((col, colIdx) => {
+                let thClass = 'th-erp-normal';
+                if (col.type === 'cyan') thClass = 'th-erp-cyan';
+                if (col.type === 'pink') thClass = 'th-erp-pink';
+                if (col.align === 'center') thClass += ' th-center';
+                if (col.align === 'left') thClass += ' th-left';
+                if (colIdx < 7) thClass += ` th-frozen-${colIdx}`;
+                theadHtml += `<th class="${thClass}" style="width:${col.width}; min-width:${col.width}; max-width:${col.width};">${escapeHTML(col.name)}</th>`;
+            });
+            theadHtml += '</tr>';
+            thead.innerHTML = theadHtml;
+
+            tbody.innerHTML = '';
+
+            if (filteredMovementData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="24" style="text-align: center; padding: 30px; color: #94a3b8;">No records match the filter.</td></tr>`;
+                tfoot.innerHTML = '';
+                return;
+            }
+
+            const colSums = {};
+            ERP_COLUMNS_DEF.forEach(c => {
+                if (c.align === 'right') colSums[c.key] = 0;
+            });
+
+            filteredMovementData.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                let trHtml = '';
+
+                ERP_COLUMNS_DEF.forEach((col, colIdx) => {
+                    const val = item[col.key];
+                    const freezeClass = colIdx < 7 ? ` td-frozen-${colIdx}` : '';
+                    if (col.align === 'right') {
+                        const num = parseFloat(val) || 0;
+                        colSums[col.key] += num;
+                        const formatted = formatCellNum(val);
+                        trHtml += `<td class="${freezeClass}" style="text-align:right; font-family:var(--font-mono);">${formatted}</td>`;
+                    } else if (col.align === 'center') {
+                        if (col.key === 'origSl') {
+                            trHtml += `<td class="td-center${freezeClass}" style="font-weight:700; color:#475569;">${escapeHTML(String(item.origSl || (idx + 1)))}</td>`;
+                        } else if (col.key === 'unit') {
+                            trHtml += `<td class="td-center${freezeClass}"><span class="unit-badge">${escapeHTML(String(val || 'Pcs'))}</span></td>`;
+                        } else {
+                            trHtml += `<td class="td-center${freezeClass}">${escapeHTML(String(val || ''))}</td>`;
+                        }
+                    } else {
+                        if (col.key === 'code') {
+                            trHtml += `<td class="td-left${freezeClass}"><span class="code-pill">${escapeHTML(String(val || ''))}</span></td>`;
+                        } else if (col.key === 'itemName') {
+                            trHtml += `<td class="td-left item-name-cell${freezeClass}" title="${escapeHTML(String(val || ''))}">${escapeHTML(String(val || ''))}</td>`;
+                        } else if (col.key === 'category') {
+                            let catClass = 'badge-category-fg';
+                            const catUpper = String(val || '').toUpperCase();
+                            if (catUpper.includes('SFG')) catClass = 'badge-category-sfg';
+                            else if (catUpper.includes('RAW') || catUpper.includes('MATERIAL')) catClass = 'badge-category-rm';
+                            trHtml += `<td class="td-left${freezeClass}"><span class="badge-category ${catClass}">${escapeHTML(String(val || 'Finished Goods'))}</span></td>`;
+                        } else if (col.key === 'company') {
+                            trHtml += `<td class="td-left${freezeClass}" style="font-weight:700; color:#475569;">${escapeHTML(String(val || 'FAN'))}</td>`;
+                        } else {
+                            trHtml += `<td class="td-left${freezeClass}">${escapeHTML(String(val || ''))}</td>`;
+                        }
+                    }
+                });
+
+                tr.innerHTML = trHtml;
+                tbody.appendChild(tr);
+            });
+
+            // Grand Total Row in tfoot
+            let tfootHtml = `<tr class="grand-total-row">`;
+            tfootHtml += `<td colspan="7" class="grand-title tfoot-frozen">TOTAL (${filteredMovementData.length} ITEMS)</td>`;
+            ERP_COLUMNS_DEF.forEach((col, colIdx) => {
+                if (colIdx >= 7 && col.align === 'right') {
+                    const sumVal = colSums[col.key] || 0;
+                    tfootHtml += `<td style="text-align:right; font-family:var(--font-mono); font-weight:800;">${sumVal === 0 ? '0' : formatNum(sumVal)}</td>`;
+                }
+            });
+            tfootHtml += `</tr>`;
+            tfoot.innerHTML = tfootHtml;
+        }
+
+        function openPasteModal() {
+            document.getElementById('pasteModal').classList.add('active');
+            document.getElementById('erpRawInput').value = '';
+            document.getElementById('erpRawInput').focus();
+        }
+
+        function closePasteModal() {
+            document.getElementById('pasteModal').classList.remove('active');
+        }
+
+        function processErpPaste() {
+            const rawText = document.getElementById('erpRawInput').value.trim();
+            if (!rawText) {
+                alert("Please paste your ERP Stock Movement data first.");
+                return;
+            }
+
+            // Extract Date Interval if present
+            const dateMatch = rawText.match(/(?:Date Interval[:\s]*|Date[:\s]*)([0-9]{4}-[0-9]{2}-[0-9]{2}\s*to\s*[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1,2}-[A-Za-z]{3}-[0-9]{2,4}\s*to\s*[0-9]{1,2}-[A-Za-z]{3}-[0-9]{2,4})/i);
+            if (dateMatch && dateMatch[1]) {
+                const matchedDate = dateMatch[1].trim();
+                localStorage.setItem('mep_erp_date_interval', matchedDate);
+                localStorage.setItem('mep_armature_winding_date_interval', matchedDate);
+                localStorage.setItem('closingDate_armature_winding', matchedDate);
+                loadDateInterval();
+            }
+
+            const rawLines = rawText.split(/\r?\n/).filter(l => l.trim().length > 0);
+            const cleanN = (v) => {
+                if (v === null || v === undefined || v === '') return 0;
+                const c = String(v).replace(/,/g, '').trim();
+                const n = parseFloat(c);
+                return isNaN(n) ? 0 : n;
+            };
+
+            // Locate the ACTUAL table header row (skipping title and date)
+            let headerLineIndex = -1;
+            for (let i = 0; i < Math.min(rawLines.length, 12); i++) {
+                const line = rawLines[i].trim();
+                const cells = line.split('\t').map(c => c.trim());
+                const joined = cells.join(' ').toLowerCase();
+
+                if (cells.length >= 6 && (
+                    joined.includes('item name') || 
+                    joined.includes('erp code') || 
+                    (joined.includes('code') && joined.includes('opening')) ||
+                    (joined.includes('company') && joined.includes('category')) ||
+                    joined.includes('production receive') ||
+                    joined.includes('consumption')
+                )) {
+                    headerLineIndex = i;
+                    break;
+                }
+            }
+
+            let dataLines = headerLineIndex !== -1 ? rawLines.slice(headerLineIndex + 1) : rawLines;
+            const newItems = [];
+            let slCounter = 1;
+
+            dataLines.forEach(line => {
+                if (!line.trim()) return;
+                const cols = line.split('\t').map(c => c.trim());
+                if (cols.length < 3) return;
+
+                const firstCol = (cols[0] || '').toLowerCase();
+                if (firstCol === 'total' || firstCol === 'grand total' || firstCol.startsWith('date interval') || firstCol.startsWith('stock movement')) return;
+
+                const item = {
+                    id: "erp_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
+                    sl: slCounter++,
+                    origSl: cols[0] || String(slCounter - 1),
+                    company: cols[1] || 'FAN',
+                    category: cols[2] || 'FAN SFG',
+                    erpCode: cols[3] || '',
+                    code: cols[4] || '',
+                    itemName: cols[5] || cols[4] || 'Item',
+                    name: cols[5] || cols[4] || 'Item',
+                    unit: cols[6] || 'Pcs',
+                    opening: cleanN(cols[7]),
+                    openingAdjust: cleanN(cols[8]),
+                    storeReceive: cleanN(cols[9]),
+                    sectionReceive: cleanN(cols[10]),
+                    productionReceive: cleanN(cols[11]),
+                    damageReceive: cleanN(cols[12]),
+                    othersReceive: cleanN(cols[13]),
+                    totalReceive: cleanN(cols[14]),
+                    consumption: cleanN(cols[15]),
+                    wipIssue: cleanN(cols[16]),
+                    openingAdjustIssue: cleanN(cols[17]),
+                    issueToRepair: cleanN(cols[18]),
+                    issueToDamage: cleanN(cols[19]),
+                    inTransit: cleanN(cols[20]),
+                    totalIssue: cleanN(cols[21]),
+                    closing: cleanN(cols[22]),
+                    binClosing: cleanN(cols[23] !== undefined ? cols[23] : cols[22]),
+                    rawCols: cols
+                };
+
+                if (!item.totalReceive) item.totalReceive = item.productionReceive + item.storeReceive + item.sectionReceive;
+                if (!item.totalIssue) item.totalIssue = item.consumption + item.wipIssue + item.issueToDamage;
+                if (item.binClosing === 0 && item.closing > 0) item.binClosing = item.closing;
+
+                newItems.push(item);
+            });
+
+            const sanitized = sanitizeDataset(newItems);
+            if (sanitized.length === 0) {
+                alert("Could not parse rows. Please check text.");
+                return;
+            }
+
+            allMovementData = sanitized;
+            localStorage.setItem(ARMATURE_ERP_STORAGE_KEY, JSON.stringify(allMovementData));
+            syncToArmatureSummary(false);
+
+            buildCategoryFilter();
+            applyMovementFilters();
+            closePasteModal();
+            showToast(`✅ Imported ${allMovementData.length} items across 24 columns and Auto-Synced to Summary!`);
+        }
+
+        // Auto-Sync to Armature Summary (`armature_summary.html`)
+        function syncToArmatureSummary(showNotification = true) {
+            if (!allMovementData || allMovementData.length === 0) return;
+
+            if (typeof MEP_ERP_ENGINE !== 'undefined' && typeof MEP_ERP_ENGINE.saveArmatureErpData === 'function') {
+                MEP_ERP_ENGINE.saveArmatureErpData(allMovementData);
+            } else {
+                localStorage.setItem(ARMATURE_ERP_STORAGE_KEY, JSON.stringify(allMovementData));
+                localStorage.setItem('mep_armature_winding_erp_data_updated', String(Date.now()));
+            }
+
+            if (showNotification) {
+                showToast(`🔄 Auto-Synced items to Armature Summary!`);
+            }
+        }
+
+        function exportMovementCSV() {
+            let csv = ERP_COLUMNS_DEF.map(c => `"${c.name}"`).join(",") + "\r\n";
+            allMovementData.forEach((item) => {
+                const rowVals = ERP_COLUMNS_DEF.map(col => {
+                    const val = item[col.key];
+                    if (val === null || val === undefined) return '""';
+                    return `"${String(val).replace(/"/g, '""')}"`;
+                });
+                csv += rowVals.join(",") + "\r\n";
+            });
+
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            const dateStr = localStorage.getItem('mep_armature_winding_date_interval') || '2026-08-29';
+            link.setAttribute("download", `MEP_FAN_Armature_Stock_Movement_${dateStr.replace(/[^0-9a-zA-Z]/g, '_')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("📥 Exported Armature Stock Movement Report to CSV!");
+        }
+
+        function resetMovementFilters() {
+            document.getElementById('searchInput').value = '';
+            const catSel = document.getElementById('categoryFilter');
+            if (catSel) catSel.value = 'ALL';
+            applyMovementFilters();
+        }
+
+        function formatNum(val) {
+            const num = Number(val);
+            if (isNaN(num) || num === 0) return '0.00';
+            return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayDateElem = document.getElementById('liveDayText');
+            const timeElem = document.getElementById('liveTimeText');
+
+            if (dayDateElem) dayDateElem.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            if (timeElem) timeElem.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        function escapeHTML(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>
+
+
+

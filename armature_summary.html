@@ -1,0 +1,1865 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Armature Summary (ERP Stock) | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-primary-hover: #0369a1;
+            --brand-dark: #0f2942;
+            --brand-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            --header-gradient: linear-gradient(135deg, #0a1e33 0%, #0f2942 50%, #1e3a5f 100%);
+            --bg-page: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-soft: rgba(186, 215, 243, 0.7);
+            --border-subtle: #e2e8f0;
+            --text-heading: #0f2942;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --accent-success: #059669;
+            --accent-danger: #e11d48;
+            --accent-amber: #d97706;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(15, 41, 66, 0.06) 0%, transparent 45%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Hide Number Spinners */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1.5px solid var(--border-soft);
+            box-shadow: 0 4px 20px rgba(15, 41, 66, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-back-portal:hover {
+            background: #f0f7ff;
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: translateX(-3px);
+        }
+
+        .btn-back-portal svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2.5;
+        }
+
+        .nav-brand-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Live Day & Time Top Corner - Seamless Clean Blue Typography */
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0 4px 0 0;
+            box-shadow: none;
+            user-select: none;
+            height: auto;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.22;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .live-day-text {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: -0.1px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono, monospace);
+            font-size: 1.18rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.6px;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 14px 5px 6px;
+            background: #f0f7ff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 30px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        .user-avatar-mini {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Main Workspace Container */
+        .main-container {
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Report Header Banner */
+        .report-header-banner {
+            background: var(--header-gradient);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(15, 41, 66, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .report-header-banner::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(2, 132, 199, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .company-header-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .company-header-group h1 {
+            font-size: 1.55rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .date-interval-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(2, 132, 199, 0.4);
+            border: 1px solid #38bdf8;
+            color: #e0f2fe;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.80rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .date-interval-badge:hover {
+            background: rgba(2, 132, 199, 0.6);
+            border-color: #7dd3fc;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+
+        .btn-action-light {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #ffffff;
+            color: var(--brand-dark);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-action-light:hover {
+            background: #f0f7ff;
+            color: var(--brand-primary);
+            transform: translateY(-1px);
+        }
+
+        .btn-action-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--brand-gradient);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 12px rgba(2, 132, 199, 0.35);
+        }
+
+        .btn-action-primary:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+            transform: translateY(-1px);
+        }
+
+        /* Top 4 KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(15, 41, 66, 0.06);
+        }
+
+        .kpi-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .kpi-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .kpi-value {
+            font-size: 1.35rem;
+            font-weight: 900;
+            font-family: var(--font-mono);
+            color: var(--text-heading);
+            line-height: 1.1;
+        }
+
+        .kpi-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #f0f9ff;
+            color: var(--brand-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid #bae6fd;
+            flex-shrink: 0;
+        }
+
+        /* Toolbar & Search */
+        .filter-toolbar {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 280px;
+            flex: 1;
+            max-width: 420px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 7px 12px 7px 34px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            color: var(--text-heading);
+            background: #f8fafc;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            background: #ffffff;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 15px;
+            height: 15px;
+            stroke: #94a3b8;
+            stroke-width: 2.2;
+            fill: none;
+            pointer-events: none;
+        }
+
+        .filter-select {
+            padding: 7px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            background: #f8fafc;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .filter-select:focus {
+            border-color: var(--brand-primary);
+            background: #ffffff;
+        }
+
+        .btn-reset-filter {
+            padding: 7px 12px;
+            background: #f1f5f9;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.80rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset-filter:hover {
+            background: #e2e8f0;
+            color: var(--text-heading);
+        }
+
+        /* 100% Fit Data Table (Single Page View) */
+        .table-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(15, 41, 66, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-header-bar {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-stats-count {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .table-stats-count strong {
+            color: var(--brand-primary);
+            font-weight: 800;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto !important;
+            overflow-y: auto;
+            max-height: calc(100vh - 335px);
+            min-height: 280px;
+            position: relative;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #0284c7;
+            border-radius: 5px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #0369a1;
+        }
+
+        .data-table {
+            width: max-content;
+            min-width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13.5px;
+        }
+
+        .data-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
+        .data-table th {
+            background: #0f2942;
+            color: #f8fafc;
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            padding: 7px 6px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+            text-align: right;
+            vertical-align: middle;
+            line-height: 1.15;
+        }
+
+        .data-table th.th-left { text-align: left; }
+        .data-table th.th-center { text-align: center; }
+
+        /* Freeze Panes up to UNIT column (SL -> Item Code -> Item Name -> UNIT) */
+        .sticky-col-1 {
+            position: sticky !important;
+            left: 0px !important;
+            width: 40px !important;
+            min-width: 40px !important;
+            max-width: 40px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-2 {
+            position: sticky !important;
+            left: 40px !important;
+            width: 95px !important;
+            min-width: 95px !important;
+            max-width: 95px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-3 {
+            position: sticky !important;
+            left: 135px !important;
+            width: 250px !important;
+            min-width: 250px !important;
+            max-width: 250px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-4 {
+            position: sticky !important;
+            left: 385px !important;
+            width: 50px !important;
+            min-width: 50px !important;
+            max-width: 50px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            box-sizing: border-box;
+        }
+
+        .data-table thead th.sticky-col-1,
+        .data-table thead th.sticky-col-2,
+        .data-table thead th.sticky-col-3 {
+            background: #0a1e33 !important;
+            z-index: 35 !important;
+        }
+
+        .data-table thead th.sticky-col-4 {
+            background: #0a1e33 !important;
+            z-index: 36 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        .category-subtotal-row td.cat-title-cell {
+            position: sticky !important;
+            left: 0px !important;
+            width: 435px !important;
+            min-width: 435px !important;
+            max-width: 435px !important;
+            z-index: 18 !important;
+            background: #fef08a !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            box-sizing: border-box;
+        }
+
+        .grand-total-row td.grand-title {
+            position: sticky !important;
+            left: 0px !important;
+            width: 435px !important;
+            min-width: 435px !important;
+            max-width: 435px !important;
+            z-index: 18 !important;
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            box-sizing: border-box;
+            text-align: left !important;
+            padding-left: 12px !important;
+        }
+
+        .data-table tbody tr:nth-child(even) td.sticky-col-1,
+        .data-table tbody tr:nth-child(even) td.sticky-col-2,
+        .data-table tbody tr:nth-child(even) td.sticky-col-3,
+        .data-table tbody tr:nth-child(even) td.sticky-col-4 {
+            background-color: #fcfdfe !important;
+        }
+
+        .data-table tbody tr:hover td.sticky-col-1,
+        .data-table tbody tr:hover td.sticky-col-2,
+        .data-table tbody tr:hover td.sticky-col-3,
+        .data-table tbody tr:hover td.sticky-col-4 {
+            background-color: #f0f9ff !important;
+        }
+
+        .data-table tbody tr {
+            transition: background-color 0.15s ease;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #fcfdfe;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f0f9ff !important;
+        }
+
+        .data-table td {
+            padding: 5px 6px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+            font-weight: 500;
+            vertical-align: middle;
+            border-right: 1px solid #f8fafc;
+            text-align: right;
+            font-size: 13.5px;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .data-table td.cell-left {
+            text-align: left;
+            font-size: 13.5px;
+        }
+
+        .data-table td.cell-center {
+            text-align: center;
+            font-size: 13.5px;
+        }
+
+        .cell-serial {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .code-pill {
+            display: inline-flex;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: #0369a1;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            padding: 1px 4px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .item-name-cell {
+            font-weight: 700;
+            color: #0f2942;
+            font-size: 0.79rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .unit-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #047857;
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+            padding: 1px 4px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .cell-closing-stock {
+            font-weight: 800;
+            color: #0284c7;
+            background: rgba(2, 132, 199, 0.04);
+        }
+
+        .stock-zero {
+            color: #94a3b8 !important;
+            font-weight: 500 !important;
+            background: transparent !important;
+        }
+
+        .stock-high {
+            color: #059669 !important;
+            font-weight: 900 !important;
+        }
+
+        /* Category Subtotal Bar (Golden / Amber Excel Look) */
+        .category-subtotal-row td {
+            background: #fffbeb !important;
+            color: #92400e !important;
+            font-weight: 800 !important;
+            font-size: 0.77rem !important;
+            padding: 6px 4px !important;
+            border-top: 1.5px solid #fde68a !important;
+            border-bottom: 1.5px solid #fde68a !important;
+            border-right: 1px solid #fef3c7 !important;
+            text-align: right;
+            font-family: var(--font-mono);
+        }
+
+        .category-subtotal-row td.cat-title-cell {
+            text-align: left;
+            font-family: var(--font-sans);
+            font-size: 0.82rem !important;
+            color: #78350f !important;
+            font-weight: 900 !important;
+            letter-spacing: -0.2px;
+            padding-left: 6px !important;
+        }
+
+        /* Grand Total Row */
+        .grand-total-row td {
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.82rem !important;
+            padding: 9px 4px !important;
+            border-top: 2px solid #0284c7 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+            text-align: right;
+            font-family: var(--font-mono);
+        }
+
+        .grand-total-row td.grand-title {
+            text-align: left;
+            letter-spacing: 0.5px;
+            font-family: var(--font-sans);
+            font-size: 0.86rem !important;
+            color: #38bdf8 !important;
+            padding-left: 6px !important;
+        }
+
+        /* Modals */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 680px;
+            box-shadow: 0 20px 40px rgba(15, 41, 66, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-header {
+            padding: 14px 20px;
+            background: var(--header-gradient);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+        }
+
+        .btn-modal-close {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+
+        .btn-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-field label {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .form-field input, .form-field select, .form-field textarea {
+            padding: 8px 10px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            color: var(--text-heading);
+            background: #f8fafc;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+            border-color: var(--brand-primary);
+            background: #ffffff;
+        }
+
+        .modal-footer {
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--brand-dark);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+            .btn-nav-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0f2942;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            font-family: inherit;
+            line-height: 1.2;
+        }
+
+        .btn-nav-action:hover {
+            background: #f0f7ff;
+            border-color: #0284c7;
+            color: #0284c7;
+            transform: translateX(-2px);
+        }
+
+        .btn-nav-dash {
+            background: #f8fafc;
+            color: #0369a1;
+            border-color: #bae6fd;
+        }
+
+        .btn-nav-dash:hover {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                                                
+                <div>
+                    <div class="nav-brand-title">REPORT MANAGEMENT PORTAL</div>
+                    <div class="nav-brand-sub">Armature Summary (ERP Stock)</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Live Day & Time Top Corner (Seamless Clean Blue Typography) -->
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-container">
+
+        <!-- Company & Report Header Banner -->
+        <div class="report-header-banner">
+            <div class="company-header-group">
+                <h1 style="font-size: 1.55rem; font-weight: 900; letter-spacing: -0.5px; color: #ffffff; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <span>Armature Summary</span>
+                    <span class="date-interval-badge" id="reportDateBadge" onclick="changeDateInterval()" title="Click to Change Date Interval" style="cursor:pointer;">📅 2026-08-01 to 2026-08-25</span>
+                    <span class="date-interval-badge" id="erpLinkedBadge" style="background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #34d399;" title="Auto-linked from Closing ERP ➔ Fan Armature by Item Code across all 8 columns">🔗 Live Linked: Closing ERP ➔ Fan Armature</span>
+                </h1>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" class="btn-action-light" onclick="openBulkPasteModal()" title="Import Multi-Row Data from Excel">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    <span>📋 Bulk Import</span>
+                </button>
+                <button type="button" class="btn-action-light" onclick="exportArmatureCSV()" title="Download CSV Spreadsheet">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export Excel</span>
+                </button>
+                <button type="button" class="btn-action-light" onclick="window.print()" title="Print ERP Stock Report">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print</span>
+                </button>
+                <button type="button" class="btn-action-primary" onclick="openAddItemModal()">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>+ Add New Item Entry</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4 Top Executive KPI Stat Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <span class="kpi-label">RM Bin Closing</span>
+                    <span class="kpi-value" id="kpiRawStock" style="color: #0284c7;">156,799.66</span>
+                </div>
+                <div class="kpi-icon-box">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <span class="kpi-label">SFG Bin Closing</span>
+                    <span class="kpi-value" id="kpiSfgStock" style="color: #7c3aed;">24,885.00</span>
+                </div>
+                <div class="kpi-icon-box" style="color: #7c3aed; background: #f5f3ff; border-color: #ddd6fe;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <span class="kpi-label">Total Opening Stock</span>
+                    <span class="kpi-value" id="kpiOpeningStock" style="color: #059669;">175,997.34</span>
+                </div>
+                <div class="kpi-icon-box" style="color: #059669; background: #ecfdf5; border-color: #a7f3d0;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <span class="kpi-label">Total Consumption / Movement</span>
+                    <span class="kpi-value" id="kpiTotalDelivery" style="color: #d97706;">168,275.33</span>
+                </div>
+                <div class="kpi-icon-box" style="color: #d97706; background: #fffbeb; border-color: #fde68a;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="filter-toolbar">
+            <div class="toolbar-left">
+                <!-- Search Box -->
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="searchInput" placeholder="Search Item Code, Product / Material Name, Unit..." oninput="applyFilters()">
+                </div>
+
+                <!-- Category Filter -->
+                <select id="categoryFilter" class="filter-select" onchange="applyFilters()">
+                    <option value="ALL">All Sections (RM, SFG, Production Consumption)</option>
+                    <option value="Raw Material">RM (Raw Material - 23 Items)</option>
+                    <option value="SFG">SFG (Sub-Assembly - 16 Items)</option>
+                    <option value="Production Consumption">Production Consumption (4 Items)</option>
+                </select>
+
+                <!-- Unit Filter -->
+                <select id="unitFilter" class="filter-select" onchange="applyFilters()">
+                    <option value="ALL">All Units</option>
+                    <option value="Pcs">Pcs</option>
+                    <option value="KG">KG</option>
+                    <option value="Mtr">Mtr</option>
+                    <option value="Ltr">Ltr</option>
+                    <option value="Set">Set</option>
+                </select>
+
+                <button type="button" class="btn-reset-filter" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </div>
+
+        <!-- Table Container Card -->
+        <div class="table-card">
+            <div class="table-header-bar">
+                <div class="table-stats-count" id="tableRecordStats">
+                    Showing <strong>0</strong> of <strong>0</strong> stock records
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table" id="armatureTable">
+                    <thead>
+                        <tr>
+                            <th class="th-center sticky-col-1" style="width: 40px; min-width: 40px; max-width: 40px;">SL</th>
+                            <th class="th-left sticky-col-2" style="width: 95px; min-width: 95px; max-width: 95px;">Item Code</th>
+                            <th class="th-left sticky-col-3" style="width: 250px; min-width: 250px; max-width: 250px;">Item Name</th>
+                            <th class="th-center sticky-col-4" style="width: 50px; min-width: 50px; max-width: 50px;">Unit</th>
+                            <th style="width: 90px; min-width: 90px;">Opening</th>
+                            <th style="width: 85px; min-width: 85px;">Store<br>Receive</th>
+                            <th style="width: 85px; min-width: 85px;">Section<br>Receive</th>
+                            <th style="width: 85px; min-width: 85px;">Production<br>Receive</th>
+                            <th style="width: 85px; min-width: 85px;">Issue To<br>Damage</th>
+                            <th style="width: 85px; min-width: 85px;">Others<br>Receive</th>
+                            <th style="width: 95px; min-width: 95px;">Consumption</th>
+                            <th class="th-right" style="width: 95px; min-width: 95px; background:#075985;">Bin<br>Closing</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal 1: Add / Edit Item Entry Modal -->
+    <div class="modal-backdrop" id="entryModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">+ Add New Item Entry</div>
+                <button type="button" class="btn-modal-close" onclick="closeEntryModal()">&times;</button>
+            </div>
+            <form id="entryForm" onsubmit="handleSaveEntry(event)">
+                <input type="hidden" id="editingRecordId" value="">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="inputCategory">Category / Section *</label>
+                            <select id="inputCategory" required>
+                                <option value="Raw Material">Raw Material (RM)</option>
+                                <option value="SFG">SFG (Sub-Assembly)</option>
+                                <option value="Production Consumption">Production Consumption</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="inputCode">Item Code *</label>
+                            <input type="text" id="inputCode" required placeholder="e.g. 3101010062 or SFG1010019" oninput="handleCodeLookup()">
+                        </div>
+                        <div class="form-field">
+                            <label for="inputUnit">Unit *</label>
+                            <select id="inputUnit" required>
+                                <option value="Pcs">Pcs</option>
+                                <option value="KG">KG</option>
+                                <option value="Mtr">Mtr</option>
+                                <option value="Ltr">Ltr</option>
+                                <option value="Set">Set</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="inputName">Item / Product Name *</label>
+                        <input type="text" id="inputName" required placeholder="e.g. Armature Coton Tap">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="inputOpening">Opening Stock</label>
+                            <input type="number" step="any" id="inputOpening" value="0" oninput="calcClosingPreview()">
+                        </div>
+                        <div class="form-field">
+                            <label for="inputStoreRec">Store Receive</label>
+                            <input type="number" step="any" id="inputStoreRec" value="0" oninput="calcClosingPreview()">
+                        </div>
+                        <div class="form-field">
+                            <label for="inputSectionRec">Section Receive</label>
+                            <input type="number" step="any" id="inputSectionRec" value="0" oninput="calcClosingPreview()">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="inputProductionRec">Production Receive</label>
+                            <input type="number" step="any" id="inputProductionRec" value="0" oninput="calcClosingPreview()">
+                        </div>
+                        <div class="form-field">
+                            <label for="inputDamage">Issue To Damage</label>
+                            <input type="number" step="any" id="inputDamage" value="0" oninput="calcClosingPreview()">
+                        </div>
+                        <div class="form-field">
+                            <label for="inputOthersRec">Others Receive</label>
+                            <input type="number" step="any" id="inputOthersRec" value="0" oninput="calcClosingPreview()">
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-field">
+                            <label for="inputDelivery">Consumption</label>
+                            <input type="number" step="any" id="inputDelivery" value="0" oninput="calcClosingPreview()">
+                        </div>
+                        <div class="form-field">
+                            <label style="color:#0284c7;">Calculated Bin Closing</label>
+                            <input type="text" id="previewClosing" value="0" style="font-family:var(--font-mono); font-weight:800; color:#0284c7; background:#e0f2fe;" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-reset-filter" onclick="closeEntryModal()">Cancel</button>
+                    <button type="submit" class="btn-action-primary">Save Stock Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Bulk Paste Import Modal -->
+    <div class="modal-backdrop" id="bulkModal">
+        <div class="modal-card" style="max-width: 740px;">
+            <div class="modal-header">
+                <div class="modal-title">📋 Bulk Import Stock Entries (from Excel)</div>
+                <button type="button" class="btn-modal-close" onclick="closeBulkModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="font-size: 0.82rem; color: #475569; line-height: 1.4;">
+                    Copy rows directly from your <strong>Excel / ERP Spreadsheet</strong> and paste below.
+                    <br>
+                    <span style="font-size: 0.76rem; color: var(--brand-primary); font-weight: 700;">Format: SL [Tab] Code [Tab] Name [Tab] Unit [Tab] Opening [Tab] StoreRec [Tab] SectionRec [Tab] PrdRec [Tab] IssueDamage [Tab] OthersRec [Tab] Consumption</span>
+                </div>
+
+                <div class="form-field">
+                    <label for="bulkArmatureInput">Paste Spreadsheet Text *</label>
+                    <textarea id="bulkArmatureInput" rows="10" placeholder="1&#9;3101010062&#9;Armature Coton Tap&#9;Mtr&#9;1967&#9;4800&#9;0&#9;0&#9;0&#9;0&#9;925..." style="font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.4; resize: vertical;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-reset-filter" onclick="closeBulkModal()">Cancel</button>
+                <button type="button" class="btn-action-primary" onclick="processBulkArmature()">⚡ Process &amp; Import All</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastBox">Notification Message</div>
+
+    <!-- Scripts -->
+    <script src="master_database.js"></script>
+    <script src="armature_summary_data.js"></script>
+    <script src="armature_winding_erp_data.js"></script>
+    <script src="erp_engine.js"></script>
+    <script>
+        // State Management
+        let allArmatureData = [];
+        let filteredData = [];
+        const ARMATURE_STORAGE_KEY = 'mep_armature_custom_data';
+
+        const CATEGORY_ORDER = [
+            'Raw Material',
+            'SFG',
+            'Production Consumption'
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+
+            loadArmatureData();
+            loadDateInterval();
+            applyFilters();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+
+            // Reactive Multi-Tab Auto Sync from Closing ERP (Fan Armature)
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'mep_armature_winding_erp_data' || e.key === 'mep_armature_winding_erp_data_updated' || e.key === ARMATURE_STORAGE_KEY) {
+                    loadArmatureData();
+                    applyFilters();
+                    showToast("🔄 Auto-refreshed from Closing ERP ➔ Fan Armature!");
+                }
+            });
+
+            window.addEventListener('focus', () => {
+                loadArmatureData();
+                applyFilters();
+            });
+        });
+
+        function loadDateInterval() {
+            const savedDate = localStorage.getItem('mep_erp_date_interval');
+            const badge = document.getElementById('reportDateBadge');
+            if (badge && savedDate) {
+                badge.innerText = '📅 ' + savedDate;
+            }
+        }
+
+        function changeDateInterval() {
+            const current = localStorage.getItem('mep_erp_date_interval') || '2026-08-01 to 2026-08-25';
+            const newDate = prompt("Enter Date Interval for Armature Summary (e.g. 2026-08-01 to 2026-08-25):", current);
+            if (newDate && newDate.trim()) {
+                localStorage.setItem('mep_erp_date_interval', newDate.trim());
+                loadDateInterval();
+                showToast(`📅 Date Interval updated to ${newDate.trim()}`);
+            }
+        }
+
+        function loadArmatureData() {
+            // 1. Live Linked Calculation Engine directly from Closing ERP ➔ Fan Armature
+            if (typeof MEP_ERP_ENGINE !== 'undefined' && typeof MEP_ERP_ENGINE.computeLiveArmatureSummary === 'function') {
+                const liveCalculated = MEP_ERP_ENGINE.computeLiveArmatureSummary();
+                if (Array.isArray(liveCalculated) && liveCalculated.length > 0) {
+                    allArmatureData = liveCalculated;
+                    return;
+                }
+            }
+
+            // 2. Check LocalStorage for user-saved summary data
+            const saved = localStorage.getItem(ARMATURE_STORAGE_KEY);
+            if (saved) {
+                try {
+                    const customList = JSON.parse(saved);
+                    if (Array.isArray(customList) && customList.length > 0) {
+                        allArmatureData = customList;
+                        return;
+                    }
+                } catch(e) {
+                    console.error("Error loading saved armature data:", e);
+                }
+            }
+
+            // 3. Fallback to base dataset
+            let base = [];
+            if (typeof RAW_ARMATURE_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_ARMATURE_SUMMARY_DATA)) {
+                base = RAW_ARMATURE_SUMMARY_DATA.map((item, idx) => ({
+                    ...item,
+                    id: item.id || `base_${idx}`
+                }));
+            }
+
+            allArmatureData = base;
+        }
+
+        function saveStateToStorage() {
+            localStorage.setItem(ARMATURE_STORAGE_KEY, JSON.stringify(allArmatureData));
+        }
+
+        function applyFilters() {
+            const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+            const catVal = document.getElementById('categoryFilter').value;
+            const unitVal = document.getElementById('unitFilter').value;
+
+            filteredData = allArmatureData.filter(item => {
+                if (searchVal) {
+                    const mCode = item.code && item.code.toLowerCase().includes(searchVal);
+                    const mName = item.name && item.name.toLowerCase().includes(searchVal);
+                    const mUnit = item.unit && item.unit.toLowerCase().includes(searchVal);
+                    const mCat = item.category && item.category.toLowerCase().includes(searchVal);
+                    if (!mCode && !mName && !mUnit && !mCat) return false;
+                }
+
+                if (catVal !== 'ALL') {
+                    if (item.category !== catVal) return false;
+                }
+
+                if (unitVal !== 'ALL') {
+                    if (item.unit.toLowerCase() !== unitVal.toLowerCase()) return false;
+                }
+
+                return true;
+            });
+
+            renderKPIs();
+            renderTable();
+        }
+
+        function renderKPIs() {
+            let rawClosing = 0;
+            let sfgClosing = 0;
+            let totalOp = 0;
+            let totalDelivery = 0;
+
+            allArmatureData.forEach(item => {
+                const closing = Number(item.closing) || 0;
+                const op = Number(item.opening) || 0;
+                const del = Number(item.delivery) || 0;
+                totalDelivery += del;
+                totalOp += op;
+
+                if (item.category === 'Raw Material') rawClosing += closing;
+                else if (item.category === 'SFG') sfgClosing += closing;
+            });
+
+            document.getElementById('kpiRawStock').innerText = formatNum(rawClosing);
+            document.getElementById('kpiSfgStock').innerText = formatNum(sfgClosing);
+            document.getElementById('kpiOpeningStock').innerText = formatNum(totalOp);
+            document.getElementById('kpiTotalDelivery').innerText = formatNum(totalDelivery);
+
+            document.getElementById('tableRecordStats').innerHTML = `Showing <strong>${filteredData.length.toLocaleString()}</strong> of <strong>${allArmatureData.length.toLocaleString()}</strong> stock records`;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (filteredData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="12" style="text-align: center; padding: 40px; color: #94a3b8; font-weight: 600;">
+                            No stock records match the selected filters.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            // Group records by category
+            const groups = {};
+            CATEGORY_ORDER.forEach(cat => groups[cat] = []);
+            
+            filteredData.forEach(item => {
+                const cat = item.category || 'Raw Material';
+                if (!groups[cat]) groups[cat] = [];
+                groups[cat].push(item);
+            });
+
+            let grandTotals = {
+                opening: 0,
+                storeRec: 0,
+                sectionRec: 0,
+                productionRec: 0,
+                damage: 0,
+                othersRec: 0,
+                delivery: 0,
+                closing: 0
+            };
+
+            Object.keys(groups).forEach(catName => {
+                const items = groups[catName];
+                if (!items || items.length === 0) return;
+
+                // Compute Category Subtotals
+                let subTotals = {
+                    opening: 0,
+                    storeRec: 0,
+                    sectionRec: 0,
+                    productionRec: 0,
+                    damage: 0,
+                    othersRec: 0,
+                    delivery: 0,
+                    closing: 0
+                };
+
+                items.forEach(item => {
+                    subTotals.opening += Number(item.opening) || 0;
+                    subTotals.storeRec += Number(item.storeRec) || 0;
+                    subTotals.sectionRec += Number(item.sectionRec) || 0;
+                    subTotals.productionRec += Number(item.productionRec) || 0;
+                    subTotals.damage += Number(item.damage) || 0;
+                    subTotals.othersRec += Number(item.othersRec) || 0;
+                    subTotals.delivery += Number(item.delivery) || 0;
+                    subTotals.closing += Number(item.closing) || 0;
+                });
+
+                // Add to Grand Totals
+                grandTotals.opening += subTotals.opening;
+                grandTotals.storeRec += subTotals.storeRec;
+                grandTotals.sectionRec += subTotals.sectionRec;
+                grandTotals.productionRec += subTotals.productionRec;
+                grandTotals.damage += subTotals.damage;
+                grandTotals.othersRec += subTotals.othersRec;
+                grandTotals.delivery += subTotals.delivery;
+                grandTotals.closing += subTotals.closing;
+
+                // Display Category Label
+                let displayCatLabel = catName === 'Raw Material' ? 'RM' : (catName === 'SFG' ? 'SGF' : catName);
+
+                // 1. Render Category Subtotal Header Bar (Golden/Yellow Header Bar)
+                const catRow = document.createElement('tr');
+                catRow.className = 'category-subtotal-row';
+                catRow.innerHTML = `
+                    <td class="cat-title-cell" colspan="4">
+                        📦 ${escapeHTML(displayCatLabel)} &nbsp;&nbsp;<span style="font-size:0.8rem; font-weight:700; color:#a16207;">Total &gt;&gt;</span>
+                    </td>
+                    <td>${formatNum(subTotals.opening)}</td>
+                    <td>${formatNum(subTotals.storeRec)}</td>
+                    <td>${formatNum(subTotals.sectionRec)}</td>
+                    <td>${formatNum(subTotals.productionRec)}</td>
+                    <td>${formatNum(subTotals.damage)}</td>
+                    <td>${formatNum(subTotals.othersRec)}</td>
+                    <td>${formatNum(subTotals.delivery)}</td>
+                    <td style="color:#15803d; font-weight:900;">${formatNum(subTotals.closing)}</td>
+                `;
+                tbody.appendChild(catRow);
+
+                // 2. Render Detail Rows for this Category
+                items.forEach((item, idx) => {
+                    const tr = document.createElement('tr');
+                    const closingVal = Number(item.closing) || 0;
+                    let stockClass = 'cell-closing-stock';
+                    if (closingVal === 0) stockClass += ' stock-zero';
+                    else if (closingVal > 5000) stockClass += ' stock-high';
+
+                    tr.innerHTML = `
+                        <td class="cell-serial sticky-col-1">${item.sl || (idx + 1)}</td>
+                        <td class="cell-left sticky-col-2"><span class="code-pill" title="${item.isLinked ? '🔗 Auto-linked from Closing ERP ➔ Fan Armature' : escapeHTML(item.code || '')}">${escapeHTML(item.code || '')}</span></td>
+                        <td class="cell-left item-name-cell sticky-col-3" title="${escapeHTML(item.name || '')}">${escapeHTML(item.name || '')}</td>
+                        <td class="cell-center sticky-col-4"><span class="unit-badge">${escapeHTML(item.unit || 'Pcs')}</span></td>
+                        <td>${formatNum(item.opening)}</td>
+                        <td>${formatNum(item.storeRec)}</td>
+                        <td>${formatNum(item.sectionRec)}</td>
+                        <td>${formatNum(item.productionRec)}</td>
+                        <td>${formatNum(item.damage)}</td>
+                        <td>${formatNum(item.othersRec)}</td>
+                        <td>${formatNum(item.delivery)}</td>
+                        <td class="${stockClass}">${formatNum(closingVal)}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+
+            // 3. Render Grand Total Footer Row
+            const grandRow = document.createElement('tr');
+            grandRow.className = 'grand-total-row';
+            grandRow.innerHTML = `
+                <td colspan="4" class="grand-title">GRAND TOTAL (ALL SECTIONS)</td>
+                <td>${formatNum(grandTotals.opening)}</td>
+                <td>${formatNum(grandTotals.storeRec)}</td>
+                <td>${formatNum(grandTotals.sectionRec)}</td>
+                <td>${formatNum(grandTotals.productionRec)}</td>
+                <td>${formatNum(grandTotals.damage)}</td>
+                <td>${formatNum(grandTotals.othersRec)}</td>
+                <td>${formatNum(grandTotals.delivery)}</td>
+                <td style="color:#38bdf8;">${formatNum(grandTotals.closing)}</td>
+            `;
+            tbody.appendChild(grandRow);
+        }
+
+        // Modal Handling
+        function openAddItemModal() {
+            document.getElementById('modalTitle').innerText = '+ Add New Stock Entry';
+            document.getElementById('editingRecordId').value = '';
+            document.getElementById('entryForm').reset();
+            document.getElementById('previewClosing').value = '0';
+            document.getElementById('entryModal').classList.add('active');
+        }
+
+        function closeEntryModal() {
+            document.getElementById('entryModal').classList.remove('active');
+        }
+
+        function handleCodeLookup() {
+            const codeInput = document.getElementById('inputCode').value.trim();
+            if (!codeInput) return;
+
+            if (typeof getMasterItem === 'function') {
+                const item = getMasterItem(codeInput);
+                if (item) {
+                    document.getElementById('inputName').value = item.name;
+                    if (item.unit) document.getElementById('inputUnit').value = item.unit;
+                    if (item.section) {
+                        const sec = item.section.toLowerCase();
+                        if (sec.includes('raw') || sec.includes('rm')) document.getElementById('inputCategory').value = 'Raw Material';
+                        else if (sec.includes('sfg') || sec.includes('sub')) document.getElementById('inputCategory').value = 'SFG';
+                        else if (sec.includes('consum')) document.getElementById('inputCategory').value = 'Production Consumption';
+                    }
+                    showToast(`✨ Auto-fetched [${item.name}] from Central Master!`);
+                }
+            }
+        }
+
+        function calcClosingPreview() {
+            const op = parseFloat(document.getElementById('inputOpening').value) || 0;
+            const sr = parseFloat(document.getElementById('inputStoreRec').value) || 0;
+            const sec = parseFloat(document.getElementById('inputSectionRec').value) || 0;
+            const pr = parseFloat(document.getElementById('inputProductionRec').value) || 0;
+            const oth = parseFloat(document.getElementById('inputOthersRec').value) || 0;
+            const dam = parseFloat(document.getElementById('inputDamage').value) || 0;
+            const del = parseFloat(document.getElementById('inputDelivery').value) || 0;
+
+            const closing = op + sr + sec + pr + oth - dam - del;
+            document.getElementById('previewClosing').value = formatNum(closing);
+        }
+
+        function handleSaveEntry(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editingRecordId').value;
+            const category = document.getElementById('inputCategory').value;
+            const code = document.getElementById('inputCode').value.trim();
+            const name = document.getElementById('inputName').value.trim();
+            const unit = document.getElementById('inputUnit').value;
+
+            const op = parseFloat(document.getElementById('inputOpening').value) || 0;
+            const sr = parseFloat(document.getElementById('inputStoreRec').value) || 0;
+            const sec = parseFloat(document.getElementById('inputSectionRec').value) || 0;
+            const pr = parseFloat(document.getElementById('inputProductionRec').value) || 0;
+            const oth = parseFloat(document.getElementById('inputOthersRec').value) || 0;
+            const dam = parseFloat(document.getElementById('inputDamage').value) || 0;
+            const del = parseFloat(document.getElementById('inputDelivery').value) || 0;
+            const closing = op + sr + sec + pr + oth - dam - del;
+
+            if (!code || !name) {
+                alert("Code and Item Name are required.");
+                return;
+            }
+
+            if (editId) {
+                const idx = allArmatureData.findIndex(i => i.id === editId);
+                if (idx >= 0) {
+                    allArmatureData[idx] = {
+                        ...allArmatureData[idx],
+                        category, code, name, unit,
+                        opening: op, storeRec: sr, sectionRec: sec, productionRec: pr,
+                        othersRec: oth, damage: dam, delivery: del, closing
+                    };
+                }
+            } else {
+                const newItem = {
+                    id: 'custom_' + Date.now(),
+                    category, code, name, unit,
+                    opening: op, storeRec: sr, sectionRec: sec, productionRec: pr,
+                    othersRec: oth, damage: dam, delivery: del, closing
+                };
+                allArmatureData.unshift(newItem);
+            }
+
+            saveStateToStorage();
+            applyFilters();
+            closeEntryModal();
+            showToast(`✅ Saved stock entry [${code}] ${name}!`);
+        }
+
+        // Bulk Import
+        function openBulkPasteModal() {
+            document.getElementById('bulkModal').classList.add('active');
+            document.getElementById('bulkArmatureInput').value = '';
+            document.getElementById('bulkArmatureInput').focus();
+        }
+
+        function closeBulkModal() {
+            document.getElementById('bulkModal').classList.remove('active');
+        }
+
+        function processBulkArmature() {
+            const rawText = document.getElementById('bulkArmatureInput').value.trim();
+            if (!rawText) {
+                alert("Please paste your spreadsheet data first.");
+                return;
+            }
+
+            const lines = rawText.split(/\r?\n/);
+            let importedCount = 0;
+            let currentCategory = 'Raw Material';
+
+            lines.forEach((line) => {
+                if (!line.trim()) return;
+
+                const cols = line.split('\t');
+                if (cols.length === 1 || cols[0].toUpperCase().includes('RM') || cols[0].toUpperCase().includes('RAW') || cols[0].toUpperCase().includes('SFG') || cols[0].toUpperCase().includes('CONSUMPTION')) {
+                    const headerTxt = line.toUpperCase();
+                    if (headerTxt.includes('RM') || headerTxt.includes('RAW')) currentCategory = 'Raw Material';
+                    else if (headerTxt.includes('SFG') || headerTxt.includes('SGF')) currentCategory = 'SFG';
+                    else if (headerTxt.includes('CONSUMPTION')) currentCategory = 'Production Consumption';
+                    return;
+                }
+
+                if (cols[0].trim().toUpperCase() === 'SL' || cols[1]?.trim().toUpperCase() === 'ITEM CODE') {
+                    return;
+                }
+
+                const parseNum = (val) => {
+                    if (!val) return 0;
+                    const clean = val.replace(/,/g, '').trim();
+                    const n = parseFloat(clean);
+                    return isNaN(n) ? 0 : n;
+                };
+
+                const sl = cols[0]?.trim() || '';
+                const code = cols[1]?.trim() || '';
+                const name = cols[2]?.trim() || '';
+                const unit = cols[3]?.trim() || 'Pcs';
+                const opening = parseNum(cols[4]);
+                const storeRec = parseNum(cols[5]);
+                const sectionRec = parseNum(cols[6]);
+                const productionRec = parseNum(cols[7]);
+                const damage = parseNum(cols[8]);
+                const othersRec = parseNum(cols[9]);
+                const delivery = parseNum(cols[10]);
+                const closing = cols[11] ? parseNum(cols[11]) : (opening + storeRec + sectionRec + productionRec + othersRec - damage - delivery);
+
+                if (code || name) {
+                    allArmatureData.push({
+                        id: 'bulk_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                        category: currentCategory,
+                        sl, code, name, unit,
+                        opening, storeRec, sectionRec, productionRec, damage, othersRec, delivery, closing
+                    });
+                    importedCount++;
+                }
+            });
+
+            if (importedCount > 0) {
+                saveStateToStorage();
+                applyFilters();
+                closeBulkModal();
+                showToast(`✅ Successfully imported ${importedCount} stock items!`);
+            } else {
+                alert("Could not detect any valid data rows. Please ensure columns are tab-separated.");
+            }
+        }
+
+        // Export to CSV
+        function exportArmatureCSV() {
+            if (filteredData.length === 0) {
+                alert("No records to export.");
+                return;
+            }
+
+            let csv = "data:text/csv;charset=utf-8,Category,SL,Item Code,Item Name,Unit,Opening,Store Receive,Section Receive,Production Receive,Issue To Damage,Others Receive,Consumption,Bin Closing\r\n";
+            filteredData.forEach((i, idx) => {
+                const cat = `"${(i.category || '').replace(/"/g, '""')}"`;
+                const sl = idx + 1;
+                const code = `"${(i.code || '').replace(/"/g, '""')}"`;
+                const name = `"${(i.name || '').replace(/"/g, '""')}"`;
+                const unit = `"${(i.unit || '').replace(/"/g, '""')}"`;
+                csv += `${cat},${sl},${code},${name},${unit},${i.opening},${i.storeRec},${i.sectionRec},${i.productionRec},${i.damage},${i.othersRec},${i.delivery},${i.closing}\r\n`;
+            });
+
+            const encodedUri = encodeURI(csv);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `MEP_FAN_ARMATURE_SUMMARY_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("📥 Exported Armature Summary to CSV!");
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = 'ALL';
+            document.getElementById('unitFilter').value = 'ALL';
+            applyFilters();
+        }
+
+        function formatNum(val) {
+            const num = Number(val);
+            if (isNaN(num) || num === 0) return '0';
+            if (Math.abs(num - Math.round(num)) < 0.0001) {
+                return num.toLocaleString();
+            }
+            return num.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 4 });
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayDateElem = document.getElementById('liveDayText');
+            const timeElem = document.getElementById('liveTimeText');
+
+            if (dayDateElem) dayDateElem.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            if (timeElem) timeElem.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        function escapeHTML(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>
+
+
+

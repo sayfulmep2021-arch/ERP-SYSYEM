@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Daily Production Plan | MEP FAN LTD.</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --border-soft: #cbd5e1;
+            --border-cell: #475569;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* Daily Plan Custom Theme matching Screenshot */
+            --header-yellow: linear-gradient(180deg, #fef08a 0%, #fde047 100%);
+            --cat-gradient: linear-gradient(90deg, #a7f3d0 0%, #67e8f9 50%, #a7f3d0 100%);
+            --row-pink: #fdf2f8;
+            --row-amber: #fffbeb;
+            --row-orange: #ffedd5;
+            --row-lime: #ecfccb;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Hide Number Spinners */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-back-portal:hover {
+            background: #f0f7ff;
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: translateX(-2px);
+        }
+
+        .nav-brand-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Top Right Live Clock - Seamless Clean Blue Typography */
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0 4px 0 0;
+            box-shadow: none;
+            user-select: none;
+            height: auto;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.22;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .live-day-text {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: -0.1px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono, monospace);
+            font-size: 1.18rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.6px;
+        }
+
+        /* Workspace Main */
+        .workspace-main {
+            padding: 14px 18px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Control Banner Card */
+        .planning-header-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .header-title-group h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tag-pill {
+            background: #fef08a;
+            color: #854d0e;
+            border: 1px solid #fde047;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 800;
+        }
+
+        .header-sub-text {
+            font-size: 0.80rem;
+            color: #475569;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        /* Date Selector & Action Buttons */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .date-picker-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0f2942;
+        }
+
+        .date-picker-box input[type="date"] {
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.84rem;
+            color: #0284c7;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1.5px solid transparent;
+            user-select: none;
+        }
+
+        .btn-save {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #0369a1;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-save:hover {
+            background: #0369a1;
+            transform: translateY(-1px);
+        }
+
+        .btn-add {
+            background: #10b981;
+            color: #ffffff;
+            border-color: #059669;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-add:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: #ffffff;
+            color: #334155;
+            border-color: #cbd5e1;
+        }
+
+        .btn-outline:hover {
+            background: #f1f5f9;
+            color: #0f2942;
+        }
+
+        /* 3 Quick KPI Stat Cards */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .kpi-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .kpi-value {
+            font-size: 1.30rem;
+            font-weight: 900;
+            font-family: var(--font-mono);
+            color: #0f2942;
+            margin-top: 2px;
+        }
+
+        /* Excel-Style Table Matrix Container */
+        .planning-grid-card {
+            background: #ffffff;
+            border: 2px solid #0f2942;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .planning-table-wrapper {
+            width: 100%;
+            max-height: 72vh;
+            overflow: auto;
+            position: relative;
+            background: #ffffff;
+        }
+
+        .excel-table {
+            border-collapse: separate !important; border-spacing: 0;
+            width: 100%;
+            font-size: 0.80rem;
+            min-width: 900px;
+        }
+
+        /* Yellow Header Row */
+        .excel-table thead th {
+            background: #fef08a;
+            color: #000000;
+            font-weight: 900;
+            font-size: 0.84rem;
+            padding: 8px 6px;
+            border: 1px solid #000000;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            white-space: nowrap;
+        }
+
+        /* Category Subheader Bars (Cyan-Teal Gradient matching user screenshot) */
+        .category-header-row td {
+            background: linear-gradient(90deg, #6ee7b7 0%, #67e8f9 50%, #6ee7b7 100%);
+            color: #000000;
+            font-weight: 900;
+            font-size: 0.88rem;
+            padding: 6px 12px;
+            border: 1px solid #000000;
+            text-align: center;
+            letter-spacing: 0.4px;
+        }
+
+        .category-subtotal-val {
+            text-align: right !important;
+            font-family: var(--font-mono);
+            font-size: 0.86rem !important;
+            font-weight: 900 !important;
+            padding-right: 8px !important;
+            background: #e6fffa !important;
+        }
+
+        /* Data Rows */
+        .excel-table tbody tr.data-row td {
+            padding: 0;
+            border: 1px solid #000000;
+            vertical-align: middle;
+        }
+
+        /* Color variations matching user's screenshot */
+        .style-pink td {
+            background-color: #fdf2f8;
+        }
+        .style-amber td {
+            background-color: #fffbeb;
+        }
+        .style-orange td {
+            background-color: #ffedd5;
+        }
+        .style-lime td {
+            background-color: #ecfccb;
+        }
+
+        .data-row:hover td {
+            filter: brightness(0.96);
+        }
+
+        /* Excel-Like Interactive Inputs inside cells */
+        .excel-cell-input {
+            width: 100%;
+            height: 30px;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 2px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: #000000;
+            text-align: right;
+            transition: background 0.15s ease;
+        }
+
+        .excel-cell-input:focus {
+            background: #e0f2fe;
+            box-shadow: inset 0 0 0 2px #0284c7;
+            font-weight: 900;
+        }
+
+        .excel-cell-text {
+            width: 100%;
+            height: 30px;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 2px 8px;
+            font-family: var(--font-sans);
+            font-size: 0.80rem;
+            font-weight: 700;
+            color: #000000;
+            text-align: left;
+        }
+
+        .excel-cell-text:focus {
+            background: #e0f2fe;
+            box-shadow: inset 0 0 0 2px #0284c7;
+        }
+
+        .excel-cell-center {
+            text-align: center !important;
+            font-family: var(--font-mono);
+            font-weight: 800;
+        }
+
+        /* Grand Total Row */
+        .grand-total-row td {
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.86rem !important;
+            padding: 10px 8px !important;
+            border: 1px solid #000000 !important;
+            text-align: right;
+            font-family: var(--font-mono);
+            position: sticky;
+            bottom: 0;
+            z-index: 25;
+            white-space: nowrap;
+        }
+
+        .grand-title {
+            text-align: left !important;
+            font-family: var(--font-sans) !important;
+            color: #38bdf8 !important;
+            padding-left: 14px !important;
+        }
+
+        /* Action Menu on Hover */
+        .btn-del-row {
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 0.80rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.2;
+            transition: all 0.2s ease;
+        }
+
+        .data-row:hover .btn-del-row {
+            opacity: 1;
+            color: #e11d48;
+        }
+
+        .btn-del-row:hover {
+            background: #ffe4e6;
+            transform: scale(1.2);
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 580px;
+            box-shadow: 0 20px 40px rgba(15, 41, 66, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 14px 20px;
+            background: #0f2942;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-modal-close {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            padding: 8px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .modal-footer {
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--brand-dark);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+            .btn-nav-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0f2942;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            font-family: inherit;
+            line-height: 1.2;
+        }
+
+        .btn-nav-action:hover {
+            background: #f0f7ff;
+            border-color: #0284c7;
+            color: #0284c7;
+            transform: translateX(-2px);
+        }
+
+        .btn-nav-dash {
+            background: #f8fafc;
+            color: #0369a1;
+            border-color: #bae6fd;
+        }
+
+        .btn-nav-dash:hover {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                                                
+                <div>
+                    <div class="nav-brand-title">DAILY CHECK REPORT</div>
+                    <div class="nav-brand-sub">Daily Production Plan (Excel Grid Matrix)</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Live Clock -->
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- Control Banner Card -->
+        <div class="planning-header-card">
+            <div class="header-title-group">
+                <h1>
+                    <span>Daily Production Plan</span>
+                    <span class="tag-pill">MEP FAN LTD.</span>
+                </h1>
+                <div class="header-sub-text">Fan Assemble, Blade, Clamp &amp; Armature Daily Target Planning</div>
+            </div>
+
+            <!-- Date Selector & Action Buttons -->
+            <div class="header-controls">
+                <div class="date-picker-box">
+                    <span>Plan Date:</span>
+                    <input type="date" id="planDateInput" onchange="onDateChange()">
+                </div>
+
+                <button type="button" class="btn-action btn-save" onclick="saveCurrentPlan(true)" title="Save Plan">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    <span>Save Plan</span>
+                </button>
+
+                <button type="button" class="btn-action btn-add" onclick="openAddItemModal()" title="Add New Item">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>Add Item</span>
+                </button>
+
+                <button type="button" class="btn-action" style="background: linear-gradient(135deg, #059669, #10b981); color:#ffffff; border:none; font-weight:700; display:inline-flex; align-items:center; gap:6px;" onclick="submitPlanToBOMFloorStock(true)" title="Calculate Per Day × BOM Quantity and Submit to Check Floor Stock">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                    <span>Submit Per Day to Floor Stock</span>
+                </button>
+
+                <button type="button" class="btn-action btn-outline" onclick="exportToCSV()" title="Export CSV">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export CSV</span>
+                </button>
+
+                <button type="button" class="btn-action btn-outline" onclick="window.print()" title="Print Plan">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3 Quick KPI Stat Cards -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Daily Planned Target (Per Day)</div>
+                    <div class="kpi-value" id="kpiTotalPerDay" style="color: #0284c7;">0</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Active Planned Models</div>
+                    <div class="kpi-value" id="kpiActiveModels" style="color: #059669;">0 Models</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Planned Items</div>
+                    <div class="kpi-value" id="kpiTotalItems" style="color: #64748b;">0 Items</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Excel Table Grid Card -->
+        <div class="planning-grid-card">
+            <div class="planning-table-wrapper">
+                <table class="excel-table" id="planningTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 55px;">SL</th>
+                            <th style="width: 140px;">Item Code</th>
+                            <th style="width: 480px; text-align:left; padding-left:10px;">Item Name</th>
+                            <th style="width: 75px;">Unit</th>
+                            <th style="width: 140px;">Per Day</th>
+                            <th style="width: 36px; background:#fef08a;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                    <tfoot id="tableFoot">
+                        <!-- Populated by JavaScript -->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Add Item Modal -->
+    <div class="modal-backdrop" id="addItemModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="font-weight: 800; font-size: 1.05rem;">? Add Item to Daily Production Plan</div>
+                <button type="button" class="btn-modal-close" onclick="closeAddItemModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="newItemCategory" class="form-control">
+                        <option value="FG Item">FG Item</option>
+                        <option value="SFG Blade Item">SFG Blade Item</option>
+                        <option value="SFG Assemble Item">SFG Assemble Item</option>
+                        <option value="Armature Item">Armature Item</option>
+                        <option value="Other SFG Item">Other SFG Item</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Item Code</label>
+                    <input type="text" id="newItemCode" class="form-control" placeholder="e.g. SFG1010085" oninput="lookupMasterCode(this.value)">
+                </div>
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" id="newItemName" class="form-control" placeholder="e.g. 56 Inch Speed King Ceiling Fan Complete Body">
+                </div>
+                <div class="form-row" style="display:flex; gap:10px;">
+                    <div class="form-group" style="flex:1;">
+                        <label>Unit</label>
+                        <select id="newItemUnit" class="form-control">
+                            <option value="Pcs">Pcs</option>
+                            <option value="Set">Set</option>
+                            <option value="Kg">Kg</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex:1.5;">
+                        <label>Per Day Target</label>
+                        <input type="number" id="newItemPreDay" class="form-control" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-action btn-outline" onclick="closeAddItemModal()">Cancel</button>
+                <button type="button" class="btn-action btn-add" onclick="saveNewItem()">? Insert Item Row</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastBox">Daily Plan Saved Successfully!</div>
+
+    <!-- Scripts -->
+    <script src="master_database.js"></script>
+    <script src="daily_production_plan_data.js"></script>
+    <script>
+        const STORAGE_KEY_PREFIX = 'mep_daily_prod_plan_';
+        let currentPlanData = null;
+
+        // Master Central DB Lookup
+        function lookupMasterCode(val) {
+            if (!val) return;
+            const clean = val.trim();
+            if (typeof getMasterItem === 'function') {
+                const item = getMasterItem(clean);
+                if (item) {
+                    if (item.name) document.getElementById('newItemName').value = item.name;
+                    if (item.unit) {
+                        const unitSel = document.getElementById('newItemUnit');
+                        let found = false;
+                        for (let opt of unitSel.options) {
+                            if (opt.value.toLowerCase() === item.unit.toLowerCase()) {
+                                unitSel.value = opt.value;
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            const newOpt = new Option(item.unit, item.unit);
+                            unitSel.add(newOpt);
+                            unitSel.value = item.unit;
+                        }
+                    }
+                    if (item.category) {
+                        const catSel = document.getElementById('newItemCategory');
+                        for (let opt of catSel.options) {
+                            if (opt.value.toLowerCase().includes(item.category.toLowerCase()) || item.category.toLowerCase().includes(opt.value.toLowerCase())) {
+                                catSel.value = opt.value;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('planDateInput').value = todayStr;
+
+            loadPlanForDate(todayStr);
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+
+        function onDateChange() {
+            const selectedDate = document.getElementById('planDateInput').value;
+            loadPlanForDate(selectedDate);
+            showToast(`Loaded Daily Plan for ${selectedDate}`);
+        }
+
+        function loadPlanForDate(dateStr) {
+            const saved = localStorage.getItem(STORAGE_KEY_PREFIX + dateStr);
+            if (saved) {
+                try {
+                    currentPlanData = JSON.parse(saved);
+                } catch(e) {
+                    currentPlanData = null;
+                }
+            }
+
+            if (!currentPlanData) {
+                // Initialize with default template
+                if (typeof DEFAULT_DAILY_PRODUCTION_PLAN !== 'undefined') {
+                    currentPlanData = JSON.parse(JSON.stringify(DEFAULT_DAILY_PRODUCTION_PLAN));
+                    currentPlanData.planDate = dateStr;
+                }
+            }
+
+            renderExcelTable();
+        }
+
+        function saveCurrentPlan(showFeedback = false) {
+            if (!currentPlanData) return;
+            const dateStr = document.getElementById('planDateInput').value || currentPlanData.planDate;
+            currentPlanData.planDate = dateStr;
+            localStorage.setItem(STORAGE_KEY_PREFIX + dateStr, JSON.stringify(currentPlanData));
+
+            if (showFeedback) {
+                showToast(`?? Daily Production Plan for [${dateStr}] Saved!`);
+            }
+        }
+
+        function renderExcelTable() {
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+
+            tbody.innerHTML = '';
+
+            let grandPerDay = 0;
+            let totalItemCount = 0;
+            let activeModelsCount = 0;
+
+            if (currentPlanData && currentPlanData.categories) {
+                currentPlanData.categories.forEach((cat, catIdx) => {
+                    let catPerDay = 0;
+
+                    cat.items.forEach(it => {
+                        const p = parseFloat(it.preDay) || 0;
+                        catPerDay += p;
+                        grandPerDay += p;
+                        totalItemCount++;
+                        if (p > 0) activeModelsCount++;
+                    });
+
+                    // 1. Category Header Row
+                    const catRow = document.createElement('tr');
+                    catRow.className = 'category-header-row';
+                    catRow.innerHTML = `
+                        <td colspan="4" style="text-align:center; font-weight:900; font-size:0.88rem;">${escapeHTML(cat.name)}</td>
+                        <td class="category-subtotal-val" id="cat-preday-${catIdx}">${catPerDay === 0 ? '' : catPerDay.toLocaleString()}</td>
+                        <td style="border:1px solid #000000; background:#6ee7b7;"></td>
+                    `;
+                    tbody.appendChild(catRow);
+
+                    // 2. Data Rows
+                    const baseStyle = cat.rowStyle || 'style-pink';
+
+                    cat.items.forEach((item, itemIdx) => {
+                        const tr = document.createElement('tr');
+                        const rowStyleClass = item.subStyle || baseStyle;
+                        tr.className = `data-row ${rowStyleClass}`;
+
+                        const pVal = item.preDay !== undefined && item.preDay !== null ? item.preDay : 0;
+
+                        tr.innerHTML = `
+                            <td><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(item.sl || '')}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'sl', this.value)"></td>
+                            <td><input type="text" class="excel-cell-input excel-cell-center" style="font-family:var(--font-mono); font-size:0.80rem;" value="${escapeHTML(item.code || '')}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'code', this.value)"></td>
+                            <td><input type="text" class="excel-cell-text" value="${escapeHTML(item.name || '')}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'name', this.value)"></td>
+                            <td><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(item.unit || 'Pcs')}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'unit', this.value)"></td>
+                            <td>
+                                <input type="number" 
+                                       class="excel-cell-input" 
+                                       data-cat="${catIdx}" 
+                                       data-item="${itemIdx}" 
+                                       data-field="preDay" 
+                                       value="${pVal === 0 ? '0' : pVal}" 
+                                       oninput="onNumberCellInput(this, ${catIdx}, ${itemIdx})"
+                                       onkeydown="handleGridKeyNav(event, this)">
+                            </td>
+                            <td style="text-align:center;">
+                                <button type="button" class="btn-del-row" onclick="deleteItemRow(${catIdx}, ${itemIdx})" title="Delete row">&times;</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                });
+            }
+
+            // 3. Grand Total Row
+            tfoot.innerHTML = `
+                <tr class="grand-total-row">
+                    <td colspan="4" class="grand-title">GRAND TOTAL (${totalItemCount} ITEMS)</td>
+                    <td style="color:#34d399 !important; background:#064e3b !important; font-size:0.92rem;" id="grand-preday">${grandPerDay.toLocaleString()}</td>
+                    <td></td>
+                </tr>
+            `;
+
+            // Update KPI Stat Cards
+            document.getElementById('kpiTotalPerDay').innerText = grandPerDay.toLocaleString();
+            document.getElementById('kpiActiveModels').innerText = `${activeModelsCount} Models`;
+            document.getElementById('kpiTotalItems').innerText = `${totalItemCount} Items`;
+
+            // Persist Live Plan Per Day Map for Check Floor Stock & BOM Engine
+            autoSavePlanPerDayMap();
+        }
+
+        function onNumberCellInput(inputElem, catIdx, itemIdx) {
+            const raw = inputElem.value.trim();
+            const val = parseFloat(raw) || 0;
+            currentPlanData.categories[catIdx].items[itemIdx].preDay = val;
+
+            // Recalculate Category Subtotal
+            const cat = currentPlanData.categories[catIdx];
+            let catSum = 0;
+            cat.items.forEach(it => {
+                catSum += (parseFloat(it.preDay) || 0);
+            });
+            const catSumElem = document.getElementById(`cat-preday-${catIdx}`);
+            if (catSumElem) catSumElem.innerText = catSum === 0 ? '' : catSum.toLocaleString();
+
+            // Recalculate Grand Totals
+            let grandPreDay = 0;
+            let activeModels = 0;
+            currentPlanData.categories.forEach(c => {
+                c.items.forEach(it => {
+                    const p = parseFloat(it.preDay) || 0;
+                    grandPreDay += p;
+                    if (p > 0) activeModels++;
+                });
+            });
+
+            document.getElementById('grand-preday').innerText = grandPreDay.toLocaleString();
+            document.getElementById('kpiTotalPerDay').innerText = grandPreDay.toLocaleString();
+            document.getElementById('kpiActiveModels').innerText = `${activeModels} Models`;
+
+            // Auto Save Plan & sync with BOM floor stock
+            saveCurrentPlan(false);
+            autoSavePlanPerDayMap();
+        }
+
+        function getPlanPerDayMap() {
+            const map = {};
+            if (currentPlanData && currentPlanData.categories) {
+                currentPlanData.categories.forEach(cat => {
+                    cat.items.forEach(it => {
+                        if (it.code) {
+                            map[it.code.trim().toUpperCase()] = parseFloat(it.preDay) || 0;
+                        }
+                    });
+                });
+            }
+            return map;
+        }
+
+        function autoSavePlanPerDayMap() {
+            const map = getPlanPerDayMap();
+            localStorage.setItem('mep_daily_plan_per_day', JSON.stringify(map));
+            localStorage.setItem('mep_daily_plan_per_day_updated_at', new Date().toISOString());
+        }
+
+        function submitPlanToBOMFloorStock(showNotification) {
+            saveCurrentPlan(false);
+            autoSavePlanPerDayMap();
+            const map = getPlanPerDayMap();
+            let activeCount = 0;
+            Object.values(map).forEach(v => { if (v > 0) activeCount++; });
+            if (showNotification) {
+                showToast(`? Daily Plan Per Day Submitted to BOM & Check Floor Stock! (${activeCount} Active SFG Targets)`);
+            }
+        }
+
+        function updateItemField(catIdx, itemIdx, field, val) {
+            if (currentPlanData && currentPlanData.categories[catIdx]?.items[itemIdx]) {
+                currentPlanData.categories[catIdx].items[itemIdx][field] = val;
+                saveCurrentPlan(false);
+            }
+        }
+
+        // Excel Keyboard Navigation
+        function handleGridKeyNav(e, currentInput) {
+            const catIdx = parseInt(currentInput.dataset.cat);
+            const itemIdx = parseInt(currentInput.dataset.item);
+
+            if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                const nextRow = document.querySelector(`input[data-cat="${catIdx}"][data-item="${itemIdx + 1}"][data-field="preDay"]`);
+                if (nextRow) {
+                    nextRow.focus(); nextRow.select(); e.preventDefault();
+                } else {
+                    const nextCat = document.querySelector(`input[data-cat="${catIdx + 1}"][data-item="0"][data-field="preDay"]`);
+                    if (nextCat) { nextCat.focus(); nextCat.select(); e.preventDefault(); }
+                }
+            } else if (e.key === 'ArrowUp') {
+                const prevRow = document.querySelector(`input[data-cat="${catIdx}"][data-item="${itemIdx - 1}"][data-field="preDay"]`);
+                if (prevRow) {
+                    prevRow.focus(); prevRow.select(); e.preventDefault();
+                }
+            }
+        }
+
+        // Add Item Modal
+        function openAddItemModal() {
+            document.getElementById('addItemModal').classList.add('active');
+            document.getElementById('newItemCode').value = '';
+            document.getElementById('newItemName').value = '';
+            document.getElementById('newItemPreDay').value = '0';
+            document.getElementById('newItemCode').focus();
+        }
+
+        function closeAddItemModal() {
+            document.getElementById('addItemModal').classList.remove('active');
+        }
+
+        function saveNewItem() {
+            const catName = document.getElementById('newItemCategory').value;
+            const code = document.getElementById('newItemCode').value.trim();
+            const name = document.getElementById('newItemName').value.trim();
+            const unit = document.getElementById('newItemUnit').value.trim() || 'Pcs';
+            const preDay = parseFloat(document.getElementById('newItemPreDay').value) || 0;
+
+            if (!name) {
+                alert("Please enter Item Name.");
+                return;
+            }
+
+            if (!currentPlanData) currentPlanData = { categories: [] };
+
+            let cat = currentPlanData.categories.find(c => c.name.toLowerCase() === catName.toLowerCase());
+            if (!cat) {
+                cat = {
+                    name: catName,
+                    rowStyle: 'style-amber',
+                    items: []
+                };
+                currentPlanData.categories.push(cat);
+            }
+
+            const nextSl = String(cat.items.length + 1);
+            cat.items.push({
+                sl: nextSl,
+                code: code,
+                name: name,
+                unit: unit,
+                preDay: preDay
+            });
+
+            saveCurrentPlan(true);
+            renderExcelTable();
+            closeAddItemModal();
+            showToast(`? Added new item "${name}" to ${catName}!`);
+        }
+
+        function deleteItemRow(catIdx, itemIdx) {
+            if (confirm("Are you sure you want to remove this item row?")) {
+                currentPlanData.categories[catIdx].items.splice(itemIdx, 1);
+                saveCurrentPlan(true);
+                renderExcelTable();
+                showToast("??? Item row removed!");
+            }
+        }
+
+        // CSV Export
+        function exportToCSV() {
+            const dateStr = document.getElementById('planDateInput').value || '2026-08-26';
+            let csv = `MEP FAN LTD. - Daily Production Plan (${dateStr})\r\n`;
+            csv += `Category,SL,Item Code,Item Name,Unit,Per Day\r\n`;
+
+            if (currentPlanData && currentPlanData.categories) {
+                currentPlanData.categories.forEach(cat => {
+                    cat.items.forEach(it => {
+                        csv += `"${cat.name}","${it.sl || ''}","${it.code || ''}","${(it.name || '').replace(/"/g, '""')}","${it.unit || 'Pcs'}",${it.preDay || 0}\r\n`;
+                    });
+                });
+            }
+
+            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `MEP_FAN_DAILY_PRODUCTION_PLAN_${dateStr}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("?? Exported Daily Production Plan to CSV!");
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayDateElem = document.getElementById('liveDayText');
+            const timeElem = document.getElementById('liveTimeText');
+
+            if (dayDateElem) dayDateElem.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            if (timeElem) timeElem.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        function escapeHTML(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>
+
+
+
+

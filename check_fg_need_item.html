@@ -1,0 +1,1683 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <link rel="stylesheet" href="report_sidebar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Check FG Need Item | MEP FAN LTD.</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0891b2;
+            --brand-primary-hover: #0e7490;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-soft: #cbd5e1;
+            --border-cell: #cbd5e1;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* Factory Excel Palette */
+            --header-pink: #f472b6;
+            --header-peach: #fed7aa;
+            --header-yellow: #ffff00;
+            --header-red: #ff0000;
+            --badge-green: #86efac;
+            --badge-yellow: #fef08a;
+            --badge-red: #fca5a5;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nav-live-clock {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #15803d;
+        }
+
+        .btn-portal-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .btn-portal-back:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* Workspace Main Layout */
+        .page-content {
+            flex: 1;
+            padding: 16px 20px 40px;
+            max-width: 1680px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Top SFG Quick Input & Selection Card (Exact Excel match) */
+        .top-sfg-card {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 14px rgba(15, 41, 66, 0.06);
+            margin-bottom: 20px;
+        }
+
+        .top-sfg-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .top-sfg-title {
+            font-size: 0.98rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Live Automatic Input Bar */
+        .interactive-entry-bar {
+            display: grid;
+            grid-template-columns: 220px 1fr 180px auto;
+            gap: 14px;
+            align-items: center;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 0px;
+        }
+
+        .entry-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .entry-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .entry-input {
+            padding: 8px 12px;
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #0f172a;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            transition: all 0.15s ease;
+            height: 38px;
+        }
+
+        .entry-input:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
+        }
+
+        .entry-input.readonly {
+            background: #f1f5f9;
+            color: #334155;
+            cursor: not-allowed;
+            font-weight: 700;
+        }
+
+        .entry-select {
+            padding: 7px 12px;
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #0f172a;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            transition: all 0.15s ease;
+            height: 38px;
+            cursor: pointer;
+        }
+
+        .entry-select:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
+        }
+
+        .btn-update-entry {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 24px;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+            transition: all 0.15s ease;
+            height: 38px;
+            align-self: flex-end;
+        }
+
+        .btn-update-entry:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.45);
+        }
+
+        /* View-Only Explicit Lock */
+        body.portal-view-only #selectSfgCode,
+        body.portal-view-only .entry-select {
+            pointer-events: none !important;
+            cursor: not-allowed !important;
+            background-color: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            color: #1e293b !important;
+            user-select: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+        }
+
+        body.portal-view-only .btn-update-entry,
+        body.portal-view-only #btnColSettings {
+            display: none !important;
+        }
+        body.portal-view-only #inputQuantity {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #334155 !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+            font-weight: 700 !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+        }
+        body.portal-view-only #inputQuantity::-webkit-outer-spin-button,
+        body.portal-view-only #inputQuantity::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0 !important;
+        }
+        body.portal-view-only #inputQuantity {
+            -moz-appearance: textfield !important;
+        }
+
+        /* Action Buttons Bar */
+        .actions-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .status-summary-strip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .btn-export-excel {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #ffffff;
+            color: #15803d;
+            border: 1.5px solid #16a34a;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-export-excel:hover {
+            background: #dcfce7;
+            color: #14532d;
+        }
+
+        /* Main Excel Calculation Table Container */
+        .excel-table-container {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(15, 41, 66, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .excel-banner-peach {
+            background: var(--header-peach);
+            color: #000000;
+            text-align: center;
+            font-size: 0.98rem;
+            font-weight: 800;
+            padding: 8px 14px;
+            letter-spacing: 0.2px;
+            border-bottom: 1.5px solid #cbd5e1;
+        }
+
+        .table-scroll-area {
+            overflow-x: auto !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+            max-height: 540px;
+            position: relative;
+            background: #ffffff;
+        }
+
+        .table-scroll-area::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .table-scroll-area::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .table-scroll-area::-webkit-scrollbar-thumb {
+            background: #0284c7;
+            border-radius: 5px;
+        }
+
+        .table-scroll-area::-webkit-scrollbar-thumb:hover {
+            background: #0369a1;
+        }
+
+        .factory-excel-table {
+            width: max-content;
+            min-width: 100%;
+            border-collapse: separate !important;
+            border-spacing: 0;
+            font-size: 13px !important;
+            table-layout: auto;
+        }
+
+        .factory-excel-table th {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: #f1f5f9;
+            color: #0f2942;
+            font-weight: 800;
+            font-size: 13px !important;
+            padding: 7px 10px;
+            border: 1px solid #cbd5e1;
+            white-space: nowrap;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        /* Freeze Panes up to UNIT column (SL -> Category -> Item Code -> Item Description -> Unit) */
+        .sticky-col-1 {
+            position: sticky !important;
+            left: 0px !important;
+            width: 40px !important;
+            min-width: 40px !important;
+            max-width: 40px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-2 {
+            position: sticky !important;
+            left: 40px !important;
+            width: 110px !important;
+            min-width: 110px !important;
+            max-width: 110px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-3 {
+            position: sticky !important;
+            left: 150px !important;
+            width: 105px !important;
+            min-width: 105px !important;
+            max-width: 105px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-4 {
+            position: sticky !important;
+            left: 255px !important;
+            width: 250px !important;
+            min-width: 250px !important;
+            max-width: 250px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-5 {
+            position: sticky !important;
+            left: 505px !important;
+            width: 55px !important;
+            min-width: 55px !important;
+            max-width: 55px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            box-sizing: border-box;
+        }
+
+        .factory-excel-table thead th.sticky-col-1,
+        .factory-excel-table thead th.sticky-col-2,
+        .factory-excel-table thead th.sticky-col-3,
+        .factory-excel-table thead th.sticky-col-4 {
+            z-index: 35 !important;
+        }
+
+        .factory-excel-table thead th.sticky-col-5 {
+            z-index: 36 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        .factory-excel-table th.th-need {
+            background: var(--header-yellow) !important;
+            color: #000000 !important;
+            font-weight: 900;
+        }
+
+        .factory-excel-table th.th-warning {
+            background: var(--header-red) !important;
+            color: #ffffff !important;
+            font-weight: 900;
+        }
+
+        .factory-excel-table td {
+            padding: 5px 10px;
+            border: 1px solid #cbd5e1;
+            color: #000000;
+            vertical-align: middle;
+            background: #ffffff;
+            white-space: nowrap;
+            font-size: 13px !important;
+            font-weight: 600;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .factory-excel-table tbody tr:hover td {
+            background: #f0fdf4 !important;
+        }
+
+        /* Alignment classes */
+        .td-c {
+            text-align: center;
+            font-size: 13px !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+        .td-l {
+            text-align: left;
+            font-size: 13px !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+        .td-r {
+            text-align: right;
+            font-family: 'Times New Roman', Times, serif !important;
+            font-weight: 600;
+            font-size: 13px !important;
+        }
+
+        /* Warning Badge Colors matching Screenshot */
+        .td-warning-cell {
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            font-size: 12.5px !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .td-warning-emergency {
+            background: #ff0000 !important;
+            color: #ffffff !important;
+        }
+
+        .td-warning-need {
+            background: #ffff00 !important;
+            color: #000000 !important;
+        }
+
+        .td-warning-ok {
+            background: #86efac !important;
+            color: #000000 !important;
+        }
+
+        /* NeeD column styling */
+        .val-negative {
+            color: #ff0000 !important;
+            font-weight: 800 !important;
+            font-size: 13px !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .val-positive {
+            color: #000000 !important;
+            font-weight: 700;
+            font-size: 13px !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        /* Column Hide Class */
+        .col-hide {
+            display: none !important;
+        }
+
+        /* Action Buttons Bar */
+        .action-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-col-settings {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #ffffff;
+            color: #0369a1;
+            border: 1.5px solid #0284c7;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-col-settings:hover {
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        /* Column Settings Modal */
+        .col-settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .col-settings-modal.active {
+            display: flex;
+        }
+
+        .col-settings-card {
+            background: #ffffff;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 480px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1.5px solid #cbd5e1;
+            overflow: hidden;
+            animation: popIn 0.2s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .col-settings-header {
+            background: #f8fafc;
+            padding: 14px 20px;
+            border-bottom: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .col-settings-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: #0f2942;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .col-settings-body {
+            padding: 16px 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .col-settings-notice {
+            font-size: 0.78rem;
+            color: #64748b;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            background: #f0f9ff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #0284c7;
+        }
+
+        .col-checkbox-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .col-checkbox-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .col-checkbox-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .col-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: #1e293b;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .col-checkbox-input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #0284c7;
+        }
+
+        .col-settings-footer {
+            background: #f8fafc;
+            padding: 12px 20px;
+            border-top: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-select-all {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #334155;
+            cursor: pointer;
+        }
+
+        .btn-select-all:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-close-settings {
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 7px 18px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-close-settings:hover {
+            background: #0369a1;
+        }
+
+        /* Empty table placeholder */
+        .empty-placeholder-box {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-placeholder-box svg {
+            stroke: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .empty-placeholder-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .empty-placeholder-desc {
+            font-size: 0.86rem;
+            color: #64748b;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .toast-popup {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 20px;
+            background: #0f172a;
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            display: none;
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div>
+                    <div class="nav-brand-title">INDIVIDUAL CHECK</div>
+                    <div class="nav-brand-sub">Check FG Need Item</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="nav-live-clock">
+                    <span id="liveClockText">--:--:--</span>
+                </div>
+                <a href="index.html?view=hub" class="btn-portal-back" title="Return to Portal Hub">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    <span>Hub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+
+        <!-- Top SFG Selection & Quick Input Section -->
+        <div class="top-sfg-card">
+            <div class="top-sfg-header">
+                <div class="top-sfg-title">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0891b2" stroke-width="2.2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    <span>Automatic SFG Code Lookup &amp; Quantity Input</span>
+                </div>
+                <div style="font-size:0.78rem; font-weight:700; color:#0284c7; background:#e0f2fe; padding:4px 10px; border-radius:12px;">
+                    &#128279; Live Stock Linked Calculation Engine
+                </div>
+            </div>
+
+            <!-- Single Line Interactive Input Bar with Dropdown & Update Button -->
+            <div class="interactive-entry-bar">
+                <div class="entry-group">
+                    <label class="entry-label">SFG Code</label>
+                    <select class="entry-select" id="selectSfgCode" onchange="handleSfgCodeSelect(this.value)">
+                        <!-- Populated dynamically from BOM with SFG -->
+                    </select>
+                </div>
+
+                <div class="entry-group">
+                    <label class="entry-label">Item Name (Automatic Lookup)</label>
+                    <input type="text" class="entry-input readonly" id="inputItemName" placeholder="Item Name will appear automatically" readonly>
+                </div>
+
+                <div class="entry-group">
+                    <label class="entry-label">Production Quantity</label>
+                    <input type="number" class="entry-input" id="inputQuantity" placeholder="e.g. 5000" min="1" step="10" value="5000" onkeydown="if(event.key==='Enter') handleUpdateClick()">
+                </div>
+
+                <button type="button" class="btn-update-entry" onclick="handleUpdateClick()" title="Calculate and generate BOM table">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    <span>Update</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Action / Status Strip -->
+        <div class="actions-bar">
+            <div class="status-summary-strip" id="statusSummaryStrip">
+                <!-- Populated dynamically when data loads -->
+            </div>
+            <div class="action-btn-group">
+                <button type="button" class="btn-col-settings" id="btnLinkDetails" onclick="window.openLinkDetailsModal('check_fg_need_item')" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc;" title="View Detailed Link Information & Calculation Logic">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    <span>🔗 Link Details</span>
+                </button>
+                <button type="button" class="btn-col-settings" id="btnColSettings" onclick="openColumnSettingsModal()" title="Customize Visible Columns">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <span>⚙️ Column Settings</span>
+                </button>
+                <button type="button" class="btn-export-excel" id="btnExportExcel" onclick="exportToCSV()" style="display:none;" title="Download CSV Spreadsheet">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    <span>Export to CSV / Excel</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Excel Table Block -->
+        <div class="excel-table-container" id="excelTableContainer">
+            <!-- Merged Peach Subheader (Model Name) -->
+            <div class="excel-banner-peach" id="bannerPeach" style="display:none;">-</div>
+
+            <!-- 13-Column Table -->
+            <div class="table-scroll-area">
+                <table class="factory-excel-table" id="factoryBOMTable" style="display:none;">
+                    <thead>
+                        <tr>
+                            <th class="sticky-col-1" style="width: 40px; min-width: 40px; max-width: 40px;">SL</th>
+                            <th class="sticky-col-2" style="width: 110px; min-width: 110px; max-width: 110px;">Category</th>
+                            <th class="sticky-col-3" style="width: 105px; min-width: 105px; max-width: 105px;">Item Code</th>
+                            <th class="sticky-col-4" style="width: 250px; min-width: 250px; max-width: 250px; text-align:left;">Item Description</th>
+                            <th class="sticky-col-5" style="width: 55px; min-width: 55px; max-width: 55px;">Unit</th>
+                            <th class="col-prodQty" style="width: 130px;">Production Quantity</th>
+                            <th class="col-floorStock" style="width: 105px;">Floor Stock</th>
+                            <th class="col-validity" style="width: 120px;">RM Validity Day</th>
+                            <th class="col-storeStock" style="width: 105px;">Store Stock</th>
+                            <th class="col-pending" style="width: 95px;">Pending</th>
+                            <th class="col-shortFloor" style="width: 105px;">Short Floor</th>
+                            <th class="th-need col-need" style="width: 110px;">Need</th>
+                            <th class="th-warning col-warning" style="width: 110px;">Warning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="factoryTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+
+                <!-- Blank / Empty Initial State Placeholder -->
+                <div class="empty-placeholder-box" id="emptyPlaceholder">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <div class="empty-placeholder-title">No SFG Code or Quantity Entered</div>
+                    <div class="empty-placeholder-desc">
+                        Please select an <strong>SFG Code</strong> above and enter the <strong>Quantity</strong>. The entire BOM table will automatically calculate and generate based on your input.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Column Settings Modal -->
+    <div class="col-settings-modal" id="colSettingsModal" onclick="if(event.target===this) closeColumnSettingsModal()">
+        <div class="col-settings-card">
+            <div class="col-settings-header">
+                <div class="col-settings-title">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0284c7" stroke-width="2.2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <span>Column Settings (Unit-এর পরের Columnসমূহ)</span>
+                </div>
+                <button type="button" onclick="closeColumnSettingsModal()" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#64748b;">&times;</button>
+            </div>
+            <div class="col-settings-body">
+                <div class="col-settings-notice">
+                    📌 <strong>Unit</strong> Column-এর পর থেকে ডান পাশের প্রয়োজনীয় কলামগুলো আপনার পছন্দমতো Hide বা Show করতে পারবেন। ভিতরের Lookup ও Calculation সবসময় কার্যকর থাকবে।
+                </div>
+                <div class="col-checkbox-list">
+                    <label class="col-checkbox-item">
+                        <span class="col-checkbox-label">
+                            <input type="checkbox" class="col-checkbox-input" id="chk_prodQty" onchange="handleColumnToggle('prodQty', this.checked)">
+                            <span>Production Quantity</span>
+                        </span>
+                    </label>
+                    <label class="col-checkbox-item">
+                        <span class="col-checkbox-label">
+                            <input type="checkbox" class="col-checkbox-input" id="chk_floorStock" onchange="handleColumnToggle('floorStock', this.checked)">
+                            <span>Floor Stock (Assemble Summary → Bin Closing)</span>
+                        </span>
+                    </label>
+                    <label class="col-checkbox-item">
+                        <span class="col-checkbox-label">
+                            <input type="checkbox" class="col-checkbox-input" id="chk_validity" onchange="handleColumnToggle('validity', this.checked)">
+                            <span>RM Validity Day (Floor Stock ÷ Prd. Qty)</span>
+                        </span>
+                    </label>
+                    <label class="col-checkbox-item">
+                        <span class="col-checkbox-label">
+                            <input type="checkbox" class="col-checkbox-input" id="chk_storeStock" onchange="handleColumnToggle('storeStock', this.checked)">
+                            <span>Store Stock (Store Position → Store Qty)</span>
+                        </span>
+                    </label>
+                    <label class="col-checkbox-item">
+                        <span class="col-checkbox-label">
+                            <input type="checkbox" class="col-checkbox-input" id="chk_pending" onchange="handleColumnToggle('pending', this.checked)">
+                            <span>Pending (Check Floor Stock → Total Pending)</span>
+                        </span>
+                    </label>
+                    <label class="col-checkbox-item">
+                        <span class="col-checkbox-label">
+                            <input type="checkbox" class="col-checkbox-input" id="chk_shortFloor" onchange="handleColumnToggle('shortFloor', this.checked)">
+                            <span>Short Floor (Floor Stock − Pending)</span>
+                        </span>
+                    </label>
+                    <label class="col-checkbox-item">
+                        <span class="col-checkbox-label">
+                            <input type="checkbox" class="col-checkbox-input" id="chk_need" onchange="handleColumnToggle('need', this.checked)">
+                            <span>Need (Production Qty − Short Floor)</span>
+                        </span>
+                    </label>
+                    <label class="col-checkbox-item">
+                        <span class="col-checkbox-label">
+                            <input type="checkbox" class="col-checkbox-input" id="chk_warning" onchange="handleColumnToggle('warning', this.checked)">
+                            <span>Warning (NEED / OK)</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-settings-footer">
+                <button type="button" class="btn-select-all" onclick="toggleAllColumns(true)">☑ Select All</button>
+                <button type="button" class="btn-select-all" onclick="resetDefaultColumns()">🔄 Reset Default</button>
+                <button type="button" class="btn-close-settings" onclick="closeColumnSettingsModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-popup" id="toastBox">Notification Message</div>
+
+    <!-- Scripts: Master BOM, Assemble Summary, Store Position, Floor Stock & ERP Engine -->
+    <script src="master_database.js"></script>
+    <script src="bom_with_sfg_data.js"></script>
+    <script src="assemble_summary_data.js"></script>
+    <script src="store_position_data.js"></script>
+    <script src="check_floor_stock_data.js"></script>
+    <script src="erp_engine.js"></script>
+    <script>
+        /**
+         * 7 Primary Finished Good SFG Models matching Excel Specification
+         */
+        const PRIMARY_SFG_LIST = [
+            { code: "SFG1010079", name: "5601 Premium Ceiling Fan Complete Body - Ivory", modelName: "56 Inch Premium Ceiling Fan - Ivory" },
+            { code: "SFG1010080", name: "5602 Speed King Ceiling Fan Complete Body - Ivory", modelName: "56 Inch Speed King Ceiling Fan - Ivory" },
+            { code: "SFG1010097", name: "5603 Premium Gold Complete Body - Ivory", modelName: "56 Inch Premium Gold Ceiling Fan - Ivory" },
+            { code: "SFG1010135", name: "5607 Crown Ceiling Fan Complete Body - Ivory", modelName: "56 Inch Crown Ceiling Fan - Ivory" },
+            { code: "SFG1010078", name: "4801 Popular Ceiling Fan Complete Body - Ivory", modelName: "48 Inch Popular Ceiling Fan - Ivory" },
+            { code: "SFG1010077", name: "3601 Hero Ceiling Fan Complete Body - Ivory", modelName: "36 Inch Hero Ceiling Fan - Ivory" },
+            { code: "SFG1010076", name: "2401 Super Ceiling Fan Complete Body - Ivory", modelName: "24 Inch Super Ceiling Fan - Ivory" }
+        ];
+
+        // Column Visibility Preferences (Stored in localStorage)
+        const DEFAULT_COL_VISIBILITY = {
+            prodQty: true,
+            floorStock: true,
+            validity: true,
+            storeStock: true,
+            pending: true,
+            shortFloor: true,
+            need: true,
+            warning: true
+        };
+
+        let colVisibility = { ...DEFAULT_COL_VISIBILITY };
+
+        function loadColumnVisibility() {
+            try {
+                const saved = localStorage.getItem('mep_check_fg_need_col_visibility');
+                if (saved) {
+                    colVisibility = { ...DEFAULT_COL_VISIBILITY, ...JSON.parse(saved) };
+                }
+            } catch(e) {
+                colVisibility = { ...DEFAULT_COL_VISIBILITY };
+            }
+            applyColumnVisibility();
+        }
+
+        function saveColumnVisibility() {
+            localStorage.setItem('mep_check_fg_need_col_visibility', JSON.stringify(colVisibility));
+        }
+
+        function applyColumnVisibility() {
+            Object.keys(colVisibility).forEach(key => {
+                const isVisible = colVisibility[key];
+                const className = `col-${key}`;
+                const elements = document.querySelectorAll(`.${className}`);
+                elements.forEach(el => {
+                    if (isVisible) {
+                        el.classList.remove('col-hide');
+                    } else {
+                        el.classList.add('col-hide');
+                    }
+                });
+
+                const chk = document.getElementById(`chk_${key}`);
+                if (chk) chk.checked = isVisible;
+            });
+        }
+
+        function handleColumnToggle(colKey, isChecked) {
+            colVisibility[colKey] = isChecked;
+            saveColumnVisibility();
+            applyColumnVisibility();
+        }
+
+        function toggleAllColumns(state) {
+            Object.keys(colVisibility).forEach(k => colVisibility[k] = state);
+            saveColumnVisibility();
+            applyColumnVisibility();
+        }
+
+        function resetDefaultColumns() {
+            colVisibility = { ...DEFAULT_COL_VISIBILITY };
+            saveColumnVisibility();
+            applyColumnVisibility();
+        }
+
+        function openColumnSettingsModal() {
+            loadColumnVisibility();
+            document.getElementById('colSettingsModal').classList.add('active');
+        }
+
+        function closeColumnSettingsModal() {
+            document.getElementById('colSettingsModal').classList.remove('active');
+        }
+
+        /**
+         * =========================================================================
+         * DATA LOOKUP ENGINES (100% Exact User Specification)
+         * =========================================================================
+         */
+
+        /**
+         * 1. Floor Stock Lookup:
+         * Source: All Report Summary -> Assemble Summary -> Bin Closing
+         * Matching: Item Code
+         */
+        function getAssembleSummaryFloorStock(itemCode) {
+            const cleanCode = (itemCode || '').trim().toUpperCase();
+            if (!cleanCode) return 0;
+
+            // Priority A: Live computation from ERP engine if available
+            if (typeof MEP_ERP_ENGINE !== 'undefined' && typeof MEP_ERP_ENGINE.computeLiveAssembleSummary === 'function') {
+                const liveList = MEP_ERP_ENGINE.computeLiveAssembleSummary();
+                if (Array.isArray(liveList) && liveList.length > 0) {
+                    const match = liveList.find(r => (r.code || '').trim().toUpperCase() === cleanCode);
+                    if (match) {
+                        const val = parseFloat(match.closing !== undefined ? match.closing : match.binClosing);
+                        if (!isNaN(val)) return val;
+                    }
+                }
+            }
+
+            // Priority B: Saved custom assemble data from localStorage
+            try {
+                const saved = localStorage.getItem('mep_assemble_custom_data') || localStorage.getItem('mep_assemble_summary_data');
+                if (saved) {
+                    const list = JSON.parse(saved);
+                    if (Array.isArray(list) && list.length > 0) {
+                        const match = list.find(r => (r.code || '').trim().toUpperCase() === cleanCode);
+                        if (match) {
+                            const val = parseFloat(match.closing !== undefined ? match.closing : match.binClosing);
+                            if (!isNaN(val)) return val;
+                        }
+                    }
+                }
+            } catch(e) {}
+
+            // Priority C: Baseline RAW_ASSEMBLE_SUMMARY_DATA
+            if (typeof RAW_ASSEMBLE_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_ASSEMBLE_SUMMARY_DATA)) {
+                const match = RAW_ASSEMBLE_SUMMARY_DATA.find(r => (r.code || '').trim().toUpperCase() === cleanCode);
+                if (match) {
+                    const val = parseFloat(match.closing !== undefined ? match.closing : match.binClosing);
+                    if (!isNaN(val)) return val;
+                }
+            }
+
+            return 0;
+        }
+
+        /**
+         * 2. Store Stock Lookup:
+         * Source: Closing ERP -> Store Position Report -> Store Qty
+         * Matching: By FG Column Code first (or itemCode fallback)
+         */
+        function getStorePositionStoreStock(itemCode) {
+            const cleanCode = (itemCode || '').trim().toUpperCase();
+            if (!cleanCode) return 0;
+
+            let storePositionList = [];
+
+            // Priority A: localStorage
+            try {
+                const saved = localStorage.getItem('mep_store_position_report_data');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) storePositionList = parsed;
+                }
+            } catch(e) {}
+
+            // Priority B: Baseline RAW_STORE_POSITION_REPORT_DATA
+            if (storePositionList.length === 0 && typeof RAW_STORE_POSITION_REPORT_DATA !== 'undefined' && Array.isArray(RAW_STORE_POSITION_REPORT_DATA)) {
+                storePositionList = RAW_STORE_POSITION_REPORT_DATA;
+            }
+
+            // Match by FG Column Code first, then itemCode
+            const matchByFg = storePositionList.find(r => (r.fg || '').trim().toUpperCase() === cleanCode);
+            if (matchByFg) {
+                const val = parseFloat(matchByFg.storeQty);
+                return isNaN(val) ? 0 : val;
+            }
+
+            const matchByCode = storePositionList.find(r => (r.itemCode || r.code || '').trim().toUpperCase() === cleanCode);
+            if (matchByCode) {
+                const val = parseFloat(matchByCode.storeQty);
+                return isNaN(val) ? 0 : val;
+            }
+
+            return 0;
+        }
+
+        /**
+         * 3. Pending Lookup:
+         * Source: Daily Check Report -> Check Floor Stock -> Total Pending
+         * Matching: Item Code
+         */
+        function getCheckFloorStockPending(itemCode) {
+            const cleanCode = (itemCode || '').trim().toUpperCase();
+            if (!cleanCode) return 0;
+
+            let floorStockList = [];
+
+            // Priority A: localStorage
+            try {
+                const saved = localStorage.getItem('mep_check_floor_stock_data');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) floorStockList = parsed;
+                }
+            } catch(e) {}
+
+            // Priority B: Baseline DEFAULT_FLOOR_STOCK_DATA
+            if (floorStockList.length === 0 && typeof DEFAULT_FLOOR_STOCK_DATA !== 'undefined' && Array.isArray(DEFAULT_FLOOR_STOCK_DATA)) {
+                floorStockList = DEFAULT_FLOOR_STOCK_DATA;
+            }
+
+            const match = floorStockList.find(r => (r.code || '').trim().toUpperCase() === cleanCode);
+            if (match) {
+                const val = parseFloat(match.totalPending !== undefined ? match.totalPending : match.pending);
+                return isNaN(val) ? 0 : val;
+            }
+
+            return 0;
+        }
+
+        /**
+         * Fetch BOM Items directly from Individual Check -> BOM with SFG
+         * Priority: localStorage['mep_bom_with_sfg_data'] -> DEFAULT_BOM_WITH_SFG_ITEMS
+         */
+        function getBomWithSfgItems(sfgCode) {
+            let allItems = [];
+            try {
+                const saved = localStorage.getItem('mep_bom_with_sfg_data');
+                if (saved) {
+                    allItems = JSON.parse(saved);
+                } else if (typeof DEFAULT_BOM_WITH_SFG_ITEMS !== 'undefined') {
+                    allItems = JSON.parse(JSON.stringify(DEFAULT_BOM_WITH_SFG_ITEMS));
+                }
+            } catch(e) {
+                console.error("Error reading BOM with SFG storage:", e);
+                if (typeof DEFAULT_BOM_WITH_SFG_ITEMS !== 'undefined') {
+                    allItems = JSON.parse(JSON.stringify(DEFAULT_BOM_WITH_SFG_ITEMS));
+                }
+            }
+
+            const cleanCode = (sfgCode || '').toUpperCase().trim();
+            const matched = allItems.filter(item => (item.model || '').toUpperCase().trim() === cleanCode);
+            return matched;
+        }
+
+        let activeSfgCode = "";
+        let activeQuantity = 5000;
+        let activeCalculatedData = [];
+
+        // Format helper functions
+        function formatCellVal(val, decimals = 0) {
+            if (val === null || val === undefined || isNaN(val)) return '0';
+            const num = Number(val);
+            if (decimals === 0) {
+                return Math.round(num).toLocaleString('en-US');
+            }
+            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: decimals });
+        }
+
+        /**
+         * Populate SFG Code Dropdown with Data Validation
+         * Dynamically gathers all models available in BOM with SFG
+         */
+        function populateSfgDropdown() {
+            const selectEl = document.getElementById('selectSfgCode');
+            if (!selectEl) return;
+
+            let allBomItems = [];
+            try {
+                const saved = localStorage.getItem('mep_bom_with_sfg_data');
+                if (saved) allBomItems = JSON.parse(saved);
+                else if (typeof DEFAULT_BOM_WITH_SFG_ITEMS !== 'undefined') allBomItems = DEFAULT_BOM_WITH_SFG_ITEMS;
+            } catch(e) {
+                if (typeof DEFAULT_BOM_WITH_SFG_ITEMS !== 'undefined') allBomItems = DEFAULT_BOM_WITH_SFG_ITEMS;
+            }
+
+            const modelCodes = new Set();
+            PRIMARY_SFG_LIST.forEach(s => modelCodes.add(s.code));
+            allBomItems.forEach(i => {
+                if (i.model && i.model.trim()) modelCodes.add(i.model.trim());
+            });
+
+            selectEl.innerHTML = '';
+            modelCodes.forEach(code => {
+                const foundPrimary = PRIMARY_SFG_LIST.find(s => s.code.toUpperCase() === code.toUpperCase());
+                const opt = document.createElement('option');
+                opt.value = code;
+                opt.textContent = code + (foundPrimary ? ` - ${foundPrimary.name}` : ` - SFG Model`);
+                selectEl.appendChild(opt);
+            });
+
+            // Default to SFG1010079 (5601 Premium)
+            const defaultCode = selectEl.options.length > 0 ? selectEl.options[0].value : "SFG1010079";
+            selectEl.value = defaultCode;
+            handleSfgCodeSelect(defaultCode);
+        }
+
+        /**
+         * Automatic Lookup for Item Name upon SFG Code Selection
+         */
+        function handleSfgCodeSelect(codeVal) {
+            const cleanCode = (codeVal || '').trim().toUpperCase();
+            activeSfgCode = cleanCode;
+
+            const nameInput = document.getElementById('inputItemName');
+            const found = PRIMARY_SFG_LIST.find(s => s.code.toUpperCase() === cleanCode);
+
+            if (found) {
+                nameInput.value = found.name;
+            } else if (cleanCode) {
+                nameInput.value = cleanCode + " Complete Body / Assembly";
+            } else {
+                nameInput.value = "";
+            }
+
+            // Real-time calculation on selecting model without needing an update button
+            const qtyInput = document.getElementById('inputQuantity');
+            const qty = parseFloat(qtyInput ? qtyInput.value : 5000) || 5000;
+            activeQuantity = qty;
+            generateBOMCalculation(activeSfgCode, activeQuantity);
+        }
+
+        /**
+         * Update Button Handler: Triggers BOM Calculation immediately
+         */
+        function handleUpdateClick() {
+            const selectEl = document.getElementById('selectSfgCode');
+            const qtyInput = document.getElementById('inputQuantity');
+
+            const sfgCode = (selectEl.value || '').trim();
+            const qty = parseFloat(qtyInput.value) || 0;
+
+            if (!sfgCode) {
+                showToast("⚠️ Please select an SFG Code from the dropdown");
+                return;
+            }
+
+            if (qty <= 0) {
+                showToast("⚠️ Please enter a valid Quantity greater than 0");
+                qtyInput.focus();
+                return;
+            }
+
+            activeSfgCode = sfgCode;
+            activeQuantity = qty;
+
+            generateBOMCalculation(activeSfgCode, activeQuantity);
+            showToast(`⚡ BOM Table calculated & updated for ${activeSfgCode} (${formatCellVal(qty)} Pcs)`);
+        }
+
+        /**
+         * Core Calculation Engine:
+         * 1. Floor Stock: Assemble Summary -> Bin Closing (Match by item.code)
+         * 2. RM Validity Day = Floor Stock ÷ Daily Required Quantity (Production Qty)
+         * 3. Store Stock: Store Position Report -> Store Qty (Match by FG Column Code)
+         * 4. Pending: Check Floor Stock -> Total Pending (Match by item.code)
+         * 5. Short Floor = Floor Stock − Pending
+         * 6. Need = Production Quantity − Short Floor (if negative/not needed, shows 0)
+         * 7. Warning: Need > 0 -> "NEED" (Yellow), Need <= 0 -> "OK" (Green)
+         */
+        function generateBOMCalculation(sfgCode, qty) {
+            let sfgItem = PRIMARY_SFG_LIST.find(s => s.code.toUpperCase() === sfgCode.toUpperCase());
+            let modelTitle = sfgItem ? sfgItem.modelName : (sfgCode + " Specifications");
+
+            // Update Merged Peach Banner (Model Name only)
+            const bannerPeach = document.getElementById('bannerPeach');
+            bannerPeach.innerText = modelTitle;
+            bannerPeach.style.display = 'block';
+
+            document.getElementById('emptyPlaceholder').style.display = 'none';
+            document.getElementById('factoryBOMTable').style.display = 'table';
+            document.getElementById('btnExportExcel').style.display = 'inline-flex';
+
+            // Resolve BOM Component List strictly from BOM with SFG
+            const bomSourceItems = getBomWithSfgItems(sfgCode);
+
+            // Perform exact formulas: Need Quantity × BOM Quantity = Required Item Quantity
+            activeCalculatedData = bomSourceItems.map((item, idx) => {
+                const bomRatio = parseFloat(item.quantity) || 0;
+                // Production Quantity
+                const prodQty = bomRatio * qty;
+
+                // 1. Floor Stock (Assemble Summary -> Bin Closing)
+                const floorStock = getAssembleSummaryFloorStock(item.code);
+
+                // 2. RM Validity Day = Floor Stock ÷ Production Quantity
+                let rmValidityDays = 0;
+                let rmValidityDisplay = "0 Day";
+                if (prodQty > 0) {
+                    rmValidityDays = floorStock / prodQty;
+                    const roundedDays = Math.round(rmValidityDays * 10) / 10;
+                    rmValidityDisplay = `${roundedDays >= 0 ? roundedDays : 0} Day`;
+                }
+
+                // 3. Store Stock (Store Position Report -> Store Qty, matched by FG Column Code)
+                const storeStock = getStorePositionStoreStock(item.code);
+
+                // 4. Pending (Daily Check Report -> Check Floor Stock -> Total Pending)
+                const pending = getCheckFloorStockPending(item.code);
+
+                // 5. Short Floor = Floor Stock − Pending
+                const shortFloor = floorStock - pending;
+
+                // 6. Need = Production Quantity − Short Floor
+                const rawNeed = prodQty - shortFloor;
+                const need = rawNeed > 0 ? rawNeed : 0;
+
+                // 7. Warning Logic: Need > 0 -> NEED, Need <= 0 -> OK
+                let warningText = "OK";
+                let warningClass = "td-warning-ok";
+
+                if (rawNeed > 0 || shortFloor < 0) {
+                    warningText = "NEED";
+                    warningClass = "td-warning-need";
+                } else {
+                    warningText = "OK";
+                    warningClass = "td-warning-ok";
+                }
+
+                return {
+                    sl: idx + 1,
+                    category: item.category || "Ceiling Raw",
+                    code: item.code,
+                    name: item.name,
+                    unit: item.unit || "Pcs",
+                    ratio: bomRatio,
+                    prodQty: prodQty,
+                    floorStock: floorStock,
+                    validity: rmValidityDays,
+                    validityDisplay: rmValidityDisplay,
+                    storeStock: storeStock,
+                    pending: pending,
+                    shortFloor: shortFloor,
+                    rawNeed: rawNeed,
+                    need: need,
+                    warningText: warningText,
+                    warningClass: warningClass
+                };
+            });
+
+            renderFactoryTable(activeCalculatedData);
+            renderStatusSummary(activeCalculatedData, sfgCode, qty);
+            applyColumnVisibility();
+        }
+
+        // Render the 13-Column Table
+        function renderFactoryTable(data) {
+            const tbody = document.getElementById('factoryTableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+
+                // Need display
+                let needDisplay = "";
+                if (r.rawNeed > 0) {
+                    needDisplay = `<span class="val-negative" style="font-weight:800; color:#dc2626;">${formatCellVal(r.need, r.need % 1 !== 0 ? 2 : 0)}</span>`;
+                } else {
+                    needDisplay = `<span class="val-positive">0</span>`;
+                }
+
+                // Production Qty format
+                const prodQtyDisplay = formatCellVal(r.prodQty, r.prodQty % 1 !== 0 ? 2 : 0);
+
+                // Floor Stock format
+                const floorDisplay = formatCellVal(r.floorStock, r.floorStock % 1 !== 0 ? 2 : 0);
+
+                // Short floor format
+                const shortFloorDisplay = formatCellVal(r.shortFloor, r.shortFloor % 1 !== 0 ? 2 : 0);
+
+                tr.innerHTML = `
+                    <td class="td-c sticky-col-1" style="font-weight:700; color:#475569;">${r.sl}</td>
+                    <td class="td-l sticky-col-2" style="font-weight:600;">${r.category}</td>
+                    <td class="td-l sticky-col-3" style="font-family:var(--font-mono); font-weight:700;">${r.code}</td>
+                    <td class="td-l sticky-col-4" style="font-weight:600;" title="${r.name}">${r.name}</td>
+                    <td class="td-c sticky-col-5" style="font-weight:700;">${r.unit}</td>
+                    <td class="td-r col-prodQty">${prodQtyDisplay}</td>
+                    <td class="td-r col-floorStock">${floorDisplay}</td>
+                    <td class="td-c col-validity" style="font-weight:700;">${r.validityDisplay}</td>
+                    <td class="td-r col-storeStock">${formatCellVal(r.storeStock, 0)}</td>
+                    <td class="td-r col-pending">${formatCellVal(r.pending, 0)}</td>
+                    <td class="td-r col-shortFloor">${shortFloorDisplay}</td>
+                    <td class="td-r col-need">${needDisplay}</td>
+                    <td class="td-warning-cell col-warning ${r.warningClass}">${r.warningText}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Append empty placeholder rows just like Excel
+            for (let i = 0; i < 6; i++) {
+                const blankTr = document.createElement('tr');
+                blankTr.innerHTML = `
+                    <td class="td-c sticky-col-1" style="color:#cbd5e1;">-</td>
+                    <td class="td-l sticky-col-2"></td>
+                    <td class="td-l sticky-col-3"></td>
+                    <td class="td-l sticky-col-4"></td>
+                    <td class="td-c sticky-col-5"></td>
+                    <td class="td-r col-prodQty" style="color:#94a3b8;">0</td>
+                    <td class="td-r col-floorStock" style="color:#94a3b8;">0</td>
+                    <td class="td-c col-validity" style="color:#94a3b8;">0 Day</td>
+                    <td class="td-r col-storeStock" style="color:#94a3b8;">0</td>
+                    <td class="td-r col-pending" style="color:#94a3b8;">0</td>
+                    <td class="td-r col-shortFloor" style="color:#94a3b8;">0</td>
+                    <td class="td-r col-need" style="color:#94a3b8;">0</td>
+                    <td class="td-c col-warning"></td>
+                `;
+                tbody.appendChild(blankTr);
+            }
+        }
+
+        // Status Summary Strip
+        function renderStatusSummary(data, sfgCode, qty) {
+            const strip = document.getElementById('statusSummaryStrip');
+            const needCount = data.filter(d => d.warningText === 'NEED').length;
+            const okCount = data.filter(d => d.warningText === 'OK').length;
+
+            strip.innerHTML = `
+                <span style="color:#0f2942;">Active Calculation: <strong>${sfgCode}</strong> (${formatCellVal(qty)} Pcs)</span>
+                <span style="color:#cbd5e1;">|</span>
+                <span style="color:#854d0e; background:#fef3c7; padding:3px 10px; border-radius:4px; font-weight:800;">⚠️ NEED: ${needCount}</span>
+                <span style="color:#15803d; background:#dcfce7; padding:3px 10px; border-radius:4px; font-weight:800;">✓ OK: ${okCount}</span>
+                <span style="color:#cbd5e1;">|</span>
+                <span style="color:#64748b;">Total ${data.length} BOM Components</span>
+            `;
+        }
+
+        // Export to CSV matching Excel columns (Honors active column calculations)
+        function exportToCSV() {
+            if (!activeCalculatedData || activeCalculatedData.length === 0) {
+                showToast("No calculation data to export.");
+                return;
+            }
+
+            let csv = '\uFEFF';
+            csv += `${activeSfgCode} - Production Quantity: ${activeQuantity} Pcs\n\n`;
+
+            // Build dynamic headers based on visible columns
+            const headers = ["SL", "Category", "Item Code", "Item Description", "Unit"];
+            if (colVisibility.prodQty) headers.push("Production Quantity");
+            if (colVisibility.floorStock) headers.push("Floor Stock");
+            if (colVisibility.validity) headers.push("RM Validity Day");
+            if (colVisibility.storeStock) headers.push("Store Stock");
+            if (colVisibility.pending) headers.push("Pending");
+            if (colVisibility.shortFloor) headers.push("Short Floor");
+            if (colVisibility.need) headers.push("Need");
+            if (colVisibility.warning) headers.push("Warning");
+
+            csv += headers.map(h => `"${h}"`).join(',') + '\n';
+
+            activeCalculatedData.forEach(r => {
+                const row = [r.sl, r.category, r.code, r.name.replace(/"/g, '""'), r.unit];
+                if (colVisibility.prodQty) row.push(r.prodQty);
+                if (colVisibility.floorStock) row.push(r.floorStock);
+                if (colVisibility.validity) row.push(r.validityDisplay);
+                if (colVisibility.storeStock) row.push(r.storeStock);
+                if (colVisibility.pending) row.push(r.pending);
+                if (colVisibility.shortFloor) row.push(r.shortFloor);
+                if (colVisibility.need) row.push(r.need);
+                if (colVisibility.warning) row.push(r.warningText);
+
+                csv += row.map(v => `"${v}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `Check_FG_Need_${activeSfgCode}_${activeQuantity}Pcs.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("✅ Exported CSV Spreadsheet successfully!");
+        }
+
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2500);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            const clockEl = document.getElementById('liveClockText');
+            if (clockEl) clockEl.innerText = timeStr;
+        }
+
+        function applyViewOnlyModeIfNeeded() {
+            try {
+                const sig = sessionStorage.getItem('portal_auth_sig') || localStorage.getItem('portal_auth_sig') || '';
+                let isView = false;
+                if (sig === btoa('VIEW:::MEP_SECURE_PORTAL_2026')) {
+                    isView = true;
+                } else if (sig === btoa('ADMIN:::MEP_SECURE_PORTAL_2026')) {
+                    isView = false;
+                } else {
+                    isView = (sessionStorage.getItem('portal_view_only') === 'true') ||
+                             (localStorage.getItem('portal_view_only') === 'true') ||
+                             ((sessionStorage.getItem('portal_auth_role') || '').toUpperCase() === 'VIEW') ||
+                             ((localStorage.getItem('portal_auth_role') || '').toUpperCase() === 'VIEW');
+                }
+                if (isView) {
+                    if (document.documentElement) document.documentElement.classList.add('portal-view-only');
+                    if (document.body) document.body.classList.add('portal-view-only');
+
+                    const btnUpdate = document.querySelector('.btn-update-entry');
+                    if (btnUpdate) btnUpdate.style.setProperty('display', 'none', 'important');
+
+                    const btnCol = document.getElementById('btnColSettings');
+                    if (btnCol) btnCol.style.setProperty('display', 'none', 'important');
+
+                    const sfgSelect = document.getElementById('selectSfgCode');
+                    if (sfgSelect) {
+                        sfgSelect.disabled = true;
+                        sfgSelect.style.pointerEvents = 'none';
+                        sfgSelect.style.cursor = 'not-allowed';
+                        sfgSelect.style.backgroundColor = '#f8fafc';
+                        sfgSelect.title = 'SFG Code is locked in View-Only mode';
+                    }
+
+                    const sfgLabel = document.querySelector('.interactive-entry-bar .entry-group:nth-child(1) .entry-label');
+                    if (sfgLabel && !sfgLabel.querySelector('.view-lock-badge')) {
+                        sfgLabel.innerHTML = 'SFG Code <span class="view-lock-badge" style="font-size:0.75rem; color:#64748b; font-weight:700;">(🔒 Locked)</span>';
+                    }
+
+                    const qtyInput = document.getElementById('inputQuantity');
+                    if (qtyInput) {
+                        qtyInput.readOnly = true;
+                        qtyInput.disabled = true;
+                        qtyInput.style.pointerEvents = 'none';
+                        qtyInput.style.backgroundColor = '#f1f5f9';
+                        qtyInput.style.cursor = 'not-allowed';
+                        qtyInput.title = 'Production Quantity is locked in View-Only mode';
+                    }
+
+                    const titleSpan = document.querySelector('.top-sfg-title span');
+                    if (titleSpan) titleSpan.textContent = 'Automatic SFG Code Lookup & BOM Requirements Viewer';
+
+                    const prodQtyLabel = document.querySelector('.interactive-entry-bar .entry-group:nth-child(3) .entry-label');
+                    if (prodQtyLabel && !prodQtyLabel.querySelector('.view-lock-badge')) {
+                        prodQtyLabel.innerHTML = 'Production Quantity <span class="view-lock-badge" style="font-size:0.75rem; color:#64748b; font-weight:700;">(🔒 Locked: Standard Batch)</span>';
+                    }
+                }
+            } catch(e) {}
+        }
+        applyViewOnlyModeIfNeeded();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+            populateSfgDropdown();
+            loadColumnVisibility();
+            handleUpdateClick(); // Automatically calculate with default on load
+            applyViewOnlyModeIfNeeded();
+            updateClock();
+            setInterval(updateClock, 1000);
+        });
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>

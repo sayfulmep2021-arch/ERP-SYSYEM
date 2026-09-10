@@ -1,0 +1,3104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Check Floor Stock | MEP FAN LTD.</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-primary-hover: #0369a1;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-soft: #cbd5e1;
+            --border-cell: #cbd5e1;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* Check Floor Stock Palette */
+            --header-pink-start: #fbcfe8;
+            --header-pink-end: #f472b6;
+            --header-peach: #fed7aa;
+            --header-yellow: #fef08a;
+            --header-purple: #e9d5ff;
+            --header-green: #bbf7d0;
+            --banner-green: #10b981;
+            --banner-orange: #f59e0b;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            user-select: none;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.15;
+        }
+
+        .live-day-text {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: 0.2px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #0369a1;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Workspace */
+        .workspace-main {
+            flex: 1;
+            padding: 14px 18px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 100%;
+        }
+
+        /* Header Card with Toolbar */
+        .stock-toolbar-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-soft);
+            box-shadow: 0 3px 12px rgba(15, 41, 66, 0.05);
+            padding: 12px 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            position: relative;
+            z-index: 500;
+        }
+
+        .stock-meta-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .stock-badge-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(217, 119, 6, 0.3);
+        }
+
+        .stock-meta-text h1 {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+            line-height: 1.15;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lock-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            font-size: 0.70rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lock-badge svg {
+            width: 12px;
+            height: 12px;
+            color: #64748b;
+        }
+
+        .stock-meta-text .sub {
+            font-size: 0.76rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .stock-actions-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 8px;
+        }
+
+        /* Standardized 36x36 Icon-Only Action Buttons with Zero-Shift Tooltip */
+        .btn-action-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
+            max-width: 36px;
+            max-height: 36px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            padding: 0;
+            margin: 0;
+            outline: none;
+            user-select: none;
+            box-sizing: border-box;
+            background: #ffffff;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .btn-action-icon svg {
+            width: 17px;
+            height: 17px;
+            pointer-events: none;
+            flex-shrink: 0;
+        }
+
+        /* Hover states without any translateY / layout shift */
+        .btn-action-icon:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .btn-action-icon.btn-sync {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #ffffff;
+            border-color: #0284c7;
+        }
+        .btn-action-icon.btn-sync:hover {
+            background: linear-gradient(135deg, #0369a1, #075985);
+        }
+
+        .btn-action-icon.btn-add {
+            background: #8b5cf6;
+            color: #ffffff;
+            border-color: #7c3aed;
+        }
+        .btn-action-icon.btn-add:hover {
+            background: #7c3aed;
+        }
+
+        .btn-action-icon.btn-group-toggle {
+            background: #f0fdf4;
+            color: #15803d;
+            border-color: #86efac;
+            font-size: 15px;
+            font-weight: 900;
+        }
+        .btn-action-icon.btn-group-toggle:hover {
+            background: #dcfce7;
+            border-color: #4ade80;
+        }
+
+        .btn-action-icon.btn-col-manager {
+            background: #ffffff;
+            color: #0369a1;
+            border-color: #cbd5e1;
+        }
+        .btn-action-icon.btn-col-manager:hover {
+            background: #f0f9ff;
+            border-color: #7dd3fc;
+        }
+
+        .btn-action-icon.btn-serial-manager {
+            background: #ffffff;
+            color: #d97706;
+            border-color: #cbd5e1;
+        }
+        .btn-action-icon.btn-serial-manager:hover {
+            background: #fffbeb;
+            border-color: #fcd34d;
+        }
+
+        .btn-action-icon.btn-export {
+            background: #ffffff;
+            color: #0f2942;
+            border-color: #cbd5e1;
+        }
+        .btn-action-icon.btn-export:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .btn-action-icon.btn-print {
+            background: #ffffff;
+            color: #0f2942;
+            border-color: #cbd5e1;
+        }
+        .btn-action-icon.btn-print:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .btn-action-icon.btn-reset {
+            background: #fff1f2;
+            color: #e11d48;
+            border-color: #fecdd3;
+        }
+        .btn-action-icon.btn-reset:hover {
+            background: #ffe4e6;
+            border-color: #fda4af;
+        }
+
+        /* Lightweight Zero-Layout-Shift Tooltip */
+        .btn-action-icon .erp-tooltip {
+            position: absolute;
+            top: calc(100% + 7px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f2942;
+            color: #ffffff;
+            font-size: 0.70rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.15s ease;
+            z-index: 9999;
+            box-shadow: 0 4px 14px rgba(15, 41, 66, 0.25);
+            line-height: 1.2;
+        }
+
+        .btn-action-icon .erp-tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 4px;
+            border-style: solid;
+            border-color: transparent transparent #0f2942 transparent;
+        }
+
+        .btn-action-icon:hover .erp-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Filter Strip */
+        .filter-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #ffffff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-soft);
+        }
+
+        .category-pills {
+            display: flex;
+            gap: 6px;
+        }
+
+        .cat-pill {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .cat-pill:hover {
+            background: #e2e8f0;
+        }
+
+        .cat-pill.active {
+            background: #d97706;
+            border-color: #d97706;
+            color: #ffffff;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 260px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 6px 12px 6px 32px;
+            border-radius: 6px;
+            border: 1.5px solid #cbd5e1;
+            font-size: 0.80rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #d97706;
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            color: #94a3b8;
+        }
+
+        /* Excel-Like Table Container */
+        .excel-table-container {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-soft);
+            box-shadow: 0 4px 18px rgba(15, 41, 66, 0.06);
+            overflow: auto;
+            max-height: calc(100vh - 200px);
+            position: relative;
+            z-index: 10;
+        }
+
+        .stock-table {
+            width: max-content;
+            min-width: 100%;
+            border-collapse: separate !important;
+            border-spacing: 0;
+            font-size: 0.76rem;
+            background: #ffffff;
+        }
+
+        /* Table Headers Sticky Top */
+        .stock-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .stock-table th {
+            padding: 8px 10px;
+            border-right: 1px solid var(--border-cell);
+            border-bottom: 1.5px solid var(--border-cell);
+            font-weight: 800;
+            text-align: center;
+            font-family: var(--font-sans);
+            user-select: none;
+            box-sizing: border-box;
+            white-space: normal !important;
+            line-height: 1.25 !important;
+            vertical-align: middle !important;
+        }
+
+        .stock-table th:first-child, .stock-table td:first-child {
+            border-left: 1px solid var(--border-cell);
+        }
+
+        .stock-table thead tr:first-child th {
+            border-top: 1px solid var(--border-cell);
+        }
+
+        /* ========================================================= */
+        /* EXCEL FREEZE PANES ENGINE (FROZEN COLUMNS 1 TO 4)         */
+        /* SL, Item Code, Item Name, Unit stay fixed on scroll       */
+        /* ========================================================= */
+
+        /* Column 1: SL (45px) */
+        .col-freeze-1 {
+            position: sticky !important;
+            left: 0px !important;
+            width: 45px !important;
+            min-width: 45px !important;
+            max-width: 45px !important;
+            z-index: 15 !important;
+            box-sizing: border-box;
+            background-color: #f8fafc !important;
+        }
+
+        /* Column 2: Item Code (110px) */
+        .col-freeze-2 {
+            position: sticky !important;
+            left: 45px !important;
+            width: 110px !important;
+            min-width: 110px !important;
+            max-width: 110px !important;
+            z-index: 15 !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Column 3: Item Name (260px) */
+        .col-freeze-3 {
+            position: sticky !important;
+            left: 155px !important;
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            z-index: 15 !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Column 4: Unit (65px) - Edge of Frozen Pane with Solid Divider */
+        .col-freeze-4 {
+            position: sticky !important;
+            left: 415px !important;
+            width: 65px !important;
+            min-width: 65px !important;
+            max-width: 65px !important;
+            z-index: 16 !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        /* Column 5: Type (75px) - Scrollable */
+        .col-freeze-5 {
+            width: 75px !important;
+            min-width: 75px !important;
+            max-width: 75px !important;
+            box-sizing: border-box;
+        }
+
+        /* Thead Sticky Overrides: Must stay ABOVE tbody sticky cells */
+        thead th.col-freeze-1,
+        thead th.col-freeze-2,
+        thead th.col-freeze-3 {
+            z-index: 35 !important;
+        }
+
+        thead th.col-freeze-4 {
+            z-index: 36 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        thead th.col-freeze-meta-span {
+            position: sticky !important;
+            left: 0px !important;
+            z-index: 35 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            box-sizing: border-box;
+        }
+
+        /* Solid Opaque Background Colors for Frozen Tbody Cells */
+        tbody td.col-freeze-1 {
+            background-color: #f8fafc !important;
+        }
+
+        tbody td.col-freeze-2,
+        tbody td.col-freeze-3,
+        tbody td.col-freeze-4,
+        tbody td.col-freeze-5 {
+            background-color: #ffffff !important;
+        }
+
+        /* Row hover consistency for sticky cells */
+        tbody tr:hover td.col-freeze-1,
+        tbody tr:hover td.col-freeze-2,
+        tbody tr:hover td.col-freeze-3,
+        tbody tr:hover td.col-freeze-4,
+        tbody tr:hover td.col-freeze-5 {
+            background: #f1f5f9 !important;
+        }
+
+        /* Armature Sub-Header Frozen Cells */
+        tbody tr.arm-sub-tr td.col-freeze-1,
+        tbody tr.arm-sub-tr td.col-freeze-2,
+        tbody tr.arm-sub-tr td.col-freeze-3,
+        tbody tr.arm-sub-tr td.col-freeze-4,
+        tbody tr.arm-sub-tr td.col-freeze-5 {
+            background: #f8fafc !important;
+            z-index: 12 !important;
+        }
+
+        /* Category Banner sticky label so category name stays visible while scrolling */
+        tbody tr.category-banner-tr td {
+            position: sticky !important;
+            left: 0px !important;
+            z-index: 15 !important;
+            text-align: left !important;
+            padding-left: 20px !important;
+        }
+
+        /* Serial Column Hover Hide Control */
+        .sl-cell-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .sl-num-text {
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .btn-hide-row {
+            position: absolute;
+            right: 1px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            visibility: hidden;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            border-radius: 4px;
+            padding: 1px 3px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        tr:hover .btn-hide-row {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .btn-hide-row:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        /* Serials & Columns Visibility Manager Dropdowns */
+        .col-visibility-dropdown, .serial-vis-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hidden-badge {
+            background: #fee2e2;
+            color: #dc2626;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            pointer-events: none;
+        }
+
+        .col-manager-panel, .serial-vis-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: auto;
+            width: 340px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 12px 36px rgba(15, 41, 66, 0.22);
+            z-index: 600;
+            overflow: hidden;
+            animation: fadeInScale 0.15s ease-out;
+            text-align: left;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .col-manager-panel.active, .serial-vis-dropdown.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .col-manager-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .col-manager-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #0f2942;
+        }
+
+        .col-manager-quick-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-col-quick {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-col-quick:hover {
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+            color: #0284c7;
+        }
+
+        .col-manager-list {
+            max-height: 380px;
+            overflow-y: auto;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .col-manager-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.15s;
+            user-select: none;
+        }
+
+        .col-manager-item:hover {
+            background-color: #f1f5f9;
+        }
+
+        .col-manager-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .col-manager-checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: #0284c7;
+            cursor: pointer;
+        }
+
+        .col-header-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .btn-col-hide-header {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            background: transparent;
+            border: none;
+            color: inherit;
+            opacity: 0.35;
+            cursor: pointer;
+            transition: all 0.15s;
+            padding: 0;
+            margin-left: 2px;
+            font-size: 0.82rem;
+            line-height: 1;
+        }
+
+        .btn-col-hide-header:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.12);
+            color: #dc2626;
+        }
+
+        /* Column Specific Header Colors */
+        .th-meta {
+            background: linear-gradient(180deg, #fbcfe8 0%, #f472b6 100%) !important;
+            color: #831843 !important;
+        }
+
+        .th-sfg {
+            background: #fed7aa !important;
+            color: #7c2d12 !important;
+            font-family: var(--font-mono) !important;
+            font-size: 0.70rem !important;
+        }
+
+        .th-yellow {
+            background: #fef08a !important;
+            color: #713f12 !important;
+        }
+
+        .th-purple {
+            background: #e9d5ff !important;
+            color: #581c87 !important;
+        }
+
+        .th-green {
+            background: #bbf7d0 !important;
+            color: #14532d !important;
+        }
+
+        /* Excel Group System Header Styling */
+        .th-group-header {
+            background: #fed7aa !important;
+            color: #7c2d12 !important;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            padding: 5px 10px !important;
+        }
+
+        .th-group-header:hover {
+            background: #fdba74 !important;
+        }
+
+        .group-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 8px;
+            background: #ffffff;
+            border: 1.5px solid #ea580c;
+            color: #c2410c;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .group-toggle-btn:hover {
+            background: #fff7ed;
+        }
+
+        .group-collapsed-cell {
+            background: #fff7ed;
+            color: #c2410c;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.70rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* Section Category Rows */
+        .cat-row-raw {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            font-size: 0.88rem !important;
+            font-weight: 900 !important;
+            padding: 8px 14px !important;
+            text-align: center !important;
+            letter-spacing: 0.5px;
+            border: 1px solid #059669 !important;
+        }
+
+        .cat-row-pack {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            font-size: 0.88rem !important;
+            font-weight: 900 !important;
+            padding: 8px 14px !important;
+            text-align: center !important;
+            letter-spacing: 0.5px;
+            border: 1px solid #059669 !important;
+        }
+
+        .cat-row-arm {
+            background: #f59e0b !important;
+            color: #ffffff !important;
+            font-size: 0.88rem !important;
+            font-weight: 900 !important;
+            padding: 8px 14px !important;
+            text-align: center !important;
+            letter-spacing: 0.5px;
+            border: 1px solid #d97706 !important;
+        }
+
+        .arm-sub-header {
+            background: #f8fafc;
+            border: 1px solid var(--border-cell);
+            font-weight: 800;
+            font-size: 0.72rem;
+            text-align: center;
+        }
+
+        .arm-sub-winding {
+            background: #fef08a !important;
+            color: #713f12 !important;
+            font-weight: 900 !important;
+            text-align: center;
+        }
+
+        .arm-sub-complete {
+            background: #bbf7d0 !important;
+            color: #14532d !important;
+            font-weight: 900 !important;
+            text-align: center;
+        }
+
+        /* Data Rows & Cells (Read-Only / Solid Appearance) */
+        .stock-table tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .stock-table td {
+            padding: 5px 8px;
+            border-right: 1px solid var(--border-cell);
+            border-bottom: 1px solid var(--border-cell);
+            color: #0f172a;
+            vertical-align: middle;
+            user-select: text;
+            box-sizing: border-box;
+        }
+
+        .stock-table td:first-child {
+            border-left: 1px solid var(--border-cell);
+        }
+
+        .td-sl {
+            text-align: center;
+            font-weight: 700;
+            background: #fafafa;
+            color: #64748b;
+            width: 40px;
+        }
+
+        .td-code {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: #0284c7;
+            text-align: center;
+        }
+
+        .td-name {
+            font-weight: 600;
+            color: #0f172a;
+            min-width: 230px;
+        }
+
+        .td-unit, .td-type {
+            text-align: center;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .td-num {
+            text-align: right;
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+
+        .td-zero {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .td-neg {
+            color: #dc2626 !important;
+            font-weight: 700 !important;
+        }
+
+        .td-days {
+            text-align: center;
+            padding: 4px 6px;
+            white-space: nowrap;
+        }
+
+        /* Warning Badge Engine (High-Contrast Marks & Badges) */
+        .warning-badge {
+            display: inline-block;
+            min-width: 65px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: var(--font-mono, monospace);
+            font-size: 0.74rem;
+            text-align: center;
+            line-height: 1.3;
+            letter-spacing: 0.2px;
+            box-sizing: border-box;
+        }
+
+        /* Dash / N/A */
+        .badge-na {
+            color: #94a3b8;
+            font-weight: 500;
+            background: transparent;
+        }
+
+        /* Normal / Default (≥ 3 Days in Store, or 3-5 Days in Floor) */
+        .badge-normal {
+            color: #0f172a;
+            font-weight: 600;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 🔴 RED BADGE: Store < 3 Days OR Floor < 2 Days (Red Mark + Bold) */
+        .badge-red {
+            background-color: #fee2e2 !important;
+            color: #991b1b !important;
+            border: 1.5px solid #f87171 !important;
+            font-weight: 900 !important;
+            box-shadow: 0 1px 3px rgba(239, 68, 68, 0.2);
+        }
+
+        /* 🟡 YELLOW BADGE: Floor 2 <= Days < 3 (Yellow Mark + Bold) */
+        .badge-yellow {
+            background-color: #fef08a !important;
+            color: #854d0e !important;
+            border: 1.5px solid #facc15 !important;
+            font-weight: 900 !important;
+            box-shadow: 0 1px 3px rgba(234, 179, 8, 0.2);
+        }
+
+        /* 🟢 GREEN BADGE: Floor > 5 Days (Green Mark + Normal Text, NOT Bold) */
+        .badge-green {
+            background-color: #dcfce7 !important;
+            color: #166534 !important;
+            border: 1.5px solid #86efac !important;
+            font-weight: 500 !important; /* Normal text - Not bold */
+            box-shadow: 0 1px 3px rgba(34, 197, 94, 0.15);
+        }
+
+        /* Highlight animation for newly added rows */
+        @keyframes highlightNewRow {
+            0% { background-color: #bbf7d0; }
+            100% { background-color: transparent; }
+        }
+
+        .row-newly-added {
+            animation: highlightNewRow 3s ease-out;
+        }
+
+        /* ========================================================================== */
+        /* 🟡 & 🔴 ROW-LEVEL CONDITIONAL WARNING HIGHLIGHT (User Screenshot Mandate)   */
+        /* ========================================================================== */
+        
+        /* 🟡 Warning Day < 3 Days: Entire Row Yellow Background + Yellow Border */
+        tbody tr.row-warning-yellow td,
+        tbody tr.row-warning-yellow td.col-freeze-1,
+        tbody tr.row-warning-yellow td.col-freeze-2,
+        tbody tr.row-warning-yellow td.col-freeze-3,
+        tbody tr.row-warning-yellow td.col-freeze-4,
+        tbody tr.row-warning-yellow td.col-freeze-5 {
+            background-color: #fef9c3 !important;
+            border-top: 2px solid #ca8a04 !important;
+            border-bottom: 2px solid #ca8a04 !important;
+        }
+        tbody tr.row-warning-yellow td:first-child {
+            border-left: 3px solid #ca8a04 !important;
+        }
+        tbody tr.row-warning-yellow td:last-child {
+            border-right: 3px solid #ca8a04 !important;
+        }
+        tbody tr.row-warning-yellow td.td-name {
+            color: #713f12 !important;
+            font-weight: 800 !important;
+        }
+        tbody tr.row-warning-yellow td.td-code {
+            color: #854d0e !important;
+            font-weight: 700 !important;
+        }
+        tbody tr.row-warning-yellow td.td-sl {
+            color: #854d0e !important;
+            font-weight: 800 !important;
+        }
+        tbody tr.row-warning-yellow:hover td,
+        tbody tr.row-warning-yellow:hover td.col-freeze-1,
+        tbody tr.row-warning-yellow:hover td.col-freeze-2,
+        tbody tr.row-warning-yellow:hover td.col-freeze-3,
+        tbody tr.row-warning-yellow:hover td.col-freeze-4,
+        tbody tr.row-warning-yellow:hover td.col-freeze-5 {
+            background-color: #fef08a !important;
+        }
+
+        /* 🔴 Warning Day < 2 Days: Entire Row Red Background + Red Border (PRIORITY RULE) */
+        tbody tr.row-warning-red td,
+        tbody tr.row-warning-red td.col-freeze-1,
+        tbody tr.row-warning-red td.col-freeze-2,
+        tbody tr.row-warning-red td.col-freeze-3,
+        tbody tr.row-warning-red td.col-freeze-4,
+        tbody tr.row-warning-red td.col-freeze-5 {
+            background-color: #fee2e2 !important;
+            border-top: 2px solid #dc2626 !important;
+            border-bottom: 2px solid #dc2626 !important;
+        }
+        tbody tr.row-warning-red td:first-child {
+            border-left: 3px solid #dc2626 !important;
+        }
+        tbody tr.row-warning-red td:last-child {
+            border-right: 3px solid #dc2626 !important;
+        }
+        tbody tr.row-warning-red td.td-name {
+            color: #7f1d1d !important;
+            font-weight: 800 !important;
+        }
+        tbody tr.row-warning-red td.td-code {
+            color: #991b1b !important;
+            font-weight: 700 !important;
+        }
+        tbody tr.row-warning-red td.td-sl {
+            color: #991b1b !important;
+            font-weight: 800 !important;
+        }
+        tbody tr.row-warning-red:hover td,
+        tbody tr.row-warning-red:hover td.col-freeze-1,
+        tbody tr.row-warning-red:hover td.col-freeze-2,
+        tbody tr.row-warning-red:hover td.col-freeze-3,
+        tbody tr.row-warning-red:hover td.col-freeze-4,
+        tbody tr.row-warning-red:hover td.col-freeze-5 {
+            background-color: #fecaca !important;
+        }
+
+        /* Modals */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 620px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 14px 20px;
+            background: #f8fafc;
+            border-bottom: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #64748b;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .form-control {
+            padding: 8px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            outline: none;
+            transition: all 0.15s ease;
+        }
+
+        .form-control:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .form-control[readonly] {
+            background-color: #f1f5f9;
+            color: #475569;
+            cursor: not-allowed;
+        }
+
+        .auto-fill-hint {
+            font-size: 0.68rem;
+            color: #0284c7;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .modal-footer {
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-top: 1.5px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast notification */
+        .toast-msg {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media print {
+            .portal-nav, .stock-toolbar-card, .filter-strip, #mepFrozenSidebar {
+                display: none !important;
+            }
+            .excel-table-container {
+                max-height: none !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            .stock-table th, .stock-table td {
+                border: 1px solid #000000 !important;
+                font-size: 8pt !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div>
+                    <div class="nav-brand-title">DAILY CHECK REPORT</div>
+                    <div class="nav-brand-sub">Check Floor Stock Matrix</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Live Clock -->
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- Toolbar Card -->
+        <div class="stock-toolbar-card">
+            <div class="stock-meta-group">
+                <div class="stock-badge-icon">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <div class="stock-meta-text">
+                    <h1>
+                        Check Floor Stock Master Sheet
+                        <span class="lock-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            Protected View
+                        </span>
+                    </h1>
+                    <div class="sub">MEP Fan Ltd. • Controlled Floor Stock &amp; Consumption Master (Read-Only)</div>
+                    <div class="bom-sync-status-badge" id="bomSyncStatusBadge" style="display:inline-flex; align-items:center; gap:6px; margin-top:5px; font-size:0.75rem; font-weight:700; color:#0369a1; background:#e0f2fe; padding:3px 10px; border-radius:12px; border:1px solid #bae6fd;">
+                        <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#0284c7; box-shadow:0 0 6px #0284c7;"></span>
+                        <span id="bomSyncStatusText">🔗 Auto-Linked: Live Difference × BOM Master (Locked) → Result Submitted</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stock-actions-group">
+                <!-- 1. Sync BOM Calculation -->
+                <button type="button" class="btn-action-icon btn-sync" id="btnSyncBOM" onclick="applyBOMCalculation(true)" aria-label="Sync BOM Movement">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                    <span class="erp-tooltip">Sync BOM Movement</span>
+                </button>
+
+                <!-- 2. Add New Item -->
+                <button type="button" class="btn-action-icon btn-add" onclick="openAddItemModal()" aria-label="Add New Item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span class="erp-tooltip">Add New Item</span>
+                </button>
+
+                <!-- 3. Toggle SFG Outline Group -->
+                <button type="button" class="btn-action-icon btn-group-toggle" id="btnGroupToggle" onclick="toggleSFGGroup()" aria-label="Toggle SFG Columns Group">
+                    <span id="groupToggleIcon">➕</span>
+                    <span class="erp-tooltip" id="groupToggleTooltip">Expand SFG Group</span>
+                </button>
+
+                <!-- 4. Columns Visibility Manager -->
+                <div class="col-visibility-dropdown">
+                    <button type="button" class="btn-action-icon btn-col-manager" id="btnColManager" onclick="toggleColManagerMenu(event)" aria-label="Hide / Show Columns">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <span class="erp-tooltip">Columns Visibility</span>
+                    </button>
+                    <div class="col-manager-panel" id="colManagerPanel">
+                        <div class="col-manager-header">
+                            <div class="col-manager-title">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <span>Hide / Show Columns (<span id="visibleColCountBadge">10/10</span>)</span>
+                            </div>
+                            <div class="col-manager-quick-actions">
+                                <button type="button" class="btn-col-quick" onclick="setAllColumnsVisibility(true)">Show All</button>
+                                <button type="button" class="btn-col-quick" onclick="resetColumnVisibility()">Reset</button>
+                            </div>
+                        </div>
+                        <div class="col-manager-list" id="colManagerList">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Serial Numbers Visibility Manager -->
+                <div class="serial-vis-container">
+                    <button type="button" class="btn-action-icon btn-serial-manager" id="btnSerialVisibility" onclick="toggleSerialVisibilityDropdown(event)" aria-label="Hide / Show Serials">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                        <span class="hidden-badge" id="hiddenSerialsBadge" style="display:none;">0</span>
+                        <span class="erp-tooltip">Serials Visibility</span>
+                    </button>
+                    <div class="serial-vis-dropdown" id="serialVisDropdown">
+                        <div class="col-manager-header">
+                            <div class="col-manager-title">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                                <span>Serials Visibility (<span id="visCountText">All visible</span>)</span>
+                            </div>
+                            <div class="col-manager-quick-actions">
+                                <button type="button" class="btn-col-quick" onclick="showAllSerials()">Show All</button>
+                            </div>
+                        </div>
+                        <div style="padding: 8px 12px; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
+                            <input type="text" id="serialVisSearch" placeholder="Filter serials or items..." oninput="renderSerialVisList(this.value)" style="width:100%; padding: 4px 8px; font-size: 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 6px; outline: none; box-sizing: border-box;">
+                        </div>
+                        <div class="col-manager-list" id="serialVisList" style="max-height: 320px; overflow-y: auto;">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Export CSV -->
+                <button type="button" class="btn-action-icon btn-export" onclick="exportToCSV()" aria-label="Export CSV">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span class="erp-tooltip">Export CSV</span>
+                </button>
+
+                <!-- 7. Print Report -->
+                <button type="button" class="btn-action-icon btn-print" onclick="window.print()" aria-label="Print Report">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span class="erp-tooltip">Print Report</span>
+                </button>
+
+                <!-- 8. Reset Default Data -->
+                <button type="button" class="btn-action-icon btn-reset" onclick="resetToDefaultData()" aria-label="Reset Factory Default">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                    <span class="erp-tooltip">Reset Factory Default</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter & Search Strip -->
+        <div class="filter-strip">
+            <div class="category-pills">
+                <button class="cat-pill active" onclick="filterCategory('All', this)" id="pillAll">All Items (128)</button>
+                <button class="cat-pill" onclick="filterCategory('Raw Material', this)" id="pillRaw">Raw Material (57)</button>
+                <button class="cat-pill" onclick="filterCategory('Packing Item', this)" id="pillPack">Packing Item (53)</button>
+                <button class="cat-pill" onclick="filterCategory('Armature', this)" id="pillArm">Armature (18)</button>
+            </div>
+
+            <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="searchInput" placeholder="Search by item code or name..." oninput="handleSearch(this.value)">
+            </div>
+        </div>
+
+        <!-- Excel Table Container -->
+        <div class="excel-table-container">
+            <table class="stock-table" id="stockTable">
+                <thead id="stockThead">
+                    <!-- Dynamic Headers rendered via JS -->
+                </thead>
+                <tbody id="stockTbody">
+                    <!-- Dynamic Rows rendered via JS -->
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- Modal: Add New Item (Master Linked) -->
+    <div class="modal-backdrop" id="addItemModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#8b5cf6" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    ADD NEW ITEM (MASTER CONTROLLED)
+                </h3>
+                <button class="modal-close-btn" onclick="closeAddItemModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Category Section</label>
+                        <select class="form-control" id="newItemCategory" onchange="autoSuggestSL()">
+                            <option value="Raw Material">Raw Material</option>
+                            <option value="Packing Item">Packing Item</option>
+                            <option value="Armature">Armature</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">SL Number</label>
+                        <input type="number" class="form-control" id="newItemSL" placeholder="Auto-generated" readonly>
+                    </div>
+
+                    <div class="form-group full">
+                        <label class="form-label">Item Code (Select or Type from Master)</label>
+                        <input type="text" class="form-control" id="newItemCode" list="masterCodeList" placeholder="e.g. SFG1010083 or 3101010135..." oninput="onItemCodeInput(this.value)" autocomplete="off">
+                        <datalist id="masterCodeList">
+                            <!-- Populated from Master DB -->
+                        </datalist>
+                        <div class="auto-fill-hint" id="autoFillHint">
+                            💡 Type Item Code to automatically load Name &amp; Unit from Master DB
+                        </div>
+                    </div>
+
+                    <div class="form-group full">
+                        <label class="form-label">Item Name</label>
+                        <input type="text" class="form-control" id="newItemName" placeholder="Auto-populated from Master Database">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Unit</label>
+                        <input type="text" class="form-control" id="newItemUnit" placeholder="e.g. Pcs, KG, Mtr, Set">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Item Type / Group</label>
+                        <input type="text" class="form-control" id="newItemType" placeholder="e.g. Local, Imp, MEP Screw, P&P">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Total Pending Qty</label>
+                        <input type="text" class="form-control" id="newItemPending" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Per Day Consumption</label>
+                        <input type="text" class="form-control" id="newItemPerDay" value="0.0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Floor Store Qty</label>
+                        <input type="text" class="form-control" id="newItemFloorStore" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Store Qty</label>
+                        <input type="text" class="form-control" id="newItemStoreQty" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-action btn-export" onclick="closeAddItemModal()">Cancel</button>
+                <button class="btn-action btn-add" onclick="submitNewItem()">ï¼‹ Add to Check Floor Stock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-msg" id="toastMsg">Action completed!</div>
+
+    <!-- Master Central DB -->
+    <script src="master_database.js"></script>
+
+    <!-- Baseline Floor Stock Data -->
+    <script src="check_floor_stock_data.js"></script>
+
+    <!-- Locked BOM Master Sheet (Read-Only Source for Calculation) -->
+    <script src="bom_data.js"></script>
+
+    <!-- Live Daily Assemble Data (Difference Source) -->
+    <script src="daily_production_received_assemble_data.js"></script>
+
+    <!-- Live Daily Production Plan (Per Day Target Source) -->
+    <script src="daily_production_plan_data.js"></script>
+
+    <!-- Live Assemble Summary (Floor Store / Bin Closing Stock Source) -->
+    <script src="assemble_summary_data.js"></script>
+
+    <!-- Live Store Position Report (Store Qty Source via FG Code) -->
+    <script src="store_position_data.js"></script>
+
+    <!-- Stock Table Logic & Excel Outline/Grouping Engine -->
+    <script>
+        const SFG_COLUMNS = [
+            "SFG1010079", "SFG1010116", "SFG1010080", "SFG1010097", "SFG1010137", "SFG1010135",
+            "SFG1010078", "SFG1010077", "SFG1010076", "SFG1010074", "SFG1010075", "SFG1010096",
+            "SFG1010136", "SFG1010073", "SFG1010072", "SFG1010071", "SFG1010064", "SFG1010065",
+            "SFG1010070", "SFG1010069", "SFG1010082"
+        ];
+
+        const ARMATURE_WINDING = ["SFG1010023", "SFG1010024", "SFG1010026", "SFG1010122"];
+        const ARMATURE_COMPLETE = ["SFG1010027", "SFG1010028", "SFG1010030", "SFG1010141"];
+
+        let currentData = [];
+        let activeCategoryFilter = "All";
+        let currentSearchTerm = "";
+        
+        // =========================================================
+        // COLUMN VISIBILITY MANAGER (HIDE / UNHIDE SYSTEM)
+        // =========================================================
+        const COLUMN_DEFS = [
+            { id: 'sfg', name: 'SFG Group (21 Models)' },
+            { id: 'totalPending', name: 'Total Pending' },
+            { id: 'perDayConsumption', name: 'Per Day Consumption' },
+            { id: 'floorStore', name: 'Floor Store' },
+            { id: 'storeQty', name: 'Store Qty' },
+            { id: 'mixerPaper', name: 'Mixer Paper' },
+            { id: 'warningStoreStock', name: 'Warning Store Stock' },
+            { id: 'actualQtyFloor', name: 'Actual Qty (Floor)' },
+            { id: 'needQty', name: 'Need Qty' },
+            { id: 'warningFloorStock', name: 'Warning Floor Stock' }
+        ];
+
+        let colVisibility = {
+            sfg: true,
+            totalPending: true,
+            perDayConsumption: true,
+            floorStore: true,
+            storeQty: true,
+            mixerPaper: true,
+            warningStoreStock: true,
+            actualQtyFloor: true,
+            needQty: true,
+            warningFloorStock: true
+        };
+
+        function isColVisible(id) {
+            return colVisibility[id] !== false;
+        }
+
+        function loadColumnVisibility() {
+            const saved = localStorage.getItem('mep_check_floor_stock_col_vis');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && typeof parsed === 'object') {
+                        Object.keys(parsed).forEach(k => {
+                            if (colVisibility.hasOwnProperty(k)) {
+                                colVisibility[k] = parsed[k];
+                            }
+                        });
+                    }
+                } catch(e) {}
+            }
+            updateColManagerUI();
+        }
+
+        function saveColumnVisibility() {
+            localStorage.setItem('mep_check_floor_stock_col_vis', JSON.stringify(colVisibility));
+            updateColManagerUI();
+        }
+
+        function toggleColumnVisibility(colId) {
+            colVisibility[colId] = !colVisibility[colId];
+            saveColumnVisibility();
+            renderTable();
+            showToast(`${colVisibility[colId] ? '👁️ Shown' : '🙈 Hidden'}: ${getColumnName(colId)}`);
+        }
+
+        function hideColumnDirect(colId, event) {
+            if (event) event.stopPropagation();
+            colVisibility[colId] = false;
+            saveColumnVisibility();
+            renderTable();
+            showToast(`🙈 Hidden column: ${getColumnName(colId)}. Click "Columns (Hide/Unhide)" to restore.`);
+        }
+
+        function setAllColumnsVisibility(visible) {
+            COLUMN_DEFS.forEach(c => {
+                colVisibility[c.id] = visible;
+            });
+            saveColumnVisibility();
+            renderTable();
+            showToast(visible ? '👁️ All columns are now visible' : '🙈 All dynamic columns hidden');
+        }
+
+        function resetColumnVisibility() {
+            COLUMN_DEFS.forEach(c => {
+                colVisibility[c.id] = true;
+            });
+            saveColumnVisibility();
+            renderTable();
+            showToast('✅ Reset columns to default (all visible)');
+        }
+
+        function getColumnName(id) {
+            const found = COLUMN_DEFS.find(c => c.id === id);
+            return found ? found.name : id;
+        }
+
+        function smartPositionDropdown(panel, triggerBtn) {
+            if (!panel) return;
+            panel.style.left = '0px';
+            panel.style.right = 'auto';
+
+            requestAnimationFrame(() => {
+                const rect = panel.getBoundingClientRect();
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+                // If overflowing on the right
+                if (rect.right > viewportWidth - 14) {
+                    panel.style.left = 'auto';
+                    panel.style.right = '0px';
+
+                    // Verify it does not hit the sidebar on the left
+                    const newRect = panel.getBoundingClientRect();
+                    const sidebar = document.getElementById('mepFrozenSidebar');
+                    const minAllowedLeft = sidebar ? (sidebar.getBoundingClientRect().right + 10) : 14;
+
+                    if (newRect.left < minAllowedLeft) {
+                        const btnRect = triggerBtn ? triggerBtn.getBoundingClientRect() : { left: minAllowedLeft };
+                        const offset = minAllowedLeft - btnRect.left;
+                        panel.style.right = 'auto';
+                        panel.style.left = Math.max(0, offset) + 'px';
+                    }
+                }
+            });
+        }
+
+        function toggleColManagerMenu(event) {
+            if (event) event.stopPropagation();
+            const panel = document.getElementById('colManagerPanel');
+            const serialDropdown = document.getElementById('serialVisDropdown');
+            if (serialDropdown) serialDropdown.classList.remove('active');
+            if (panel) {
+                panel.classList.toggle('active');
+                if (panel.classList.contains('active')) {
+                    smartPositionDropdown(panel, document.getElementById('btnColManager'));
+                }
+            }
+        }
+
+        function updateColManagerUI() {
+            const listEl = document.getElementById('colManagerList');
+            const badgeEl = document.getElementById('visibleColCountBadge');
+            if (!listEl) return;
+
+            let visibleCount = 0;
+            let html = '';
+            COLUMN_DEFS.forEach(c => {
+                const isVis = isColVisible(c.id);
+                if (isVis) visibleCount++;
+                html += `
+                    <div class="col-manager-item" onclick="toggleColumnVisibility('${c.id}')">
+                        <label class="col-manager-label" onclick="event.stopPropagation()">
+                            <input type="checkbox" class="col-manager-checkbox" ${isVis ? 'checked' : ''} onchange="toggleColumnVisibility('${c.id}')">
+                            <span>${c.name}</span>
+                        </label>
+                        <span style="font-size: 0.72rem; color: ${isVis ? '#0284c7' : '#94a3b8'}; font-weight: 700;">
+                            ${isVis ? 'Visible' : 'Hidden'}
+                        </span>
+                    </div>
+                `;
+            });
+
+            listEl.innerHTML = html;
+            if (badgeEl) {
+                badgeEl.innerText = `${visibleCount}/${COLUMN_DEFS.length}`;
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.col-visibility-dropdown');
+            const panel = document.getElementById('colManagerPanel');
+            if (panel && dropdown && !dropdown.contains(e.target)) {
+                panel.classList.remove('active');
+            }
+        });
+
+        // =========================================================
+        // SERIAL NUMBERS VISIBILITY MANAGER (HIDE / SHOW SYSTEM)
+        // =========================================================
+        let hiddenSerials = [];
+
+        function escapeHTML(str) {
+            return String(str || '').replace(/[&<>"']/g, function(m) {
+                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+            });
+        }
+
+        function escapeAttr(str) {
+            return String(str || '').replace(/["']/g, function(m) {
+                return {'"':'&quot;',"'":'&#39;'}[m];
+            });
+        }
+
+        function getSerialItemKey(item, index) {
+            return (item.category || '') + '_' + (item.code || '') + '_' + (item.sl !== undefined ? item.sl : index);
+        }
+
+        function loadHiddenSerials() {
+            const saved = localStorage.getItem('mep_check_floor_stock_hidden_serials');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) {
+                        hiddenSerials = parsed;
+                    }
+                } catch(e) {
+                    hiddenSerials = [];
+                }
+            }
+            updateHiddenSerialsBadge();
+        }
+
+        function saveHiddenSerials() {
+            localStorage.setItem('mep_check_floor_stock_hidden_serials', JSON.stringify(hiddenSerials));
+            updateHiddenSerialsBadge();
+        }
+
+        function updateHiddenSerialsBadge() {
+            const badge = document.getElementById('hiddenSerialsBadge');
+            const visText = document.getElementById('visCountText');
+            const hiddenCount = hiddenSerials.length;
+            if (badge) {
+                if (hiddenCount > 0) {
+                    badge.innerText = hiddenCount;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+            if (visText) {
+                if (hiddenCount > 0) {
+                    visText.innerText = `${hiddenCount} hidden`;
+                } else {
+                    visText.innerText = 'All visible';
+                }
+            }
+        }
+
+        function hideSerial(key, event) {
+            if (event) event.stopPropagation();
+            if (!hiddenSerials.includes(key)) {
+                hiddenSerials.push(key);
+                saveHiddenSerials();
+                renderBody();
+                renderSerialVisList(document.getElementById('serialVisSearch') ? document.getElementById('serialVisSearch').value : '');
+                
+                const item = currentData.find((it, idx) => getSerialItemKey(it, idx) === key);
+                const label = item ? `SL ${item.sl} (${item.name || item.code})` : 'Row';
+                showToast(`🙈 Hidden: ${label}. Click 🔢 to restore.`);
+            }
+        }
+
+        function toggleSerialVisibility(key) {
+            const idx = hiddenSerials.indexOf(key);
+            if (idx >= 0) {
+                hiddenSerials.splice(idx, 1);
+            } else {
+                hiddenSerials.push(key);
+            }
+            saveHiddenSerials();
+            renderBody();
+            renderSerialVisList(document.getElementById('serialVisSearch') ? document.getElementById('serialVisSearch').value : '');
+            
+            const isHidden = hiddenSerials.includes(key);
+            const item = currentData.find((it, i) => getSerialItemKey(it, i) === key);
+            const label = item ? `SL ${item.sl} (${item.name || item.code})` : 'Row';
+            showToast(`${isHidden ? '🙈 Hidden' : '👁️ Shown'}: ${label}`);
+        }
+
+        function showAllSerials() {
+            if (hiddenSerials.length === 0) {
+                showToast('All serial rows are already visible.');
+                return;
+            }
+            hiddenSerials = [];
+            saveHiddenSerials();
+            renderBody();
+            renderSerialVisList(document.getElementById('serialVisSearch') ? document.getElementById('serialVisSearch').value : '');
+            showToast('👁️ All serial rows are now visible.');
+        }
+
+        function toggleSerialVisibilityDropdown(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('serialVisDropdown');
+            const colPanel = document.getElementById('colManagerPanel');
+            if (colPanel) colPanel.classList.remove('active');
+            if (dropdown) {
+                dropdown.classList.toggle('active');
+                if (dropdown.classList.contains('active')) {
+                    smartPositionDropdown(dropdown, document.getElementById('btnSerialVisibility'));
+                    renderSerialVisList('');
+                    const searchInput = document.getElementById('serialVisSearch');
+                    if (searchInput) {
+                        searchInput.value = '';
+                        setTimeout(() => searchInput.focus(), 50);
+                    }
+                }
+            }
+        }
+
+        function renderSerialVisList(filterTerm) {
+            const listEl = document.getElementById('serialVisList');
+            if (!listEl) return;
+            const term = (filterTerm || '').toLowerCase().trim();
+
+            let html = '';
+            let displayedCount = 0;
+
+            currentData.forEach((item, index) => {
+                const key = getSerialItemKey(item, index);
+                const isHidden = hiddenSerials.includes(key);
+                const isVis = !isHidden;
+
+                const slText = `SL ${item.sl}`;
+                const nameText = item.name || '';
+                const codeText = item.code || '';
+                const catText = item.category || '';
+
+                if (term) {
+                    const match = slText.toLowerCase().includes(term) ||
+                                  nameText.toLowerCase().includes(term) ||
+                                  codeText.toLowerCase().includes(term) ||
+                                  catText.toLowerCase().includes(term);
+                    if (!match) return;
+                }
+
+                displayedCount++;
+                html += `
+                    <div class="col-manager-item" onclick="toggleSerialVisibility('${escapeAttr(key)}')">
+                        <label class="col-manager-label" onclick="event.stopPropagation()" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 235px;">
+                            <input type="checkbox" class="col-manager-checkbox" ${isVis ? 'checked' : ''} onchange="toggleSerialVisibility('${escapeAttr(key)}')">
+                            <span style="font-weight: 700; color: #0f2942; margin-right: 4px;">[${item.sl}]</span>
+                            <span title="${escapeHTML(nameText)} (${escapeHTML(codeText)})">${escapeHTML(nameText)}</span>
+                        </label>
+                        <span style="font-size: 0.70rem; color: ${isVis ? '#0284c7' : '#ef4444'}; font-weight: 700; white-space: nowrap;">
+                            ${isVis ? 'Visible' : 'Hidden'}
+                        </span>
+                    </div>
+                `;
+            });
+
+            if (displayedCount === 0) {
+                html = `<div style="padding: 12px; text-align: center; font-size: 0.75rem; color: #94a3b8;">No matching items found</div>`;
+            }
+
+            listEl.innerHTML = html;
+        }
+
+        // Close serials dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const container = document.querySelector('.serial-vis-container');
+            const dropdown = document.getElementById('serialVisDropdown');
+            if (dropdown && container && !container.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Excel Group State: default is collapsed as requested by user!
+        let isSFGGroupExpanded = false;
+
+        function initStockData() {
+            loadColumnVisibility();
+            loadHiddenSerials();
+            const saved = localStorage.getItem("mep_check_floor_stock_custom");
+            if (saved) {
+                try {
+                    currentData = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Failed to parse saved stock data, loading default", e);
+                    currentData = JSON.parse(JSON.stringify(DEFAULT_FLOOR_STOCK_DATA));
+                }
+            } else {
+                currentData = JSON.parse(JSON.stringify(DEFAULT_FLOOR_STOCK_DATA));
+            }
+
+            // Automatically run live BOM Movement calculation on page load
+            applyBOMCalculation(false);
+
+            populateMasterDatalist();
+            updatePillCounts();
+            renderTable();
+        }
+
+        function extractLiveAssembleDifferences() {
+            // 1. First priority: live stored differences from Assemble page
+            const savedDiffs = localStorage.getItem('mep_assemble_differences');
+            if (savedDiffs) {
+                try {
+                    const parsed = JSON.parse(savedDiffs);
+                    if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) {
+                        return parsed;
+                    }
+                } catch(e) {}
+            }
+
+            // 2. Second priority: calculate from saved assemble dataset
+            const savedAssemble = localStorage.getItem('mep_daily_prod_received_assemble_data');
+            let assembleDataset = null;
+            if (savedAssemble) {
+                try {
+                    const parsed = JSON.parse(savedAssemble);
+                    if (parsed && Array.isArray(parsed.categories)) assembleDataset = parsed;
+                } catch(e) {}
+            }
+
+            // 3. Fallback: default baseline assemble dataset
+            if (!assembleDataset && typeof RAW_DAILY_PRODUCTION_RECEIVED_ASSEMBLE !== 'undefined') {
+                assembleDataset = RAW_DAILY_PRODUCTION_RECEIVED_ASSEMBLE;
+            }
+
+            const diffs = {};
+            if (assembleDataset && assembleDataset.categories) {
+                assembleDataset.categories.forEach(cat => {
+                    cat.items.forEach(i => {
+                        if (i.code) {
+                            let total = 0;
+                            if (i.total !== undefined) {
+                                total = parseFloat(i.total) || 0;
+                            } else if (i.days) {
+                                for (let d = 1; d <= 31; d++) {
+                                    total += parseFloat(i.days['d' + d]) || 0;
+                                }
+                            }
+                            const erp = parseFloat(i.erp) || 0;
+                            const diff = total - erp;
+                            diffs[i.code.trim().toUpperCase()] = diff;
+                        }
+                    });
+                });
+            }
+            return diffs;
+        }
+
+        function extractLivePlanPerDayMap() {
+            // 1. Live stored map from Daily Production Plan
+            const savedMap = localStorage.getItem('mep_daily_plan_per_day');
+            if (savedMap) {
+                try {
+                    const parsed = JSON.parse(savedMap);
+                    if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) {
+                        return parsed;
+                    }
+                } catch(e) {}
+            }
+
+            // 2. Saved daily plan dataset
+            const todayStr = new Date().toISOString().split('T')[0];
+            const savedPlan = localStorage.getItem('mep_daily_prod_plan_' + todayStr) || localStorage.getItem('mep_daily_prod_plan_2026-08-26');
+            let planDataset = null;
+            if (savedPlan) {
+                try {
+                    const parsed = JSON.parse(savedPlan);
+                    if (parsed && Array.isArray(parsed.categories)) planDataset = parsed;
+                } catch(e) {}
+            }
+
+            // 3. Fallback: default baseline plan dataset
+            if (!planDataset && typeof DEFAULT_DAILY_PRODUCTION_PLAN !== 'undefined') {
+                planDataset = DEFAULT_DAILY_PRODUCTION_PLAN;
+            }
+
+            const map = {};
+            if (planDataset && planDataset.categories) {
+                planDataset.categories.forEach(cat => {
+                    cat.items.forEach(i => {
+                        if (i.code) {
+                            map[i.code.trim().toUpperCase()] = parseFloat(i.preDay) || 0;
+                        }
+                    });
+                });
+            }
+            return map;
+        }
+
+        function extractLiveAssembleSummaryMap() {
+            // 1. Custom saved Assemble Summary
+            const saved = localStorage.getItem('mep_assemble_custom_data');
+            let list = null;
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) list = parsed;
+                } catch(e) {}
+            }
+            // 2. Baseline fallback
+            if (!list && typeof RAW_ASSEMBLE_SUMMARY_DATA !== 'undefined') {
+                list = RAW_ASSEMBLE_SUMMARY_DATA;
+            }
+
+            const map = {};
+            if (Array.isArray(list)) {
+                list.forEach(i => {
+                    if (i.code) {
+                        map[i.code.trim().toUpperCase()] = parseFloat(i.closing) || 0;
+                    }
+                });
+            }
+            return map;
+        }
+
+        function extractLiveStorePositionMap() {
+            // 1. Custom saved Store Position Report
+            const saved = localStorage.getItem('mep_store_position_report_data');
+            let list = null;
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) list = parsed;
+                } catch(e) {}
+            }
+            // 2. Baseline fallback
+            if (!list && typeof RAW_STORE_POSITION_REPORT_DATA !== 'undefined') {
+                list = RAW_STORE_POSITION_REPORT_DATA;
+            }
+
+            const map = {};
+            if (Array.isArray(list)) {
+                list.forEach(i => {
+                    // Match strictly using FG Column as instructed by user!
+                    if (i.fg) {
+                        map[i.fg.trim().toUpperCase()] = parseFloat(i.storeQty) || 0;
+                    }
+                });
+            }
+            return map;
+        }
+
+        function applyBOMCalculation(showToastAlert) {
+            const diffs = extractLiveAssembleDifferences();
+            const planPerDayMap = extractLivePlanPerDayMap();
+            const assembleSummaryMap = extractLiveAssembleSummaryMap();
+            const storePositionMap = extractLiveStorePositionMap();
+
+            // Locked BOM Master lookup map (read-only)
+            const bomMap = {};
+            if (typeof DEFAULT_BOM_DATA !== 'undefined' && Array.isArray(DEFAULT_BOM_DATA)) {
+                DEFAULT_BOM_DATA.forEach(b => {
+                    if (b.code) bomMap[b.code.trim().toUpperCase()] = b;
+                });
+            }
+
+            let calculatedCount = 0;
+            currentData.forEach(item => {
+                const compCode = item.code ? item.code.trim().toUpperCase() : '';
+
+                // 1. Auto-Link Floor Store from Assemble Summary (Bin Closing Stock)
+                if (assembleSummaryMap[compCode] !== undefined) {
+                    item.floorStore = assembleSummaryMap[compCode];
+                }
+
+                // 2. Auto-Link Store Qty from Store Position Report (FG Column Match)
+                if (storePositionMap[compCode] !== undefined) {
+                    item.storeQty = storePositionMap[compCode];
+                }
+
+                const bomItem = bomMap[compCode];
+
+                if (bomItem && bomItem.sfg) {
+                    calculatedCount++;
+                    let rowPending = 0;
+                    let rowPerDayConsumption = 0;
+                    if (!item.sfg) item.sfg = {};
+
+                    // Calculate for 21 SFG columns:
+                    // 1. Pending: Difference × BOM Quantity
+                    // 2. Per Day Consumption: SFG Plan Per Day × BOM Quantity
+                    SFG_COLUMNS.forEach(sfgCode => {
+                        const sfgKey = sfgCode.trim().toUpperCase();
+                        const bomRatio = parseFloat(bomItem.sfg[sfgCode] || bomItem.sfg[sfgKey]) || 0;
+                        
+                        // Assemble Difference Impact
+                        const diffVal = parseFloat(diffs[sfgKey]) || 0;
+                        const impact = diffVal * bomRatio;
+                        item.sfg[sfgCode] = Math.round(impact * 10000) / 10000;
+                        rowPending += impact;
+
+                        // Per Day Consumption from Daily Production Plan
+                        const sfgPerDay = parseFloat(planPerDayMap[sfgKey]) || 0;
+                        rowPerDayConsumption += (sfgPerDay * bomRatio);
+                    });
+
+                    // For Armature items: also handle Armature SFG columns
+                    if (item.category === 'Armature') {
+                        const armCols = [...ARMATURE_WINDING, ...ARMATURE_COMPLETE];
+                        armCols.forEach(armSfg => {
+                            const armKey = armSfg.trim().toUpperCase();
+                            const bomRatio = parseFloat(bomItem.sfg[armSfg] || bomItem.sfg[armKey]) || 0;
+                            
+                            const diffVal = parseFloat(diffs[armKey]) || 0;
+                            const impact = diffVal * bomRatio;
+                            item.sfg[armSfg] = Math.round(impact * 10000) / 10000;
+                            if (!SFG_COLUMNS.includes(armSfg)) {
+                                rowPending += impact;
+                            }
+
+                            const sfgPerDay = parseFloat(planPerDayMap[armKey]) || 0;
+                            if (!SFG_COLUMNS.includes(armSfg)) {
+                                rowPerDayConsumption += (sfgPerDay * bomRatio);
+                            }
+                        });
+                    }
+
+                    // Sum all SFG results into Total Pending
+                    item.totalPending = Math.round(rowPending * 10000) / 10000;
+
+                    // Automatically submit calculated Per Day Consumption from Plan × BOM
+                    if (rowPerDayConsumption > 0 || Object.keys(planPerDayMap).length > 0) {
+                        item.perDayConsumption = Math.round(rowPerDayConsumption * 10000) / 10000;
+                    }
+                }
+
+                // 3. Compute Actual Qty (Floor) = Floor Store - Total Pending for EVERY row
+                const floorStoreNum = parseFloat(item.floorStore) || 0;
+                const totalPendingNum = parseFloat(item.totalPending) || 0;
+                const actualFloor = floorStoreNum - totalPendingNum;
+                item.actualQtyFloor = Math.round(actualFloor * 10000) / 10000;
+
+                // Need Qty = -Actual Qty (Floor)
+                item.needQty = Math.round((-actualFloor) * 10000) / 10000;
+
+                // Calculate Warning Stock Days for EVERY row based on User's Exact Rules
+                const storeNum = parseFloat(item.storeQty) || 0;
+                const perDayNum = parseFloat(item.perDayConsumption) || 0;
+
+                if (perDayNum > 0) {
+                    // 1. Warning Store Stock = Store Qty ÷ Per Day Consumption
+                    const rawStoreDays = storeNum / perDayNum;
+                    const storeDays = Math.round(rawStoreDays * 10) / 10;
+                    item.warningStoreDays = storeDays;
+                    item.warningStoreStock = `${storeDays} Days`;
+
+                    // 2. Warning Floor Stock = Floor Store ÷ Per Day Consumption
+                    const rawFloorDays = floorStoreNum / perDayNum;
+                    const floorDays = Math.round(rawFloorDays * 10) / 10;
+                    item.warningFloorDays = floorDays;
+                    item.warningFloorStock = `${floorDays} Days`;
+                } else {
+                    item.warningStoreDays = null;
+                    item.warningStoreStock = '—';
+                    item.warningFloorDays = null;
+                    item.warningFloorStock = '—';
+                }
+            });
+
+            // Save calculated state to localStorage
+            localStorage.setItem("mep_check_floor_stock_custom", JSON.stringify(currentData));
+
+            renderTable();
+
+            const statusText = document.getElementById('bomSyncStatusText');
+            if (statusText) {
+                const now = new Date().toLocaleTimeString();
+                statusText.innerText = `🔗 Auto-Linked: Diff × BOM | Plan Per Day | Floor Store (Assemble Closing) | Store Qty (Store Position FG) (${calculatedCount} Items Synced at ${now})`;
+            }
+
+            if (showToastAlert) {
+                showToast(`⚡ Multi-Report Auto-Sync Complete: Floor Store, Store Qty, BOM Movement & Per Day Synced for ${calculatedCount} Items!`);
+            }
+        }
+
+        function populateMasterDatalist() {
+            const dl = document.getElementById('masterCodeList');
+            if (!dl) return;
+            dl.innerHTML = '';
+
+            let masterItems = [];
+            if (typeof getMasterItems === 'function') {
+                masterItems = getMasterItems();
+            } else if (typeof RAW_MASTER_DATA !== 'undefined') {
+                masterItems = RAW_MASTER_DATA;
+            }
+
+            masterItems.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.code;
+                opt.label = `${item.name} (${item.unit || 'Pcs'})`;
+                dl.appendChild(opt);
+            });
+        }
+
+        function updatePillCounts() {
+            const total = currentData.length;
+            const raw = currentData.filter(d => d.category === 'Raw Material').length;
+            const pack = currentData.filter(d => d.category === 'Packing Item').length;
+            const arm = currentData.filter(d => d.category === 'Armature').length;
+
+            const pAll = document.getElementById('pillAll');
+            const pRaw = document.getElementById('pillRaw');
+            const pPack = document.getElementById('pillPack');
+            const pArm = document.getElementById('pillArm');
+
+            if (pAll) pAll.innerText = `All Items (${total})`;
+            if (pRaw) pRaw.innerText = `Raw Material (${raw})`;
+            if (pPack) pPack.innerText = `Packing Item (${pack})`;
+            if (pArm) pArm.innerText = `Armature (${arm})`;
+        }
+
+        // Toggle Excel Group System: Collapsed <-> Expanded
+        function toggleSFGGroup() {
+            isSFGGroupExpanded = !isSFGGroupExpanded;
+
+            const btnText = document.getElementById('groupToggleText');
+            const btnIcon = document.getElementById('groupToggleIcon');
+            if (btnText) btnText.innerText = isSFGGroupExpanded ? "Collapse SFG Group" : "Expand SFG Group";
+            if (btnIcon) btnIcon.innerText = isSFGGroupExpanded ? "➖" : "➕";
+
+            renderTable();
+            showToast(isSFGGroupExpanded ? "Expanded SFG Columns (SFG1010079 – SFG1010082)" : "Collapsed SFG Group [ + ]");
+        }
+
+        function renderTable() {
+            renderHeader();
+            renderBody();
+        }
+
+        function renderHeader() {
+            const thead = document.getElementById('stockThead');
+            let html = '<tr>';
+
+            // Meta Info Columns (Frozen 1 to 5)
+            html += `
+                <th class="th-meta col-freeze-1" style="width: 45px; min-width: 45px; max-width: 45px;">SL</th>
+                <th class="th-meta col-freeze-2" style="width: 110px; min-width: 110px;">Item Code</th>
+                <th class="th-meta col-freeze-3" style="width: 260px; min-width: 260px;">Item Name</th>
+                <th class="th-meta col-freeze-4" style="width: 65px; min-width: 65px;">Unit</th>
+                <th class="th-meta col-freeze-5" style="width: 75px; min-width: 75px;">Type</th>
+            `;
+
+            // Excel Group Header System (SFG Columns Group)
+            if (isColVisible('sfg')) {
+                if (isSFGGroupExpanded) {
+                    html += `
+                        <th class="th-group-header" colspan="21" title="Click to Collapse SFG Group">
+                            <div class="col-header-wrapper">
+                                <button class="group-toggle-btn" type="button" onclick="toggleSFGGroup()">
+                                    <span>[ − ]</span> SFG1010079 – SFG1010082 (Click to Collapse)
+                                </button>
+                                <button class="btn-col-hide-header" onclick="hideColumnDirect('sfg', event)" title="Hide SFG Columns">✕</button>
+                            </div>
+                        </th>
+                    `;
+                } else {
+                    html += `
+                        <th class="th-group-header" style="width: 180px; min-width: 180px;" title="Click to Expand SFG Group">
+                            <div class="col-header-wrapper">
+                                <button class="group-toggle-btn" type="button" onclick="toggleSFGGroup()">
+                                    <span>[ + ]</span> SFG1010079 – SFG1010082
+                                </button>
+                                <button class="btn-col-hide-header" onclick="hideColumnDirect('sfg', event)" title="Hide SFG Column">✕</button>
+                            </div>
+                        </th>
+                    `;
+                }
+            }
+
+            // Summary / Balance Columns (Toggled dynamically)
+            if (isColVisible('totalPending')) {
+                html += `<th class="th-yellow" style="width: 115px; min-width: 115px;">
+                    <div class="col-header-wrapper">
+                        <span>Total Pending</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('totalPending', event)" title="Hide Total Pending">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            if (isColVisible('perDayConsumption')) {
+                html += `<th class="th-yellow" style="width: 125px; min-width: 125px;">
+                    <div class="col-header-wrapper">
+                        <span>Per Day Consumption</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('perDayConsumption', event)" title="Hide Per Day Consumption">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            if (isColVisible('floorStore')) {
+                html += `<th class="th-yellow" style="width: 110px; min-width: 110px;" title="Auto-Linked: Code → Assemble Summary → Bin Closing Stock">
+                    <div class="col-header-wrapper">
+                        <span>Floor Store</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('floorStore', event)" title="Hide Floor Store">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            if (isColVisible('storeQty')) {
+                html += `<th class="th-yellow" style="width: 110px; min-width: 110px;" title="Auto-Linked: FG Column Code → Store Position Report → Store Qty">
+                    <div class="col-header-wrapper">
+                        <span>Store Qty</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('storeQty', event)" title="Hide Store Qty">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            if (isColVisible('mixerPaper')) {
+                html += `<th class="th-yellow" style="width: 95px; min-width: 95px;">
+                    <div class="col-header-wrapper">
+                        <span>Mixer Paper</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('mixerPaper', event)" title="Hide Mixer Paper">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            if (isColVisible('warningStoreStock')) {
+                html += `<th class="th-purple" style="width: 120px; min-width: 120px;" title="Store Qty ÷ Per Day Consumption (&lt;3 Days: Red Bold)">
+                    <div class="col-header-wrapper">
+                        <span>Warning Store Stock</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('warningStoreStock', event)" title="Hide Warning Store Stock">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            if (isColVisible('actualQtyFloor')) {
+                html += `<th class="th-green" style="width: 120px; min-width: 120px;" title="Formula: Floor Store − Total Pending (Automatic Calculation)">
+                    <div class="col-header-wrapper">
+                        <span>Actual Qty (Floor)</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('actualQtyFloor', event)" title="Hide Actual Qty">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            if (isColVisible('needQty')) {
+                html += `<th class="th-green" style="width: 105px; min-width: 105px;">
+                    <div class="col-header-wrapper">
+                        <span>Need Qty</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('needQty', event)" title="Hide Need Qty">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            if (isColVisible('warningFloorStock')) {
+                html += `<th class="th-purple" style="width: 120px; min-width: 120px;" title="Floor Store ÷ Per Day Consumption (&gt;5 Days: Green, 2-3 Days: Yellow Bold, &lt;2 Days: Red Bold)">
+                    <div class="col-header-wrapper">
+                        <span>Warning Floor Stock</span>
+                        <button class="btn-col-hide-header" onclick="hideColumnDirect('warningFloorStock', event)" title="Hide Warning Floor Stock">✕</button>
+                    </div>
+                </th>`;
+            }
+
+            html += `</tr>`;
+
+            // If expanded and SFG group is visible, second sub-header row for 21 individual SFG codes
+            if (isSFGGroupExpanded && isColVisible('sfg')) {
+                html += `<tr>`;
+                html += `<th colspan="5" class="th-meta col-freeze-meta-span" style="font-size:0.68rem; background:#fce7f3 !important; color:#831843;">Item Identification Details</th>`;
+                SFG_COLUMNS.forEach(col => {
+                    html += `<th class="th-sfg" style="width: 75px; min-width: 75px;">${col}</th>`;
+                });
+                
+                let balanceColsCount = 0;
+                ['totalPending', 'perDayConsumption', 'floorStore', 'storeQty', 'mixerPaper', 'warningStoreStock', 'actualQtyFloor', 'needQty', 'warningFloorStock'].forEach(k => {
+                    if (isColVisible(k)) balanceColsCount++;
+                });
+
+                if (balanceColsCount > 0) {
+                    html += `<th colspan="${balanceColsCount}" class="th-yellow" style="font-size:0.68rem; background:#fef9c3 !important; color:#713f12;">Consumption, Balance &amp; Warning Analysis</th>`;
+                }
+                html += `</tr>`;
+            }
+
+            thead.innerHTML = html;
+        }
+
+        function renderBody() {
+            const tbody = document.getElementById('stockTbody');
+            let html = '';
+            let lastCategory = '';
+            
+            // Calculate total visible columns dynamically
+            let totalCols = 5; // 5 frozen meta
+            if (isColVisible('sfg')) {
+                totalCols += isSFGGroupExpanded ? 21 : 1;
+            }
+            ['totalPending', 'perDayConsumption', 'floorStore', 'storeQty', 'mixerPaper', 'warningStoreStock', 'actualQtyFloor', 'needQty', 'warningFloorStock'].forEach(k => {
+                if (isColVisible(k)) totalCols++;
+            });
+
+            currentData.forEach((item, index) => {
+                const itemKey = getSerialItemKey(item, index);
+                if (hiddenSerials.includes(itemKey)) return;
+
+                // Category Banner Row
+                if (item.category !== lastCategory) {
+                    lastCategory = item.category;
+                    const catClass = item.category === 'Raw Material' ? 'cat-row-raw' : (item.category === 'Packing Item' ? 'cat-row-pack' : 'cat-row-arm');
+                    
+                    html += `
+                        <tr class="category-banner-tr" data-cat="${item.category}">
+                            <td colspan="${totalCols}" class="${catClass}">${item.category}</td>
+                        </tr>
+                    `;
+
+                    // Armature Sub-Header
+                    if (item.category === 'Armature') {
+                        html += `<tr class="arm-sub-tr" data-cat="Armature">`;
+                        html += `<td class="arm-sub-header col-freeze-1" style="width: 45px; min-width: 45px;">SL</td>`;
+                        html += `<td class="arm-sub-header col-freeze-2" style="width: 110px; min-width: 110px;">RM</td>`;
+                        html += `<td class="arm-sub-header col-freeze-3" style="width: 260px; min-width: 260px;">Item Name</td>`;
+                        html += `<td class="arm-sub-header col-freeze-4" style="width: 65px; min-width: 65px;">Total&gt;&gt;</td>`;
+                        html += `<td class="arm-sub-header col-freeze-5" style="width: 75px; min-width: 75px;">Type</td>`;
+
+                        if (isColVisible('sfg')) {
+                            if (isSFGGroupExpanded) {
+                                html += `<td colspan="4" class="arm-sub-winding">Winding (SFG 023, 024, 026, 122)</td>`;
+                                html += `<td colspan="4" class="arm-sub-complete">Complete (SFG 027, 028, 030, 141)</td>`;
+                                html += `<td colspan="13" class="arm-sub-header"></td>`;
+                            } else {
+                                html += `<td class="arm-sub-header" style="background:#fff7ed; color:#c2410c; font-weight:800; width: 180px; min-width: 180px;">[ + ] Armature SFGs</td>`;
+                            }
+                        }
+
+                        if (isColVisible('totalPending')) html += `<td class="arm-sub-header" style="width: 115px; min-width: 115px;">Total Pending</td>`;
+                        if (isColVisible('perDayConsumption')) html += `<td class="arm-sub-header" style="width: 125px; min-width: 125px;">Per Day</td>`;
+                        if (isColVisible('floorStore')) html += `<td class="arm-sub-header" style="width: 110px; min-width: 110px;">Floor Store</td>`;
+                        if (isColVisible('storeQty')) html += `<td class="arm-sub-header" style="width: 110px; min-width: 110px;">Store Qty</td>`;
+                        if (isColVisible('mixerPaper')) html += `<td class="arm-sub-header" style="width: 95px; min-width: 95px;">Mixer Paper</td>`;
+                        if (isColVisible('warningStoreStock')) html += `<td class="arm-sub-header" style="width: 120px; min-width: 120px;">Warning Store</td>`;
+                        if (isColVisible('actualQtyFloor')) html += `<td class="arm-sub-header" style="width: 120px; min-width: 120px;">Actual Qty</td>`;
+                        if (isColVisible('needQty')) html += `<td class="arm-sub-header" style="width: 105px; min-width: 105px;">Need Qty</td>`;
+                        if (isColVisible('warningFloorStock')) html += `<td class="arm-sub-header" style="width: 120px; min-width: 120px;">Warning Floor</td>`;
+
+                        html += `</tr>`;
+                    }
+                }
+
+                const isArmature = item.category === 'Armature';
+                const rowId = `stock-row-${index}`;
+
+                // 🎯 Row-Level Conditional Warning Highlight (User Screenshot Mandate)
+                let floorDays = parseDaysNumber(item.warningFloorDays);
+                if (floorDays === null) {
+                    floorDays = parseDaysNumber(item.warningFloorStock);
+                }
+
+                let rowWarningClass = '';
+                if (floorDays !== null) {
+                    // 🔴 Priority Rule: Warning Day < 2 Days -> Red Row Highlight & Border
+                    if (floorDays < 2) {
+                        rowWarningClass = 'row-warning-red';
+                    }
+                    // 🟡 Warning Day < 3 Days -> Yellow Row Highlight & Border
+                    else if (floorDays < 3) {
+                        rowWarningClass = 'row-warning-yellow';
+                    }
+                }
+
+                html += `<tr id="${rowId}" data-index="${index}" data-cat="${item.category}" class="${rowWarningClass}">`;
+                html += `<td class="td-sl col-freeze-1">
+                    <div class="sl-cell-wrap">
+                        <span class="sl-num-text">${item.sl}</span>
+                        <button type="button" class="btn-hide-row" onclick="hideSerial('${escapeAttr(itemKey)}', event)" title="Hide SL ${item.sl}">✕</button>
+                    </div>
+                </td>`;
+                html += `<td class="td-code col-freeze-2">${item.code}</td>`;
+                html += `<td class="td-name col-freeze-3">${item.name}</td>`;
+                html += `<td class="td-unit col-freeze-4">${item.unit}</td>`;
+                html += `<td class="td-type col-freeze-5">${item.type}</td>`;
+
+                // SFG Columns Group Rendering
+                if (isColVisible('sfg')) {
+                    if (isSFGGroupExpanded) {
+                        if (isArmature) {
+                            const armCols = [...ARMATURE_WINDING, ...ARMATURE_COMPLETE];
+                            for (let c = 0; c < 21; c++) {
+                                if (c < armCols.length) {
+                                    const sfgCode = armCols[c];
+                                    const val = item.sfg ? (item.sfg[sfgCode] || '0') : '0';
+                                    const numVal = parseFloat(val);
+                                    const numClass = (numVal === 0) ? 'td-zero' : (numVal < 0 ? 'td-neg' : '');
+                                    const isWinding = c < 4;
+                                    const bgStyle = isWinding ? 'background:#fffbeb;' : 'background:#f0fdf4;';
+                                    html += `<td class="td-num ${numClass}" style="${bgStyle}; width: 75px; min-width: 75px;">${formatDisplayNum(val)}</td>`;
+                                } else {
+                                    html += `<td class="td-num td-zero" style="background:#fafafa; width: 75px; min-width: 75px;">-</td>`;
+                                }
+                            }
+                        } else {
+                            SFG_COLUMNS.forEach(sfgCode => {
+                                const val = item.sfg ? (item.sfg[sfgCode] || '0') : '0';
+                                const numVal = parseFloat(val);
+                                const numClass = (numVal === 0) ? 'td-zero' : (numVal < 0 ? 'td-neg' : '');
+                                html += `<td class="td-num ${numClass}" style="width: 75px; min-width: 75px;">${formatDisplayNum(val)}</td>`;
+                            });
+                        }
+                    } else {
+                        // Collapsed Single Cell showing count or badge
+                        let sfgCount = 0;
+                        if (item.sfg) {
+                            Object.values(item.sfg).forEach(v => {
+                                const n = parseFloat(v);
+                                if (!isNaN(n) && n > 0) sfgCount++;
+                            });
+                        }
+                        const badgeText = sfgCount > 0 ? `${sfgCount} SFG models active` : '-';
+                        html += `<td class="group-collapsed-cell" style="width: 180px; min-width: 180px;" title="Click [ + ] to expand all 21 SFG columns">${badgeText}</td>`;
+                    }
+                }
+
+                // Balance Columns Rendering
+                if (isColVisible('totalPending')) {
+                    html += `<td class="td-num ${getNumClass(item.totalPending)}">${formatDisplayNum(item.totalPending)}</td>`;
+                }
+                if (isColVisible('perDayConsumption')) {
+                    html += `<td class="td-num ${getNumClass(item.perDayConsumption)}">${formatDisplayNum(item.perDayConsumption)}</td>`;
+                }
+                if (isColVisible('floorStore')) {
+                    html += `<td class="td-num ${getNumClass(item.floorStore)}">${formatDisplayNum(item.floorStore)}</td>`;
+                }
+                if (isColVisible('storeQty')) {
+                    html += `<td class="td-num ${getNumClass(item.storeQty)}">${formatDisplayNum(item.storeQty)}</td>`;
+                }
+                if (isColVisible('mixerPaper')) {
+                    html += `<td class="td-num ${getNumClass(item.mixerPaper)}">${formatDisplayNum(item.mixerPaper)}</td>`;
+                }
+                if (isColVisible('warningStoreStock')) {
+                    html += `<td class="td-days">${renderWarningStoreBadge(item)}</td>`;
+                }
+                if (isColVisible('actualQtyFloor')) {
+                    html += `<td class="td-num ${getNumClass(item.actualQtyFloor)}">${formatDisplayNum(item.actualQtyFloor)}</td>`;
+                }
+                if (isColVisible('needQty')) {
+                    html += `<td class="td-num ${getNumClass(item.needQty)}">${formatDisplayNum(item.needQty)}</td>`;
+                }
+                if (isColVisible('warningFloorStock')) {
+                    html += `<td class="td-days">${renderWarningFloorBadge(item)}</td>`;
+                }
+
+                html += `</tr>`;
+            });
+
+            tbody.innerHTML = html;
+            applyFilters();
+        }
+
+        function formatDisplayNum(val) {
+            if (val === undefined || val === null || val === '') return '-';
+            const str = String(val).trim();
+            if (str.startsWith('(') && str.endsWith(')')) return str;
+            const num = parseFloat(str);
+            if (isNaN(num)) return str;
+            if (num < 0) {
+                return `(${Math.abs(num)})`;
+            }
+            return str;
+        }
+
+        function getNumClass(val) {
+            if (!val) return 'td-zero';
+            const str = String(val).trim();
+            if (str.startsWith('(') || str.startsWith('-')) return 'td-neg';
+            const num = parseFloat(str);
+            if (num === 0) return 'td-zero';
+            if (num < 0) return 'td-neg';
+            return '';
+        }
+
+        function parseDaysNumber(val) {
+            if (val === null || val === undefined) return null;
+            if (typeof val === 'number') return isNaN(val) ? null : val;
+            const str = String(val).trim();
+            if (str === '' || str === '—' || str === '-' || str.toLowerCase() === 'n/a') return null;
+            const match = str.match(/[-+]?\d*\.?\d+/);
+            if (match) {
+                const n = parseFloat(match[0]);
+                return isNaN(n) ? null : n;
+            }
+            return null;
+        }
+
+        function renderWarningStoreBadge(item) {
+            let days = parseDaysNumber(item.warningStoreDays);
+            if (days === null) {
+                days = parseDaysNumber(item.warningStoreStock);
+            }
+            if (days === null) {
+                return `<span class="warning-badge badge-na">—</span>`;
+            }
+            
+            const displayDays = (Math.round(days * 10) / 10) + ' Days';
+
+            // 🔴 ৩ দিনের নিচে (< 3 Days): Red Mark/Background + Bold
+            if (days < 3) {
+                return `<span class="warning-badge badge-red" title="Warning: Stock is under 3 Days!">${displayDays}</span>`;
+            }
+
+            // ৩ দিন বা তার বেশি: Normal
+            return `<span class="warning-badge badge-normal">${displayDays}</span>`;
+        }
+
+        function renderWarningFloorBadge(item) {
+            let days = parseDaysNumber(item.warningFloorDays);
+            if (days === null) {
+                days = parseDaysNumber(item.warningFloorStock);
+            }
+            if (days === null) {
+                return `<span class="warning-badge badge-na">—</span>`;
+            }
+
+            const displayDays = (Math.round(days * 10) / 10) + ' Days';
+
+            // 🟢 ৫ দিনের উপরে (> 5 Days): Green Mark/Background + Normal Text (Bold হবে না)
+            if (days > 5) {
+                return `<span class="warning-badge badge-green" title="Stock is greater than 5 Days">${displayDays}</span>`;
+            }
+
+            // ৩ থেকে ৫ দিনের মধ্যে (3 to 5 Days): Normal
+            if (days >= 3) {
+                return `<span class="warning-badge badge-normal">${displayDays}</span>`;
+            }
+
+            // ৩ দিনের নিচে কিন্তু ২ বা তার বেশি (2 <= Days < 3): 🟡 Yellow Mark/Background + Bold
+            if (days >= 2) {
+                return `<span class="warning-badge badge-yellow" title="Caution: Between 2 and 3 Days">${displayDays}</span>`;
+            }
+
+            // 🔴 ২ দিনের নিচে (< 2 Days): Red Mark/Background + Bold
+            return `<span class="warning-badge badge-red" title="Critical: Stock is under 2 Days!">${displayDays}</span>`;
+        }
+
+        // ==========================================
+        // âž• ADD NEW ITEM (MASTER INTEGRATED ENGINE)
+        // ==========================================
+        function openAddItemModal() {
+            document.getElementById('addItemModal').classList.add('active');
+            const cat = activeCategoryFilter === 'All' ? 'Raw Material' : activeCategoryFilter;
+            document.getElementById('newItemCategory').value = cat;
+            autoSuggestSL();
+
+            document.getElementById('newItemCode').value = '';
+            document.getElementById('newItemName').value = '';
+            document.getElementById('newItemUnit').value = 'Pcs';
+            document.getElementById('newItemType').value = 'Local';
+            document.getElementById('newItemPending').value = '0';
+            document.getElementById('newItemPerDay').value = '0.0';
+            document.getElementById('newItemFloorStore').value = '0';
+            document.getElementById('newItemStoreQty').value = '0';
+
+            const hint = document.getElementById('autoFillHint');
+            if (hint) {
+                hint.innerText = "💡 Type Item Code to automatically load Name & Unit from Master DB";
+                hint.style.color = "#0284c7";
+            }
+            setTimeout(() => document.getElementById('newItemCode').focus(), 150);
+        }
+
+        function closeAddItemModal() {
+            document.getElementById('addItemModal').classList.remove('active');
+        }
+
+        function autoSuggestSL() {
+            const cat = document.getElementById('newItemCategory').value;
+            const maxSL = currentData
+                .filter(d => d.category === cat)
+                .reduce((max, d) => Math.max(max, parseInt(d.sl) || 0), 0);
+
+            document.getElementById('newItemSL').value = maxSL + 1;
+        }
+
+        // Automatic Master DB Lookup when typing Code
+        function onItemCodeInput(code) {
+            const clean = code.trim();
+            if (!clean) return;
+
+            let masterItem = null;
+            if (typeof getMasterItem === 'function') {
+                masterItem = getMasterItem(clean);
+            }
+
+            const nameInput = document.getElementById('newItemName');
+            const unitInput = document.getElementById('newItemUnit');
+            const typeInput = document.getElementById('newItemType');
+            const catSelect = document.getElementById('newItemCategory');
+            const hint = document.getElementById('autoFillHint');
+
+            if (masterItem) {
+                if (nameInput) nameInput.value = masterItem.name;
+                if (unitInput) unitInput.value = masterItem.unit || 'Pcs';
+                
+                // Smart category mapping
+                if (masterItem.category) {
+                    if (masterItem.category.includes('Raw')) catSelect.value = 'Raw Material';
+                    else if (masterItem.category.includes('Packing')) catSelect.value = 'Packing Item';
+                    else if (masterItem.category.includes('Armature')) catSelect.value = 'Armature';
+                    typeInput.value = masterItem.category.replace(' (ERP)', '');
+                    autoSuggestSL();
+                }
+
+                if (hint) {
+                    hint.innerText = `✅ Found in Master Database: "${masterItem.name}" (${masterItem.unit || 'Pcs'})`;
+                    hint.style.color = "#16a34a";
+                }
+            } else {
+                if (hint) {
+                    hint.innerText = "💡 Code not yet in Master - You can type custom Name and Unit manually";
+                    hint.style.color = "#64748b";
+                }
+            }
+        }
+
+        function submitNewItem() {
+            const cat = document.getElementById('newItemCategory').value;
+            const sl = parseInt(document.getElementById('newItemSL').value) || (currentData.length + 1);
+            const code = document.getElementById('newItemCode').value.trim();
+            const name = document.getElementById('newItemName').value.trim();
+            const unit = document.getElementById('newItemUnit').value.trim() || 'Pcs';
+            const type = document.getElementById('newItemType').value.trim() || 'Local';
+
+            const pending = document.getElementById('newItemPending').value.trim() || '0';
+            const perDay = document.getElementById('newItemPerDay').value.trim() || '0.0';
+            const floor = document.getElementById('newItemFloorStore').value.trim() || '0';
+            const store = document.getElementById('newItemStoreQty').value.trim() || '0';
+
+            if (!code || !name) {
+                alert("Please provide both Item Code and Item Name!");
+                return;
+            }
+
+            // Check if code already exists in this category
+            const existing = currentData.find(d => d.code.toUpperCase() === code.toUpperCase());
+            if (existing) {
+                if (!confirm(`Warning: Item Code "${code}" already exists in Check Floor Stock (${existing.name}). Do you still wish to add another entry?`)) {
+                    return;
+                }
+            }
+
+            // Compute automatic Excel calculations
+            const numPerDay = parseFloat(perDay) || 0;
+            const numStore = parseFloat(store) || 0;
+            const numFloor = parseFloat(floor) || 0;
+            const numPending = parseFloat(pending) || 0;
+
+            let warnStore = "";
+            if (numPerDay > 0 && numStore >= 0) {
+                warnStore = `${Math.floor(numStore / numPerDay)} Days`;
+            }
+
+            const actualFloor = numFloor - numPending;
+            const actualStr = actualFloor < 0 ? `(${Math.abs(actualFloor)})` : String(actualFloor);
+            const needStr = String(-actualFloor);
+
+            let warnFloor = "";
+            if (numPerDay > 0) {
+                warnFloor = `${Math.floor(actualFloor / numPerDay)} Days`;
+            }
+
+            const newItem = {
+                category: cat,
+                sl: sl,
+                code: code,
+                name: name,
+                unit: unit,
+                type: type,
+                sfg: {},
+                totalPending: pending,
+                perDayConsumption: perDay,
+                floorStore: floor,
+                storeQty: store,
+                mixerPaper: "0",
+                warningStoreStock: warnStore,
+                actualQtyFloor: actualStr,
+                needQty: needStr,
+                warningFloorStock: warnFloor
+            };
+
+            // Insert after the last item of this category
+            let lastIndex = -1;
+            for (let i = 0; i < currentData.length; i++) {
+                if (currentData[i].category === cat) {
+                    lastIndex = i;
+                }
+            }
+
+            let insertedIndex = 0;
+            if (lastIndex !== -1) {
+                currentData.splice(lastIndex + 1, 0, newItem);
+                insertedIndex = lastIndex + 1;
+            } else {
+                currentData.push(newItem);
+                insertedIndex = currentData.length - 1;
+            }
+
+            // Also save to Master Central DB if not present
+            if (typeof saveMasterItem === 'function') {
+                saveMasterItem({
+                    code: code,
+                    name: name,
+                    unit: unit,
+                    category: `${cat} (ERP)`
+                });
+            }
+
+            closeAddItemModal();
+            updatePillCounts();
+            renderTable();
+            saveStockData();
+
+            // Highlight newly added row
+            setTimeout(() => {
+                const targetRow = document.getElementById(`stock-row-${insertedIndex}`);
+                if (targetRow) {
+                    targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetRow.classList.add('row-newly-added');
+                }
+            }, 100);
+
+            showToast(`✅ Added "${name}" (${code}) to ${cat}!`);
+        }
+
+        function saveStockData() {
+            localStorage.setItem("mep_check_floor_stock_custom", JSON.stringify(currentData));
+        }
+
+        function resetToDefaultData() {
+            if (confirm("Are you sure you want to reset Check Floor Stock to the factory default dataset? All newly added items will be cleared.")) {
+                localStorage.removeItem("mep_check_floor_stock_custom");
+                currentData = JSON.parse(JSON.stringify(DEFAULT_FLOOR_STOCK_DATA));
+                updatePillCounts();
+                renderTable();
+                showToast("✅ Reset back to factory default Floor Stock data.");
+            }
+        }
+
+        // Filter Category
+        function filterCategory(cat, btn) {
+            activeCategoryFilter = cat;
+            document.querySelectorAll('.cat-pill').forEach(el => el.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            applyFilters();
+        }
+
+        // Search Input
+        function handleSearch(query) {
+            currentSearchTerm = query.toLowerCase().trim();
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const rows = document.querySelectorAll('#stockTbody tr');
+            rows.forEach(tr => {
+                const isBanner = tr.classList.contains('category-banner-tr') || tr.classList.contains('arm-sub-tr');
+                const rowCat = tr.getAttribute('data-cat');
+
+                let matchCat = (activeCategoryFilter === 'All' || rowCat === activeCategoryFilter);
+                let matchSearch = true;
+
+                if (!isBanner && currentSearchTerm !== '') {
+                    const text = tr.innerText.toLowerCase();
+                    matchSearch = text.includes(currentSearchTerm);
+                }
+
+                if (isBanner) {
+                    tr.style.display = (activeCategoryFilter === 'All' || rowCat === activeCategoryFilter) ? '' : 'none';
+                } else {
+                    tr.style.display = (matchCat && matchSearch) ? '' : 'none';
+                }
+            });
+        }
+
+        // Export table to CSV
+        function exportToCSV() {
+            let csv = [];
+            let headers = ['Category', 'SL', 'Item Code', 'Item Name', 'Unit', 'Type'];
+            if (isColVisible('sfg')) {
+                headers.push(...SFG_COLUMNS);
+            }
+            if (isColVisible('totalPending')) headers.push('Total Pending');
+            if (isColVisible('perDayConsumption')) headers.push('Per Day Consumption');
+            if (isColVisible('floorStore')) headers.push('Floor Store');
+            if (isColVisible('storeQty')) headers.push('Store Qty');
+            if (isColVisible('mixerPaper')) headers.push('Mixer Paper');
+            if (isColVisible('warningStoreStock')) headers.push('Warning Store Stock');
+            if (isColVisible('actualQtyFloor')) headers.push('Actual Qty (Floor)');
+            if (isColVisible('needQty')) headers.push('Need Qty');
+            if (isColVisible('warningFloorStock')) headers.push('Warning Floor Stock');
+
+            csv.push(headers.map(h => `"${h}"`).join(','));
+
+            currentData.forEach(item => {
+                let row = [
+                    item.category,
+                    item.sl,
+                    item.code,
+                    item.name,
+                    item.unit,
+                    item.type
+                ];
+
+                if (isColVisible('sfg')) {
+                    SFG_COLUMNS.forEach(col => {
+                        row.push(item.sfg ? (item.sfg[col] || '0') : '0');
+                    });
+                }
+
+                if (isColVisible('totalPending')) row.push(item.totalPending || '0');
+                if (isColVisible('perDayConsumption')) row.push(item.perDayConsumption || '0');
+                if (isColVisible('floorStore')) row.push(item.floorStore || '0');
+                if (isColVisible('storeQty')) row.push(item.storeQty || '0');
+                if (isColVisible('mixerPaper')) row.push(item.mixerPaper || '0');
+                if (isColVisible('warningStoreStock')) row.push(item.warningStoreStock || '');
+                if (isColVisible('actualQtyFloor')) row.push(item.actualQtyFloor || '0');
+                if (isColVisible('needQty')) row.push(item.needQty || '0');
+                if (isColVisible('warningFloorStock')) row.push(item.warningFloorStock || '');
+
+                csv.push(row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','));
+            });
+
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', `MEP_FAN_Check_Floor_Stock_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("✅ Exported Floor Stock CSV successfully!");
+        }
+
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toastMsg');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2600);
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            const timeStr = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+
+            const dayEl = document.getElementById('liveDayText');
+            const timeEl = document.getElementById('liveTimeText');
+            if (dayEl) dayEl.innerText = dateStr;
+            if (timeEl) timeEl.innerText = timeStr;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+            initStockData();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('openColManager') === '1') {
+                toggleColManagerMenu();
+            } else if (urlParams.get('openSerialManager') === '1') {
+                toggleSerialVisibilityDropdown();
+            }
+        });
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>

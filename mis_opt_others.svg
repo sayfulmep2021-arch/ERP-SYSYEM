@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74 74" width="74" height="74" fill="none">
+  <defs>
+    <linearGradient id="othersBg" x1="0" y1="0" x2="74" y2="74" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="gearSlate" x1="20" y1="20" x2="54" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="gearCyan" x1="36" y1="12" x2="62" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="wrenchGrad" x1="16" y1="16" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="50%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <filter id="othersShadow" x="8" y="8" width="58" height="58" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Container Base Plate -->
+  <rect x="2" y="2" width="70" height="70" rx="16" fill="url(#othersBg)" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Gears & Diagnostic Group with Filter -->
+  <g filter="url(#othersShadow)">
+    <!-- Main Slate Gear (Bottom Left) -->
+    <g transform="translate(32, 42)">
+      <!-- Gear Teeth -->
+      <path d="M -4 -18 H 4 L 5 -14 A 14 14 0 0 1 12 -11 L 16 -13 L 20 -8 L 17 -4 A 14 14 0 0 1 17 4 L 20 8 L 16 13 L 12 11 A 14 14 0 0 1 5 14 L 4 18 H -4 L -5 14 A 14 14 0 0 1 -12 11 L -16 13 L -20 8 L -17 4 A 14 14 0 0 1 -17 -4 L -20 -8 L -16 -13 L -12 -11 A 14 14 0 0 1 -5 -14 Z" fill="url(#gearSlate)" stroke="#64748b" stroke-width="0.8"/>
+      <!-- Center Hole -->
+      <circle cx="0" cy="0" r="6" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+    </g>
+
+    <!-- Secondary Cyan Gear (Top Right) -->
+    <g transform="translate(48, 26)">
+      <!-- Small Gear Teeth -->
+      <path d="M -3 -12 H 3 L 4 -9 A 9 9 0 0 1 8 -7 L 11 -8 L 13 -4 L 11 -1 A 9 9 0 0 1 11 1 L 13 4 L 11 8 L 8 7 A 9 9 0 0 1 4 9 L 3 12 H -3 L -4 9 A 9 9 0 0 1 -8 7 L -11 8 L -13 4 L -11 1 A 9 9 0 0 1 -11 -1 L -13 -4 L -11 -8 L -8 -7 A 9 9 0 0 1 -4 -9 Z" fill="url(#gearCyan)" stroke="#bae6fd" stroke-width="0.6"/>
+      <circle cx="0" cy="0" r="4" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+    </g>
+
+    <!-- Cross Chrome Wrench (Angled 45 deg) -->
+    <g transform="translate(37, 37) rotate(-45)">
+      <!-- Wrench Shaft -->
+      <rect x="-3" y="-18" width="6" height="36" rx="2" fill="url(#wrenchGrad)" stroke="#475569" stroke-width="0.8"/>
+      <!-- Top Open Jaw -->
+      <path d="M -7 -18 C -7 -23 7 -23 7 -18 L 4 -16 L 3 -19 C 1 -20 -1 -20 -3 -19 L -4 -16 Z" fill="url(#wrenchGrad)" stroke="#475569" stroke-width="0.8"/>
+      <!-- Bottom Ring -->
+      <circle cx="0" cy="18" r="6" fill="url(#wrenchGrad)" stroke="#475569" stroke-width="0.8"/>
+      <circle cx="0" cy="18" r="3" fill="#f8fafc"/>
+    </g>
+  </g>
+
+  <!-- Database Cylinders / Diagnostic Stack (Bottom Left) -->
+  <g transform="translate(13, 20)">
+    <rect x="0" y="0" width="12" height="6" rx="3" fill="#0284c7"/>
+    <rect x="0" y="8" width="12" height="6" rx="3" fill="#0ea5e9"/>
+    <rect x="0" y="16" width="12" height="6" rx="3" fill="#38bdf8"/>
+    <circle cx="9" cy="3" r="1" fill="#ffffff"/>
+    <circle cx="9" cy="11" r="1" fill="#ffffff"/>
+    <circle cx="9" cy="19" r="1" fill="#ffffff"/>
+  </g>
+
+  <!-- Pulse / Health Wave Badge (Top Left) -->
+  <g transform="translate(14, 46)">
+    <circle cx="6" cy="6" r="6" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+    <path d="M 3 6 L 5 6 L 6 3 L 7 9 L 8 6 L 9 6" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

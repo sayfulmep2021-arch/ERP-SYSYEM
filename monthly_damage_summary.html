@@ -1,0 +1,1150 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Monthly Damage Summary - Live Linked Auto Report | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --border-soft: #cbd5e1;
+            --border-cell: #cbd5e1;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* Matrix Styling matching Screenshot */
+            --th-blue: #38bdf8;
+            --th-friday: #f43f5e;
+            --th-friday-bg: #ffe4e6;
+            --th-total: #0f2942;
+            --row-peach: #fff7ed;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: #d97706;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .auto-live-tag {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .auto-live-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            user-select: none;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.15;
+        }
+
+        .live-day-text {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #d97706;
+            letter-spacing: 0.2px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.5px;
+        }
+
+        /* Workspace Main */
+        .workspace-main {
+            padding: 12px 18px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 100%;
+        }
+
+        /* Top Header Control Banner */
+        .header-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .header-title-group h1 {
+            font-size: 1.30rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title-sub {
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        /* Month & Year Selection Box (Styled Matching Screenshot) */
+        .month-year-matrix {
+            display: inline-flex;
+            border: 2px solid #0f2942;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .matrix-table {
+            border-collapse: separate !important; border-spacing: 0;
+            font-size: 0.80rem;
+            text-align: center;
+        }
+
+        .matrix-table td {
+            border: 1px solid #0f2942;
+            padding: 3px 10px;
+        }
+
+        .td-label-header {
+            background: #10b981;
+            font-weight: 900;
+            color: #ffffff;
+            font-size: 0.76rem;
+            text-transform: uppercase;
+        }
+
+        .td-label-header-light {
+            background: #bbf7d0;
+            font-weight: 900;
+            color: #064e3b;
+            font-size: 0.76rem;
+        }
+
+        .td-range-box {
+            background: #fef08a;
+            font-weight: 900;
+            font-size: 0.78rem;
+            color: #854d0e;
+            text-align: center;
+            font-family: var(--font-mono);
+        }
+
+        .matrix-select {
+            border: none;
+            background: transparent;
+            font-family: var(--font-sans);
+            font-weight: 800;
+            font-size: 0.82rem;
+            color: #0f2942;
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+            padding: 2px 4px;
+        }
+
+        .matrix-select option {
+            background-color: #ffffff !important;
+            color: #0f2942 !important;
+            font-weight: 700;
+            padding: 4px 8px;
+        }
+
+        /* Action Buttons */
+        .header-action-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.80rem;
+            font-weight: 700;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+        }
+
+        .btn-sync {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #0284c7;
+        }
+        .btn-sync:hover {
+            background: #0369a1;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: #f8fafc;
+            color: #0f2942;
+            border-color: #cbd5e1;
+        }
+        .btn-outline:hover {
+            background: #e2e8f0;
+        }
+
+        /* 3 Quick KPI Stat Cards */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .kpi-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .kpi-value {
+            font-size: 1.40rem;
+            font-weight: 900;
+            font-family: var(--font-mono);
+            color: #0f2942;
+        }
+
+        /* Table Card Container */
+        .table-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            max-height: calc(100vh - 270px);
+            overflow: auto;
+            position: relative;
+        }
+
+        .excel-table {
+            border-collapse: separate !important;
+            border-spacing: 0;
+            width: 100%;
+            min-width: 1650px;
+            font-size: 0.76rem;
+            table-layout: fixed;
+            background: #ffffff;
+        }
+
+        /* Single Unified Sticky Header Row */
+        .excel-table thead th {
+            padding: 6px 4px;
+            border: 1px solid #475569;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            white-space: nowrap;
+            user-select: none;
+            box-sizing: border-box;
+        }
+
+        /* Sticky Left Columns matching Screenshot */
+        /* Col 1: 38px, left: 0px */
+        .col-sl {
+            position: sticky !important;
+            left: 0px !important;
+            z-index: 15 !important;
+            width: 38px !important;
+            min-width: 38px !important;
+            max-width: 38px !important;
+            text-align: center;
+            background-color: #f1f5f9 !important;
+            border-right: 1px solid #cbd5e1;
+            box-sizing: border-box;
+        }
+
+        /* Col 2: 140px, left: 38px */
+        .col-code {
+            position: sticky !important;
+            left: 38px !important;
+            z-index: 15 !important;
+            width: 140px !important;
+            min-width: 140px !important;
+            max-width: 140px !important;
+            text-align: left;
+            background-color: #ffedd5 !important;
+            border-right: 1px solid #fed7aa;
+            font-family: var(--font-mono);
+            font-weight: 800;
+            color: #9a3412;
+            padding: 4px 8px !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        /* Col 3: 260px, left: 178px (38 + 140) */
+        .col-name {
+            position: sticky !important;
+            left: 178px !important;
+            z-index: 15 !important;
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            text-align: left;
+            background-color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            font-weight: 700;
+            padding: 4px 8px !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        thead th.col-sl, thead th.col-code {
+            z-index: 35 !important;
+            background-color: #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+
+        thead th.col-name {
+            z-index: 36 !important;
+            background-color: #cbd5e1 !important;
+            color: #0f172a !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        /* Day columns (1 to 31) */
+        .th-day-col {
+            padding: 6px 3px !important;
+            text-align: center;
+        }
+
+        .th-day-date {
+            font-size: 0.72rem;
+            font-weight: 900;
+            line-height: 1.15;
+        }
+
+        .th-day-name {
+            font-size: 0.64rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        .th-day-header {
+            width: 46px;
+            min-width: 46px;
+            max-width: 46px;
+            background: #38bdf8 !important;
+            color: #0f2942 !important;
+        }
+
+        .th-day-header .th-day-name {
+            color: #0369a1 !important;
+        }
+
+        .th-friday-header {
+            width: 46px;
+            min-width: 46px;
+            max-width: 46px;
+            background: #f43f5e !important;
+            color: #ffffff !important;
+        }
+
+        .th-friday-header .th-day-date {
+            color: #ffffff !important;
+        }
+
+        .th-friday-header .th-day-name {
+            color: #ffe4e6 !important;
+        }
+            background: #38bdf8 !important;
+            color: #0f2942 !important;
+            font-weight: 800;
+        }
+
+        .th-friday-header {
+            width: 44px;
+            min-width: 44px;
+            max-width: 44px;
+            background: #f43f5e !important;
+            color: #ffffff !important;
+            font-weight: 900;
+        }
+
+        /* Day values in body */
+        .td-day-cell {
+            width: 44px;
+            min-width: 44px;
+            max-width: 44px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            font-weight: 800;
+            padding: 4px 2px;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .td-day-friday {
+            background-color: #ffe4e6;
+        }
+
+        .td-day-hasval {
+            color: #0f172a;
+            font-weight: 900;
+        }
+
+        .td-day-empty {
+            color: transparent;
+        }
+
+        /* Right Total Column matching Screenshot */
+        .col-total {
+            position: sticky;
+            right: 0px;
+            z-index: 15;
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-family: var(--font-mono);
+            font-weight: 900;
+            font-size: 0.82rem;
+            text-align: center;
+            border-left: 2px solid #0f2942;
+            box-shadow: -4px 0 6px -2px rgba(0,0,0,0.15);
+        }
+
+        thead th.col-total {
+            z-index: 30 !important;
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+        }
+
+        /* Rows */
+        .excel-table tbody tr:hover td {
+            background-color: #f1f5f9;
+        }
+        .excel-table tbody tr:hover td.col-code {
+            background-color: #fed7aa !important;
+        }
+        .excel-table tbody tr:hover td.col-name {
+            background-color: #f8fafc !important;
+        }
+        .excel-table tbody tr:hover td.col-total {
+            background-color: #0f2942 !important;
+        }
+
+        /* Bottom Grand Total Row */
+        .bottom-green-bar {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.80rem !important;
+            padding: 8px 10px !important;
+            border-top: 2.5px solid #047857 !important;
+            position: sticky;
+            bottom: 0;
+            z-index: 20;
+        }
+
+        .bottom-green-bar td {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-family: var(--font-mono);
+            text-align: center;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--brand-dark);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media print {
+            .portal-nav, .header-action-group, #mepFrozenSidebar {
+                display: none !important;
+            }
+            .table-wrapper {
+                max-height: none !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div>
+                    <div class="nav-brand-title">ALL MONTHLY REPORT</div>
+                    <div class="nav-brand-sub">
+                        <span>Monthly Damage Summary</span>
+                        <span class="auto-live-tag">Auto-Synced from Fan Damage Calculation Entry</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- Top Header Control Banner -->
+        <div class="header-card">
+            <div class="header-title-group">
+                <h1>
+                    <span>Monthly Fan Damage Summary Matrix</span>
+                </h1>
+                
+            </div>
+
+            <!-- Month & Year Selector Matrix matching Screenshot -->
+            <div class="month-year-matrix">
+                <table class="matrix-table">
+                    <tr>
+                        <td class="td-label-header">Month</td>
+                        <td style="background:#0f2942;">
+                            <select id="monthSelect" class="matrix-select" style="color:#ffffff; background:#0f2942;" onchange="onPeriodChange()">
+                                <option value="January" style="background:#ffffff; color:#0f2942;">January</option>
+                                <option value="February" style="background:#ffffff; color:#0f2942;">February</option>
+                                <option value="March" style="background:#ffffff; color:#0f2942;">March</option>
+                                <option value="April" style="background:#ffffff; color:#0f2942;">April</option>
+                                <option value="May" selected style="background:#ffffff; color:#0f2942;">May</option>
+                                <option value="June" style="background:#ffffff; color:#0f2942;">June</option>
+                                <option value="July" style="background:#ffffff; color:#0f2942;">July</option>
+                                <option value="August" style="background:#ffffff; color:#0f2942;">August</option>
+                                <option value="September" style="background:#ffffff; color:#0f2942;">September</option>
+                                <option value="October" style="background:#ffffff; color:#0f2942;">October</option>
+                                <option value="November" style="background:#ffffff; color:#0f2942;">November</option>
+                                <option value="December" style="background:#ffffff; color:#0f2942;">December</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-label-header-light">Year's</td>
+                        <td style="background:#bbf7d0;">
+                            <select id="yearSelect" class="matrix-select" style="color:#064e3b; background:#bbf7d0;" onchange="onPeriodChange()">
+                                <option value="2022" style="background:#ffffff; color:#0f2942;">2022</option>
+                                <option value="2023" style="background:#ffffff; color:#0f2942;">2023</option>
+                                <option value="2024" style="background:#ffffff; color:#0f2942;">2024</option>
+                                <option value="2025" style="background:#ffffff; color:#0f2942;">2025</option>
+                                <option value="2026" selected style="background:#ffffff; color:#0f2942;">2026</option>
+                                <option value="2027" style="background:#ffffff; color:#0f2942;">2027</option>
+                                <option value="2028" style="background:#ffffff; color:#0f2942;">2028</option>
+                                <option value="2029" style="background:#ffffff; color:#0f2942;">2029</option>
+                                <option value="2030" style="background:#ffffff; color:#0f2942;">2030</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="td-range-box" id="dateRangeDisplay">
+                            1-May-2026 To 31-May-2026
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="header-action-group">
+                <button type="button" class="btn-action btn-sync" onclick="syncAndRender()" title="Refresh & Sync Data from Fan Damage Calculation Entry">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    <span>?? Refresh &amp; Sync</span>
+                </button>
+
+                <button type="button" class="btn-action btn-outline" onclick="exportToCSV()" title="Export CSV">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export CSV</span>
+                </button>
+
+                <button type="button" class="btn-action btn-outline" onclick="window.print()" title="Print Summary">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3 Quick KPI Stat Cards -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Monthly Damage (Actual)</div>
+                    <div class="kpi-value" id="kpiTotalDamage" style="color: #dc2626;">0 Pcs</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Days in Selected Month</div>
+                    <div class="kpi-value" id="kpiDaysCount" style="color: #059669;">31 Days</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Finished Good Models Tracked</div>
+                    <div class="kpi-value" id="kpiTotalModels" style="color: #7c3aed;">9 Models</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card Grid -->
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table class="excel-table" id="damageSummaryTable">
+                    <colgroup id="damageColgroup">
+                        <!-- Populated dynamically with locked pixel widths -->
+                    </colgroup>
+                    <thead id="tableHead">
+                        <!-- Dynamic Month Days & Weekdays Header -->
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Linked Aggregated Rows -->
+                    </tbody>
+                    <tfoot id="tableFoot">
+                        <!-- Bottom Green Bar / Grand Total Row -->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="toast" id="toastBox">Synced with Fan Damage Calculation Entry!</div>
+
+    <!-- Master Data File for Fan Damage -->
+    <script src="fan_damage_data.js"></script>
+
+    <!-- Application Script -->
+    <script>
+        const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        // The authoritative 9 FG Fan Models matching screenshot
+        const BASE_MODELS = [
+            { sl: 1, code: "CF5601/CF5601IV", name: "56 Inch Premium Ceiling Fan - Ivory" },
+            { sl: 2, code: "CF5601WH/CF5601WH", name: "56 Inch Premium Ceiling Fan - White" },
+            { sl: 3, code: "CF5602/CF5602IV", name: "56 Inch Speed King Ceiling Fan - Ivory" },
+            { sl: 4, code: "CF5603/CF5603IV", name: "56 Inch Premium Gold Ceiling Fan - Ivory" },
+            { sl: 5, code: "CF5606/CF5606IV", name: "56 Inch Premium Plus Ceiling Fan - Ivory" },
+            { sl: 6, code: "CF5607/CF5607IV", name: "56 Inch Crown Ceiling Fan - Ivory" },
+            { sl: 7, code: "CF4801/CF4801IV", name: "48 Inch Popular Ceiling Fan - Ivory" },
+            { sl: 8, code: "CF3601/CF3601IV", name: "36 Inch Hero Ceiling Fan - Ivory" },
+            { sl: 9, code: "CF2401/CF2401IV", name: "24 Inch Super Ceiling Fan - Ivory" }
+        ];
+
+        let daysInfo = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+
+            syncAndRender();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+
+        function calculateDaysInMonth() {
+            const mName = document.getElementById('monthSelect').value;
+            const y = parseInt(document.getElementById('yearSelect').value);
+            const mIdx = MONTH_NAMES.indexOf(mName);
+            const shortM = MONTH_SHORT[mIdx];
+
+            const totalDays = new Date(y, mIdx + 1, 0).getDate();
+
+            daysInfo = [];
+            let fridayCount = 0;
+            for (let d = 1; d <= totalDays; d++) {
+                const dateObj = new Date(y, mIdx, d);
+                const dayOfWeek = DAY_NAMES[dateObj.getDay()];
+                const isFriday = dayOfWeek === "Fri";
+                if (isFriday) fridayCount++;
+
+                daysInfo.push({
+                    dayNum: d,
+                    dateLabel: `${d}-${shortM}`,
+                    dayOfWeek: dayOfWeek,
+                    isFriday: isFriday
+                });
+            }
+
+            document.getElementById('dateRangeDisplay').innerText = `1-${shortM}-${y} To ${totalDays}-${shortM}-${y}`;
+            document.getElementById('kpiDaysCount').innerText = `${totalDays} Days (${fridayCount} Fridays)`;
+        }
+
+        function onPeriodChange() {
+            syncAndRender();
+            showToast(`?? Auto-Aggregated Damage Summary for ${document.getElementById('monthSelect').value} ${document.getElementById('yearSelect').value}`);
+        }
+
+        /**
+         * Load all damage logs from Fan Damage Calculation Entry dataset + localStorage modifications
+         */
+        function getAllDamageEntries() {
+            let entries = [];
+            if (typeof DEFAULT_FAN_DAMAGE_DATA !== 'undefined' && Array.isArray(DEFAULT_FAN_DAMAGE_DATA)) {
+                entries = [...DEFAULT_FAN_DAMAGE_DATA];
+            }
+
+            const customSaved = localStorage.getItem('mep_fan_damage_custom');
+            if (customSaved) {
+                try {
+                    const parsed = JSON.parse(customSaved);
+                    if (Array.isArray(parsed)) {
+                        entries = parsed;
+                    }
+                } catch(e) {
+                    console.error("Error reading mep_fan_damage_custom:", e);
+                }
+            }
+            return entries;
+        }
+
+        /**
+         * Flexible Date Parser matching "1-May-26" or "1-May-2026"
+         */
+        function parseEntryDate(row) {
+            let mName = (row.month || '').trim().toLowerCase();
+            let yStr = String(row.year || '').trim();
+            let dNum = null;
+
+            if (row.date) {
+                const rawDate = String(row.date).trim();
+                const parts = rawDate.split(/[-/]/);
+                if (parts.length === 3) {
+                    dNum = parseInt(parts[0], 10);
+                    const mPart = parts[1].toLowerCase();
+                    const yPart = parts[2];
+
+                    MONTH_NAMES.forEach((mn, idx) => {
+                        if (mn.toLowerCase().startsWith(mPart) || MONTH_SHORT[idx].toLowerCase() === mPart) {
+                            mName = mn.toLowerCase();
+                        }
+                    });
+
+                    if (yPart.length === 2) {
+                        yStr = '20' + yPart;
+                    } else if (yPart.length === 4) {
+                        yStr = yPart;
+                    }
+                }
+            }
+
+            return { day: dNum, month: mName, year: yStr };
+        }
+
+        function normalizeCode(str) {
+            return String(str || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag));
+        }
+
+        function syncAndRender() {
+            calculateDaysInMonth();
+
+            const selMonth = document.getElementById('monthSelect').value.toLowerCase();
+            const selYear = String(document.getElementById('yearSelect').value);
+            const allEntries = getAllDamageEntries();
+
+            // Filter entries matching selected month and year
+            const filteredEntries = allEntries.filter(row => {
+                const parsed = parseEntryDate(row);
+                const matchMonth = parsed.month === selMonth || (row.month && row.month.toLowerCase() === selMonth);
+                const matchYear = parsed.year === selYear || String(row.year) === selYear || String(row.year).slice(-2) === selYear.slice(-2);
+                return matchMonth && matchYear;
+            });
+
+            // Initialize model map
+            const itemMap = new Map();
+            BASE_MODELS.forEach(m => {
+                const norm = normalizeCode(m.code);
+                itemMap.set(norm, {
+                    sl: m.sl,
+                    code: m.code,
+                    name: m.name,
+                    days: Array(daysInfo.length).fill(0),
+                    total: 0
+                });
+            });
+
+            // Aggregate damage quantities into daily buckets
+            filteredEntries.forEach(entry => {
+                const parsed = parseEntryDate(entry);
+                const dIdx = parsed.day ? parsed.day - 1 : -1;
+                if (dIdx < 0 || dIdx >= daysInfo.length) return;
+
+                const normCode = normalizeCode(entry.fgCode || entry.code);
+                const qty = parseInt(entry.qty) || 0;
+
+                if (itemMap.has(normCode)) {
+                    itemMap.get(normCode).days[dIdx] += qty;
+                    itemMap.get(normCode).total += qty;
+                } else {
+                    // Try to match by item name
+                    let matched = false;
+                    for (let [k, itemObj] of itemMap.entries()) {
+                        if (normalizeCode(itemObj.name) === normalizeCode(entry.fgName)) {
+                            itemObj.days[dIdx] += qty;
+                            itemObj.total += qty;
+                            matched = true;
+                            break;
+                        }
+                    }
+                    if (!matched) {
+                        // Dynamically append new model
+                        const newItem = {
+                            sl: itemMap.size + 1,
+                            code: entry.fgCode || entry.code,
+                            name: entry.fgName || 'Additional Fan Model',
+                            days: Array(daysInfo.length).fill(0),
+                            total: qty
+                        };
+                        newItem.days[dIdx] += qty;
+                        itemMap.set(normCode, newItem);
+                    }
+                }
+            });
+
+            const finalItemList = Array.from(itemMap.values());
+            renderTable(finalItemList);
+        }
+
+        function renderTable(itemList) {
+            const colgroup = document.getElementById('damageColgroup');
+            const thead = document.getElementById('tableHead');
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+
+            // 1. Build Locked ColGroup with strict pixel widths
+            let colHtml = `
+                <col style="width: 38px; min-width: 38px; max-width: 38px;">
+                <col style="width: 140px; min-width: 140px; max-width: 140px;">
+                <col style="width: 260px; min-width: 260px; max-width: 260px;">
+            `;
+            daysInfo.forEach(() => {
+                colHtml += `<col style="width: 46px; min-width: 46px; max-width: 46px;">`;
+            });
+            colHtml += `<col style="width: 90px; min-width: 90px; max-width: 90px;">`;
+            colgroup.innerHTML = colHtml;
+
+            // 2. Build Unified Single Sticky Header Row
+            let thDays = '';
+            daysInfo.forEach(day => {
+                const headClass = day.isFriday ? 'th-friday-header' : 'th-day-header';
+                thDays += `
+                    <th class="th-day-col ${headClass}">
+                        <div class="th-day-date">${day.dateLabel}</div>
+                        <div class="th-day-name">${day.dayOfWeek}</div>
+                    </th>
+                `;
+            });
+
+            thead.innerHTML = `
+                <tr>
+                    <th class="col-sl">Sl<br>No</th>
+                    <th class="col-code">SFG Code</th>
+                    <th class="col-name">SFG Item Name</th>
+                    ${thDays}
+                    <th class="col-total">Total<br>Production</th>
+                </tr>
+            `;
+
+            // 3. Render Data Rows
+            let tbodyHtml = '';
+            let grandTotal = 0;
+            const dayTotals = Array(daysInfo.length).fill(0);
+
+            itemList.forEach(item => {
+                tbodyHtml += `<tr>`;
+                tbodyHtml += `<td class="col-sl">${item.sl}</td>`;
+                tbodyHtml += `<td class="col-code" title="${escapeHTML(item.code || '')}">${escapeHTML(item.code || '')}</td>`;
+                tbodyHtml += `<td class="col-name" title="${escapeHTML(item.name || '')}">
+                    <div style="width: 100%; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(item.name || '')}</div>
+                </td>`;
+
+                for (let d = 0; d < daysInfo.length; d++) {
+                    const dayObj = daysInfo[d];
+                    const val = item.days[d];
+                    dayTotals[d] += val;
+
+                    const friClass = dayObj.isFriday ? 'td-day-friday' : '';
+                    const valClass = val > 0 ? 'td-day-hasval' : 'td-day-empty';
+                    const displayVal = val > 0 ? val : '';
+
+                    tbodyHtml += `<td class="td-day-cell ${friClass} ${valClass}">${displayVal}</td>`;
+                }
+
+                grandTotal += item.total;
+                tbodyHtml += `<td class="col-total" style="background:#f8fafc !important; color:#0f2942 !important; font-weight:800; font-family:var(--font-mono); text-align:right;">${item.total}</td>`;
+                tbodyHtml += `</tr>`;
+            });
+
+            tbody.innerHTML = tbodyHtml;
+
+            // 4. Render Bottom Green Bar with Explicit Sticky Cells (matching screenshot)
+            let tfootHtml = `<tr class="bottom-green-bar">`;
+            tfootHtml += `<td class="col-sl" style="background:#10b981 !important; color:#ffffff !important; z-index: 28 !important;">-</td>`;
+            tfootHtml += `<td class="col-code" style="background:#10b981 !important; color:#ffffff !important; z-index: 28 !important;">DAILY TOTAL:</td>`;
+            tfootHtml += `<td class="col-name" style="background:#10b981 !important; color:#ffffff !important; z-index: 29 !important; border-right: 2.5px solid #059669 !important;">
+                <div style="width: 100%; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sum of Daily Damage</div>
+            </td>`;
+
+            for (let d = 0; d < daysInfo.length; d++) {
+                const dayTotal = dayTotals[d];
+                tfootHtml += `<td class="td-day-cell" style="background:#10b981 !important; color:#ffffff !important; font-weight:900;">${dayTotal > 0 ? dayTotal : ''}</td>`;
+            }
+
+            tfootHtml += `<td class="col-total" style="background:#0f2942 !important; color:#38bdf8 !important; font-size:0.90rem; font-family:var(--font-mono); text-align:right;">${grandTotal}</td>`;
+            tfootHtml += `</tr>`;
+
+            tfoot.innerHTML = tfootHtml;
+
+            // Update KPI Cards
+            const kpiDamage = document.getElementById('kpiTotalDamage');
+            const kpiModels = document.getElementById('kpiTotalModels');
+            if (kpiDamage) kpiDamage.innerText = `${grandTotal.toLocaleString()} Pcs`;
+            if (kpiModels) kpiModels.innerText = `${itemList.length} Models`;
+        }
+
+        function exportToCSV() {
+            const mName = document.getElementById('monthSelect').value;
+            const y = document.getElementById('yearSelect').value;
+            let csv = [];
+
+            // Header
+            let head1 = ['Sl No', 'SFG Code', 'SFG Item Name'];
+            daysInfo.forEach(d => head1.push(d.dateLabel));
+            head1.push('Total Production');
+            csv.push(head1.map(h => `"${h}"`).join(','));
+
+            // Rows
+            const rows = document.querySelectorAll('#damageSummaryTable tbody tr');
+            rows.forEach(tr => {
+                let row = [];
+                tr.querySelectorAll('td').forEach(td => {
+                    row.push(td.innerText.trim());
+                });
+                csv.push(row.map(v => `"${v.replace(/"/g, '""')}"`).join(','));
+            });
+
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', `MEP_FAN_Monthly_Damage_Summary_${mName}_${y}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast(`✓ Exported ${mName} ${y} Damage Summary to CSV!`);
+        }
+
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2600);
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            const timeStr = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+
+            const dayEl = document.getElementById('liveDayText');
+            const timeEl = document.getElementById('liveTimeText');
+            if (dayEl) dayEl.innerText = dateStr;
+            if (timeEl) timeEl.innerText = timeStr;
+        }
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>

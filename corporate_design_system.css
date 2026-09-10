@@ -1,0 +1,659 @@
+/**
+ * MEP FAN LIMITED - Enterprise Web Application Design System
+ * Theme: Premium Sky Blue Corporate Theme
+ * Standardized Design Tokens, Components, Tables & Airtight Freeze Panes
+ */
+
+:root {
+    /* 1. Corporate Sky Blue Palette */
+    --corp-brand-primary: #0284c7;         /* Core Vibrant Blue */
+    --corp-brand-primary-hover: #0369a1;   /* Hover State */
+    --corp-brand-dark: #0f2942;            /* Deep Corporate Navy */
+    --corp-brand-tint: #f0f9ff;            /* Very Soft Sky Tint */
+    --corp-brand-border: #bae6fd;          /* Light Sky Border */
+    
+    /* Neutral & Backgrounds */
+    --corp-bg-page: #f8fafc;               /* Clean Page Slate Tint */
+    --corp-bg-card: #ffffff;               /* Pure White Content Containers */
+    --corp-border-subtle: #cbd5e1;         /* Structural Border */
+    --corp-border-light: #e2e8f0;          /* Table & Cell Divider */
+    
+    /* Typography - Standardized to Times New Roman across all files and pages */
+    --corp-text-heading: #0f2942;          /* High-Contrast Navy */
+    --corp-text-body: #1e293b;             /* Crisp Slate Body */
+    --corp-text-muted: #64748b;            /* Muted Meta Info */
+    --corp-font-sans: 'Times New Roman', Times, serif;
+    --corp-font-mono: 'Times New Roman', Times, serif;
+    --font-sans: 'Times New Roman', Times, serif;
+    --font-mono: 'Times New Roman', Times, serif;
+    --font-main: 'Times New Roman', Times, serif;
+
+    /* Controlled Warning Palette */
+    --corp-safe-bg: #dcfce7;
+    --corp-safe-border: #86efac;
+    --corp-safe-text: #15803d;
+
+    --corp-warn-bg: #fef3c7;
+    --corp-warn-border: #fcd34d;
+    --corp-warn-text: #92400e;
+
+    --corp-crit-bg: #fee2e2;
+    --corp-crit-border: #fca5a5;
+    --corp-crit-text: #b91c1c;
+
+    /* Table Highlight Palette */
+    --corp-total-bg: #fef08a;              /* Soft Gold Total */
+    --corp-total-border: #ca8a04;
+    --corp-total-text: #713f12;
+
+    --corp-th-peach: #ffedd5;
+    --corp-th-navy: #1e3a8a;
+    --corp-th-teal: #10b981;
+}
+
+/* Universal Typography: Enforce Times New Roman across every element in all pages */
+*, *::before, *::after {
+    font-family: 'Times New Roman', Times, serif !important;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video,
+input, button, select, textarea, optgroup, option {
+    font-family: 'Times New Roman', Times, serif !important;
+}
+
+/* Base Body Styling */
+body.corp-themed {
+    font-family: 'Times New Roman', Times, serif !important;
+    background-color: var(--corp-bg-page);
+    color: var(--corp-text-body);
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   1. Standard Executive Report Header Section
+   ========================================================================== */
+.report-header-section {
+    background: #ffffff;
+    border: 1.5px solid var(--corp-border-light);
+    border-radius: 12px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    box-shadow: 0 3px 12px rgba(15, 41, 66, 0.03);
+}
+
+.report-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.report-header-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-header-title-row h1 {
+    font-size: 1.30rem;
+    font-weight: 900;
+    color: var(--corp-brand-dark);
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.report-header-sub {
+    font-size: 0.80rem;
+    color: var(--corp-text-muted);
+    font-weight: 600;
+}
+
+.report-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.audit-scope-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 4px 12px;
+    background: var(--corp-brand-tint);
+    border: 1.5px solid var(--corp-brand-border);
+    border-radius: 8px;
+}
+
+.audit-scope-label {
+    font-size: 0.64rem;
+    font-weight: 800;
+    color: #0369a1;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.audit-scope-years {
+    font-family: var(--corp-font-mono);
+    font-size: 0.94rem;
+    font-weight: 900;
+    color: #0c4a6e;
+}
+
+/* ==========================================================================
+   2. Standard Corporate Button System
+   ========================================================================== */
+.report-action-buttons, .corp-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-corp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 15px;
+    border-radius: 8px;
+    font-family: var(--corp-font-sans);
+    font-size: 0.80rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.btn-corp-primary {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+}
+
+.btn-corp-primary:hover {
+    background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+}
+
+.btn-corp-outline {
+    background: #ffffff;
+    color: #334155;
+    border: 1.5px solid var(--corp-border-subtle);
+}
+
+.btn-corp-outline:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: var(--corp-brand-dark);
+}
+
+/* Universal Select & Option Rules (Prevents Invisible White-on-White Dropdowns) */
+select option,
+.matrix-select option,
+.excel-validation-select option {
+    background-color: #ffffff !important;
+    color: #0f2942 !important;
+    font-weight: 600 !important;
+    padding: 6px 10px !important;
+}
+
+.btn-corp-danger {
+    background: #ffffff;
+    color: #dc2626;
+    border: 1.5px solid #fca5a5;
+}
+
+.btn-corp-danger:hover {
+    background: #fef2f2;
+    border-color: #dc2626;
+}
+
+.btn-corp-sm {
+    padding: 5px 12px;
+    font-size: 0.76rem;
+}
+
+/* ==========================================================================
+   3. Standard Filter Card Component
+   ========================================================================== */
+.filter-report-card {
+    background: #ffffff;
+    border: 1.5px solid var(--corp-border-subtle);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 16px rgba(15, 41, 66, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1.5px solid #f1f5f9;
+    padding-bottom: 8px;
+}
+
+.filter-report-title {
+    font-size: 0.86rem;
+    font-weight: 800;
+    color: var(--corp-brand-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-report-subtitle {
+    font-size: 0.76rem;
+    color: var(--corp-text-muted);
+    font-weight: 600;
+}
+
+.filter-report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.filter-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+}
+
+.filter-field-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-select-trigger {
+    background: #f8fafc;
+    border: 1.5px solid var(--corp-border-subtle);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    text-align: left;
+    user-select: none;
+}
+
+.filter-select-trigger:hover {
+    border-color: var(--corp-brand-primary);
+    background: #f0f9ff;
+}
+
+.filter-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    min-width: 250px;
+    background: #ffffff;
+    border: 1.5px solid var(--corp-border-subtle);
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(15, 41, 66, 0.15);
+    padding: 10px;
+    z-index: 60;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.filter-dropdown-menu.show {
+    display: flex;
+}
+
+.filter-report-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1.5px solid #f1f5f9;
+}
+
+.active-pills-wrap {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border: 1px solid #bae6fd;
+}
+
+/* ==========================================================================
+   4. Standard KPI Metric Cards
+   ========================================================================== */
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.kpi-card {
+    background: #ffffff;
+    border: 1.5px solid var(--corp-border-light);
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 6px rgba(15, 41, 66, 0.02);
+}
+
+.kpi-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.kpi-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--corp-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.kpi-value {
+    font-family: var(--corp-font-mono);
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--corp-brand-dark);
+    line-height: 1.15;
+}
+
+/* ==========================================================================
+   5. Standard Controlled Warning Badges
+   ========================================================================== */
+.badge-safe {
+    background: var(--corp-safe-bg);
+    color: var(--corp-safe-text);
+    border: 1px solid var(--corp-safe-border);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.badge-warn {
+    background: var(--corp-warn-bg);
+    color: var(--corp-warn-text);
+    border: 1px solid var(--corp-warn-border);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.badge-crit {
+    background: var(--corp-crit-bg);
+    color: var(--corp-crit-text);
+    border: 1px solid var(--corp-crit-border);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+/* Data Table Warning Cells */
+.val-neg-soft {
+    background-color: var(--corp-crit-bg) !important;
+    color: var(--corp-crit-text) !important;
+    font-weight: 800 !important;
+}
+
+.val-warn-soft {
+    background-color: var(--corp-warn-bg) !important;
+    color: var(--corp-warn-text) !important;
+    font-weight: 800 !important;
+}
+
+.val-safe-soft {
+    background-color: var(--corp-safe-bg) !important;
+    color: var(--corp-safe-text) !important;
+    font-weight: 800 !important;
+}
+
+/* ==========================================================================
+   6. Airtight Freeze Panes Core Rules & Layer Hierarchy
+   ========================================================================== */
+/* The rightmost divider wall */
+.freeze-boundary-col {
+    border-right: 2.5px solid var(--corp-brand-primary) !important;
+    box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+}
+
+/* Layer Priorities */
+.freeze-z-header {
+    z-index: 35 !important;
+}
+
+.freeze-z-footer {
+    z-index: 28 !important;
+}
+
+.freeze-z-subtotal {
+    z-index: 18 !important;
+}
+
+.freeze-z-body {
+    z-index: 15 !important;
+}
+
+/* Scrollbar Clean Corporate Styling - Sleek & Refined Slider */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0284c7;
+}
+
+/* ==========================================================================
+   7. Standardized Legible Table Typography & Content-Fit Column Spacing
+   ========================================================================== */
+table, .data-table, .report-table, .corp-table, .table-excel-pro {
+    font-size: 13.5px !important;
+}
+
+th, .data-table th, .report-table th, .corp-table th, .table-excel-pro th {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    padding: 6px 8px !important;
+    letter-spacing: 0.2px;
+}
+
+td, .data-table td, .report-table td, .corp-table td, .table-excel-pro td {
+    font-size: 13.5px !important;
+    padding: 5px 8px !important;
+}
+
+/* Ensure numeric cells are crisp, compact and do not break */
+td.td-r, th.th-r {
+    white-space: nowrap !important;
+}
+
+/* ==========================================================================
+   8. Global Standard: Rock-Solid Live Clock Component (Zero Jitter / Tabular Num)
+   ========================================================================== */
+.live-clock-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    width: 250px !important;
+    min-width: 250px !important;
+    max-width: 250px !important;
+    height: 38px !important;
+    user-select: none !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+.live-clock-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    width: 140px !important;
+    min-width: 140px !important;
+    max-width: 140px !important;
+    gap: 1px !important;
+    line-height: 1.15 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    text-align: right !important;
+}
+
+.live-day-text {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #334e68 !important;
+    white-space: nowrap !important;
+    text-align: right !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+.live-time-text,
+#liveClockText,
+.live-clock-text {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    font-variant-numeric: tabular-nums lining-nums !important;
+    font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1 !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 0.98rem !important;
+    font-weight: 800 !important;
+    color: #0f2942 !important;
+    white-space: nowrap !important;
+    text-align: right !important;
+    letter-spacing: 0.2px !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    width: 100px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
+}
+
+.live-time-text .t-digit,
+.live-time-text .t-num-slot {
+    display: inline-block !important;
+    width: 8.5px !important;
+    min-width: 8.5px !important;
+    max-width: 8.5px !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+.live-time-text .t-colon {
+    display: inline-block !important;
+    width: 4px !important;
+    min-width: 4px !important;
+    max-width: 4px !important;
+    text-align: center !important;
+    margin: 0 1px !important;
+    line-height: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+.live-time-text .t-ampm,
+.live-time-text .t-ampm-slot {
+    display: inline-block !important;
+    width: 25px !important;
+    min-width: 25px !important;
+    max-width: 25px !important;
+    text-align: left !important;
+    margin-left: 3px !important;
+    font-size: 0.80rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}

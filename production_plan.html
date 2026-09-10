@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Production Planning (Yearly Plan) | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-primary-hover: #0369a1;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-soft: #cbd5e1;
+            --border-cell: #cbd5e1;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* Planning Matrix Specific Colors */
+            --header-pink: #f472b6;
+            --header-pink-dark: #db2777;
+            --target-green: #34d399;
+            --target-green-bg: #d1fae5;
+            --cat-yellow: #fef08a;
+            --cat-coral: #fb7185;
+            --plan-blue: #93c5fd;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Hide Number Input Spinners */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-back-portal:hover {
+            background: #f0f7ff;
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: translateX(-2px);
+        }
+
+        .nav-brand-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Top Right Live Clock - Zero Jitter, Fixed Width, Times New Roman Tabular Numbers */
+        .live-clock-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0 4px 0 0;
+            box-shadow: none;
+            user-select: none;
+            width: 240px;
+            min-width: 240px;
+            max-width: 240px;
+            text-align: right;
+            flex-shrink: 0;
+            height: auto;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.22;
+            justify-content: center;
+            gap: 2px;
+            width: 100%;
+        }
+
+        .live-day-text {
+            font-family: 'Times New Roman', Times, serif !important;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: -0.1px;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .live-time-text {
+            font-family: 'Times New Roman', Times, serif !important;
+            font-size: 1.18rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.6px;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Workspace Main */
+        .workspace-main {
+            padding: 14px 18px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Control & Period Box Banner */
+        .planning-header-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .company-meta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .company-meta-group h1 {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: -0.4px;
+        }
+
+        .company-meta-group .location-text {
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        /* Planning Period Data-Validation Box (Matching user screenshot) */
+        .period-selection-matrix {
+            display: inline-flex;
+            border: 2px solid #0f2942;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            background: #ffffff;
+            width: fit-content;
+            max-width: max-content;
+            flex-shrink: 0;
+        }
+
+        .period-table {
+            border-collapse: separate !important;
+            border-spacing: 0;
+            font-size: 0.82rem;
+            text-align: center;
+            width: auto;
+        }
+
+        .period-table th, .period-table td {
+            border: 1px solid #0f2942;
+            padding: 4px 10px;
+            vertical-align: middle;
+        }
+
+        .th-corner-empty {
+            background: #f8fafc;
+            width: 140px;
+        }
+
+        .th-from-to {
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 900;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            width: 95px;
+            text-align: center;
+        }
+
+        .th-to {
+            background: #f472b6;
+            color: #0f172a;
+            font-weight: 900;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            width: 95px;
+            text-align: center;
+        }
+
+        .td-blue-label {
+            background: #bae6fd;
+            font-weight: 800;
+            color: #0369a1;
+            text-align: left;
+            padding-left: 10px !important;
+            white-space: nowrap;
+        }
+
+        .period-select {
+            border: none;
+            background: transparent;
+            font-family: var(--font-sans);
+            font-weight: 800;
+            font-size: 0.84rem;
+            color: #0f2942;
+            cursor: pointer;
+            outline: none;
+            padding: 2px 6px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .period-select:focus {
+            background: #fef08a;
+            border-radius: 4px;
+        }
+
+        .period-select option {
+            background-color: #ffffff !important;
+            color: #0f2942 !important;
+            font-weight: 700;
+            padding: 4px 8px;
+        }
+
+        /* Action Toolbar */
+        .header-action-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-plan {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.80rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1.5px solid transparent;
+            user-select: none;
+        }
+
+        .btn-save-plan {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #0369a1;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-save-plan:hover {
+            background: #0369a1;
+            transform: translateY(-1px);
+        }
+
+        .btn-add-item {
+            background: #10b981;
+            color: #ffffff;
+            border-color: #059669;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-add-item:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-plan-outline {
+            background: #ffffff;
+            color: #334155;
+            border-color: #cbd5e1;
+        }
+
+        .btn-plan-outline:hover {
+            background: #f1f5f9;
+            color: #0f2942;
+        }
+
+        /* Excel-Style Grid Container */
+        .planning-grid-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .planning-table-wrapper {
+            width: 100%;
+            max-height: 75vh;
+            overflow: auto;
+            position: relative;
+            background: #ffffff;
+        }
+
+        .planning-table-wrapper::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .planning-table-wrapper::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .planning-table-wrapper::-webkit-scrollbar-thumb {
+            background: #0284c7;
+            border-radius: 5px;
+        }
+
+        .planning-table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #0369a1;
+        }
+
+        .excel-table {
+            border-collapse: separate !important; border-spacing: 0;
+            table-layout: fixed;
+            width: max-content;
+            min-width: 100%;
+            font-size: 13.5px;
+        }
+
+        /* Column Headers */
+        .excel-table thead th {
+            background: #f472b6;
+            color: #0f172a;
+            font-weight: 900;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            padding: 7px 5px;
+            border: 1px solid #94a3b8;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            white-space: nowrap;
+        }
+
+        /* Freeze Panes up to UNIT column (Sl -> Code -> Item Name -> Unit) */
+        .sticky-col-1 {
+            position: sticky !important;
+            left: 0px !important;
+            width: 36px !important;
+            min-width: 36px !important;
+            max-width: 36px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-2 {
+            position: sticky !important;
+            left: 36px !important;
+            width: 140px !important;
+            min-width: 140px !important;
+            max-width: 140px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-3 {
+            position: sticky !important;
+            left: 176px !important;
+            width: 280px !important;
+            min-width: 280px !important;
+            max-width: 280px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+
+        .sticky-col-4 {
+            position: sticky !important;
+            left: 456px !important;
+            width: 48px !important;
+            min-width: 48px !important;
+            max-width: 48px !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            box-sizing: border-box;
+        }
+
+        .excel-table thead th.sticky-col-1,
+        .excel-table thead th.sticky-col-2,
+        .excel-table thead th.sticky-col-3 {
+            z-index: 35 !important;
+        }
+
+        .excel-table thead th.sticky-col-4 {
+            z-index: 36 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        .cat-banner-cell, .grand-banner-cell {
+            z-index: 18 !important;
+            box-sizing: border-box !important;
+            padding: 5px 6px !important;
+        }
+
+        .category-subtotal-row td.sticky-col-4,
+        .grand-total-row td.sticky-col-4 {
+            z-index: 19 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        .excel-table thead th.th-target {
+            background: #34d399;
+            color: #064e3b;
+            font-size: 0.76rem;
+        }
+
+        /* Subheader Category Rows */
+        .category-subtotal-row td {
+            font-weight: 900;
+            font-size: 0.78rem;
+            padding: 5px 6px;
+            border: 1px solid #94a3b8;
+            text-align: right;
+            font-family: var(--font-mono);
+            white-space: nowrap;
+        }
+
+        .cat-title-cell {
+            text-align: center !important;
+            font-family: var(--font-sans) !important;
+            font-size: 0.82rem !important;
+            letter-spacing: 0.3px;
+        }
+
+        /* Data Rows */
+        .excel-table tbody tr.data-row td {
+            padding: 0;
+            border: 1px solid #cbd5e1;
+            font-size: 0.76rem;
+            vertical-align: middle;
+            background: #ffffff;
+        }
+
+        .excel-table tbody tr.data-row:hover td {
+            background: #f8fafc;
+        }
+
+        /* Excel-Like Interactive Inputs inside cells */
+        .excel-cell-input {
+            width: 100%;
+            height: 28px;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 2px 6px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #0f2942;
+            text-align: right;
+            transition: background 0.15s ease;
+        }
+
+        .excel-cell-input:focus {
+            background: #e0f2fe;
+            box-shadow: inset 0 0 0 2px #0284c7;
+            font-weight: 800;
+        }
+
+        .excel-cell-text {
+            width: 100%;
+            height: 28px;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 2px 6px;
+            font-family: var(--font-sans);
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #0f2942;
+            text-align: left;
+        }
+
+        .excel-cell-text:focus {
+            background: #e0f2fe;
+            box-shadow: inset 0 0 0 2px #0284c7;
+        }
+
+        .excel-cell-center {
+            text-align: center !important;
+        }
+
+        /* Calculated Target Column Cell */
+        .target-cell {
+            background: #ecfdf5 !important;
+            color: #065f46 !important;
+            font-weight: 900 !important;
+            font-family: var(--font-mono) !important;
+            text-align: right !important;
+            padding: 2px 8px !important;
+            font-size: 0.80rem !important;
+            border-left: 1.5px solid #10b981 !important;
+            border-right: 1.5px solid #10b981 !important;
+        }
+
+        /* Grand Total Row */
+        .grand-total-row td {
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.82rem !important;
+            padding: 8px 6px !important;
+            border: 1px solid #1e3a5f !important;
+            text-align: right;
+            font-family: var(--font-mono);
+            position: sticky;
+            bottom: 0;
+            z-index: 25;
+            white-space: nowrap;
+        }
+
+        .grand-title {
+            text-align: left !important;
+            font-family: var(--font-sans) !important;
+            color: #38bdf8 !important;
+            padding-left: 12px !important;
+        }
+
+        /* Action Menu on Hover */
+        .btn-del-row {
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.3;
+            transition: all 0.2s ease;
+        }
+
+        .data-row:hover .btn-del-row {
+            opacity: 1;
+            color: #e11d48;
+        }
+
+        .btn-del-row:hover {
+            background: #ffe4e6;
+            transform: scale(1.15);
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 580px;
+            box-shadow: 0 20px 40px rgba(15, 41, 66, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 14px 20px;
+            background: #0f2942;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-modal-close {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            padding: 8px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .modal-footer {
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--brand-dark);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+            .btn-nav-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0f2942;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            font-family: inherit;
+            line-height: 1.2;
+        }
+
+        .btn-nav-action:hover {
+            background: #f0f7ff;
+            border-color: #0284c7;
+            color: #0284c7;
+            transform: translateX(-2px);
+        }
+
+        .btn-nav-dash {
+            background: #f8fafc;
+            color: #0369a1;
+            border-color: #bae6fd;
+        }
+
+        .btn-nav-dash:hover {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                                                
+                <div>
+                    <div class="nav-brand-title">ALL REPORT SUMMARY</div>
+                    <div class="nav-brand-sub">Production Plan (Excel Grid Matrix)</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Live Clock -->
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- Company & Planning Period Box Banner -->
+        <div class="planning-header-card">
+            <div class="company-meta-group">
+                <h1>Production Plan</h1>
+            </div>
+
+            <!-- Planning Period Validation Matrix (From/To Month & Year) -->
+            <div class="period-selection-matrix">
+                <table class="period-table">
+                    <thead>
+                        <tr>
+                            <th class="th-corner-empty"></th>
+                            <th class="th-from-to">From</th>
+                            <th class="th-to">TO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td-blue-label">Yearly</td>
+                            <td>
+                                <select id="fromMonthSelect" class="period-select" onchange="onPeriodChange()">
+                                    <option value="January" style="background:#ffffff; color:#0f2942;">January</option>
+                                    <option value="February" style="background:#ffffff; color:#0f2942;">February</option>
+                                    <option value="March" style="background:#ffffff; color:#0f2942;">March</option>
+                                    <option value="April" style="background:#ffffff; color:#0f2942;">April</option>
+                                    <option value="May" style="background:#ffffff; color:#0f2942;">May</option>
+                                    <option value="June" style="background:#ffffff; color:#0f2942;">June</option>
+                                    <option value="July" selected style="background:#ffffff; color:#0f2942;">July</option>
+                                    <option value="August" style="background:#ffffff; color:#0f2942;">August</option>
+                                    <option value="September" style="background:#ffffff; color:#0f2942;">September</option>
+                                    <option value="October" style="background:#ffffff; color:#0f2942;">October</option>
+                                    <option value="November" style="background:#ffffff; color:#0f2942;">November</option>
+                                    <option value="December" style="background:#ffffff; color:#0f2942;">December</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="toMonthSelect" class="period-select" onchange="onPeriodChange()">
+                                    <option value="January" style="background:#ffffff; color:#0f2942;">January</option>
+                                    <option value="February" style="background:#ffffff; color:#0f2942;">February</option>
+                                    <option value="March" style="background:#ffffff; color:#0f2942;">March</option>
+                                    <option value="April" style="background:#ffffff; color:#0f2942;">April</option>
+                                    <option value="May" style="background:#ffffff; color:#0f2942;">May</option>
+                                    <option value="June" selected style="background:#ffffff; color:#0f2942;">June</option>
+                                    <option value="July" style="background:#ffffff; color:#0f2942;">July</option>
+                                    <option value="August" style="background:#ffffff; color:#0f2942;">August</option>
+                                    <option value="September" style="background:#ffffff; color:#0f2942;">September</option>
+                                    <option value="October" style="background:#ffffff; color:#0f2942;">October</option>
+                                    <option value="November" style="background:#ffffff; color:#0f2942;">November</option>
+                                    <option value="December" style="background:#ffffff; color:#0f2942;">December</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-blue-label">Production Planning</td>
+                            <td>
+                                <select id="fromYearSelect" class="period-select" onchange="onPeriodChange()">
+                                    <option value="2022" style="background:#ffffff; color:#0f2942;">2022</option>
+                                    <option value="2023" style="background:#ffffff; color:#0f2942;">2023</option>
+                                    <option value="2024" style="background:#ffffff; color:#0f2942;">2024</option>
+                                    <option value="2025" style="background:#ffffff; color:#0f2942;">2025</option>
+                                    <option value="2026" selected style="background:#ffffff; color:#0f2942;">2026</option>
+                                    <option value="2027" style="background:#ffffff; color:#0f2942;">2027</option>
+                                    <option value="2028" style="background:#ffffff; color:#0f2942;">2028</option>
+                                    <option value="2029" style="background:#ffffff; color:#0f2942;">2029</option>
+                                    <option value="2030" style="background:#ffffff; color:#0f2942;">2030</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select id="toYearSelect" class="period-select" onchange="onPeriodChange()">
+                                    <option value="2022" style="background:#ffffff; color:#0f2942;">2022</option>
+                                    <option value="2023" style="background:#ffffff; color:#0f2942;">2023</option>
+                                    <option value="2024" style="background:#ffffff; color:#0f2942;">2024</option>
+                                    <option value="2025" style="background:#ffffff; color:#0f2942;">2025</option>
+                                    <option value="2026" style="background:#ffffff; color:#0f2942;">2026</option>
+                                    <option value="2027" selected style="background:#ffffff; color:#0f2942;">2027</option>
+                                    <option value="2028" style="background:#ffffff; color:#0f2942;">2028</option>
+                                    <option value="2029" style="background:#ffffff; color:#0f2942;">2029</option>
+                                    <option value="2030" style="background:#ffffff; color:#0f2942;">2030</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Action Toolbar (Icon-Only Buttons with Premium Hover Tooltips) -->
+            <div class="header-action-group">
+                <button type="button" class="btn-plan btn-save-plan" onclick="saveCurrentPlan(true)" data-tooltip="Plan" aria-label="Plan">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                </button>
+                <button type="button" class="btn-plan btn-add-item" onclick="openAddItemModal()" data-tooltip="Add Item" aria-label="Add Item">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <button type="button" class="btn-plan btn-plan-outline" onclick="exportToCSV()" data-tooltip="Export CSV" aria-label="Export CSV">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+                <button type="button" class="btn-plan btn-plan-outline" onclick="window.print()" data-tooltip="Print" aria-label="Print">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Excel Interactive Table Matrix Card -->
+        <div class="planning-grid-card">
+            <div class="planning-table-wrapper">
+                <table class="excel-table" id="planningTable">
+                    <thead id="tableHead">
+                        <!-- Dynamic Month Headers -->
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Dynamic Category & Item Rows -->
+                    </tbody>
+                    <tfoot id="tableFoot">
+                        <!-- Dynamic Grand Total Row -->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Add Item Modal -->
+    <div class="modal-backdrop" id="addItemModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="font-weight: 800; font-size: 1.05rem;">➕ Add New Item to Production Plan</div>
+                <button type="button" class="btn-modal-close" onclick="closeAddItemModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="newItemCategory" class="form-control">
+                        <option value="Ceiling Fan">Ceiling Fan</option>
+                        <option value="Rechargeable Fan">Rechargeable Fan</option>
+                        <option value="Exhaust Fan">Exhaust Fan</option>
+                        <option value="Pedestal Fan">Pedestal Fan</option>
+                        <option value="Other Fan / Accessories">Other Fan / Accessories</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Item Code</label>
+                    <input type="text" id="newItemCode" class="form-control" placeholder="e.g. CF5608/CF5608IV" oninput="lookupMasterCode(this.value)">
+                </div>
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" id="newItemName" class="form-control" placeholder="e.g. 56 Inch Deluxe Ceiling Fan - Ivory">
+                </div>
+                <div class="form-group">
+                    <label>Unit</label>
+                    <input type="text" id="newItemUnit" class="form-control" value="Pcs">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-plan btn-plan-outline" onclick="closeAddItemModal()">Cancel</button>
+                <button type="button" class="btn-plan btn-add-item" onclick="saveNewItem()">➕ Insert Row</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastBox">Plan Saved Successfully!</div>
+
+    <!-- Scripts -->
+    <script src="master_database.js"></script>
+    <script src="production_plan_data.js"></script>
+    <script>
+        const PLANS_STORE_KEY = 'mep_yearly_production_plans_all';
+        let currentPlanData = null;
+        let monthLabels = [];
+
+        // Master Central DB Lookup
+        function lookupMasterCode(val) {
+            if (!val) return;
+            const clean = val.trim();
+            if (typeof getMasterItem === 'function') {
+                const item = getMasterItem(clean);
+                if (item) {
+                    if (item.name) document.getElementById('newItemName').value = item.name;
+                    if (item.unit) document.getElementById('newItemUnit').value = item.unit;
+                    if (item.category) {
+                        const catSel = document.getElementById('newItemCategory');
+                        for (let opt of catSel.options) {
+                            if (opt.value.toLowerCase().includes(item.category.toLowerCase()) || item.category.toLowerCase().includes(opt.value.toLowerCase())) {
+                                catSel.value = opt.value;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+
+            loadPlanForCurrentSelection();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+
+        function getSelectedPeriodKey() {
+            const fM = document.getElementById('fromMonthSelect').value;
+            const fY = document.getElementById('fromYearSelect').value;
+            const tM = document.getElementById('toMonthSelect').value;
+            const tY = document.getElementById('toYearSelect').value;
+            return `${fM}_${fY}_${tM}_${tY}`;
+        }
+
+        function generateMonthHeaders() {
+            const fM = document.getElementById('fromMonthSelect').value;
+            const fY = parseInt(document.getElementById('fromYearSelect').value);
+            const tM = document.getElementById('toMonthSelect').value;
+            const tY = parseInt(document.getElementById('toYearSelect').value);
+
+            let startMonthIdx = MONTH_NAMES.indexOf(fM);
+            let endMonthIdx = MONTH_NAMES.indexOf(tM);
+            if (startMonthIdx === -1) startMonthIdx = 6; // July
+            if (endMonthIdx === -1) endMonthIdx = 5; // June
+
+            monthLabels = [];
+            let curM = startMonthIdx;
+            let curY = fY;
+
+            for (let i = 0; i < 12; i++) {
+                const shortM = MONTH_SHORT[curM];
+                const shortY = String(curY).slice(-2);
+                monthLabels.push({
+                    full: `${MONTH_NAMES[curM]} ${curY}`,
+                    short: `${shortM}-${shortY}`,
+                    mIdx: curM,
+                    year: curY
+                });
+
+                curM++;
+                if (curM > 11) {
+                    curM = 0;
+                    curY++;
+                }
+            }
+        }
+
+        function onPeriodChange() {
+            loadPlanForCurrentSelection();
+            showToast(`📅 Loaded Plan for ${document.getElementById('fromMonthSelect').value} ${document.getElementById('fromYearSelect').value} to ${document.getElementById('toMonthSelect').value} ${document.getElementById('toYearSelect').value}`);
+        }
+
+        function loadPlanForCurrentSelection() {
+            generateMonthHeaders();
+            const key = getSelectedPeriodKey();
+            const allPlans = getAllStoredPlans();
+
+            if (allPlans[key]) {
+                currentPlanData = allPlans[key];
+            } else if (key === "July_2026_June_2027" && typeof DEFAULT_PRODUCTION_PLAN !== 'undefined') {
+                currentPlanData = JSON.parse(JSON.stringify(DEFAULT_PRODUCTION_PLAN));
+            } else {
+                // Initialize clean template for this new period
+                if (typeof DEFAULT_PRODUCTION_PLAN !== 'undefined') {
+                    currentPlanData = JSON.parse(JSON.stringify(DEFAULT_PRODUCTION_PLAN));
+                    // Reset month values to 0 for new period
+                    currentPlanData.categories.forEach(cat => {
+                        cat.items.forEach(item => {
+                            item.months = Array(12).fill(0);
+                        });
+                    });
+                }
+            }
+
+            renderExcelTable();
+        }
+
+        function getAllStoredPlans() {
+            try {
+                const raw = localStorage.getItem(PLANS_STORE_KEY);
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveCurrentPlan(showFeedback = false) {
+            if (!currentPlanData) return;
+            const key = getSelectedPeriodKey();
+            const allPlans = getAllStoredPlans();
+            allPlans[key] = currentPlanData;
+            localStorage.setItem(PLANS_STORE_KEY, JSON.stringify(allPlans));
+            localStorage.setItem('mep_production_plan_last_updated', Date.now().toString());
+
+            if (showFeedback) {
+                showToast(`💾 Plan for [${document.getElementById('fromMonthSelect').value} ${document.getElementById('fromYearSelect').value} - ${document.getElementById('toMonthSelect').value} ${document.getElementById('toYearSelect').value}] Saved!`);
+            }
+        }
+
+        // --- Custom Editable Column Management ---
+        function isUserAdmin() {
+            const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
+            const viewOnly = sessionStorage.getItem('portal_view_only') === 'true';
+            return role === 'ADMIN' && !viewOnly;
+        }
+
+        function renderExcelTable() {
+            const thead = document.getElementById('tableHead');
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+
+            const isAdmin = isUserAdmin();
+
+            // 1. Build Header Row
+            let headHTML = `
+                <tr>
+                    <th class="sticky-col-1" style="width: 36px;">Sl</th>
+                    <th class="sticky-col-2" style="width: 140px; text-align:left; padding-left:8px;">Code</th>
+                    <th class="sticky-col-3" style="width: 280px; text-align:left; padding-left:8px;">Item Name</th>
+                    <th class="sticky-col-4" style="width: 48px;">Unit</th>
+            `;
+
+            monthLabels.forEach(m => {
+                headHTML += `<th style="width: 78px;">${m.short}</th>`;
+            });
+
+            headHTML += `
+                    <th class="th-target" style="width: 120px;">Yearly Production Target</th>
+                    <th style="width: 32px;"></th>
+                </tr>
+            `;
+            thead.innerHTML = headHTML;
+
+            // 2. Build Body Rows (Categories + Items)
+            tbody.innerHTML = '';
+            const grandMonthTotals = Array(12).fill(0);
+            let grandOverallTarget = 0;
+
+            if (currentPlanData && currentPlanData.categories) {
+                currentPlanData.categories.forEach((cat, catIdx) => {
+                    // Category Subtotal Row
+                    const catMonthTotals = Array(12).fill(0);
+                    let catYearlyTarget = 0;
+
+                    cat.items.forEach(item => {
+                        if (!item.months || item.months.length < 12) {
+                            item.months = Array(12).fill(0);
+                        }
+                        item.months.forEach((val, mIdx) => {
+                            const n = parseFloat(val) || 0;
+                            catMonthTotals[mIdx] += n;
+                            grandMonthTotals[mIdx] += n;
+                        });
+                        const rowSum = item.months.reduce((acc, v) => acc + (parseFloat(v) || 0), 0);
+                        catYearlyTarget += rowSum;
+                        grandOverallTarget += rowSum;
+                    });
+
+                    // Render Category Subheader Row
+                    const catBg = cat.bgColor || (cat.name === 'Ceiling Fan' ? '#fef08a' : '#fb7185');
+                    const catColor = cat.textColor || (cat.name === 'Ceiling Fan' ? '#854d0e' : '#ffffff');
+
+                    let catRowHTML = `
+                        <tr class="category-subtotal-row" style="background:${catBg}; color:${catColor};">
+                            <td class="sticky-col-1 cat-banner-cell" style="background:${catBg} !important; border-right:none !important;"></td>
+                            <td class="sticky-col-2 cat-banner-cell" style="background:${catBg} !important; border-left:none !important; border-right:none !important;"></td>
+                            <td class="sticky-col-3 cat-banner-cell" style="background:${catBg} !important; color:${catColor} !important; border-left:none !important; border-right:none !important; font-weight:900; font-size:13.5px; text-align:center;">${escapeHTML(cat.name)}</td>
+                            <td class="sticky-col-4 cat-banner-cell" style="background:${catBg} !important; border-left:none !important;"></td>
+                    `;
+
+                    catMonthTotals.forEach((tot, mIdx) => {
+                        catRowHTML += `<td id="cat-sum-${catIdx}-${mIdx}">${tot.toLocaleString()}</td>`;
+                    });
+
+                    catRowHTML += `
+                            <td class="target-cell" style="background:#fde047 !important; color:#713f12 !important;" id="cat-target-${catIdx}">${catYearlyTarget.toLocaleString()}</td>
+                            <td></td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += catRowHTML;
+
+                    // Render Item Rows
+                    cat.items.forEach((item, itemIdx) => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'data-row';
+
+                        const rowSum = item.months.reduce((acc, v) => acc + (parseFloat(v) || 0), 0);
+
+                        let rowHTML = `
+                            <td class="sticky-col-1"><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(item.sl || '')}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'sl', this.value)" ${isAdmin ? '' : 'readonly'}></td>
+                            <td class="sticky-col-2"><input type="text" class="excel-cell-text" value="${escapeHTML(item.code || '')}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'code', this.value)" ${isAdmin ? '' : 'readonly'}></td>
+                            <td class="sticky-col-3"><input type="text" class="excel-cell-text" value="${escapeHTML(item.name || '')}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'name', this.value)" ${isAdmin ? '' : 'readonly'}></td>
+                            <td class="sticky-col-4"><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(item.unit || 'Pcs')}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'unit', this.value)" ${isAdmin ? '' : 'readonly'}></td>
+                        `;
+
+                        for (let mIdx = 0; mIdx < 12; mIdx++) {
+                            const val = item.months[mIdx] || 0;
+                            rowHTML += `
+                                <td>
+                                    <input type="number" 
+                                           class="excel-cell-input" 
+                                           data-cat="${catIdx}" 
+                                           data-item="${itemIdx}" 
+                                           data-month="${mIdx}" 
+                                           value="${val === 0 ? '0' : val}" 
+                                           oninput="onCellInput(this, ${catIdx}, ${itemIdx}, ${mIdx})"
+                                           onkeydown="handleGridKeyNav(event, this)" 
+                                           ${isAdmin ? '' : 'readonly'}>
+                                </td>
+                            `;
+                        }
+
+                        rowHTML += `
+                            <td class="target-cell" id="row-target-${catIdx}-${itemIdx}">${rowSum.toLocaleString()}</td>
+                            <td style="text-align:center;">
+                                ${isAdmin ? `<button type="button" class="btn-del-row" onclick="deleteItemRow(${catIdx}, ${itemIdx})" title="Delete this row">&times;</button>` : ''}
+                            </td>
+                        `;
+
+                        tr.innerHTML = rowHTML;
+                        tbody.appendChild(tr);
+                    });
+                });
+            }
+
+            // 3. Render Grand Total Row in Footer
+            let footHTML = `
+                <tr class="grand-total-row">
+                    <td class="sticky-col-1 grand-banner-cell" style="background:#0f2942 !important; border-right:none !important;"></td>
+                    <td class="sticky-col-2 grand-banner-cell" style="background:#0f2942 !important; border-left:none !important; border-right:none !important;"></td>
+                    <td class="sticky-col-3 grand-banner-cell" style="background:#0f2942 !important; color:#ffffff !important; border-left:none !important; border-right:none !important; font-weight:900; font-size:12.5px; text-align:center; white-space:nowrap;">TOTAL YEARLY PRODUCTION PLAN</td>
+                    <td class="sticky-col-4 grand-banner-cell" style="background:#0f2942 !important; border-left:none !important;"></td>
+            `;
+
+            grandMonthTotals.forEach((tot, mIdx) => {
+                footHTML += `<td id="grand-month-${mIdx}">${tot.toLocaleString()}</td>`;
+            });
+
+            footHTML += `
+                    <td style="color:#34d399 !important; background:#064e3b !important;" id="grand-overall-target">${grandOverallTarget.toLocaleString()}</td>
+                    <td></td>
+                </tr>
+            `;
+            tfoot.innerHTML = footHTML;
+        }
+
+        function onCellInput(inputElem, catIdx, itemIdx, monthIdx) {
+            const rawVal = inputElem.value.trim();
+            const val = parseFloat(rawVal) || 0;
+            currentPlanData.categories[catIdx].items[itemIdx].months[monthIdx] = val;
+
+            // Recalculate Row Target
+            const item = currentPlanData.categories[catIdx].items[itemIdx];
+            const rowSum = item.months.reduce((acc, v) => acc + (parseFloat(v) || 0), 0);
+            const targetElem = document.getElementById(`row-target-${catIdx}-${itemIdx}`);
+            if (targetElem) targetElem.innerText = rowSum.toLocaleString();
+
+            // Recalculate Category Subtotals
+            const cat = currentPlanData.categories[catIdx];
+            let catMonthSum = 0;
+            let catTargetSum = 0;
+            cat.items.forEach(it => {
+                catMonthSum += (parseFloat(it.months[monthIdx]) || 0);
+                catTargetSum += it.months.reduce((acc, v) => acc + (parseFloat(v) || 0), 0);
+            });
+            const catSumElem = document.getElementById(`cat-sum-${catIdx}-${monthIdx}`);
+            if (catSumElem) catSumElem.innerText = catMonthSum.toLocaleString();
+            const catTargetElem = document.getElementById(`cat-target-${catIdx}`);
+            if (catTargetElem) catTargetElem.innerText = catTargetSum.toLocaleString();
+
+            // Recalculate Grand Totals
+            let grandMonthSum = 0;
+            let grandTotalTarget = 0;
+            currentPlanData.categories.forEach(c => {
+                c.items.forEach(it => {
+                    grandMonthSum += (parseFloat(it.months[monthIdx]) || 0);
+                    grandTotalTarget += it.months.reduce((acc, v) => acc + (parseFloat(v) || 0), 0);
+                });
+            });
+            const gMonthElem = document.getElementById(`grand-month-${monthIdx}`);
+            if (gMonthElem) gMonthElem.innerText = grandMonthSum.toLocaleString();
+            const gTargetElem = document.getElementById(`grand-overall-target`);
+            if (gTargetElem) gTargetElem.innerText = grandTotalTarget.toLocaleString();
+
+            // Auto-save silently to localStorage
+            saveCurrentPlan(false);
+        }
+
+        function updateItemMeta(catIdx, itemIdx, field, val) {
+            if (currentPlanData && currentPlanData.categories[catIdx]?.items[itemIdx]) {
+                currentPlanData.categories[catIdx].items[itemIdx][field] = val;
+                saveCurrentPlan(false);
+            }
+        }
+
+        // Excel-Style Keyboard Navigation between Cells
+        function handleGridKeyNav(e, currentInput) {
+            const catIdx = parseInt(currentInput.dataset.cat);
+            const itemIdx = parseInt(currentInput.dataset.item);
+            const monthIdx = parseInt(currentInput.dataset.month);
+
+            if (e.key === 'ArrowRight' && currentInput.selectionStart === currentInput.value.length) {
+                if (monthIdx < 11) {
+                    const next = document.querySelector(`input[data-cat="${catIdx}"][data-item="${itemIdx}"][data-month="${monthIdx + 1}"]`);
+                    if (next) { next.focus(); next.select(); e.preventDefault(); }
+                }
+            } else if (e.key === 'ArrowLeft' && currentInput.selectionStart === 0) {
+                if (monthIdx > 0) {
+                    const prev = document.querySelector(`input[data-cat="${catIdx}"][data-item="${itemIdx}"][data-month="${monthIdx - 1}"]`);
+                    if (prev) { prev.focus(); prev.select(); e.preventDefault(); }
+                }
+            } else if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                const nextRow = document.querySelector(`input[data-cat="${catIdx}"][data-item="${itemIdx + 1}"][data-month="${monthIdx}"]`);
+                if (nextRow) {
+                    nextRow.focus(); nextRow.select(); e.preventDefault();
+                } else {
+                    const nextCat = document.querySelector(`input[data-cat="${catIdx + 1}"][data-item="0"][data-month="${monthIdx}"]`);
+                    if (nextCat) { nextCat.focus(); nextCat.select(); e.preventDefault(); }
+                }
+            } else if (e.key === 'ArrowUp') {
+                const prevRow = document.querySelector(`input[data-cat="${catIdx}"][data-item="${itemIdx - 1}"][data-month="${monthIdx}"]`);
+                if (prevRow) {
+                    prevRow.focus(); prevRow.select(); e.preventDefault();
+                }
+            }
+        }
+
+        // Add Item Modal
+        function openAddItemModal() {
+            document.getElementById('addItemModal').classList.add('active');
+            document.getElementById('newItemCode').value = '';
+            document.getElementById('newItemName').value = '';
+            document.getElementById('newItemCode').focus();
+        }
+
+        function closeAddItemModal() {
+            document.getElementById('addItemModal').classList.remove('active');
+        }
+
+        function saveNewItem() {
+            const catName = document.getElementById('newItemCategory').value;
+            const code = document.getElementById('newItemCode').value.trim();
+            const name = document.getElementById('newItemName').value.trim();
+            const unit = document.getElementById('newItemUnit').value.trim() || 'Pcs';
+
+            if (!name) {
+                alert("Please enter Item Name.");
+                return;
+            }
+
+            if (!currentPlanData) {
+                currentPlanData = { categories: [] };
+            }
+
+            let cat = currentPlanData.categories.find(c => c.name.toLowerCase() === catName.toLowerCase());
+            if (!cat) {
+                cat = {
+                    name: catName,
+                    bgColor: '#fb7185',
+                    textColor: '#ffffff',
+                    items: []
+                };
+                currentPlanData.categories.push(cat);
+            }
+
+            const nextSl = String(cat.items.length + 1);
+            cat.items.push({
+                sl: nextSl,
+                code: code,
+                name: name,
+                unit: unit,
+                months: Array(12).fill(0)
+            });
+
+            saveCurrentPlan(true);
+            renderExcelTable();
+            closeAddItemModal();
+            showToast(`✅ Added new item "${name}" to ${catName}!`);
+        }
+
+        function deleteItemRow(catIdx, itemIdx) {
+            if (confirm("Are you sure you want to remove this item from the production plan?")) {
+                currentPlanData.categories[catIdx].items.splice(itemIdx, 1);
+                saveCurrentPlan(true);
+                renderExcelTable();
+                showToast("🗑️ Item row removed!");
+            }
+        }
+
+        // CSV Export
+        function exportToCSV() {
+            const fM = document.getElementById('fromMonthSelect').value;
+            const fY = document.getElementById('fromYearSelect').value;
+            const tM = document.getElementById('toMonthSelect').value;
+            const tY = document.getElementById('toYearSelect').value;
+
+            let csv = `MEP Fan Ltd. - Yearly Production Planning (${fM} ${fY} to ${tM} ${tY})\r\n`;
+            csv += `Category,Sl,Code,Item Name,Unit,`;
+            monthLabels.forEach(m => { csv += `"${m.short}",`; });
+            csv += `Yearly Production Target\r\n`;
+
+            if (currentPlanData && currentPlanData.categories) {
+                currentPlanData.categories.forEach(cat => {
+                    cat.items.forEach(it => {
+                        const rowSum = it.months.reduce((acc, v) => acc + (parseFloat(v) || 0), 0);
+                        csv += `"${cat.name}","${it.sl || ''}","${it.code || ''}","${(it.name || '').replace(/"/g, '""')}","${it.unit || 'Pcs'}",`;
+                        it.months.forEach(v => { csv += `${v || 0},`; });
+                        csv += `${rowSum}\r\n`;
+                    });
+                });
+            }
+
+            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `MEP_FAN_PRODUCTION_PLAN_${fM}_${fY}_${tM}_${tY}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("📥 Exported Production Plan to CSV!");
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayDateElem = document.getElementById('liveDayText');
+            const timeElem = document.getElementById('liveTimeText');
+
+            if (dayDateElem) dayDateElem.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            if (timeElem) timeElem.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        function escapeHTML(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Realtime Firebase Live Sync Handler
+        window.addEventListener('smart_cloud_sync', function(e) {
+            if (e.detail && e.detail.key === PLANS_STORE_KEY) {
+                console.log("⚡ [Realtime Sync] Received live Production Plans from Cloud, re-rendering grid...");
+                if (typeof loadPlanForCurrentSelection === 'function') {
+                    loadPlanForCurrentSelection();
+                }
+            }
+        });
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>
+
+
+

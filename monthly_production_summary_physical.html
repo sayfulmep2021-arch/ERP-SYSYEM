@@ -1,0 +1,1248 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Monthly Production Summary (Physical) - Live Auto Report | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --border-soft: #cbd5e1;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* Matrix Theme */
+            --th-blue: #0284c7;
+            --th-cyan: #38bdf8;
+            --th-friday: #f43f5e;
+            --th-friday-light: #ffe4e6;
+            --th-total: #34d399;
+            --row-peach: #fff7ed;
+            --row-alt: #ffffff;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-back-portal:hover {
+            background: #f0f7ff;
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: translateX(-2px);
+        }
+
+        .nav-brand-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .auto-live-tag {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .auto-live-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Top Right Live Clock - Seamless Clean Blue Typography */
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0 4px 0 0;
+            box-shadow: none;
+            user-select: none;
+            height: auto;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.22;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .live-day-text {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: -0.1px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono, monospace);
+            font-size: 1.18rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.6px;
+        }
+
+        /* Workspace Main */
+        .workspace-main {
+            padding: 12px 18px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Top Header Control Banner */
+        .header-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .header-title-group h1 {
+            font-size: 1.30rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title-sub {
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        /* Month & Year Selection Box (Styled Matching Screenshot) */
+        .month-year-matrix {
+            display: inline-flex;
+            border: 2px solid #0f2942;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .matrix-table {
+            border-collapse: separate !important; border-spacing: 0;
+            font-size: 0.80rem;
+            text-align: center;
+        }
+
+        .matrix-table td {
+            border: 1px solid #0f2942;
+            padding: 3px 10px;
+        }
+
+        .td-label-header {
+            background: #6ee7b7;
+            font-weight: 900;
+            color: #064e3b;
+            font-size: 0.76rem;
+            text-transform: uppercase;
+        }
+
+        .td-range-box {
+            background: #fef08a;
+            font-weight: 800;
+            font-size: 0.78rem;
+            color: #854d0e;
+            text-align: center;
+        }
+
+        .matrix-select {
+            border: none;
+            background: transparent;
+            font-family: var(--font-sans);
+            font-weight: 800;
+            font-size: 0.82rem;
+            color: #0f2942;
+            cursor: pointer;
+            outline: none;
+            padding: 1px 4px;
+        }
+
+        .matrix-select:focus {
+            background: #e0f2fe;
+            border-radius: 4px;
+        }
+
+        .matrix-select option {
+            background-color: #ffffff !important;
+            color: #0f2942 !important;
+            font-weight: 700;
+            padding: 4px 8px;
+        }
+
+        /* Action Buttons */
+        .header-action-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.80rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1.5px solid transparent;
+            user-select: none;
+        }
+
+        .btn-sync {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #0369a1;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-sync:hover {
+            background: #0369a1;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: #ffffff;
+            color: #334155;
+            border-color: #cbd5e1;
+        }
+
+        .btn-outline:hover {
+            background: #f1f5f9;
+            color: #0f2942;
+        }
+
+        /* 3 Quick KPI Stat Cards */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .kpi-label {
+            font-size: 0.70rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .kpi-value {
+            font-size: 1.30rem;
+            font-weight: 900;
+            font-family: var(--font-mono);
+            color: #0f2942;
+            margin-top: 2px;
+        }
+
+        /* Table Card with Freeze Panes */
+        .table-card {
+            background: #ffffff;
+            border: 2px solid #0f2942;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            max-height: 72vh;
+            overflow: auto;
+            position: relative;
+            background: #ffffff;
+        }
+
+        .table-wrapper::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 5px;
+        }
+
+        .excel-table {
+            border-collapse: separate !important; border-spacing: 0;
+            table-layout: fixed;
+            width: 100%;
+            font-size: 0.76rem;
+            min-width: 1650px;
+        }
+
+        /* Table Headers Single Sticky Row */
+        .excel-table thead th {
+            border: 1px solid #475569;
+            text-align: center;
+            font-weight: 900;
+            padding: 6px 4px;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .th-fixed-meta {
+            background: #cbd5e1 !important;
+            color: #0f2942 !important;
+            font-size: 0.74rem;
+        }
+
+        .th-day-col {
+            background: #38bdf8;
+            color: #0f172a;
+            padding: 6px 3px !important;
+            text-align: center;
+        }
+
+        .th-day-date {
+            font-size: 0.74rem;
+            font-weight: 900;
+            line-height: 1.15;
+            color: #0f172a;
+        }
+
+        .th-day-name {
+            font-size: 0.64rem;
+            font-weight: 800;
+            color: #0369a1;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Friday Highlighting (Bangladeshi Weekend) */
+        .th-friday-col {
+            background: #f43f5e !important;
+            color: #ffffff !important;
+        }
+
+        .th-friday-col .th-day-date {
+            color: #ffffff !important;
+        }
+
+        .th-friday-col .th-day-name {
+            color: #ffe4e6 !important;
+        }
+
+        .th-total-col {
+            background: #34d399 !important;
+            color: #064e3b !important;
+            font-size: 0.76rem;
+            font-weight: 900;
+        }
+
+        /* FREEZE PANES (Sticky Left Columns) - Cumulative Coordinates */
+        /* Col 1: 44px, left: 0px */
+        .freeze-col-1, .th-freeze-1 {
+            position: sticky !important;
+            left: 0px !important;
+            width: 44px !important;
+            min-width: 44px !important;
+            max-width: 44px !important;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* Col 2: 140px, left: 44px */
+        .freeze-col-2, .th-freeze-2 {
+            position: sticky !important;
+            left: 44px !important;
+            width: 140px !important;
+            min-width: 140px !important;
+            max-width: 140px !important;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        /* Col 3: 290px, left: 184px (44 + 140) */
+        .freeze-col-3, .th-freeze-3 {
+            position: sticky !important;
+            left: 184px !important;
+            width: 290px !important;
+            min-width: 290px !important;
+            max-width: 290px !important;
+            box-sizing: border-box;
+            text-align: left;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        /* Header Sticky Corners Layer Priority (z-index: 35/36) */
+        .th-freeze-1, .th-freeze-2 {
+            top: 0 !important;
+            z-index: 35 !important;
+            background-color: #cbd5e1 !important;
+            color: #0f2942 !important;
+        }
+
+        .th-freeze-3 {
+            top: 0 !important;
+            z-index: 36 !important;
+            background-color: #cbd5e1 !important;
+            color: #0f2942 !important;
+        }
+
+        /* Data Rows */
+        .excel-table tbody tr.data-row td {
+            padding: 4px 4px;
+            border-bottom: 1px solid #cbd5e1;
+            border-right: 1px solid #cbd5e1;
+            vertical-align: middle;
+            background-color: #ffffff;
+            height: 30px;
+            box-sizing: border-box;
+        }
+
+        .excel-table tbody tr.data-row:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        /* 100% Solid Opaque Backgrounds for Frozen Tbody Cells */
+        .excel-table tbody td.freeze-col-1 {
+            z-index: 15 !important;
+            background-color: #f8fafc !important;
+            font-family: var(--font-mono);
+            font-weight: 800;
+            color: #64748b;
+        }
+
+        .excel-table tbody td.freeze-col-2 {
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: #0284c7;
+            padding-left: 8px !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .excel-table tbody td.freeze-col-3 {
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            font-family: var(--font-sans);
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #0f2942;
+            padding-left: 8px !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .excel-table tbody tr.data-row:nth-child(odd) td.freeze-col-2,
+        .excel-table tbody tr.data-row:nth-child(odd) td.freeze-col-3 {
+            background-color: #ffffff !important;
+        }
+
+        .excel-table tbody tr.data-row:nth-child(even) td.freeze-col-2,
+        .excel-table tbody tr.data-row:nth-child(even) td.freeze-col-3 {
+            background-color: #f8fafc !important;
+        }
+
+        .excel-table tbody tr.data-row:hover td.freeze-col-1,
+        .excel-table tbody tr.data-row:hover td.freeze-col-2,
+        .excel-table tbody tr.data-row:hover td.freeze-col-3 {
+            background-color: #f0f9ff !important;
+        }
+
+        /* Friday Cell Highlight (Only on day cells, not frozen cells) */
+        td.cell-friday {
+            background-color: #fce7f3 !important;
+        }
+
+        /* Read-Only Cell Display Value */
+        .cell-num-val {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-align: right;
+            padding: 2px 4px;
+            color: #0f172a;
+            display: block;
+        }
+
+        .cell-num-val.has-qty {
+            color: #0284c7;
+            font-weight: 900;
+        }
+
+        .cell-num-val.is-zero {
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .total-cell-val {
+            text-align: right !important;
+            padding: 3px 8px !important;
+            font-family: var(--font-mono) !important;
+            font-weight: 900 !important;
+            font-size: 0.82rem !important;
+            color: #065f46 !important;
+            background: #d1fae5 !important;
+            border-left: 1.5px solid #10b981 !important;
+        }
+
+        /* Grand Total Row */
+        .grand-total-row td {
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.78rem !important;
+            padding: 8px 4px !important;
+            border: 1px solid #1e3a5f !important;
+            text-align: right;
+            font-family: var(--font-mono);
+            position: sticky;
+            bottom: 0;
+            z-index: 30;
+            white-space: nowrap;
+        }
+
+        .grand-title {
+            text-align: left !important;
+            font-family: var(--font-sans) !important;
+            color: #38bdf8 !important;
+            padding-left: 10px !important;
+            position: sticky !important;
+            left: 0 !important;
+            z-index: 40 !important;
+            border-right: 2.5px solid #38bdf8 !important;
+            box-shadow: 4px 0 8px -2px rgba(15, 41, 66, 0.3);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--brand-dark);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+            .btn-nav-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0f2942;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            font-family: inherit;
+            line-height: 1.2;
+        }
+
+        .btn-nav-action:hover {
+            background: #f0f7ff;
+            border-color: #0284c7;
+            color: #0284c7;
+            transform: translateX(-2px);
+        }
+
+        .btn-nav-dash {
+            background: #f8fafc;
+            color: #0369a1;
+            border-color: #bae6fd;
+        }
+
+        .btn-nav-dash:hover {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                                                
+                <div>
+                    <div class="nav-brand-title">ALL MONTHLY REPORT</div>
+                    <div class="nav-brand-sub">
+                        <span>Monthly Production Summary (Physical)</span>
+                        <span class="auto-live-tag">Auto-Synced from Daily FG Entry</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Live Clock -->
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- Header Controls & Period Matrix Card -->
+        <div class="header-card">
+            <div class="header-title-group">
+                <h1>
+                    <span>Monthly Production Report FG</span>
+                </h1>
+                
+            </div>
+
+            <!-- Month & Year Selector Matrix -->
+            <div class="month-year-matrix">
+                <table class="matrix-table">
+                    <tr>
+                        <td class="td-label-header">Month</td>
+                        <td>
+                            <select id="monthSelect" class="matrix-select" onchange="onPeriodChange()">
+                                <option value="January" style="background:#ffffff; color:#0f2942;">January</option>
+                                <option value="February" style="background:#ffffff; color:#0f2942;">February</option>
+                                <option value="March" style="background:#ffffff; color:#0f2942;">March</option>
+                                <option value="April" style="background:#ffffff; color:#0f2942;">April</option>
+                                <option value="May" style="background:#ffffff; color:#0f2942;">May</option>
+                                <option value="June" style="background:#ffffff; color:#0f2942;">June</option>
+                                <option value="July" style="background:#ffffff; color:#0f2942;">July</option>
+                                <option value="August" style="background:#ffffff; color:#0f2942;">August</option>
+                                <option value="September" selected style="background:#ffffff; color:#0f2942;">September</option>
+                                <option value="October" style="background:#ffffff; color:#0f2942;">October</option>
+                                <option value="November" style="background:#ffffff; color:#0f2942;">November</option>
+                                <option value="December" style="background:#ffffff; color:#0f2942;">December</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-label-header">Year's</td>
+                        <td>
+                            <select id="yearSelect" class="matrix-select" onchange="onPeriodChange()">
+                                <option value="2022" style="background:#ffffff; color:#0f2942;">2022</option>
+                                <option value="2023" style="background:#ffffff; color:#0f2942;">2023</option>
+                                <option value="2024" style="background:#ffffff; color:#0f2942;">2024</option>
+                                <option value="2025" style="background:#ffffff; color:#0f2942;">2025</option>
+                                <option value="2026" selected style="background:#ffffff; color:#0f2942;">2026</option>
+                                <option value="2027" style="background:#ffffff; color:#0f2942;">2027</option>
+                                <option value="2028" style="background:#ffffff; color:#0f2942;">2028</option>
+                                <option value="2029" style="background:#ffffff; color:#0f2942;">2029</option>
+                                <option value="2030" style="background:#ffffff; color:#0f2942;">2030</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="td-range-box" id="dateRangeDisplay">
+                            1-Sep-2026 To 30-Sep-2026
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="header-action-group">
+                <button type="button" class="btn-action btn-sync" onclick="syncAndRender()" title="Refresh & Sync Data from Daily FG Entry">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    <span>?? Refresh &amp; Sync</span>
+                </button>
+
+                <button type="button" class="btn-action btn-outline" onclick="exportToCSV()" title="Export CSV">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export CSV</span>
+                </button>
+
+                <button type="button" class="btn-action btn-outline" onclick="window.print()" title="Print Summary">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3 Quick KPI Stat Cards -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Monthly Production (Actual)</div>
+                    <div class="kpi-value" id="kpiGrandProduction" style="color: #0284c7;">0</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Days in Month</div>
+                    <div class="kpi-value" id="kpiDaysCount" style="color: #059669;">30 Days</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total SFG Models Tracked</div>
+                    <div class="kpi-value" id="kpiTotalItems" style="color: #7c3aed;">28 Items</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Automated Report Table Grid Card with Freeze Panes -->
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table class="excel-table" id="productionSummaryTable">
+                    <colgroup id="tableColgroup">
+                        <!-- Populated dynamically with exact locked pixel widths -->
+                    </colgroup>
+                    <thead id="tableHead">
+                        <!-- Dynamic Month Days & Weekdays Header with Freeze Headers -->
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Fully Automated Data Rows with Sticky Left Columns -->
+                    </tbody>
+                    <tfoot id="tableFoot">
+                        <!-- Dynamic Daily Column Totals & Grand Total -->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="toast" id="toastBox">Synced with Daily FG Production Entry!</div>
+
+    <!-- Datasets -->
+    <script src="daily_fg_production_data.js"></script>
+    <script src="monthly_production_summary_data.js"></script>
+    <script>
+        let daysInfo = [];
+
+        const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+
+            syncAndRender();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+
+        function calculateDaysInMonth() {
+            const mName = document.getElementById('monthSelect').value;
+            const y = parseInt(document.getElementById('yearSelect').value);
+            const mIdx = MONTH_NAMES.indexOf(mName);
+            const shortM = MONTH_SHORT[mIdx];
+
+            const totalDays = new Date(y, mIdx + 1, 0).getDate();
+
+            daysInfo = [];
+            let fridayCount = 0;
+            for (let d = 1; d <= totalDays; d++) {
+                const dateObj = new Date(y, mIdx, d);
+                const dayOfWeek = DAY_NAMES[dateObj.getDay()];
+                const isFriday = dayOfWeek === "Fri";
+                if (isFriday) fridayCount++;
+
+                daysInfo.push({
+                    dayNum: d,
+                    dateLabel: `${d}-${shortM}`,
+                    dayOfWeek: dayOfWeek,
+                    isFriday: isFriday
+                });
+            }
+
+            document.getElementById('dateRangeDisplay').innerText = `1-${shortM}-${y} To ${totalDays}-${shortM}-${y}`;
+            document.getElementById('kpiDaysCount').innerText = `${totalDays} Days (${fridayCount} Fridays)`;
+        }
+
+        function onPeriodChange() {
+            syncAndRender();
+            showToast(`?? Auto-Aggregated Report for ${document.getElementById('monthSelect').value} ${document.getElementById('yearSelect').value}`);
+        }
+
+        /**
+         * Load all production entries from Daily FG Production Entry dataset + custom entries in localStorage
+         */
+        function getAllProductionEntries() {
+            let entries = [];
+            if (typeof RAW_PRODUCTION_DATA !== 'undefined' && Array.isArray(RAW_PRODUCTION_DATA)) {
+                entries = [...RAW_PRODUCTION_DATA];
+            }
+
+            const customSaved = localStorage.getItem('custom_fg_production_entries');
+            if (customSaved) {
+                try {
+                    const parsed = JSON.parse(customSaved);
+                    if (Array.isArray(parsed)) {
+                        entries = [...parsed, ...entries];
+                    }
+                } catch (e) {
+                    console.error("Error reading custom_fg_production_entries:", e);
+                }
+            }
+            return entries;
+        }
+
+        /**
+         * Parse row's day, month, and year flexibly
+         */
+        function parseEntryDate(row) {
+            let mName = (row.month || '').trim().toLowerCase();
+            let yStr = String(row.year || '').trim();
+            let dNum = null;
+
+            if (row.date) {
+                const rawDate = String(row.date).trim();
+                const parts = rawDate.split(/[-/]/);
+                if (parts.length === 3) {
+                    dNum = parseInt(parts[0], 10);
+                    const mPart = parts[1].toLowerCase();
+                    const yPart = parts[2];
+
+                    MONTH_NAMES.forEach((mn, idx) => {
+                        if (mn.toLowerCase().startsWith(mPart) || MONTH_SHORT[idx].toLowerCase() === mPart) {
+                            mName = mn.toLowerCase();
+                        }
+                    });
+
+                    if (yPart.length === 2) {
+                        yStr = '20' + yPart;
+                    } else if (yPart.length === 4) {
+                        yStr = yPart;
+                    }
+                }
+            }
+
+            return { day: dNum, month: mName, year: yStr };
+        }
+
+        function normalizeCode(str) {
+            return String(str || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        }
+
+        function syncAndRender() {
+            calculateDaysInMonth();
+
+            const selMonth = document.getElementById('monthSelect').value.toLowerCase();
+            const selYear = String(document.getElementById('yearSelect').value);
+            const allEntries = getAllProductionEntries();
+
+            // Filter entries matching selected month & year
+            const filteredEntries = allEntries.filter(row => {
+                const parsed = parseEntryDate(row);
+                const matchMonth = parsed.month === selMonth || (row.month && row.month.toLowerCase() === selMonth);
+                const matchYear = parsed.year === selYear || String(row.year) === selYear || String(row.year).slice(-2) === selYear.slice(-2);
+                return matchMonth && matchYear;
+            });
+
+            // Master Item List from default template
+            let baseItems = [];
+            if (typeof DEFAULT_MONTHLY_PRODUCTION_ITEMS !== 'undefined') {
+                baseItems = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_PRODUCTION_ITEMS));
+            }
+
+            // Map base items
+            const itemMap = new Map();
+            baseItems.forEach(it => {
+                const norm = normalizeCode(it.code);
+                itemMap.set(norm, {
+                    sl: it.sl,
+                    code: it.code,
+                    name: it.name,
+                    days: Array(daysInfo.length).fill(0)
+                });
+            });
+
+            // Aggregate filtered entries into items
+            filteredEntries.forEach(entry => {
+                const parsed = parseEntryDate(entry);
+                const dIdx = parsed.day ? parsed.day - 1 : -1;
+                if (dIdx < 0 || dIdx >= daysInfo.length) return;
+
+                const normCode = normalizeCode(entry.item_code || entry.code);
+                const qty = parseFloat(entry.qty) || 0;
+
+                if (itemMap.has(normCode)) {
+                    itemMap.get(normCode).days[dIdx] += qty;
+                } else {
+                    // Find by item name
+                    let matched = false;
+                    for (let [k, itemObj] of itemMap.entries()) {
+                        if (normalizeCode(itemObj.name) === normalizeCode(entry.item_name)) {
+                            itemObj.days[dIdx] += qty;
+                            matched = true;
+                            break;
+                        }
+                    }
+
+                    if (!matched) {
+                        // Dynamically append new model from entries
+                        const newItem = {
+                            sl: itemMap.size + 1,
+                            code: entry.item_code || entry.code || 'SFG-NEW',
+                            name: entry.item_name || 'Custom Fan Item',
+                            days: Array(daysInfo.length).fill(0)
+                        };
+                        newItem.days[dIdx] += qty;
+                        itemMap.set(normCode || normalizeCode(entry.item_name), newItem);
+                    }
+                }
+            });
+
+            const finalItemList = Array.from(itemMap.values());
+            renderTable(finalItemList);
+        }
+
+        function renderTable(itemList) {
+            const colgroup = document.getElementById('tableColgroup');
+            const thead = document.getElementById('tableHead');
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+
+            // 1. Build Locked ColGroup with strict pixel widths
+            let colHtml = `
+                <col style="width: 44px; min-width: 44px; max-width: 44px;">
+                <col style="width: 140px; min-width: 140px; max-width: 140px;">
+                <col style="width: 290px; min-width: 290px; max-width: 290px;">
+            `;
+            daysInfo.forEach(() => {
+                colHtml += `<col style="width: 52px; min-width: 52px; max-width: 52px;">`;
+            });
+            colHtml += `<col style="width: 110px; min-width: 110px; max-width: 110px;">`;
+            colgroup.innerHTML = colHtml;
+
+            // 2. Build Unified Single Sticky Header Row
+            let thDays = '';
+            daysInfo.forEach(d => {
+                const frClass = d.isFriday ? 'th-friday-col' : '';
+                thDays += `
+                    <th class="th-day-col ${frClass}">
+                        <div class="th-day-date">${d.dateLabel}</div>
+                        <div class="th-day-name">${d.dayOfWeek}</div>
+                    </th>
+                `;
+            });
+
+            thead.innerHTML = `
+                <tr>
+                    <th class="th-freeze-1">Sl No</th>
+                    <th class="th-freeze-2">SFG Code</th>
+                    <th class="th-freeze-3">SFG Item Name</th>
+                    ${thDays}
+                    <th class="th-total-col">Total Production</th>
+                </tr>
+            `;
+
+            // 3. Build Read-Only Automated Data Rows
+            tbody.innerHTML = '';
+            const columnSums = Array(daysInfo.length).fill(0);
+            let grandProduction = 0;
+
+            itemList.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = 'data-row';
+
+                let rowSum = 0;
+                item.days.forEach((v, dIdx) => {
+                    const num = parseFloat(v) || 0;
+                    rowSum += num;
+                    columnSums[dIdx] += num;
+                });
+                grandProduction += rowSum;
+
+                let rowHTML = `
+                    <td class="freeze-col-1">${idx + 1}</td>
+                    <td class="freeze-col-2" title="${escapeHTML(item.code || '')}">${escapeHTML(item.code || '')}</td>
+                    <td class="freeze-col-3" title="${escapeHTML(item.name || '')}">
+                        <div style="width: 100%; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(item.name || '')}</div>
+                    </td>
+                `;
+
+                daysInfo.forEach((d, dIdx) => {
+                    const val = item.days[dIdx] || 0;
+                    const frClass = d.isFriday ? 'cell-friday' : '';
+                    const hasQtyClass = val > 0 ? 'has-qty' : 'is-zero';
+                    const displayVal = val > 0 ? val.toLocaleString() : '0';
+
+                    rowHTML += `
+                        <td class="${frClass}">
+                            <span class="cell-num-val ${hasQtyClass}">${displayVal}</span>
+                        </td>
+                    `;
+                });
+
+                rowHTML += `
+                    <td class="total-cell-val" id="row-prod-${idx}">${rowSum.toLocaleString()}</td>
+                `;
+
+                tr.innerHTML = rowHTML;
+                tbody.appendChild(tr);
+            });
+
+            // 4. Build Footer Row with Individual Cells for Frozen Columns (NO Broken Colspans)
+            let footHTML = `
+                <tr class="grand-total-row">
+                    <td class="freeze-col-1" style="background:#0f2942 !important; color:#ffffff !important; z-index: 28 !important;"></td>
+                    <td class="freeze-col-2" style="background:#0f2942 !important; color:#ffffff !important; z-index: 28 !important;"></td>
+                    <td class="freeze-col-3 grand-title" style="background:#0f2942 !important; color:#ffffff !important; z-index: 29 !important; border-right: 2.5px solid #38bdf8 !important;">
+                        <div style="width: 100%; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">TOTAL PRODUCTION (${itemList.length} ITEMS)</div>
+                    </td>
+            `;
+
+            daysInfo.forEach((d, dIdx) => {
+                footHTML += `<td id="col-sum-${dIdx}">${columnSums[dIdx].toLocaleString()}</td>`;
+            });
+
+            footHTML += `
+                    <td style="color:#38bdf8 !important; background:#0c2a44 !important;" id="grand-prod-val">${grandProduction.toLocaleString()}</td>
+                </tr>
+            `;
+            tfoot.innerHTML = footHTML;
+
+            // Update KPI cards
+            document.getElementById('kpiGrandProduction').innerText = grandProduction.toLocaleString();
+            document.getElementById('kpiTotalItems').innerText = `${itemList.length} Items`;
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const m = document.getElementById('monthSelect').value;
+            const y = document.getElementById('yearSelect').value;
+
+            let csv = `MEP FAN LTD. - Monthly Production Report FG (${m} ${y})\r\n`;
+            csv += `Sl No,SFG Code,SFG Item Name,`;
+            daysInfo.forEach(d => { csv += `"${d.dateLabel} (${d.dayOfWeek})",`; });
+            csv += `Total Production\r\n`;
+
+            const rows = document.querySelectorAll('#tableBody tr');
+            rows.forEach(tr => {
+                const sl = tr.querySelector('.freeze-col-1')?.innerText.trim() || '';
+                const code = tr.querySelector('.freeze-col-2')?.innerText.trim() || '';
+                const name = tr.querySelector('.freeze-col-3')?.innerText.trim() || '';
+                const vals = tr.querySelectorAll('.cell-num-val');
+                const total = tr.querySelector('.total-cell-val')?.innerText.trim().replace(/,/g, '') || '0';
+
+                csv += `"${sl}","${code}","${name.replace(/"/g, '""')}",`;
+                vals.forEach(v => {
+                    csv += `${v.innerText.trim().replace(/,/g, '') || 0},`;
+                });
+                csv += `${total}\r\n`;
+            });
+
+            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `MEP_FAN_MONTHLY_PRODUCTION_SUMMARY_${m}_${y}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("?? Exported Monthly Production Summary to CSV!");
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayDateElem = document.getElementById('liveDayText');
+            const timeElem = document.getElementById('liveTimeText');
+
+            if (dayDateElem) dayDateElem.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            if (timeElem) timeElem.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        function escapeHTML(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>
+
+
+
+

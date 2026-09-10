@@ -1,0 +1,4419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Monthly RM Demand Vs Received | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-primary-hover: #0369a1;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-soft: #cbd5e1;
+            --border-cell: #cbd5e1;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* Category Colors */
+            --cat-yellow: #fef08a;
+            --cat-yellow-border: #fde047;
+            --col-green: #10b981;
+            --col-green-light: #d1fae5;
+            --col-green-dark: #064e3b;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand-title {
+            font-size: 1.0rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: #0284c7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag-pill {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 800;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .live-clock-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 9px !important;
+            user-select: none !important;
+            flex-shrink: 0 !important;
+            width: 240px !important;
+            min-width: 240px !important;
+            max-width: 240px !important;
+            text-align: right !important;
+            transform: none !important;
+        }
+
+        .smart-cloud-status-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            height: 22px !important;
+            padding: 2.5px 8px !important;
+            border-radius: 12px !important;
+            font-size: 0.72rem !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.2px !important;
+            background: #f0fdf4 !important;
+            border: 1px solid #bbf7d0 !important;
+            color: #15803d !important;
+            line-height: 1 !important;
+            box-sizing: border-box !important;
+            vertical-align: middle !important;
+            transform: none !important;
+            flex-shrink: 0 !important;
+        }
+
+        .smart-cloud-status-badge .cloud-pulse-dot {
+            width: 6px !important;
+            height: 6px !important;
+            border-radius: 50% !important;
+            background: #16a34a !important;
+            display: inline-block !important;
+            flex-shrink: 0 !important;
+            animation: none !important;
+        }
+
+        .live-clock-info {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            justify-content: center !important;
+            line-height: 1.15 !important;
+            gap: 1px !important;
+            width: 100% !important;
+        }
+
+        .live-day-text {
+            font-family: 'Times New Roman', Times, serif !important;
+            font-size: 0.86rem !important;
+            font-weight: 700 !important;
+            color: #334e68 !important; /* Soft Pastel Slate-Navy */
+            letter-spacing: 0.1px !important;
+            white-space: nowrap !important;
+            line-height: 1.15 !important;
+        }
+
+        .live-time-text {
+            font-family: 'Times New Roman', Times, serif !important;
+            font-size: 0.98rem !important;
+            font-weight: 700 !important;
+            color: #334e68 !important; /* Soft Pastel Slate-Navy */
+            letter-spacing: 0.3px !important;
+            white-space: nowrap !important;
+            line-height: 1.15 !important;
+            display: inline-block !important;
+            width: 96px !important;
+            text-align: left !important;
+            font-variant-numeric: tabular-nums !important;
+        }
+
+        .live-time-text .t-num-slot {
+            display: inline-block !important;
+            width: 7.8px !important;
+            text-align: center !important;
+            font-family: 'Times New Roman', Times, serif !important;
+            font-variant-numeric: tabular-nums !important;
+            font-feature-settings: "tnum" 1 !important;
+        }
+
+        .live-time-text .t-ampm-slot {
+            display: inline-block !important;
+            margin-left: 2px !important;
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        /* Workspace Main */
+        .workspace-main {
+            padding: 12px 18px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 100%;
+        }
+
+        /* Executive Banner Card */
+        .demand-banner-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-soft);
+            box-shadow: 0 3px 12px rgba(15, 41, 66, 0.05);
+            padding: 14px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .demand-meta-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .demand-badge-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+        }
+
+        .demand-meta-text h1 {
+            font-size: 1.30rem;
+            font-weight: 900;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+            line-height: 1.15;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demand-meta-text .sub {
+            font-size: 0.76rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Action Buttons Group - Icon-Only with Premium Zero-Shift Tooltip */
+        .demand-actions-group {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            flex-wrap: nowrap !important;
+        }
+
+        .btn-action-icon {
+            position: relative !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            min-height: 36px !important;
+            border-radius: 9px !important;
+            border: 1.5px solid transparent !important;
+            cursor: pointer !important;
+            user-select: none !important;
+            background: #f8fafc !important;
+            transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+            transform: none !important;
+            box-shadow: 0 1px 3px rgba(15, 41, 66, 0.05) !important;
+            padding: 0 !important;
+            outline: none !important;
+            box-sizing: border-box !important;
+        }
+
+        .btn-action-icon svg {
+            width: 17px !important;
+            height: 17px !important;
+            flex-shrink: 0 !important;
+            transform: none !important;
+        }
+
+        .btn-action-icon.btn-add {
+            background: #ede9fe !important;
+            border-color: #ddd6fe !important;
+            color: #7c3aed !important;
+        }
+        .btn-action-icon.btn-add:hover {
+            background: #7c3aed !important;
+            border-color: #6d28d9 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.25) !important;
+        }
+
+        .btn-action-icon.btn-save {
+            background: #e0f2fe !important;
+            border-color: #bae6fd !important;
+            color: #0284c7 !important;
+        }
+        .btn-action-icon.btn-save:hover {
+            background: #0284c7 !important;
+            border-color: #0369a1 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25) !important;
+        }
+
+        .btn-action-icon.btn-csv {
+            background: #f0fdf4 !important;
+            border-color: #bbf7d0 !important;
+            color: #15803d !important;
+        }
+        .btn-action-icon.btn-csv:hover {
+            background: #15803d !important;
+            border-color: #166534 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(21, 128, 61, 0.25) !important;
+        }
+
+        .btn-action-icon.btn-print {
+            background: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            color: #334155 !important;
+        }
+        .btn-action-icon.btn-print:hover {
+            background: #334155 !important;
+            border-color: #1e293b !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(51, 65, 85, 0.25) !important;
+        }
+
+        .btn-action-icon.btn-reset {
+            background: #fff1f2 !important;
+            border-color: #fecdd3 !important;
+            color: #e11d48 !important;
+        }
+        .btn-action-icon.btn-reset:hover {
+            background: #e11d48 !important;
+            border-color: #be123c !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25) !important;
+        }
+
+        .btn-action-icon.btn-sync {
+            background: #eef2ff !important;
+            border-color: #c7d2fe !important;
+            color: #4f46e5 !important;
+        }
+        .btn-action-icon.btn-sync:hover {
+            background: #4f46e5 !important;
+            border-color: #4338ca !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25) !important;
+        }
+
+        .btn-action-icon.btn-model-wise {
+            background: #f0fdf4 !important;
+            border-color: #bbf7d0 !important;
+            color: #16a34a !important;
+        }
+        .btn-action-icon.btn-model-wise:hover {
+            background: #16a34a !important;
+            border-color: #15803d !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(22, 163, 74, 0.25) !important;
+        }
+
+        .td-req-clickable {
+            cursor: pointer !important;
+            transition: all 0.15s ease !important;
+        }
+        .td-req-clickable:hover {
+            background: #e0f2fe !important;
+            color: #0284c7 !important;
+            font-weight: 900 !important;
+            text-decoration: underline !important;
+        }
+
+        .btn-action-icon.btn-history {
+            background: #fef3c7 !important;
+            border-color: #fde68a !important;
+            color: #d97706 !important;
+        }
+        .btn-action-icon.btn-history:hover {
+            background: #d97706 !important;
+            border-color: #b45309 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(217, 119, 6, 0.25) !important;
+        }
+
+        .btn-action-icon.btn-month-close {
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #0f2942 !important;
+        }
+        .btn-action-icon.btn-month-close:hover {
+            background: #0f2942 !important;
+            border-color: #0b1e32 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(15, 41, 66, 0.3) !important;
+        }
+
+        /* Premium Tooltip - Pure Float, Zero Layout Shift */
+        .btn-action-icon .erp-tooltip {
+            position: absolute !important;
+            bottom: -32px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            background: #0f172a !important;
+            color: #ffffff !important;
+            font-size: 0.72rem !important;
+            font-weight: 700 !important;
+            font-family: 'Times New Roman', Times, serif !important;
+            padding: 4px 9px !important;
+            border-radius: 6px !important;
+            white-space: nowrap !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: opacity 0.15s ease, visibility 0.15s ease !important;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25) !important;
+            z-index: 1000 !important;
+            line-height: 1.2 !important;
+        }
+
+        .btn-action-icon .erp-tooltip::before {
+            content: "" !important;
+            position: absolute !important;
+            top: -4px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            border-width: 0 4px 4px 4px !important;
+            border-style: solid !important;
+            border-color: transparent transparent #0f172a transparent !important;
+        }
+
+        .btn-action-icon:hover .erp-tooltip {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* 3 KPI Cards Strip */
+        .kpi-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .kpi-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .kpi-val {
+            font-size: 1.45rem;
+            font-weight: 900;
+            font-family: var(--font-mono);
+            color: #0f2942;
+        }
+
+        /* Controls & Filter Strip */
+        .controls-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #ffffff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-soft);
+        }
+
+        .controls-left-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .period-select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1.5px solid #cbd5e1;
+            font-size: 0.80rem;
+            font-weight: 700;
+            color: #0f2942;
+            outline: none;
+            background: #f8fafc;
+            cursor: pointer;
+        }
+
+        .btn-group-toggle {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 6px 12px !important;
+            background: #f8fafc !important;
+            border: 1.5px solid #cbd5e1 !important;
+            border-radius: 6px !important;
+            font-size: 0.78rem !important;
+            font-weight: 700 !important;
+            color: #334155 !important;
+            cursor: pointer !important;
+            transition: background 0.15s ease, border-color 0.15s ease !important;
+            transform: none !important;
+            user-select: none !important;
+            white-space: nowrap !important;
+            box-shadow: 0 1px 2px rgba(15, 41, 66, 0.04) !important;
+        }
+        .btn-group-toggle:hover {
+            background: #e2e8f0 !important;
+            border-color: #94a3b8 !important;
+            color: #0f2942 !important;
+            transform: none !important;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 6px 12px 6px 32px;
+            border-radius: 6px;
+            border: 1.5px solid #cbd5e1;
+            font-size: 0.80rem;
+            font-family: inherit;
+            outline: none;
+        }
+        .search-box input:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            color: #94a3b8;
+        }
+
+        /* Excel-Style Table Grid */
+        .excel-table-container {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-soft);
+            box-shadow: 0 4px 18px rgba(15, 41, 66, 0.06);
+            overflow: auto;
+            max-height: calc(100vh - 270px);
+            position: relative;
+        }
+
+        .rm-demand-table {
+            border-collapse: separate !important;
+            border-spacing: 0;
+            table-layout: fixed;
+            width: max-content;
+            font-size: 0.74rem;
+            white-space: nowrap;
+            background: #ffffff;
+        }
+
+        /* Two-Tier Sticky Header */
+        .rm-demand-table thead th {
+            box-sizing: border-box !important;
+            vertical-align: middle !important;
+        }
+
+        .rm-demand-table thead tr:first-child th {
+            padding: 6px 4px;
+            border-right: 1px solid #cbd5e1;
+            border-bottom: 1px solid #cbd5e1;
+            text-align: center;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 32 !important;
+            height: 34px !important;
+            box-sizing: border-box !important;
+            font-weight: 800;
+            font-size: 0.72rem;
+            color: #0f2942;
+            background: #e0f2fe !important;
+        }
+
+        .rm-demand-table thead tr:nth-child(2) th {
+            padding: 4px 4px;
+            border-right: 1px solid #cbd5e1;
+            border-bottom: 2px solid #0f2942;
+            text-align: center;
+            position: sticky !important;
+            top: 34px !important;
+            z-index: 30 !important;
+            height: 30px !important;
+            box-sizing: border-box !important;
+            font-weight: 700;
+            font-size: 0.68rem;
+            color: #334155;
+            background: #ffffff !important; /* Solid opaque background to prevent any bleed-through on scroll */
+        }
+
+        /* Sticky Left Columns */
+        .col-sl {
+            position: sticky !important;
+            left: 0px !important;
+            z-index: 20 !important;
+            width: 44px !important;
+            min-width: 44px !important;
+            max-width: 44px !important;
+            text-align: center;
+            background-color: #f8fafc !important;
+            border-right: 1px solid #cbd5e1;
+            font-weight: 700;
+            color: #64748b;
+            box-sizing: border-box !important;
+        }
+
+        .col-code {
+            position: sticky !important;
+            left: 44px !important;
+            z-index: 20 !important;
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 100px !important;
+            text-align: center;
+            background-color: #ffedd5 !important;
+            border-right: 1px solid #fed7aa;
+            font-family: var(--font-mono);
+            font-weight: 800;
+            color: #c2410c;
+            box-sizing: border-box !important;
+        }
+
+        .col-name {
+            position: sticky !important;
+            left: 144px !important;
+            z-index: 20 !important;
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            text-align: left;
+            background-color: #ffffff !important;
+            border-right: 1px solid #cbd5e1;
+            font-weight: 700;
+            color: #0f172a;
+            padding: 4px 10px !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-sizing: border-box !important;
+        }
+
+        .col-unit {
+            position: sticky !important;
+            left: 404px !important;
+            z-index: 20 !important;
+            width: 55px !important;
+            min-width: 55px !important;
+            max-width: 55px !important;
+            text-align: center;
+            background-color: #f1f5f9 !important;
+            border-right: 2.5px solid #0f2942 !important;
+            font-weight: 800;
+            color: #475569;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Top-Left Corner 4 Columns in thead (Two-tier solid freeze pane) */
+        .rm-demand-table thead tr:first-child th.th-corner-top {
+            position: sticky !important;
+            top: 0px !important;
+            height: 34px !important;
+            min-height: 34px !important;
+            max-height: 34px !important;
+            z-index: 60 !important;
+            background-color: #cbd5e1 !important;
+            color: #0f172a !important;
+            border-bottom: none !important;
+            border-right: 1px solid #94a3b8 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            box-sizing: border-box !important;
+        }
+
+        .rm-demand-table thead tr:nth-child(2) th.th-corner-bot {
+            position: sticky !important;
+            top: 34px !important;
+            height: 30px !important;
+            min-height: 30px !important;
+            max-height: 30px !important;
+            z-index: 60 !important;
+            background-color: #cbd5e1 !important;
+            border-top: none !important;
+            border-bottom: 2px solid #0f2942 !important;
+            border-right: 1px solid #94a3b8 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .col-unit.th-corner-top, .col-unit.th-corner-bot {
+            border-right: 2.5px solid #0f2942 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16) !important;
+        }
+
+        .corner-header-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.73rem;
+            color: #0f172a;
+            pointer-events: none;
+            text-align: center;
+            line-height: 1.25;
+            box-sizing: border-box;
+            z-index: 61 !important;
+        }
+
+        .col-name .corner-header-label {
+            align-items: flex-start;
+            padding-left: 12px;
+        }
+
+        .rm-demand-table thead tr:first-child th.th-yearly-top {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.70rem !important;
+            text-align: center !important;
+            border-bottom: none !important;
+            vertical-align: bottom !important;
+            padding-bottom: 2px !important;
+            z-index: 32 !important;
+        }
+        .rm-demand-table thead tr:nth-child(2) th.th-yearly-bot {
+            background: #10b981 !important;
+            border-top: none !important;
+            border-bottom: 2px solid #0f2942 !important;
+            z-index: 30 !important;
+        }
+
+        /* Month Header Outline Toggles */
+        .month-header-th {
+            background: #e0f2fe !important;
+            color: #0369a1 !important;
+            font-weight: 800;
+            font-size: 0.74rem;
+            z-index: 32 !important;
+            box-sizing: border-box !important;
+        }
+
+        .month-toggle-btn {
+            background: #ffffff;
+            border: 1px solid #0284c7;
+            color: #0284c7;
+            border-radius: 4px;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            cursor: pointer;
+            margin-right: 4px;
+            font-size: 11px;
+            line-height: 1;
+            vertical-align: middle;
+        }
+        .month-toggle-btn:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        /* Sub-columns for each month with Solid Opaque Backgrounds */
+        .th-sub-req {
+            width: 80px !important;
+            min-width: 80px !important;
+            background: #ffffff !important;
+            color: #0f2942 !important;
+            box-sizing: border-box !important;
+            z-index: 30 !important;
+        }
+        .th-sub-rec {
+            width: 80px !important;
+            min-width: 80px !important;
+            background: #ffffff !important;
+            color: #0f2942 !important;
+            box-sizing: border-box !important;
+            z-index: 30 !important;
+        }
+        .th-sub-pct {
+            width: 62px !important;
+            min-width: 62px !important;
+            background: #fef08a !important;
+            color: #854d0e !important;
+            box-sizing: border-box !important;
+            z-index: 30 !important;
+        }
+        .th-sub-need {
+            width: 80px !important;
+            min-width: 80px !important;
+            background: #fef9c3 !important;
+            color: #854d0e !important;
+            box-sizing: border-box !important;
+            z-index: 30 !important;
+        }
+
+        /* Data cells */
+        .rm-demand-table td {
+            padding: 4px 6px;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+            font-family: var(--font-mono);
+            box-sizing: border-box;
+        }
+
+        .td-num {
+            text-align: right;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .td-pct {
+            text-align: center;
+            font-weight: 800;
+            background: #fefce8;
+            color: #854d0e;
+            white-space: nowrap;
+        }
+
+        .td-need {
+            text-align: right;
+            font-weight: 700;
+            background: #fefce8;
+            white-space: nowrap;
+        }
+
+        .need-neg {
+            color: #dc2626;
+        }
+
+        .need-pos {
+            color: #0284c7;
+        }
+
+        /* Total Section on Right */
+        .th-total-head {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            font-weight: 900;
+            z-index: 32 !important;
+            box-sizing: border-box !important;
+        }
+
+        .th-total-sub {
+            background: #d1fae5 !important;
+            color: #064e3b !important;
+            font-weight: 800;
+            width: 85px !important;
+            min-width: 85px !important;
+            box-sizing: border-box !important;
+            z-index: 30 !important;
+        }
+
+        .td-total-req { text-align: right; font-weight: 800; background: #ecfdf5; white-space: nowrap; }
+        .td-total-rec { text-align: right; font-weight: 800; background: #d1fae5; color: #065f46; white-space: nowrap; }
+        .td-total-pending { text-align: right; font-weight: 800; background: #ecfdf5; white-space: nowrap; }
+        .td-yearly-pct { text-align: center; font-weight: 900; background: #10b981; color: #ffffff; width: 75px; white-space: nowrap; }
+
+        /* Category Banner Rows matching Screenshot */
+        .tr-category-banner td {
+            background: var(--cat-yellow) !important;
+            border-top: 2px solid var(--cat-yellow-border) !important;
+            border-bottom: 2px solid var(--cat-yellow-border) !important;
+            font-weight: 900 !important;
+            font-size: 0.82rem !important;
+            color: #713f12 !important;
+            padding: 6px 10px !important;
+            box-sizing: border-box !important;
+        }
+
+        .cat-title-cell {
+            position: sticky !important;
+            left: 0px !important;
+            z-index: 22 !important;
+            width: 459px !important;
+            min-width: 459px !important;
+            max-width: 459px !important;
+            background: var(--cat-yellow) !important;
+            font-family: var(--font-sans) !important;
+            letter-spacing: 0.2px;
+            border-right: 2px solid #713f12 !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Editable numbers */
+        [contenteditable="true"] {
+            outline: none;
+            transition: all 0.15s ease;
+        }
+        [contenteditable="true"]:focus {
+            background: #ffedd5 !important;
+            box-shadow: inset 0 0 0 2px #ea580c;
+            border-radius: 3px;
+        }
+
+        /* Grand Total Sticky Bottom Row */
+        .rm-demand-table tfoot tr td {
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.78rem !important;
+            padding: 8px 6px !important;
+            border-top: 2.5px solid #0284c7 !important;
+            font-family: var(--font-mono);
+            position: sticky !important;
+            bottom: 0 !important;
+            z-index: 35 !important;
+            box-sizing: border-box !important;
+        }
+
+        .foot-title {
+            position: sticky !important;
+            left: 0px !important;
+            bottom: 0 !important;
+            z-index: 45 !important;
+            width: 459px !important;
+            min-width: 459px !important;
+            max-width: 459px !important;
+            background: #0f2942 !important;
+            font-family: var(--font-sans) !important;
+            color: #38bdf8 !important;
+            border-right: 2px solid #38bdf8 !important;
+            padding-left: 12px !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Add Item Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 14px 20px;
+            background: #f8fafc;
+            border-bottom: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #64748b;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .form-control {
+            padding: 8px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            outline: none;
+        }
+        .form-control:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .form-control[readonly] {
+            background: #f1f5f9;
+            color: #475569;
+            cursor: not-allowed;
+        }
+
+        .modal-footer {
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-top: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-modal-icon {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            user-select: none;
+            transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+            transform: none !important;
+            padding: 0;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-modal-icon svg {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+            transform: none !important;
+        }
+
+        .btn-modal-icon .erp-tooltip {
+            position: absolute;
+            bottom: -32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            font-family: 'Times New Roman', Times, serif;
+            padding: 4px 9px;
+            border-radius: 6px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.15s ease, visibility 0.15s ease;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+            z-index: 2000;
+            line-height: 1.2;
+        }
+
+        .btn-modal-icon .erp-tooltip::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 4px 4px 4px;
+            border-style: solid;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .btn-modal-icon:hover .erp-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .btn-modal-cancel {
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #64748b !important;
+        }
+        .btn-modal-cancel:hover {
+            background: #e2e8f0 !important;
+            border-color: #94a3b8 !important;
+            color: #0f172a !important;
+            box-shadow: 0 3px 10px rgba(100, 116, 139, 0.2) !important;
+        }
+
+        .btn-modal-set {
+            background: #ecfdf5 !important;
+            border-color: #a7f3d0 !important;
+            color: #059669 !important;
+        }
+        .btn-modal-set:hover {
+            background: #10b981 !important;
+            border-color: #059669 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+        }
+
+        /* Subtle Edit Icon on Row Hover */
+        .col-name-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            width: 100%;
+        }
+        .col-name-text {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .btn-item-edit-trigger {
+            opacity: 0;
+            visibility: hidden;
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 2px 4px;
+            color: #0284c7;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        tr:hover .btn-item-edit-trigger {
+            opacity: 1;
+            visibility: visible;
+        }
+        .btn-item-edit-trigger:hover {
+            background: #e0f2fe;
+            border-color: #0284c7;
+            color: #0369a1;
+        }
+        .portal-view-only .btn-item-edit-trigger,
+        .portal-view-only .btn-add {
+            display: none !important;
+        }
+
+        /* Toast notification */
+        .toast-msg {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes highlightNewRow {
+            0% { background-color: #bbf7d0; }
+            100% { background-color: transparent; }
+        }
+
+        .row-newly-added {
+            animation: highlightNewRow 3s ease-out;
+        }
+
+        /* Read-Only Table Cells (All Cells Completely Frozen & Locked) */
+        .rm-demand-table td.td-num,
+        .rm-demand-table td.td-pct,
+        .rm-demand-table td.td-need,
+        .rm-demand-table td.col-code,
+        .rm-demand-table td.col-name,
+        .rm-demand-table td.col-unit,
+        .rm-demand-table td.col-sl {
+            cursor: default !important;
+            user-select: text;
+        }
+
+        /* Serial Number Hide/Show Cell Wrap & Hover Button */
+        .sl-cell-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .sl-num-text {
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .btn-hide-row {
+            position: absolute;
+            right: 1px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            visibility: hidden;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            border-radius: 4px;
+            padding: 1px 3px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        tr:hover .btn-hide-row {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .btn-hide-row:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        /* Serials Visibility Dropdown Container */
+        .serial-vis-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hidden-badge {
+            background: #fee2e2;
+            color: #dc2626;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 4px;
+            border: 1px solid #fecaca;
+        }
+
+        .serial-vis-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            width: 320px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(15, 41, 66, 0.15);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .serial-vis-dropdown.active {
+            display: flex;
+        }
+
+        .serial-vis-header {
+            padding: 10px 14px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #0f2942;
+        }
+
+        .btn-unhide-all {
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            color: #0284c7;
+            border-radius: 5px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-unhide-all:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .serial-vis-search {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .serial-vis-search input {
+            width: 100%;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.75rem;
+            outline: none;
+        }
+        .serial-vis-search input:focus {
+            border-color: #0284c7;
+        }
+
+        .serial-vis-list {
+            max-height: 260px;
+            overflow-y: auto;
+            padding: 6px 0;
+        }
+
+        .serial-vis-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            color: #334155;
+            cursor: pointer;
+            transition: background 0.1s ease;
+        }
+        .serial-vis-item:hover {
+            background: #f1f5f9;
+        }
+        .serial-vis-item.hidden-row {
+            color: #94a3b8;
+            background: #fff5f5;
+        }
+
+        .serial-vis-item input[type="checkbox"] {
+            cursor: pointer;
+            width: 14px;
+            height: 14px;
+        }
+
+        .serial-vis-sl {
+            font-weight: 800;
+            color: #0f2942;
+            width: 28px;
+        }
+
+        .serial-vis-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Group Analysis Button & Category Banner Button */
+        .btn-group-analysis {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 6px 12px !important;
+            background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+            border: 1.5px solid #0284c7 !important;
+            border-radius: 6px !important;
+            font-size: 0.78rem !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            cursor: pointer !important;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25) !important;
+            transition: all 0.15s ease !important;
+            white-space: nowrap !important;
+        }
+        .btn-group-analysis:hover {
+            background: linear-gradient(135deg, #0369a1, #075985) !important;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4) !important;
+        }
+
+        .btn-analyze-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #ffffff;
+            border: 1px solid #ca8a04;
+            color: #854d0e;
+            border-radius: 5px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.15s ease;
+            vertical-align: middle;
+        }
+        .btn-analyze-category:hover {
+            background: #ca8a04;
+            color: #ffffff;
+        }
+
+        /* Analytics Dashboard Modal */
+        .analytics-modal-box {
+            width: 95%;
+            max-width: 1100px;
+            max-height: 90vh;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 25px 50px -12px rgba(15, 41, 66, 0.35);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .analytics-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            padding: 16px 20px;
+            background: #f8fafc;
+            border-bottom: 1.5px solid #e2e8f0;
+        }
+
+        .analytics-kpi-card {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .analytics-kpi-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .analytics-kpi-value {
+            font-size: 1.25rem;
+            font-weight: 900;
+            font-family: var(--font-mono);
+            color: #0f2942;
+        }
+
+        .analytics-body-scroll {
+            padding: 18px 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .analytics-chart-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .chart-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .chart-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: #0f2942;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-legend {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .group-stat-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .group-stat-card:hover {
+            border-color: #0284c7;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
+        }
+
+        .group-card-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .group-card-title {
+            font-size: 0.80rem;
+            font-weight: 800;
+            color: #0f2942;
+            line-height: 1.3;
+        }
+
+        .group-card-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .group-card-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            background: #f8fafc;
+            padding: 6px 8px;
+            border-radius: 6px;
+        }
+
+        .group-metric-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .metric-item-lbl {
+            font-size: 0.62rem;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .metric-item-val {
+            font-weight: 800;
+            color: #0f2942;
+        }
+
+        .group-progress-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .group-progress-bar-bg {
+            width: 100%;
+            height: 7px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .group-progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* History & Month Closing Modals */
+        .history-month-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .history-month-row.closed {
+            border-left: 4px solid #10b981;
+            background: #f0fdf4;
+        }
+        .history-month-row.open {
+            border-left: 4px solid #0284c7;
+        }
+
+        @media print {
+            .portal-nav, .demand-banner-card, .controls-strip, .kpi-strip, #mepFrozenSidebar {
+                display: none !important;
+            }
+            .excel-table-container {
+                max-height: none !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div>
+                    <div class="nav-brand-title">ALL REPORT SUMMARY</div>
+                    <div class="nav-brand-sub">
+                        <span>Monthly RM Demand Vs Received</span>
+                        <span class="tag-pill">ANNUAL MATRIX 2026-2027</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <span class="smart-cloud-status-badge" id="smartCloudStatusBadge" title="Realtime Cloud: Connected (Live Sync)">
+                        <span class="cloud-pulse-dot"></span>
+                        <span class="cloud-status-text">Live</span>
+                    </span>
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- Executive Banner Card -->
+        <div class="demand-banner-card">
+            <div class="demand-meta-group">
+                <div class="demand-badge-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <div class="demand-meta-text">
+                    <h1>
+                        Monthly RM Demand Vs Received
+                        <span class="tag-pill">12-MONTH MATRIX</span>
+                    </h1>
+                    <div class="sub">
+                        MEP Fan Ltd. â€¢ Raw Material Monthly Requisition, Received, Percentage &amp; Required Balance Engine
+                    </div>
+                </div>
+            </div>
+
+            <div class="demand-actions-group">
+                <button type="button" class="btn-action-icon btn-add" onclick="openAddItemModal()" aria-label="Add New Item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span class="erp-tooltip">Add New Item</span>
+                </button>
+
+                <button type="button" class="btn-action-icon btn-sync" onclick="syncWithPlanAndBOM(true)" aria-label="Sync Production & BOM">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    <span class="erp-tooltip">Sync Production &amp; BOM</span>
+                </button>
+
+                <button type="button" class="btn-action-icon btn-model-wise" onclick="openModelWiseBreakdownModal()" aria-label="Model-Wise RM Requirement">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    <span class="erp-tooltip">Model-Wise RM Requirement</span>
+                </button>
+
+                <button type="button" class="btn-action-icon btn-history" onclick="openHistoryArchiveModal()" aria-label="Monthly History Archive">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span class="erp-tooltip">Monthly History Archive</span>
+                </button>
+
+                <button type="button" class="btn-action-icon btn-month-close" onclick="openMonthClosingModal()" aria-label="Month Closing & Snapshot">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span class="erp-tooltip">Month Closing &amp; Snapshot</span>
+                </button>
+
+                <button type="button" class="btn-action-icon btn-save" onclick="saveDemandData()" aria-label="Save Changes">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    <span class="erp-tooltip">Save Changes</span>
+                </button>
+
+                <button type="button" class="btn-action-icon btn-csv" onclick="exportToCSV()" aria-label="Export CSV">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span class="erp-tooltip">Export CSV</span>
+                </button>
+
+                <button type="button" class="btn-action-icon btn-print" onclick="window.print()" aria-label="Print">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span class="erp-tooltip">Print</span>
+                </button>
+
+                <button type="button" class="btn-action-icon btn-reset" onclick="resetToDefault()" aria-label="Reset Default">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                    <span class="erp-tooltip">Reset Default</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3 KPI Cards Strip -->
+        <div class="kpi-strip">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Raw Materials Tracked</div>
+                    <div class="kpi-val" id="kpiTotalItems">140 Items</div>
+                </div>
+                <div style="color:#0284c7; background:#e0f2fe; padding:8px; border-radius:8px;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Annual Received Achievement</div>
+                    <div class="kpi-val" id="kpiYearlyPct" style="color:#10b981;">--%</div>
+                </div>
+                <div style="color:#10b981; background:#d1fae5; padding:8px; border-radius:8px;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Category Sections</div>
+                    <div class="kpi-val" id="kpiCategories">9 Categories</div>
+                </div>
+                <div style="color:#8b5cf6; background:#f3e8ff; padding:8px; border-radius:8px;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls & Filter Strip -->
+        <div class="controls-strip">
+            <div class="controls-left-group">
+                <!-- Month Filter -->
+                <select class="period-select" id="monthFilterSelect" onchange="onMonthSelectChange(this.value)">
+                    <option value="All">All Months (12-Month Matrix)</option>
+                    <option value="Jul-26">Jul-26</option>
+                    <option value="Aug-26">Aug-26</option>
+                    <option value="Sep-26">Sep-26</option>
+                    <option value="Oct-26">Oct-26</option>
+                    <option value="Nov-26">Nov-26</option>
+                    <option value="Dec-26">Dec-26</option>
+                    <option value="Jan-27">Jan-27</option>
+                    <option value="Feb-27">Feb-27</option>
+                    <option value="Mar-27">Mar-27</option>
+                    <option value="Apr-27">Apr-27</option>
+                    <option value="May-27">May-27</option>
+                    <option value="Jun-27">Jun-27</option>
+                </select>
+
+                <!-- Category Filter -->
+                <select class="period-select" id="categoryFilterSelect" onchange="onCategorySelectChange(this.value)">
+                    <option value="All">All Categories (9 Groups)</option>
+                    <option value="Assemble RM (Local)">Assemble RM (Local)</option>
+                    <option value="Assemble RM (Inter Company-Plastic)">Assemble RM (Inter Company-Plastic)</option>
+                    <option value="Assemble RM (Inter Company-Screw and Bolt)">Assemble RM (Inter Company-Screw and Bolt)</option>
+                    <option value="Assemble RM (Inter Company-Cables)">Assemble RM (Inter Company-Cables)</option>
+                    <option value="Assemble RM (Inter Company-Regulator Item)">Assemble RM (Inter Company-Regulator Item)</option>
+                    <option value="Packing Item">Packing Item</option>
+                    <option value="Armature">Armature</option>
+                    <option value="Production Consumable (Assemble)">Production Consumable (Assemble)</option>
+                    <option value="Production Consumable (Armature)">Production Consumable (Armature)</option>
+                </select>
+
+                <!-- Outline Group Controls -->
+                <button type="button" class="btn-group-toggle" onclick="expandAllMonths()" title="Expand All Months">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                    <span>Expand All Months</span>
+                </button>
+                <button type="button" class="btn-group-toggle" onclick="collapseAllMonths()" title="Collapse All Months">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                    <span>Collapse All Months</span>
+                </button>
+
+                <!-- Group Analytics Button -->
+                <button type="button" class="btn-group-analysis" onclick="openGroupAnalysisModal('All')" title="Group-wise Demand vs Received Analytics">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <span>📊 Group Analytics</span>
+                </button>
+
+                <!-- Serials Visibility Dropdown -->
+                <div class="serial-vis-container">
+                    <button type="button" class="btn-group-toggle" id="btnSerialVisibility" onclick="toggleSerialVisibilityDropdown()" title="Manage Visible Serials / Rows">
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <span>Serials Visibility</span>
+                        <span class="hidden-badge" id="hiddenSerialsBadge" style="display:none;">0 hidden</span>
+                    </button>
+                    <div class="serial-vis-dropdown" id="serialVisDropdown">
+                        <div class="serial-vis-header">
+                            <span>Row Visibility (<span id="visCountText">All visible</span>)</span>
+                            <button type="button" class="btn-unhide-all" onclick="showAllSerials()">Show All</button>
+                        </div>
+                        <div class="serial-vis-search">
+                            <input type="text" id="serialVisSearch" placeholder="Filter serials or items..." oninput="renderSerialVisList(this.value)">
+                        </div>
+                        <div class="serial-vis-list" id="serialVisList">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="rmSearchInput" placeholder="Search by RM Code or Material Name..." oninput="handleSearch(this.value)">
+            </div>
+        </div>
+
+        <!-- Excel Table Grid -->
+        <div class="excel-table-container">
+            <table class="rm-demand-table" id="rmDemandTable">
+                <thead id="tableHead">
+                    <!-- Dynamic Headers Rendered by JS -->
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Dynamic Category Banners and Items Rendered by JS -->
+                </tbody>
+                <tfoot id="tableFoot">
+                    <!-- Grand Total Summary Row -->
+                </tfoot>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- Modal: Add New Raw Material Item (Master DB Linked) -->
+    <div class="modal-backdrop" id="addItemModal" onclick="if(event.target === this) closeAddItemModal()">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="itemModalTitle" style="display:flex; align-items:center; gap:8px;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#8b5cf6" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    ADD NEW RAW MATERIAL ITEM
+                </h3>
+                <span id="itemModalBadge" style="display:none; font-size:0.75rem; font-weight:800; background:#e0f2fe; color:#0369a1; padding:3px 8px; border-radius:6px; margin-left:auto; margin-right:12px;"></span>
+                <button type="button" class="modal-close-btn" onclick="closeAddItemModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">RM Code (Enter code from Master DB)</label>
+                        <input type="text" class="form-control" id="newRMCode" placeholder="e.g. 3101010032" oninput="onRMCodeInput(this.value)">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Unit</label>
+                        <input type="text" class="form-control" id="newRMUnit" placeholder="e.g. Pcs, KG, Mtr">
+                    </div>
+
+                    <div class="form-group full">
+                        <label class="form-label">Item Description</label>
+                        <input type="text" class="form-control" id="newRMName" placeholder="Auto-populated from Master Database">
+                    </div>
+
+                    <div class="form-group full">
+                        <label class="form-label">Category Section</label>
+                        <select class="form-control" id="newRMCategory">
+                            <option value="Assemble RM (Local)">Assemble RM (Local)</option>
+                            <option value="Assemble RM (Inter Company-Plastic)">Assemble RM (Inter Company-Plastic)</option>
+                            <option value="Assemble RM (Inter Company-Screw and Bolt)">Assemble RM (Inter Company-Screw and Bolt)</option>
+                            <option value="Assemble RM (Inter Company-Cables)">Assemble RM (Inter Company-Cables)</option>
+                            <option value="Assemble RM (Inter Company-Regulator Item)">Assemble RM (Inter Company-Regulator Item)</option>
+                            <option value="Packing Item">Packing Item</option>
+                            <option value="Armature">Armature</option>
+                            <option value="Production Consumable (Assemble)">Production Consumable (Assemble)</option>
+                            <option value="Production Consumable (Armature)">Production Consumable (Armature)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group init-qty-group">
+                        <label class="form-label">Initial Requisition Qty (Jul-26)</label>
+                        <input type="number" class="form-control" id="newRMRequir" placeholder="0" min="0">
+                    </div>
+
+                    <div class="form-group init-qty-group">
+                        <label class="form-label">Initial Received Qty (Jul-26)</label>
+                        <input type="number" class="form-control" id="newRMReceived" placeholder="0" min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-icon btn-modal-cancel" onclick="closeAddItemModal()" aria-label="Cancel">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    <span class="erp-tooltip">Cancel</span>
+                </button>
+                <button type="button" class="btn-modal-icon btn-modal-set" onclick="submitItemForm()" aria-label="Set">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span class="erp-tooltip">Set</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Group-wise Demand vs Received Analytics Dashboard -->
+    <div class="modal-backdrop" id="groupAnalysisModal" onclick="if(event.target === this) closeGroupAnalysisModal()">
+        <div class="analytics-modal-box">
+            <div class="modal-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0284c7" stroke-width="2.4">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    <div>
+                        <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#0f2942;">GROUP-WISE DEMAND VS RECEIVED ANALYTICS DASHBOARD</h3>
+                        <div style="font-size:0.72rem; color:#64748b; font-weight:600;">9 Material Groups • Comparative Volume, Percentage & Delivery Performance</div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span id="analysisSourceBadge" style="font-size:0.72rem; font-weight:800; background:#dcfce7; color:#15803d; padding:4px 10px; border-radius:6px; border:1px solid #bbf7d0;">
+                        🟢 LIVE ERP ENGINE
+                    </span>
+                    <button type="button" class="modal-close-btn" onclick="closeGroupAnalysisModal()">&times;</button>
+                </div>
+            </div>
+
+            <!-- Modal Filter Strip -->
+            <div style="padding:10px 20px; background:#ffffff; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <label style="font-size:0.76rem; font-weight:800; color:#334155;">Time Horizon:</label>
+                    <select class="period-select" id="analysisMonthSelect" onchange="renderGroupAnalysisDashboard(this.value)">
+                        <option value="All">All Months (12-Month Matrix)</option>
+                        <option value="Jul-26">Jul-26</option>
+                        <option value="Aug-26">Aug-26</option>
+                        <option value="Sep-26">Sep-26</option>
+                        <option value="Oct-26">Oct-26</option>
+                        <option value="Nov-26">Nov-26</option>
+                        <option value="Dec-26">Dec-26</option>
+                        <option value="Jan-27">Jan-27</option>
+                        <option value="Feb-27">Feb-27</option>
+                        <option value="Mar-27">Mar-27</option>
+                        <option value="Apr-27">Apr-27</option>
+                        <option value="May-27">May-27</option>
+                        <option value="Jun-27">Jun-27</option>
+                    </select>
+                </div>
+                <div style="font-size:0.74rem; font-weight:700; color:#64748b;">
+                    Zero-Division Protected Formula: <code style="font-family:inherit; color:#0284c7; background:#e0f2fe; padding:2px 6px; border-radius:4px;">Rec % = (Received / Demand) × 100</code>
+                </div>
+            </div>
+
+            <!-- 5 KPI Summary Strip -->
+            <div class="analytics-kpi-grid" id="analysisKpiGrid">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- Scrollable Content: SVG Chart & 9 Category Cards -->
+            <div class="analytics-body-scroll">
+                <!-- Pure SVG Comparative Bar Chart -->
+                <div class="analytics-chart-card">
+                    <div class="chart-header-row">
+                        <div class="chart-title">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0284c7" stroke-width="2.2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                            <span>Group-wise Demand vs Received Comparison Volume</span>
+                        </div>
+                        <div class="chart-legend">
+                            <div><span class="legend-dot" style="background:#0284c7;"></span> Required Demand</div>
+                            <div><span class="legend-dot" style="background:#10b981;"></span> Received Qty</div>
+                        </div>
+                    </div>
+                    <div id="analyticsSvgChartContainer" style="width:100%; overflow-x:auto;">
+                        <!-- SVG chart generated dynamically -->
+                    </div>
+                </div>
+
+                <!-- 9 Groups Performance Cards Grid -->
+                <div>
+                    <div style="font-size:0.86rem; font-weight:800; color:#0f2942; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#8b5cf6" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <span>Individual Material Group Performance Breakdown</span>
+                    </div>
+                    <div class="groups-grid" id="analyticsGroupsGrid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Monthly History Archive & Snapshot Viewer -->
+    <div class="modal-backdrop" id="historyArchiveModal" onclick="if(event.target === this) closeHistoryArchiveModal()">
+        <div class="modal-box" style="max-width:850px; max-height:85vh; display:flex; flex-direction:column;">
+            <div class="modal-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#d97706" stroke-width="2.4"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <div>
+                        <h3 style="margin:0; font-size:1.0rem; font-weight:800; color:#0f2942;">MONTHLY HISTORY ARCHIVE (EXCEL-STYLE SNAPSHOTS)</h3>
+                        <div style="font-size:0.72rem; color:#64748b; font-weight:600;">Preserved Month-End Closing Records • Immutable Historical Receive Archives</div>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeHistoryArchiveModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto; padding:18px 20px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <label style="font-size:0.76rem; font-weight:800; color:#334155;">Select Month Archive:</label>
+                        <select class="period-select" id="historyArchiveMonthSelect" onchange="loadHistoryArchiveDetails(this.value)">
+                            <option value="Jul-26">Jul-26</option>
+                            <option value="Aug-26">Aug-26</option>
+                            <option value="Sep-26">Sep-26</option>
+                            <option value="Oct-26">Oct-26</option>
+                            <option value="Nov-26">Nov-26</option>
+                            <option value="Dec-26">Dec-26</option>
+                            <option value="Jan-27">Jan-27</option>
+                            <option value="Feb-27">Feb-27</option>
+                            <option value="Mar-27">Mar-27</option>
+                            <option value="Apr-27">Apr-27</option>
+                            <option value="May-27">May-27</option>
+                            <option value="Jun-27">Jun-27</option>
+                        </select>
+                    </div>
+                    <div id="historyActionButtons" style="display:flex; gap:8px;">
+                        <!-- Re-open or Close actions -->
+                    </div>
+                </div>
+
+                <div id="historyStatusBanner" style="padding:12px 16px; border-radius:8px; margin-bottom:16px;">
+                    <!-- Status Banner -->
+                </div>
+
+                <!-- Snapshot Summary Metrics -->
+                <div class="analytics-kpi-grid" id="historyKpiGrid" style="border:1px solid #e2e8f0; border-radius:8px; margin-bottom:16px; padding:12px 14px;">
+                    <!-- Metrics -->
+                </div>
+
+                <!-- Snapshot Items Table Preview -->
+                <div>
+                    <div style="font-size:0.80rem; font-weight:800; color:#0f2942; margin-bottom:8px;">Archived Items Breakdown Preview</div>
+                    <div style="max-height:240px; overflow-y:auto; border:1px solid #cbd5e1; border-radius:8px;">
+                        <table style="width:100%; border-collapse:collapse; font-size:0.73rem;">
+                            <thead style="background:#f1f5f9; position:sticky; top:0; z-index:5;">
+                                <tr>
+                                    <th style="padding:6px 10px; border-bottom:1px solid #cbd5e1; text-align:left;">RM Code</th>
+                                    <th style="padding:6px 10px; border-bottom:1px solid #cbd5e1; text-align:left;">Item Name</th>
+                                    <th style="padding:6px 10px; border-bottom:1px solid #cbd5e1; text-align:left;">Category</th>
+                                    <th style="padding:6px 10px; border-bottom:1px solid #cbd5e1; text-align:right;">Required</th>
+                                    <th style="padding:6px 10px; border-bottom:1px solid #cbd5e1; text-align:right;">Received</th>
+                                    <th style="padding:6px 10px; border-bottom:1px solid #cbd5e1; text-align:center;">%</th>
+                                    <th style="padding:6px 10px; border-bottom:1px solid #cbd5e1; text-align:right;">Need</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTablePreviewBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-group-toggle" onclick="exportHistoricalSnapshotCSV()">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export Month CSV</span>
+                </button>
+                <button type="button" class="btn-modal-icon btn-modal-cancel" onclick="closeHistoryArchiveModal()" aria-label="Close">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <span class="erp-tooltip">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Month Closing & Snapshot Confirmation (Admin Only) -->
+    <div class="modal-backdrop" id="monthClosingModal" onclick="if(event.target === this) closeMonthClosingModal()">
+        <div class="modal-box" style="max-width:540px;">
+            <div class="modal-header" style="background:#fff7ed; border-bottom:1.5px solid #fed7aa;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ea580c" stroke-width="2.4"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <h3 style="margin:0; font-size:1.0rem; font-weight:800; color:#9a3412;">MONTH CLOSING &amp; FREEZE LOCK</h3>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeMonthClosingModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:18px 20px; display:flex; flex-direction:column; gap:14px;">
+                <div style="font-size:0.80rem; color:#334155; line-height:1.5;">
+                    Closing a month creates an <strong>immutable, frozen snapshot</strong> of all Demand and Received quantities for that period. Once closed, future ERP updates and new month entries will <strong>never overwrite</strong> this month's recorded receipts.
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Select Month to Close &amp; Freeze:</label>
+                    <select class="form-control" id="closingMonthSelect" onchange="updateClosingModalMetrics(this.value)">
+                        <option value="Jul-26">Jul-26</option>
+                        <option value="Aug-26">Aug-26</option>
+                        <option value="Sep-26">Sep-26</option>
+                        <option value="Oct-26">Oct-26</option>
+                        <option value="Nov-26">Nov-26</option>
+                        <option value="Dec-26">Dec-26</option>
+                        <option value="Jan-27">Jan-27</option>
+                        <option value="Feb-27">Feb-27</option>
+                        <option value="Mar-27">Mar-27</option>
+                        <option value="Apr-27">Apr-27</option>
+                        <option value="May-27">May-27</option>
+                        <option value="Jun-27">Jun-27</option>
+                    </select>
+                </div>
+                <div id="closingPreviewMetrics" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; font-size:0.75rem; display:flex; flex-direction:column; gap:6px;">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer" style="background:#f8fafc;">
+                <button type="button" class="btn-group-toggle" onclick="closeMonthClosingModal()">Cancel</button>
+                <button type="button" class="btn-group-analysis" style="background:#ea580c !important; border-color:#c2410c !important;" onclick="confirmCloseSelectedMonth()">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span>Confirm &amp; Lock Month</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Model-Wise RM Requirement Breakdown -->
+    <div class="modal-backdrop" id="modelWiseModal" onclick="if(event.target === this) closeModelWiseModal()">
+        <div class="modal-box" style="max-width:1160px; width:96vw; max-height:88vh; display:flex; flex-direction:column;">
+            <div class="modal-header" style="background:#f0fdf4; border-bottom:1.5px solid #bbf7d0;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#16a34a" stroke-width="2.3"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    <div>
+                        <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#14532d;">MODEL-WISE RM REQUIREMENT BREAKDOWN</h3>
+                        <div style="font-size:0.72rem; color:#15803d; font-weight:600;">Production Plan Target &times; RM Requirement Summary (BOM) Master Data</div>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeModelWiseModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto; padding:16px 20px; display:flex; flex-direction:column; gap:12px;">
+                <!-- Filter Bar inside modal -->
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #cbd5e1;">
+                    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <label style="font-size:0.78rem; font-weight:800; color:#0f2942;">Select Month:</label>
+                        <select class="period-select" id="modelWiseMonthSelect" onchange="renderModelWiseTable()" style="font-weight:800;">
+                            <option value="All">Full Year (Sum of 12 Months)</option>
+                            <option value="Jul-26">Jul-26</option>
+                            <option value="Aug-26">Aug-26</option>
+                            <option value="Sep-26">Sep-26</option>
+                            <option value="Oct-26">Oct-26</option>
+                            <option value="Nov-26">Nov-26</option>
+                            <option value="Dec-26">Dec-26</option>
+                            <option value="Jan-27">Jan-27</option>
+                            <option value="Feb-27">Feb-27</option>
+                            <option value="Mar-27">Mar-27</option>
+                            <option value="Apr-27">Apr-27</option>
+                            <option value="May-27">May-27</option>
+                            <option value="Jun-27">Jun-27</option>
+                        </select>
+
+                        <label style="font-size:0.78rem; font-weight:800; color:#0f2942;">Search RM:</label>
+                        <input type="text" id="modelWiseSearchInput" placeholder="Filter by Code or Item..." oninput="renderModelWiseTable()" style="padding:4px 8px; border-radius:6px; border:1px solid #cbd5e1; font-size:0.8rem; font-family:'Times New Roman', Times, serif; width:200px;">
+                    </div>
+                    <div style="font-size:0.78rem; font-weight:700; color:#0f2942;" id="modelWisePlanSummary">
+                        <!-- Ceiling Fan targets for selected month -->
+                    </div>
+                </div>
+
+                <!-- Model-Wise Table -->
+                <div style="overflow:auto; max-height:55vh; border:1px solid #cbd5e1; border-radius:8px;">
+                    <table class="excel-table" id="modelWiseTable" style="width:100%; border-collapse:separate; border-spacing:0; font-size:12.5px;">
+                        <thead id="modelWiseTableHead" style="position:sticky; top:0; z-index:10; background:#f472b6;">
+                        </thead>
+                        <tbody id="modelWiseTableBody">
+                        </tbody>
+                        <tfoot id="modelWiseTableFoot" style="position:sticky; bottom:0; z-index:10; background:#0f2942; color:#ffffff;">
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background:#f8fafc; display:flex; justify-content:space-between; align-items:center;">
+                <button type="button" class="btn-group-toggle" onclick="exportModelWiseCSV()">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export CSV</span>
+                </button>
+                <button type="button" class="btn-modal-icon btn-modal-cancel" onclick="closeModelWiseModal()" aria-label="Close">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <span class="erp-tooltip">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-msg" id="toastMsg">Action completed!</div>
+
+    <!-- Master Central DB -->
+    <script src="master_database.js"></script>
+
+    <!-- Upstream Linked Sources: Production Plan, BOM Master, Summaries & Live ERP Engine -->
+    <script src="production_plan_data.js"></script>
+    <script src="bom_data.js"></script>
+    <script src="rm_requirement_summary_bom_data.js"></script>
+    <script src="assemble_summary_data.js"></script>
+    <script src="armature_summary_data.js"></script>
+    <script src="fan_assemble_erp_data.js"></script>
+    <script src="armature_winding_erp_data.js"></script>
+    <script src="erp_engine.js"></script>
+
+    <!-- Baseline Data File -->
+    <script src="monthly_rm_demand_data.js"></script>
+
+    <!-- Application Script -->
+    <script>
+        const ALL_MONTHS = [
+            "Jul-26", "Aug-26", "Sep-26", "Oct-26", "Nov-26", "Dec-26",
+            "Jan-27", "Feb-27", "Mar-27", "Apr-27", "May-27", "Jun-27"
+        ];
+
+        let demandItems = [];
+        let activeMonthFilter = "All";
+        let activeCategoryFilter = "All";
+        let currentSearchTerm = "";
+
+        // Track collapsed state for each month: false = expanded (4 cols), true = collapsed (1 col)
+        let monthCollapsed = {};
+        ALL_MONTHS.forEach(m => monthCollapsed[m] = false);
+
+        // Serial Hide / Show State
+        let hiddenSerials = [];
+
+        function getItemKey(item) {
+            if (!item) return '';
+            return `${String(item.rmCode || '').trim()}___${String(item.category || '').trim()}`;
+        }
+
+        function loadHiddenSerials() {
+            try {
+                const raw = localStorage.getItem('mep_demand_hidden_serials');
+                if (raw) hiddenSerials = JSON.parse(raw);
+                if (!Array.isArray(hiddenSerials)) hiddenSerials = [];
+            } catch (e) {
+                hiddenSerials = [];
+            }
+            updateHiddenBadge();
+        }
+
+        function saveHiddenSerials() {
+            localStorage.setItem('mep_demand_hidden_serials', JSON.stringify(hiddenSerials));
+            updateHiddenBadge();
+        }
+
+        function hideSerial(key) {
+            if (!key) return;
+            if (!hiddenSerials.includes(key)) {
+                hiddenSerials.push(key);
+                saveHiddenSerials();
+                renderDemandTable();
+                renderSerialVisList();
+                showToast("Serial row hidden. Data retained in category & grand totals.");
+            }
+        }
+
+        function toggleSerialVisibility(key) {
+            if (!key) return;
+            if (hiddenSerials.includes(key)) {
+                hiddenSerials = hiddenSerials.filter(k => k !== key);
+            } else {
+                hiddenSerials.push(key);
+            }
+            saveHiddenSerials();
+            renderDemandTable();
+            renderSerialVisList();
+        }
+
+        function showAllSerials() {
+            hiddenSerials = [];
+            saveHiddenSerials();
+            renderDemandTable();
+            renderSerialVisList();
+            showToast("✓ All serial numbers and rows are now visible!");
+        }
+
+        function updateHiddenBadge() {
+            const badge = document.getElementById('hiddenSerialsBadge');
+            if (!badge) return;
+            if (hiddenSerials.length > 0) {
+                badge.style.display = 'inline-block';
+                badge.textContent = `${hiddenSerials.length} hidden`;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function toggleSerialVisibilityDropdown() {
+            const dd = document.getElementById('serialVisDropdown');
+            if (!dd) return;
+            const isActive = dd.classList.contains('active');
+            if (isActive) {
+                dd.classList.remove('active');
+            } else {
+                dd.classList.add('active');
+                renderSerialVisList();
+                const searchInput = document.getElementById('serialVisSearch');
+                if (searchInput) searchInput.focus();
+            }
+        }
+
+        function renderSerialVisList(filterText = '') {
+            const listEl = document.getElementById('serialVisList');
+            const countText = document.getElementById('visCountText');
+            if (!listEl) return;
+            const q = (filterText || '').toLowerCase().trim();
+
+            let html = '';
+            let total = demandItems.length;
+            let hiddenCount = 0;
+
+            demandItems.forEach((item, idx) => {
+                const key = getItemKey(item);
+                const isHidden = hiddenSerials.includes(key);
+                if (isHidden) hiddenCount++;
+
+                const slStr = String(item.sl || (idx + 1));
+                const searchTarget = `${slStr} ${item.rmCode} ${item.itemName} ${item.category}`.toLowerCase();
+                if (q && !searchTarget.includes(q)) return;
+
+                html += `
+                    <div class="serial-vis-item ${isHidden ? 'hidden-row' : ''}" onclick="toggleSerialVisibility('${escapeAttr(key)}')">
+                        <input type="checkbox" ${!isHidden ? 'checked' : ''} onclick="event.stopPropagation(); toggleSerialVisibility('${escapeAttr(key)}')">
+                        <span class="serial-vis-sl">#${escapeHTML(slStr)}</span>
+                        <span class="serial-vis-name" title="${escapeAttr(item.itemName)} (${escapeAttr(item.rmCode)})">
+                            ${escapeHTML(item.itemName)} <span style="font-size:0.68rem; color:#64748b;">(${escapeHTML(item.rmCode)})</span>
+                        </span>
+                    </div>
+                `;
+            });
+
+            if (countText) {
+                countText.textContent = hiddenCount > 0 ? `${total - hiddenCount}/${total} visible (${hiddenCount} hidden)` : `All ${total} visible`;
+            }
+            listEl.innerHTML = html || '<div style="padding:15px; text-align:center; color:#94a3b8; font-size:0.75rem;">No matching serials found</div>';
+        }
+
+        // ==========================================
+        // EXCEL-STYLE MONTHLY SNAPSHOT ARCHIVES (MONTH CLOSING)
+        // ==========================================
+        function getMonthlySnapshots() {
+            try {
+                const raw = localStorage.getItem('mep_monthly_rm_snapshots');
+                if (raw) return JSON.parse(raw);
+            } catch (e) {
+                console.error("Error reading snapshots", e);
+            }
+            return {};
+        }
+
+        function saveMonthlySnapshots(snapshots) {
+            localStorage.setItem('mep_monthly_rm_snapshots', JSON.stringify(snapshots));
+        }
+
+        function openMonthClosingModal() {
+            if (!isUserAdmin()) {
+                alert("Permission Denied: Only administrators can close and freeze monthly archives.");
+                return;
+            }
+            const modal = document.getElementById('monthClosingModal');
+            if (modal) {
+                const currentMonth = activeMonthFilter !== 'All' ? activeMonthFilter : 'Jul-26';
+                const sel = document.getElementById('closingMonthSelect');
+                if (sel) sel.value = currentMonth;
+                updateClosingModalMetrics(currentMonth);
+                modal.classList.add('active');
+            }
+        }
+
+        function closeMonthClosingModal() {
+            const modal = document.getElementById('monthClosingModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function updateClosingModalMetrics(monthKey) {
+            const container = document.getElementById('closingPreviewMetrics');
+            if (!container) return;
+            const snapshots = getMonthlySnapshots();
+            const isAlreadyClosed = snapshots[monthKey] && snapshots[monthKey].isClosed;
+
+            let mReq = 0, mRec = 0;
+            demandItems.forEach(it => {
+                const md = (it.months && it.months[monthKey]) ? it.months[monthKey] : {};
+                mReq += parseFloat(String(md.requir).replace(/,/g, '')) || 0;
+                mRec += parseFloat(String(md.received).replace(/,/g, '')) || 0;
+            });
+            const mPct = mReq > 0 ? Math.round((mRec / mReq) * 100) + '%' : (mRec > 0 ? '100%' : '0%');
+            const mNeed = mReq - mRec;
+
+            container.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span style="font-weight:800; color:#0f2942;">Status for ${monthKey}:</span>
+                    <span style="font-weight:800; padding:2px 8px; border-radius:4px; ${isAlreadyClosed ? 'background:#dcfce7; color:#15803d;' : 'background:#e0f2fe; color:#0369a1;'}">
+                        ${isAlreadyClosed ? '🔒 Already Closed / Frozen' : '🟢 Open / Live Active'}
+                    </span>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:#334155;">
+                    <span>Total Required Demand:</span>
+                    <strong style="font-family:var(--font-mono);">${mReq.toLocaleString()}</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:#334155;">
+                    <span>Total Received:</span>
+                    <strong style="font-family:var(--font-mono); color:#10b981;">${mRec.toLocaleString()}</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:#334155;">
+                    <span>Pending Need:</span>
+                    <strong style="font-family:var(--font-mono);">${mNeed.toLocaleString()}</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:#334155;">
+                    <span>Received Achievement:</span>
+                    <strong style="font-family:var(--font-mono); color:#0284c7;">${mPct}</strong>
+                </div>
+            `;
+        }
+
+        function confirmCloseSelectedMonth() {
+            const sel = document.getElementById('closingMonthSelect');
+            if (!sel) return;
+            const monthKey = sel.value;
+            closeMonthSnapshot(monthKey);
+        }
+
+        function closeMonthSnapshot(monthKey) {
+            if (!isUserAdmin()) {
+                alert("Permission Denied: Only administrators can close and lock a month.");
+                return;
+            }
+            const snapshots = getMonthlySnapshots();
+            const itemsSnapshot = {};
+            let mReq = 0, mRec = 0;
+
+            demandItems.forEach(it => {
+                const key = getItemKey(it);
+                const md = (it.months && it.months[monthKey]) ? it.months[monthKey] : { requir: '', received: '', pct: '0%', need: '0' };
+                mReq += parseFloat(String(md.requir).replace(/,/g, '')) || 0;
+                mRec += parseFloat(String(md.received).replace(/,/g, '')) || 0;
+
+                itemsSnapshot[key] = {
+                    rmCode: it.rmCode,
+                    itemName: it.itemName,
+                    category: it.category,
+                    unit: it.unit,
+                    requir: md.requir || '',
+                    received: md.received || '',
+                    pct: md.pct || '0%',
+                    need: md.need || '0'
+                };
+            });
+
+            const mPct = mReq > 0 ? Math.round((mRec / mReq) * 100) + '%' : (mRec > 0 ? '100%' : '0%');
+
+            snapshots[monthKey] = {
+                monthKey: monthKey,
+                closedAt: new Date().toISOString(),
+                closedBy: sessionStorage.getItem('portal_auth_role') || 'ADMIN',
+                isClosed: true,
+                totalReq: mReq,
+                totalRec: mRec,
+                totalPct: mPct,
+                items: itemsSnapshot
+            };
+
+            saveMonthlySnapshots(snapshots);
+            recalculateAllRMDemandFromSources();
+            renderDemandTable();
+            closeMonthClosingModal();
+            showToast(`🔒 ${monthKey} closed and archived! Historical receipts are permanently frozen.`);
+        }
+
+        function reopenMonthSnapshot(monthKey) {
+            if (!isUserAdmin()) {
+                alert("Permission Denied: Only administrators can re-open a month.");
+                return;
+            }
+            if (confirm(`Are you sure you want to re-open and unlock ${monthKey}? This will restore live dynamic ERP syncing for this month.`)) {
+                const snapshots = getMonthlySnapshots();
+                if (snapshots[monthKey]) {
+                    delete snapshots[monthKey];
+                    saveMonthlySnapshots(snapshots);
+                    recalculateAllRMDemandFromSources();
+                    renderDemandTable();
+                    loadHistoryArchiveDetails(monthKey);
+                    showToast(`🔓 ${monthKey} has been re-opened for live ERP updates.`);
+                }
+            }
+        }
+
+        function openHistoryArchiveModal() {
+            const modal = document.getElementById('historyArchiveModal');
+            if (modal) {
+                const currentMonth = activeMonthFilter !== 'All' ? activeMonthFilter : 'Jul-26';
+                const sel = document.getElementById('historyArchiveMonthSelect');
+                if (sel) sel.value = currentMonth;
+                loadHistoryArchiveDetails(currentMonth);
+                modal.classList.add('active');
+            }
+        }
+
+        function closeHistoryArchiveModal() {
+            const modal = document.getElementById('historyArchiveModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function loadHistoryArchiveDetails(monthKey) {
+            const snapshots = getMonthlySnapshots();
+            const snap = snapshots[monthKey];
+            const banner = document.getElementById('historyStatusBanner');
+            const kpiGrid = document.getElementById('historyKpiGrid');
+            const tableBody = document.getElementById('historyTablePreviewBody');
+            const actionsDiv = document.getElementById('historyActionButtons');
+
+            const isClosed = snap && snap.isClosed;
+
+            if (actionsDiv) {
+                if (isClosed && isUserAdmin()) {
+                    actionsDiv.innerHTML = `
+                        <button type="button" class="btn-group-toggle" style="color:#dc2626; border-color:#fca5a5;" onclick="reopenMonthSnapshot('${monthKey}')" title="Re-open and unfreeze this month">
+                            🔓 Re-Open Month
+                        </button>
+                    `;
+                } else if (!isClosed && isUserAdmin()) {
+                    actionsDiv.innerHTML = `
+                        <button type="button" class="btn-group-analysis" style="background:#ea580c !important; border-color:#c2410c !important;" onclick="closeMonthSnapshot('${monthKey}'); loadHistoryArchiveDetails('${monthKey}');" title="Close and freeze this month now">
+                            🔒 Close & Freeze ${monthKey}
+                        </button>
+                    `;
+                } else {
+                    actionsDiv.innerHTML = '';
+                }
+            }
+
+            if (banner) {
+                if (isClosed) {
+                    const d = snap.closedAt ? new Date(snap.closedAt).toLocaleString() : 'N/A';
+                    banner.className = 'history-month-row closed';
+                    banner.innerHTML = `
+                        <div>
+                            <strong style="color:#166534; font-size:0.86rem;">🔒 FROZEN HISTORICAL SNAPSHOT (${monthKey})</strong>
+                            <div style="font-size:0.72rem; color:#15803d;">Closed & Archived on ${d} by <strong>${escapeHTML(snap.closedBy || 'ADMIN')}</strong></div>
+                        </div>
+                        <span style="font-size:0.72rem; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 8px; border-radius:6px;">IMMUTABLE</span>
+                    `;
+                } else {
+                    banner.className = 'history-month-row open';
+                    banner.innerHTML = `
+                        <div>
+                            <strong style="color:#0369a1; font-size:0.86rem;">🟢 OPEN / LIVE DYNAMIC ERP DATA (${monthKey})</strong>
+                            <div style="font-size:0.72rem; color:#0284c7;">This month is currently live-linked with Production Plan, BOM and ERP Summaries.</div>
+                        </div>
+                        <span style="font-size:0.72rem; font-weight:800; background:#e0f2fe; color:#0369a1; padding:3px 8px; border-radius:6px;">LIVE ACTIVE</span>
+                    `;
+                }
+            }
+
+            // Calculate or load KPIs
+            let totReq = 0, totRec = 0;
+            let itemsToDisplay = [];
+
+            if (isClosed && snap.items) {
+                Object.values(snap.items).forEach(it => {
+                    totReq += parseFloat(String(it.requir).replace(/,/g, '')) || 0;
+                    totRec += parseFloat(String(it.received).replace(/,/g, '')) || 0;
+                    itemsToDisplay.push(it);
+                });
+            } else {
+                demandItems.forEach(it => {
+                    const md = (it.months && it.months[monthKey]) ? it.months[monthKey] : {};
+                    const req = parseFloat(String(md.requir).replace(/,/g, '')) || 0;
+                    const rec = parseFloat(String(md.received).replace(/,/g, '')) || 0;
+                    totReq += req;
+                    totRec += rec;
+                    itemsToDisplay.push({
+                        rmCode: it.rmCode,
+                        itemName: it.itemName,
+                        category: it.category,
+                        requir: md.requir || '',
+                        received: md.received || '',
+                        pct: md.pct || '0%',
+                        need: md.need || '0'
+                    });
+                });
+            }
+
+            const pending = totReq - totRec;
+            const pct = totReq > 0 ? Math.round((totRec / totReq) * 100) + '%' : (totRec > 0 ? '100%' : '0%');
+
+            if (kpiGrid) {
+                kpiGrid.innerHTML = `
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Items Tracked</div>
+                        <div class="analytics-kpi-value">${itemsToDisplay.length}</div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Required Demand</div>
+                        <div class="analytics-kpi-value" style="color:#0284c7;">${totReq.toLocaleString()}</div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Received Qty</div>
+                        <div class="analytics-kpi-value" style="color:#10b981;">${totRec.toLocaleString()}</div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Pending Qty</div>
+                        <div class="analytics-kpi-value" style="color:#f59e0b;">${pending.toLocaleString()}</div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Achievement %</div>
+                        <div class="analytics-kpi-value" style="color:#10b981;">${pct}</div>
+                    </div>
+                `;
+            }
+
+            if (tableBody) {
+                let rows = '';
+                itemsToDisplay.forEach(it => {
+                    rows += `
+                        <tr style="border-bottom:1px solid #f1f5f9;">
+                            <td style="padding:4px 8px; font-family:var(--font-mono); font-weight:700; color:#c2410c;">${escapeHTML(it.rmCode || '-')}</td>
+                            <td style="padding:4px 8px; font-weight:600;">${escapeHTML(it.itemName || '-')}</td>
+                            <td style="padding:4px 8px; color:#64748b;">${escapeHTML(it.category || '-')}</td>
+                            <td style="padding:4px 8px; text-align:right; font-family:var(--font-mono);">${it.requir || '-'}</td>
+                            <td style="padding:4px 8px; text-align:right; font-family:var(--font-mono); font-weight:700; color:#10b981;">${it.received || '-'}</td>
+                            <td style="padding:4px 8px; text-align:center; font-family:var(--font-mono); font-weight:800; background:#fef08a;">${it.pct || '0%'}</td>
+                            <td style="padding:4px 8px; text-align:right; font-family:var(--font-mono); font-weight:700;">${it.need || '-'}</td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = rows;
+            }
+        }
+
+        function exportHistoricalSnapshotCSV() {
+            const sel = document.getElementById('historyArchiveMonthSelect');
+            const monthKey = sel ? sel.value : 'Jul-26';
+            const snapshots = getMonthlySnapshots();
+            const snap = snapshots[monthKey];
+
+            let csv = [];
+            csv.push([`"MEP FAN LTD - Historical Monthly Snapshot for ${monthKey}"`]);
+            csv.push([`"Exported At: ${new Date().toLocaleString()}"`]);
+            csv.push([`"Archive Status: ${snap && snap.isClosed ? 'FROZEN CLOSED' : 'LIVE ACTIVE'}"`]);
+            csv.push(['"RM Code"', '"Item Name"', '"Category"', '"Unit"', '"Required Qty"', '"Received Qty"', '"Percentage"', '"Need Qty"'].join(','));
+
+            if (snap && snap.items) {
+                Object.values(snap.items).forEach(it => {
+                    csv.push([
+                        `"${it.rmCode}"`,
+                        `"${(it.itemName || '').replace(/"/g, '""')}"`,
+                        `"${it.category}"`,
+                        `"${it.unit || ''}"`,
+                        `"${it.requir || ''}"`,
+                        `"${it.received || ''}"`,
+                        `"${it.pct || ''}"`,
+                        `"${it.need || ''}"`
+                    ].join(','));
+                });
+            } else {
+                demandItems.forEach(it => {
+                    const md = (it.months && it.months[monthKey]) ? it.months[monthKey] : {};
+                    csv.push([
+                        `"${it.rmCode}"`,
+                        `"${(it.itemName || '').replace(/"/g, '""')}"`,
+                        `"${it.category}"`,
+                        `"${it.unit || ''}"`,
+                        `"${md.requir || ''}"`,
+                        `"${md.received || ''}"`,
+                        `"${md.pct || ''}"`,
+                        `"${md.need || ''}"`
+                    ].join(','));
+                });
+            }
+
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', `MEP_RM_Demand_Snapshot_${monthKey}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast(`✓ Exported snapshot archive for ${monthKey}!`);
+        }
+
+        // ==========================================
+        // GROUP-WISE DEMAND VS RECEIVED ANALYTICS DASHBOARD
+        // ==========================================
+        let currentAnalyticsMonth = "All";
+
+        function openGroupAnalysisModal(targetCategory = 'All') {
+            const modal = document.getElementById('groupAnalysisModal');
+            if (!modal) return;
+            const sel = document.getElementById('analysisMonthSelect');
+            if (sel) {
+                sel.value = activeMonthFilter !== 'All' ? activeMonthFilter : 'All';
+                currentAnalyticsMonth = sel.value;
+            }
+            renderGroupAnalysisDashboard(currentAnalyticsMonth);
+            modal.classList.add('active');
+
+            if (targetCategory && targetCategory !== 'All') {
+                setTimeout(() => {
+                    const card = document.getElementById(`group-card-${btoa(targetCategory).replace(/=/g, '')}`);
+                    if (card) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        card.style.borderColor = '#ea580c';
+                        card.style.boxShadow = '0 0 0 3px rgba(234, 88, 12, 0.3)';
+                        setTimeout(() => {
+                            card.style.borderColor = '';
+                            card.style.boxShadow = '';
+                        }, 2500);
+                    }
+                }, 200);
+            }
+        }
+
+        function closeGroupAnalysisModal() {
+            const modal = document.getElementById('groupAnalysisModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function renderGroupAnalysisDashboard(monthKey = 'All') {
+            currentAnalyticsMonth = monthKey;
+            const kpiGrid = document.getElementById('analysisKpiGrid');
+            const chartContainer = document.getElementById('analyticsSvgChartContainer');
+            const groupsGrid = document.getElementById('analyticsGroupsGrid');
+            const sourceBadge = document.getElementById('analysisSourceBadge');
+
+            const snapshots = getMonthlySnapshots();
+            const isMonthClosed = (monthKey !== 'All') && snapshots[monthKey] && snapshots[monthKey].isClosed;
+
+            if (sourceBadge) {
+                if (isMonthClosed) {
+                    sourceBadge.innerHTML = '🔒 FROZEN SNAPSHOT';
+                    sourceBadge.style.background = '#fef3c7';
+                    sourceBadge.style.color = '#d97706';
+                    sourceBadge.style.borderColor = '#fde68a';
+                } else {
+                    sourceBadge.innerHTML = '🟢 LIVE ERP ENGINE';
+                    sourceBadge.style.background = '#dcfce7';
+                    sourceBadge.style.color = '#15803d';
+                    sourceBadge.style.borderColor = '#bbf7d0';
+                }
+            }
+
+            const categoriesInOrder = [
+                "Assemble RM (Local)",
+                "Assemble RM (Inter Company-Plastic)",
+                "Assemble RM (Inter Company-Screw and Bolt)",
+                "Assemble RM (Inter Company-Cables)",
+                "Assemble RM (Inter Company-Regulator Item)",
+                "Packing Item",
+                "Armature",
+                "Production Consumable (Assemble)",
+                "Production Consumable (Armature)"
+            ];
+
+            const monthsToAnalyze = monthKey === 'All' ? ALL_MONTHS : [monthKey];
+
+            let overallDemand = 0;
+            let overallReceived = 0;
+
+            const categoryStats = categoriesInOrder.map(cat => {
+                const catItems = demandItems.filter(it => it.category === cat);
+                let catDemand = 0;
+                let catReceived = 0;
+
+                catItems.forEach(it => {
+                    monthsToAnalyze.forEach(m => {
+                        const md = (it.months && it.months[m]) ? it.months[m] : {};
+                        catDemand += parseFloat(String(md.requir).replace(/,/g, '')) || 0;
+                        catReceived += parseFloat(String(md.received).replace(/,/g, '')) || 0;
+                    });
+                });
+
+                overallDemand += catDemand;
+                overallReceived += catReceived;
+
+                const catPending = catDemand - catReceived;
+                // Zero-division safety
+                const catPctNum = catDemand > 0 ? Math.round((catReceived / catDemand) * 100) : (catReceived > 0 ? 100 : 0);
+
+                return {
+                    category: cat,
+                    itemCount: catItems.length,
+                    demand: catDemand,
+                    received: catReceived,
+                    pending: catPending,
+                    pct: catPctNum
+                };
+            });
+
+            const overallPending = overallDemand - overallReceived;
+            // Zero-division safety
+            const overallPctNum = overallDemand > 0 ? Math.round((overallReceived / overallDemand) * 100) : (overallReceived > 0 ? 100 : 0);
+            const overallPendingPctNum = overallDemand > 0 ? Math.max(0, Math.round((overallPending / overallDemand) * 100)) : 0;
+
+            // 1. KPI Cards Strip
+            if (kpiGrid) {
+                kpiGrid.innerHTML = `
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Material Groups</div>
+                        <div class="analytics-kpi-value">${categoryStats.length} Groups</div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Total Requisition Demand</div>
+                        <div class="analytics-kpi-value" style="color:#0284c7;">${overallDemand.toLocaleString()}</div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Total RM Received</div>
+                        <div class="analytics-kpi-value" style="color:#10b981;">${overallReceived.toLocaleString()}</div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Total Pending Needed</div>
+                        <div class="analytics-kpi-value" style="color:${overallPending > 0 ? '#ea580c' : '#10b981'};">${overallPending.toLocaleString()} <span style="font-size:0.72rem; color:#64748b;">(${overallPendingPctNum}%)</span></div>
+                    </div>
+                    <div class="analytics-kpi-card">
+                        <div class="analytics-kpi-label">Overall Achievement %</div>
+                        <div class="analytics-kpi-value" style="color:#10b981;">${overallPctNum}%</div>
+                    </div>
+                `;
+            }
+
+            // 2. Pure SVG Comparative Bar Chart
+            if (chartContainer) {
+                chartContainer.innerHTML = buildSvgComparativeBarChart(categoryStats);
+            }
+
+            // 3. 9 Group Detail Performance Cards
+            if (groupsGrid) {
+                let cardsHtml = '';
+                categoryStats.forEach(stat => {
+                    const cardId = `group-card-${btoa(stat.category).replace(/=/g, '')}`;
+
+                    let badgeColor = '#64748b';
+                    let badgeBg = '#f1f5f9';
+                    let badgeText = 'Pending';
+                    let barColor = '#94a3b8';
+
+                    if (stat.pct >= 100) {
+                        badgeColor = '#15803d';
+                        badgeBg = '#dcfce7';
+                        badgeText = `${stat.pct}% Fulfilled`;
+                        barColor = '#10b981';
+                    } else if (stat.pct > 0) {
+                        badgeColor = '#0369a1';
+                        badgeBg = '#e0f2fe';
+                        badgeText = `${stat.pct}% In Progress`;
+                        barColor = '#0284c7';
+                    } else if (stat.demand === 0 && stat.received === 0) {
+                        badgeColor = '#64748b';
+                        badgeBg = '#f1f5f9';
+                        badgeText = 'No Demand';
+                        barColor = '#cbd5e1';
+                    } else {
+                        badgeColor = '#dc2626';
+                        badgeBg = '#fee2e2';
+                        badgeText = '0% Received';
+                        barColor = '#ef4444';
+                    }
+
+                    const progressWidth = Math.min(100, Math.max(0, stat.pct));
+
+                    cardsHtml += `
+                        <div class="group-stat-card" id="${cardId}">
+                            <div class="group-card-head">
+                                <div class="group-card-title">${escapeHTML(stat.category)}</div>
+                                <span class="group-card-badge" style="background:${badgeBg}; color:${badgeColor};">${badgeText}</span>
+                            </div>
+                            <div style="font-size:0.68rem; color:#64748b; font-weight:700;">${stat.itemCount} Items Tracked</div>
+                            
+                            <div class="group-card-metrics">
+                                <div class="group-metric-item">
+                                    <span class="metric-item-lbl">Demand</span>
+                                    <span class="metric-item-val" style="color:#0284c7;">${stat.demand.toLocaleString()}</span>
+                                </div>
+                                <div class="group-metric-item">
+                                    <span class="metric-item-lbl">Received</span>
+                                    <span class="metric-item-val" style="color:#10b981;">${stat.received.toLocaleString()}</span>
+                                </div>
+                                <div class="group-metric-item">
+                                    <span class="metric-item-lbl">Pending</span>
+                                    <span class="metric-item-val" style="color:${stat.pending > 0 ? '#ea580c' : '#10b981'};">${stat.pending.toLocaleString()}</span>
+                                </div>
+                            </div>
+
+                            <div class="group-progress-wrap">
+                                <div style="display:flex; justify-content:space-between; font-size:0.68rem; font-weight:800; color:#334155;">
+                                    <span>Achievement</span>
+                                    <span>${stat.pct}%</span>
+                                </div>
+                                <div class="group-progress-bar-bg">
+                                    <div class="group-progress-bar-fill" style="width:${progressWidth}%; background:${barColor};"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                groupsGrid.innerHTML = cardsHtml;
+            }
+        }
+
+        function buildSvgComparativeBarChart(categoryStats) {
+            const chartW = 950;
+            const chartH = 240;
+            const padLeft = 40;
+            const padRight = 20;
+            const padTop = 24;
+            const padBottom = 54;
+            const plotW = chartW - padLeft - padRight;
+            const plotH = chartH - padTop - padBottom;
+
+            let maxVal = 1000;
+            categoryStats.forEach(s => {
+                if (s.demand > maxVal) maxVal = s.demand;
+                if (s.received > maxVal) maxVal = s.received;
+            });
+            maxVal = Math.ceil(maxVal * 1.15); // headroom
+
+            const numGroups = categoryStats.length;
+            const groupSlotW = plotW / numGroups;
+            const barW = Math.min(24, groupSlotW * 0.36);
+
+            // Short category display names for X axis
+            const shortNames = [
+                "Local", "Plastic", "Screw/Bolt", "Cables", "Regulator", "Packing", "Armature", "Consum(Asm)", "Consum(Arm)"
+            ];
+
+            let svg = `<svg viewBox="0 0 ${chartW} ${chartH}" width="100%" height="240" style="overflow:visible; font-family:'Times New Roman', Times, serif;">`;
+
+            // Grid lines
+            const gridCount = 4;
+            for (let i = 0; i <= gridCount; i++) {
+                const yVal = Math.round((maxVal / gridCount) * i);
+                const yPos = padTop + plotH - (i / gridCount) * plotH;
+                svg += `<line x1="${padLeft}" y1="${yPos}" x2="${chartW - padRight}" y2="${yPos}" stroke="#f1f5f9" stroke-width="1.5" />`;
+                svg += `<text x="${padLeft - 6}" y="${yPos + 4}" text-anchor="end" font-size="10" font-weight="700" fill="#94a3b8">${yVal >= 1000 ? (yVal/1000).toFixed(0) + 'k' : yVal}</text>`;
+            }
+
+            // Draw bars for each category
+            categoryStats.forEach((stat, idx) => {
+                const centerX = padLeft + idx * groupSlotW + groupSlotW / 2;
+                const dH = maxVal > 0 ? (stat.demand / maxVal) * plotH : 0;
+                const rH = maxVal > 0 ? (stat.received / maxVal) * plotH : 0;
+
+                const dX = centerX - barW - 1.5;
+                const dY = padTop + plotH - dH;
+
+                const rX = centerX + 1.5;
+                const rY = padTop + plotH - rH;
+
+                // Demand Bar (Blue)
+                svg += `<rect x="${dX}" y="${dY}" width="${barW}" height="${dH}" fill="#0284c7" rx="3" opacity="0.95">
+                    <title>${stat.category} Demand: ${stat.demand.toLocaleString()}</title>
+                </rect>`;
+                if (dH > 18) {
+                    svg += `<text x="${dX + barW/2}" y="${dY - 4}" text-anchor="middle" font-size="9" font-weight="800" fill="#0284c7">${stat.demand >= 1000 ? (stat.demand/1000).toFixed(0)+'k' : stat.demand}</text>`;
+                }
+
+                // Received Bar (Green)
+                svg += `<rect x="${rX}" y="${rY}" width="${barW}" height="${rH}" fill="#10b981" rx="3" opacity="0.95">
+                    <title>${stat.category} Received: ${stat.received.toLocaleString()} (${stat.pct}%)</title>
+                </rect>`;
+                if (rH > 18) {
+                    svg += `<text x="${rX + barW/2}" y="${rY - 4}" text-anchor="middle" font-size="9" font-weight="800" fill="#10b981">${stat.received >= 1000 ? (stat.received/1000).toFixed(0)+'k' : stat.received}</text>`;
+                }
+
+                // X-Axis Category Label
+                const name = shortNames[idx] || stat.category;
+                svg += `<text x="${centerX}" y="${padTop + plotH + 18}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0f2942">${name}</text>`;
+                svg += `<text x="${centerX}" y="${padTop + plotH + 32}" text-anchor="middle" font-size="9.5" font-weight="800" fill="${stat.pct >= 100 ? '#10b981' : (stat.pct > 0 ? '#0284c7' : '#94a3b8')}">${stat.pct}%</text>`;
+            });
+
+            // Baseline
+            svg += `<line x1="${padLeft}" y1="${padTop + plotH}" x2="${chartW - padRight}" y2="${padTop + plotH}" stroke="#cbd5e1" stroke-width="2" />`;
+            svg += `</svg>`;
+            return svg;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+
+            loadHiddenSerials();
+            initDemandData();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+
+            // Close serial visibility dropdown on click outside
+            document.addEventListener('click', (e) => {
+                const container = document.querySelector('.serial-vis-container');
+                const dd = document.getElementById('serialVisDropdown');
+                if (dd && dd.classList.contains('active')) {
+                    if (container && !container.contains(e.target)) {
+                        dd.classList.remove('active');
+                    }
+                }
+            });
+
+            // Reactive Multi-Tab Live Auto-Sync
+            window.addEventListener('storage', (e) => {
+                if (
+                    e.key === 'mep_yearly_production_plans_all' ||
+                    e.key === 'mep_production_plan_last_updated' ||
+                    e.key === 'mep_bom_data_custom' ||
+                    e.key === 'mep_bom_last_updated' ||
+                    e.key === 'mep_assemble_custom_data' ||
+                    e.key === 'mep_armature_custom_data' ||
+                    e.key === 'mep_erp_date_interval' ||
+                    e.key === 'mep_fan_assemble_erp_data' ||
+                    e.key === 'mep_armature_winding_erp_data'
+                ) {
+                    recalculateAllRMDemandFromSources();
+                    renderDemandTable();
+                    showToast("🔄 Auto-synced with Production Plan, BOM Master & Summaries!");
+                }
+            });
+
+            window.addEventListener('focus', () => {
+                recalculateAllRMDemandFromSources();
+                renderDemandTable();
+            });
+        });
+
+        // =========================================================================
+        // LINKED CROSS-PAGE CALCULATION ENGINE
+        // Production Plan -> BOM Master -> Monthly RM Demand <- Summaries
+        // Formula: Monthly RM Required Qty = SUM(Monthly Production Qty * BOM Qty)
+        // =========================================================================
+
+        function getLiveProductionPlan() {
+            try {
+                const raw = localStorage.getItem('mep_yearly_production_plans_all');
+                if (raw) {
+                    const allPlans = JSON.parse(raw);
+                    if (allPlans['July_2026_June_2027']) {
+                        return allPlans['July_2026_June_2027'];
+                    }
+                    const keys = Object.keys(allPlans);
+                    if (keys.length > 0 && allPlans[keys[0]]) {
+                        return allPlans[keys[0]];
+                    }
+                }
+            } catch(e) {
+                console.warn("Could not load stored production plan:", e);
+            }
+            if (typeof DEFAULT_PRODUCTION_PLAN !== 'undefined') {
+                return DEFAULT_PRODUCTION_PLAN;
+            }
+            return null;
+        }
+
+        function getLiveBOMData() {
+            try {
+                const raw = localStorage.getItem('mep_bom_data_custom');
+                if (raw) {
+                    const custom = JSON.parse(raw);
+                    if (Array.isArray(custom) && custom.length > 0) {
+                        return custom;
+                    }
+                }
+            } catch(e) {
+                console.warn("Could not load stored BOM:", e);
+            }
+            if (typeof DEFAULT_BOM_DATA !== 'undefined' && Array.isArray(DEFAULT_BOM_DATA)) {
+                return DEFAULT_BOM_DATA;
+            }
+            return [];
+        }
+
+        function getLiveAssembleSummaryData() {
+            if (typeof MEP_ERP_ENGINE !== 'undefined' && typeof MEP_ERP_ENGINE.computeLiveAssembleSummary === 'function') {
+                try {
+                    const live = MEP_ERP_ENGINE.computeLiveAssembleSummary();
+                    if (Array.isArray(live) && live.length > 0) return live;
+                } catch(e) {}
+            }
+            try {
+                const raw = localStorage.getItem('mep_assemble_custom_data');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch(e) {}
+            if (typeof RAW_ASSEMBLE_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_ASSEMBLE_SUMMARY_DATA)) {
+                return RAW_ASSEMBLE_SUMMARY_DATA;
+            }
+            return [];
+        }
+
+        function getLiveArmatureSummaryData() {
+            if (typeof MEP_ERP_ENGINE !== 'undefined' && typeof MEP_ERP_ENGINE.computeLiveArmatureSummary === 'function') {
+                try {
+                    const live = MEP_ERP_ENGINE.computeLiveArmatureSummary();
+                    if (Array.isArray(live) && live.length > 0) return live;
+                } catch(e) {}
+            }
+            try {
+                const raw = localStorage.getItem('mep_armature_custom_data');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch(e) {}
+            if (typeof RAW_ARMATURE_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_ARMATURE_SUMMARY_DATA)) {
+                return RAW_ARMATURE_SUMMARY_DATA;
+            }
+            return [];
+        }
+
+        function getActiveSummaryMonthKey() {
+            const interval = localStorage.getItem('mep_erp_date_interval') || '2026-08-01 to 2026-08-25';
+            const m = interval.match(/(\d{4})-(\d{2})-\d{2}/);
+            if (m) {
+                const y = m[1].slice(-2);
+                const monIdx = parseInt(m[2], 10) - 1;
+                const shortNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                return `${shortNames[monIdx]}-${y}`;
+            }
+            return 'Aug-26';
+        }
+
+        function isArmatureSection(cat) {
+            const c = (cat || '').toLowerCase();
+            return c.includes('armature');
+        }
+
+        function isPackingSection(cat) {
+            const c = (cat || '').toLowerCase();
+            return c.includes('packing');
+        }
+
+        function extractSFGKeysFromPlanItem(item) {
+            const keys = [];
+            const candidates = [item.customDesc, item.code, item.name];
+            for (const text of candidates) {
+                if (!text) continue;
+                const matches = String(text).match(/SFG\d+/gi);
+                if (matches) {
+                    matches.forEach(m => {
+                        const u = m.toUpperCase();
+                        if (!keys.includes(u)) keys.push(u);
+                    });
+                }
+            }
+            if (keys.length === 0 && item.customDesc && item.customDesc.trim()) {
+                keys.push(item.customDesc.trim().toUpperCase());
+            }
+            return keys;
+        }
+
+        function getLiveBOMSummaryData() {
+            try {
+                const raw = localStorage.getItem('mep_rm_requirement_bom_data');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                }
+            } catch(e) {
+                console.warn("Could not load stored RM requirement BOM summary:", e);
+            }
+            if (typeof DEFAULT_RM_REQUIREMENT_BOM_DATA !== 'undefined' && Array.isArray(DEFAULT_RM_REQUIREMENT_BOM_DATA)) {
+                return DEFAULT_RM_REQUIREMENT_BOM_DATA;
+            }
+            return [];
+        }
+
+        const MODEL_CONFIGS = [
+            { key: "CF5601/CF5601IV", short: "CF5601", label: "56 Inch Premium" },
+            { key: "CF5602/CF5602IV", short: "CF5602", label: "56 Inch Speed King" },
+            { key: "CF5603/CF5603IV", short: "CF5603", label: "56 Inch Premium Gold" },
+            { key: "CF5606/CF5606IV", short: "CF5606", label: "56 Inch Premium Plus" },
+            { key: "CF5607/CF5607IV", short: "CF5607", label: "56 Inch Crown" },
+            { key: "CF4801/CF4801IV", short: "CF4801", label: "48 Inch Popular" },
+            { key: "CF3601/CF3601IV", short: "CF3601", label: "36 Inch Hero" },
+            { key: "CF2401/CF2401IV", short: "CF2401", label: "24 Inch Super" }
+        ];
+
+        function getModelProductionTargetMap(prodPlan) {
+            const map = Array.from({ length: 12 }, () => ({}));
+            MODEL_CONFIGS.forEach(mc => {
+                for (let i = 0; i < 12; i++) {
+                    map[i][mc.key] = 0;
+                }
+            });
+
+            if (prodPlan && Array.isArray(prodPlan.categories)) {
+                prodPlan.categories.forEach(cat => {
+                    (cat.items || []).forEach(item => {
+                        const code = (item.code || '').trim().toUpperCase();
+                        const name = (item.name || '').trim().toUpperCase();
+                        const months = item.months || [];
+
+                        let matched = null;
+                        for (const mc of MODEL_CONFIGS) {
+                            const k = mc.key.toUpperCase();
+                            const s = mc.short.toUpperCase();
+                            if (code === k || code === s || code.startsWith(s) || name.includes(s)) {
+                                matched = mc.key;
+                                break;
+                            }
+                        }
+
+                        if (matched) {
+                            for (let mIdx = 0; mIdx < 12; mIdx++) {
+                                const qty = parseFloat(months[mIdx]) || 0;
+                                map[mIdx][matched] = (map[mIdx][matched] || 0) + qty;
+                            }
+                        }
+                    });
+                });
+            }
+            return map;
+        }
+
+        function recalculateAllRMDemandFromSources() {
+            const prodPlan = getLiveProductionPlan();
+            const bomList = getLiveBOMData();
+            const bomSummaryList = getLiveBOMSummaryData();
+            const assembleSummary = getLiveAssembleSummaryData();
+            const armatureSummary = getLiveArmatureSummaryData();
+            const activeSummaryMonth = getActiveSummaryMonthKey();
+
+            // 1. Build Model Production Targets for all 12 months
+            const modelPlanByMonth = getModelProductionTargetMap(prodPlan);
+
+            // Legacy SFG production map
+            const sfgProductionByMonth = Array.from({ length: 12 }, () => ({}));
+            if (prodPlan && Array.isArray(prodPlan.categories)) {
+                prodPlan.categories.forEach(cat => {
+                    (cat.items || []).forEach(planItem => {
+                        const sfgKeys = extractSFGKeysFromPlanItem(planItem);
+                        if (sfgKeys.length === 0) return;
+                        const monthsArr = planItem.months || [];
+                        for (let mIdx = 0; mIdx < 12; mIdx++) {
+                            const qty = parseFloat(monthsArr[mIdx]) || 0;
+                            if (qty > 0) {
+                                sfgKeys.forEach(sfgKey => {
+                                    sfgProductionByMonth[mIdx][sfgKey] = (sfgProductionByMonth[mIdx][sfgKey] || 0) + qty;
+                                });
+                            }
+                        }
+                    });
+                });
+            }
+
+            // Index RM Requirement BOM Summary by Code
+            const bomSummaryMap = new Map();
+            bomSummaryList.forEach(b => {
+                if (b && b.code) {
+                    bomSummaryMap.set(String(b.code).trim(), b);
+                }
+            });
+
+            // Index legacy BOM
+            const bomAssemblyMap = new Map();
+            const bomArmatureMap = new Map();
+            const bomPackingMap = new Map();
+            bomList.forEach(b => {
+                if (!b || !b.code) return;
+                const code = String(b.code).trim();
+                const cat = (b.category || '').toLowerCase();
+                if (cat === 'armature') {
+                    if (!bomArmatureMap.has(code)) bomArmatureMap.set(code, b);
+                } else if (cat === 'packing item') {
+                    if (!bomPackingMap.has(code)) bomPackingMap.set(code, b);
+                    if (!bomAssemblyMap.has(code)) bomAssemblyMap.set(code, b);
+                } else {
+                    if (!bomAssemblyMap.has(code)) bomAssemblyMap.set(code, b);
+                }
+            });
+
+            // Index Summary Store Receipts
+            const assembleRecMap = new Map();
+            assembleSummary.forEach(s => {
+                if (!s || !s.code) return;
+                const cat = (s.category || '').toLowerCase();
+                if (cat.includes('sfg') || cat.includes('ceiling fan')) return;
+                const code = String(s.code).trim();
+                if (!assembleRecMap.has(code)) {
+                    assembleRecMap.set(code, parseFloat(s.storeRec) || 0);
+                }
+            });
+
+            const armatureRecMap = new Map();
+            armatureSummary.forEach(s => {
+                if (!s || !s.code) return;
+                const cat = (s.category || '').toLowerCase();
+                if (cat.includes('sfg')) return;
+                const code = String(s.code).trim();
+                if (!armatureRecMap.has(code)) {
+                    armatureRecMap.set(code, parseFloat(s.storeRec) || 0);
+                }
+            });
+
+            const closedSnapshots = getMonthlySnapshots();
+
+            demandItems.forEach(item => {
+                if (!item.months) item.months = {};
+                const code = (item.rmCode || '').trim();
+                const isArm = isArmatureSection(item.category);
+                const isPack = isPackingSection(item.category);
+
+                const bomSummaryItem = bomSummaryMap.get(code);
+
+                let legacyBomItem = null;
+                if (isArm) legacyBomItem = bomArmatureMap.get(code);
+                else if (isPack) legacyBomItem = bomPackingMap.get(code) || bomAssemblyMap.get(code);
+                else legacyBomItem = bomAssemblyMap.get(code);
+
+                const summaryRec = isArm ? armatureRecMap.get(code) : assembleRecMap.get(code);
+
+                for (let mIdx = 0; mIdx < 12; mIdx++) {
+                    const monthKey = ALL_MONTHS[mIdx];
+                    let md = item.months[monthKey];
+                    if (!md) {
+                        md = { requir: '', received: '', pct: '0%', need: '0' };
+                        item.months[monthKey] = md;
+                    }
+
+                    // Check if frozen
+                    if (closedSnapshots[monthKey] && closedSnapshots[monthKey].isClosed) {
+                        const itemKey = getItemKey(item);
+                        const snapItem = closedSnapshots[monthKey].items ? closedSnapshots[monthKey].items[itemKey] : null;
+                        if (snapItem) {
+                            md.requir = snapItem.requir || '';
+                            md.received = snapItem.received || '';
+                            md.pct = snapItem.pct || '0%';
+                            md.need = snapItem.need || '0';
+                            continue;
+                        }
+                    }
+
+                    // 1. Calculate Demand: Production Plan Target * BOM Master Ratio
+                    if (bomSummaryItem && bomSummaryItem.bom) {
+                        let totalDemand = 0;
+                        MODEL_CONFIGS.forEach(mc => {
+                            const modelKey = mc.key;
+                            const planQty = modelPlanByMonth[mIdx][modelKey] || 0;
+                            const bomRatio = parseFloat(bomSummaryItem.bom[modelKey]) || 0;
+                            totalDemand += planQty * bomRatio;
+                        });
+                        if (totalDemand > 0) {
+                            md.requir = (totalDemand % 1 === 0) ? String(totalDemand) : String(parseFloat(totalDemand.toFixed(3)));
+                        } else {
+                            md.requir = '0';
+                        }
+                    } else if (legacyBomItem && legacyBomItem.sfg) {
+                        let totalReq = 0;
+                        let hasAny = false;
+                        for (const [sfgKey, bomUsageStr] of Object.entries(legacyBomItem.sfg)) {
+                            const usage = parseFloat(bomUsageStr) || 0;
+                            if (usage <= 0) continue;
+                            hasAny = true;
+                            const prodQty = sfgProductionByMonth[mIdx][sfgKey.toUpperCase()] || 0;
+                            if (prodQty > 0) {
+                                totalReq += prodQty * usage;
+                            }
+                        }
+                        if (hasAny) {
+                            md.requir = totalReq > 0 ? ((totalReq % 1 === 0) ? String(totalReq) : String(parseFloat(totalReq.toFixed(3)))) : '0';
+                        }
+                    }
+
+                    // 2. Set Received Qty for active summary month
+                    if (monthKey === activeSummaryMonth && summaryRec !== undefined) {
+                        md.received = String(summaryRec);
+                    }
+
+                    // 3. Calculate Need & Percentage (safe against division by zero)
+                    const reqNum = parseFloat(String(md.requir).replace(/,/g, '')) || 0;
+                    const recNum = parseFloat(String(md.received).replace(/,/g, '')) || 0;
+                    const needNum = reqNum - recNum;
+                    const pct = reqNum > 0 ? Math.round((recNum / reqNum) * 100) + '%' : (recNum > 0 ? '100%' : '0%');
+
+                    md.pct = pct;
+                    md.need = String(needNum);
+                }
+
+                recalculateItemTotals(item);
+            });
+
+            localStorage.setItem("mep_monthly_rm_demand_custom", JSON.stringify(demandItems));
+        }
+
+        function syncWithPlanAndBOM(showToastFeedback = false) {
+            recalculateAllRMDemandFromSources();
+            renderDemandTable();
+            if (showToastFeedback) {
+                showToast("✓ Synchronized RM Demand & Receipts with Production Plan, BOM Master & Summaries!");
+            }
+        }
+
+        function initDemandData() {
+            const saved = localStorage.getItem("mep_monthly_rm_demand_custom");
+            if (saved) {
+                try {
+                    demandItems = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Failed to parse saved rm demand data, loading baseline", e);
+                    demandItems = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_RM_DEMAND_ITEMS));
+                }
+            } else {
+                demandItems = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_RM_DEMAND_ITEMS));
+            }
+
+            // Recalculate dynamic linked demand & receipts across all 12 months
+            recalculateAllRMDemandFromSources();
+
+            renderDemandTable();
+        }
+
+        function toggleMonthCollapse(monthKey) {
+            monthCollapsed[monthKey] = !monthCollapsed[monthKey];
+            renderDemandTable();
+        }
+
+        function expandAllMonths() {
+            ALL_MONTHS.forEach(m => monthCollapsed[m] = false);
+            renderDemandTable();
+            showToast("âœ“ Expanded all 12 months!");
+        }
+
+        function collapseAllMonths() {
+            ALL_MONTHS.forEach(m => monthCollapsed[m] = true);
+            renderDemandTable();
+            showToast("âœ“ Collapsed all 12 months into compact summaries!");
+        }
+
+        function onMonthSelectChange(val) {
+            activeMonthFilter = val;
+            renderDemandTable();
+        }
+
+        function onCategorySelectChange(val) {
+            activeCategoryFilter = val;
+            renderDemandTable();
+        }
+
+        function handleSearch(val) {
+            currentSearchTerm = val.toLowerCase().trim();
+            renderDemandTable();
+        }
+
+        function renderDemandTable() {
+            const thead = document.getElementById('tableHead');
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+
+            const monthsToRender = activeMonthFilter === "All" ? ALL_MONTHS : [activeMonthFilter];
+
+            // 1. Build Header Tier 1 & 2
+            let tr1 = `<tr>
+                <th class="col-sl th-corner-top"><div class="corner-header-label"><span>SL</span><span>No</span></div></th>
+                <th class="col-code th-corner-top"><div class="corner-header-label">RM Code</div></th>
+                <th class="col-name th-corner-top"><div class="corner-header-label">Item Name</div></th>
+                <th class="col-unit th-corner-top"><div class="corner-header-label">Unit</div></th>
+            `;
+
+            let tr2 = `<tr>
+                <th class="col-sl th-corner-bot"></th>
+                <th class="col-code th-corner-bot"></th>
+                <th class="col-name th-corner-bot"></th>
+                <th class="col-unit th-corner-bot"></th>
+            `;
+
+            monthsToRender.forEach(m => {
+                const isCollapsed = monthCollapsed[m];
+                if (isCollapsed) {
+                    tr1 += `<th class="month-header-th" colspan="1">
+                        <button class="month-toggle-btn" onclick="toggleMonthCollapse('${m}')" title="Expand ${m}">+</button>
+                        ${m}
+                    </th>`;
+                    tr2 += `<th class="th-sub-need" title="Received / Demand">% Rec</th>`;
+                } else {
+                    tr1 += `<th class="month-header-th" colspan="4">
+                        <button class="month-toggle-btn" onclick="toggleMonthCollapse('${m}')" title="Collapse ${m}">−</button>
+                        ${m}
+                    </th>`;
+                    tr2 += `
+                        <th class="th-sub-req">Requir Qty</th>
+                        <th class="th-sub-rec">Received Qty</th>
+                        <th class="th-sub-pct">%</th>
+                        <th class="th-sub-need">NeeD QTY</th>
+                    `;
+                }
+            });
+
+            // Year Total Headers
+            tr1 += `<th class="th-total-head" colspan="3">Total</th><th class="th-total-head th-yearly-top" style="width:80px;">Yearly Rec %</th></tr>`;
+            tr2 += `
+                <th class="th-total-sub">Requst Qty</th>
+                <th class="th-total-sub">Received Qty</th>
+                <th class="th-total-sub">Pending Qty</th>
+                <th class="th-total-sub th-yearly-bot" style="width:80px;"></th>
+            </tr>`;
+
+            thead.innerHTML = tr1 + tr2;
+
+            // 2. Filter Items
+            const filteredItems = demandItems.filter(item => {
+                const matchCat = activeCategoryFilter === "All" || item.category === activeCategoryFilter;
+                let matchSearch = true;
+                if (currentSearchTerm !== "") {
+                    const str = `${item.rmCode} ${item.itemName} ${item.unit} ${item.category}`.toLowerCase();
+                    matchSearch = str.includes(currentSearchTerm);
+                }
+                return matchCat && matchSearch;
+            });
+
+            // Group by category
+            const categoriesInOrder = [
+                "Assemble RM (Local)",
+                "Assemble RM (Inter Company-Plastic)",
+                "Assemble RM (Inter Company-Screw and Bolt)",
+                "Assemble RM (Inter Company-Cables)",
+                "Assemble RM (Inter Company-Regulator Item)",
+                "Packing Item",
+                "Armature",
+                "Production Consumable (Assemble)",
+                "Production Consumable (Armature)"
+            ];
+
+            let tbodyHtml = '';
+            let grandTotalReq = 0;
+            let grandTotalRec = 0;
+            let grandTotalPending = 0;
+            const isAdmin = isUserAdmin();
+
+            categoriesInOrder.forEach(cat => {
+                const catItems = filteredItems.filter(it => it.category === cat);
+                if (catItems.length === 0) return;
+
+                // Category Banner Row
+                tbodyHtml += `
+                    <tr class="tr-category-banner">
+                        <td colspan="4" class="cat-title-cell">
+                            <div style="display:flex; align-items:center; justify-content:space-between; width:100%; padding-right:8px;">
+                                <span>📦 ${escapeHTML(cat)} (${catItems.length} Items)</span>
+                                <button type="button" class="btn-analyze-category" onclick="event.stopPropagation(); openGroupAnalysisModal('${escapeAttr(cat)}')" title="Analyze ${escapeAttr(cat)} Demand vs Received">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                    <span>Analyze</span>
+                                </button>
+                            </div>
+                        </td>
+                `;
+
+                // Calculate Category Subtotals for each rendered month
+                monthsToRender.forEach(m => {
+                    let catReq = 0, catRec = 0;
+                    catItems.forEach(it => {
+                        const md = it.months[m] || {};
+                        catReq += parseFloat(String(md.requir).replace(/,/g, '')) || 0;
+                        catRec += parseFloat(String(md.received).replace(/,/g, '')) || 0;
+                    });
+                    const catPct = catReq > 0 ? Math.round((catRec / catReq) * 100) + '%' : (catRec > 0 ? '100%' : '0%');
+                    const catNeed = catReq - catRec;
+
+                    if (monthCollapsed[m]) {
+                        tbodyHtml += `<td style="text-align:center; font-weight:800;">${catPct}</td>`;
+                    } else {
+                        tbodyHtml += `
+                            <td style="text-align:right;">${catReq > 0 ? catReq.toLocaleString() : '-'}</td>
+                            <td style="text-align:right;">${catRec > 0 ? catRec.toLocaleString() : '-'}</td>
+                            <td style="text-align:center; font-weight:800;">${catPct}</td>
+                            <td style="text-align:right;">${catNeed !== 0 ? catNeed.toLocaleString() : '-'}</td>
+                        `;
+                    }
+                });
+
+                // Cat Year Totals
+                let catTotReq = 0, catTotRec = 0;
+                catItems.forEach(it => {
+                    catTotReq += parseFloat(String(it.totalReq).replace(/[,() ]/g, '')) || 0;
+                    catTotRec += parseFloat(String(it.totalRec).replace(/[,() ]/g, '')) || 0;
+                });
+                const catYearPct = catTotReq > 0 ? Math.round((catTotRec / catTotReq) * 100) + '%' : (catTotReq > 0 ? '100%' : '0%');
+                tbodyHtml += `
+                    <td style="text-align:right; font-weight:800;">${catTotReq.toLocaleString()}</td>
+                    <td style="text-align:right; font-weight:800;">${catTotRec.toLocaleString()}</td>
+                    <td style="text-align:right; font-weight:800;">${(catTotReq - catTotRec).toLocaleString()}</td>
+                    <td style="text-align:center; font-weight:900; background:#fde047;">${catYearPct}</td>
+                </tr>`;
+
+                // Render each item
+                catItems.forEach((item, itemIdx) => {
+                    const globalIdx = demandItems.indexOf(item);
+                    const itemKey = getItemKey(item);
+                    const isHidden = hiddenSerials.includes(itemKey);
+
+                    // Accumulate totals for ALL items (keeps grand total 100% complete)
+                    const itemReq = parseFloat(String(item.totalReq).replace(/[,() ]/g, '')) || 0;
+                    const itemRec = parseFloat(String(item.totalRec).replace(/[,() ]/g, '')) || 0;
+                    grandTotalReq += itemReq;
+                    grandTotalRec += itemRec;
+
+                    // If hidden, do not render row visually!
+                    if (isHidden) {
+                        return;
+                    }
+
+                    const rowId = `rm-row-${globalIdx}`;
+
+                    tbodyHtml += `<tr id="${rowId}">`;
+                    tbodyHtml += `
+                        <td class="col-sl">
+                            <div class="sl-cell-wrap">
+                                <span class="sl-num-text">${escapeHTML(item.sl || (itemIdx + 1))}</span>
+                                <button type="button" class="btn-hide-row" onclick="hideSerial('${escapeAttr(itemKey)}')" title="Hide Serial ${escapeAttr(item.sl || (itemIdx + 1))}">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>`;
+                    tbodyHtml += `<td class="col-code">${escapeHTML(item.rmCode || '-')}</td>`;
+                    tbodyHtml += `<td class="col-name" title="${escapeAttr(item.itemName)}">${escapeHTML(item.itemName)}</td>`;
+                    tbodyHtml += `<td class="col-unit">${escapeHTML(item.unit || '-')}</td>`;
+
+                    monthsToRender.forEach(m => {
+                        const md = item.months[m] || { requir: '', received: '', pct: '', need: '' };
+                        const isCollapsed = monthCollapsed[m];
+
+                        const reqVal = md.requir || '';
+                        const recVal = md.received || '';
+                        const pctVal = md.pct || '';
+                        const needVal = md.need || '';
+
+                        const needNum = parseFloat(String(needVal).replace(/,/g, '')) || 0;
+                        const needClass = needNum < 0 ? 'need-neg' : (needNum > 0 ? 'need-pos' : '');
+
+                        if (isCollapsed) {
+                            tbodyHtml += `<td class="td-pct">${pctVal || '-'}</td>`;
+                        } else {
+                            tbodyHtml += `
+                                <td class="td-num td-req-clickable" onclick="openModelWiseBreakdownModal('${escapeAttr(item.rmCode)}', '${m}')" title="Click to view Model-Wise Breakdown for ${escapeAttr(item.rmCode)} in ${m}">${reqVal || '-'}</td>
+                                <td class="td-num" ${isAdmin ? `contenteditable="true" onblur="updateItemQty(${globalIdx}, '${m}', 'received', this.innerText)"` : ''}>${recVal || '-'}</td>
+                                <td class="td-pct">${pctVal || '-'}</td>
+                                <td class="td-need ${needClass}">${needVal || '-'}</td>
+                            `;
+                        }
+                    });
+
+                    tbodyHtml += `
+                        <td class="td-total-req">${item.totalReq || '-'}</td>
+                        <td class="td-total-rec">${item.totalRec || '-'}</td>
+                        <td class="td-total-pending">${item.totalPending || '-'}</td>
+                        <td class="td-yearly-pct">${item.yearlyPct || '0%'}</td>
+                    </tr>`;
+                });
+            });
+
+            if (filteredItems.length === 0) {
+                tbodyHtml = `<tr><td colspan="55" style="text-align:center; padding:40px; color:#94a3b8; font-weight:700;">No raw materials matched your search filter.</td></tr>`;
+            }
+
+            tbody.innerHTML = tbodyHtml;
+
+            // 3. Render Grand Total Footer
+            let footHtml = `<tr>`;
+            footHtml += `<td colspan="4" class="foot-title">GRAND TOTAL RAW MATERIALS:</td>`;
+
+            monthsToRender.forEach(m => {
+                let mReq = 0, mRec = 0;
+                filteredItems.forEach(it => {
+                    const md = it.months[m] || {};
+                    mReq += parseFloat(String(md.requir).replace(/,/g, '')) || 0;
+                    mRec += parseFloat(String(md.received).replace(/,/g, '')) || 0;
+                });
+                const mPct = mReq > 0 ? Math.round((mRec / mReq) * 100) + '%' : (mRec > 0 ? '100%' : '0%');
+                const mNeed = mReq - mRec;
+
+                if (monthCollapsed[m]) {
+                    footHtml += `<td style="text-align:center; color:#38bdf8;">${mPct}</td>`;
+                } else {
+                    footHtml += `
+                        <td style="text-align:right;">${mReq.toLocaleString()}</td>
+                        <td style="text-align:right;">${mRec.toLocaleString()}</td>
+                        <td style="text-align:center; color:#38bdf8;">${mPct}</td>
+                        <td style="text-align:right;">${mNeed.toLocaleString()}</td>
+                    `;
+                }
+            });
+
+            grandTotalPending = grandTotalReq - grandTotalRec;
+            const grandPct = grandTotalReq > 0 ? Math.round((grandTotalRec / grandTotalReq) * 100) + '%' : '0%';
+
+            footHtml += `
+                <td style="text-align:right; color:#38bdf8;">${grandTotalReq.toLocaleString()}</td>
+                <td style="text-align:right; color:#10b981;">${grandTotalRec.toLocaleString()}</td>
+                <td style="text-align:right; color:#f59e0b;">${grandTotalPending.toLocaleString()}</td>
+                <td style="text-align:center; color:#10b981; font-size:0.86rem;">${grandPct}</td>
+            </tr>`;
+
+            tfoot.innerHTML = footHtml;
+
+            // Update KPI cards
+            const kpiItems = document.getElementById('kpiTotalItems');
+            const kpiPct = document.getElementById('kpiYearlyPct');
+            const visibleItemCount = filteredItems.filter(it => !hiddenSerials.includes(getItemKey(it))).length;
+            const hiddenCount = filteredItems.length - visibleItemCount;
+            if (kpiItems) {
+                kpiItems.innerText = hiddenCount > 0 ? `${visibleItemCount} Visible (${hiddenCount} Hidden)` : `${filteredItems.length} Items`;
+            }
+            if (kpiPct) kpiPct.innerText = grandPct;
+            updateHiddenBadge();
+        }
+
+        function isUserAdmin() {
+            try {
+                const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
+                if (role === 'VIEW' || document.body.classList.contains('portal-view-only')) {
+                    return false;
+                }
+                return true;
+            } catch (e) {
+                return true;
+            }
+        }
+
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function escapeAttr(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function recalculateItemTotals(item) {
+            if (!item || !item.months) return;
+            let totReq = 0, totRec = 0;
+            ALL_MONTHS.forEach(m => {
+                const md = item.months[m] || {};
+                totReq += parseFloat(String(md.requir).replace(/,/g, '')) || 0;
+                totRec += parseFloat(String(md.received).replace(/,/g, '')) || 0;
+            });
+
+            item.totalReq = totReq > 0 ? totReq.toLocaleString() : '-';
+            item.totalRec = totRec > 0 ? totRec.toLocaleString() : '-';
+            item.totalPending = (totReq - totRec) !== 0 ? (totReq - totRec).toLocaleString() : '-';
+            item.yearlyPct = totReq > 0 ? Math.round((totRec / totReq) * 100) + '%' : (totRec > 0 ? '100%' : '0%');
+        }
+
+        function updateItemQty(globalIdx, monthKey, field, newVal) {
+            if (!isUserAdmin()) return;
+            const item = demandItems[globalIdx];
+            if (!item) return;
+
+            const clean = newVal.trim().replace(/,/g, '');
+            if (!item.months[monthKey]) {
+                item.months[monthKey] = { requir: '0', received: '0', pct: '0%', need: '0' };
+            }
+
+            item.months[monthKey][field] = clean;
+
+            // Recalculate Month % and Need
+            const req = parseFloat(item.months[monthKey].requir) || 0;
+            const rec = parseFloat(item.months[monthKey].received) || 0;
+            const pct = req > 0 ? Math.round((rec / req) * 100) + '%' : (rec > 0 ? '100%' : '0%');
+            const need = req - rec;
+
+            item.months[monthKey].pct = pct;
+            item.months[monthKey].need = String(need);
+
+            // Recalculate Yearly Totals
+            recalculateItemTotals(item);
+
+            renderDemandTable();
+            saveDemandData();
+            showToast(`✓ Updated ${item.itemName} (${monthKey}): ${field} = ${clean}`);
+        }
+
+        function saveDemandData() {
+            localStorage.setItem("mep_monthly_rm_demand_custom", JSON.stringify(demandItems));
+            showToast("✓ RM Demand & Received changes saved successfully!");
+        }
+
+        function resetToDefault() {
+            if (!isUserAdmin()) {
+                alert("Permission Denied: Only administrators can reset data.");
+                return;
+            }
+            if (confirm("Are you sure you want to reset RM Demand Vs Received back to default factory dataset? All custom edits will be restored.")) {
+                localStorage.removeItem("mep_monthly_rm_demand_custom");
+                demandItems = JSON.parse(JSON.stringify(DEFAULT_MONTHLY_RM_DEMAND_ITEMS));
+                recalculateAllRMDemandFromSources();
+                renderDemandTable();
+                showToast("✓ Restored factory default RM demand dataset!");
+            }
+        }
+
+        // ==========================================
+        // ADD / EDIT / REPLACE ITEM MODAL (MASTER CONNECTED)
+        // ==========================================
+        let editingItemIndex = null;
+
+        function openAddItemModal() {
+            if (!isUserAdmin()) {
+                alert("Permission Denied: Only administrators can add raw material items.");
+                return;
+            }
+            editingItemIndex = null;
+
+            const titleEl = document.getElementById('itemModalTitle');
+            const badgeEl = document.getElementById('itemModalBadge');
+            if (titleEl) {
+                titleEl.innerHTML = `
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#8b5cf6" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    ADD NEW RAW MATERIAL ITEM
+                `;
+            }
+            if (badgeEl) {
+                badgeEl.style.display = 'none';
+                badgeEl.textContent = '';
+            }
+
+            document.getElementById('newRMCode').value = '';
+            document.getElementById('newRMName').value = '';
+            document.getElementById('newRMUnit').value = '';
+            document.getElementById('newRMRequir').value = '';
+            document.getElementById('newRMReceived').value = '';
+
+            document.querySelectorAll('.init-qty-group').forEach(el => el.style.display = '');
+
+            document.getElementById('addItemModal').classList.add('active');
+            setTimeout(() => document.getElementById('newRMCode').focus(), 150);
+        }
+
+        function openEditItemModal(globalIdx) {
+            if (!isUserAdmin()) {
+                alert("Permission Denied: Only administrators can edit or replace raw material items.");
+                return;
+            }
+            const item = demandItems[globalIdx];
+            if (!item) return;
+
+            editingItemIndex = globalIdx;
+
+            const titleEl = document.getElementById('itemModalTitle');
+            const badgeEl = document.getElementById('itemModalBadge');
+            if (titleEl) {
+                titleEl.innerHTML = `
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0284c7" stroke-width="2.5">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    EDIT / REPLACE RAW MATERIAL ITEM
+                `;
+            }
+            if (badgeEl) {
+                badgeEl.style.display = 'inline-block';
+                badgeEl.textContent = `SL #${item.sl || (globalIdx + 1)}`;
+            }
+
+            document.getElementById('newRMCode').value = item.rmCode || '';
+            document.getElementById('newRMName').value = item.itemName || '';
+            document.getElementById('newRMUnit').value = item.unit || '';
+            document.getElementById('newRMCategory').value = item.category || 'Assemble RM (Local)';
+
+            // Hide initial qty fields in edit/replace mode
+            document.querySelectorAll('.init-qty-group').forEach(el => el.style.display = 'none');
+
+            document.getElementById('addItemModal').classList.add('active');
+            setTimeout(() => document.getElementById('newRMCode').focus(), 150);
+        }
+
+        function closeAddItemModal() {
+            document.getElementById('addItemModal').classList.remove('active');
+            editingItemIndex = null;
+        }
+
+        function onRMCodeInput(codeVal) {
+            const cleanCode = codeVal.trim();
+            if (!cleanCode) return;
+
+            // Lookup in Master Database
+            if (typeof getMasterItem === 'function') {
+                const found = getMasterItem(cleanCode);
+                if (found) {
+                    document.getElementById('newRMName').value = found.name || '';
+                    document.getElementById('newRMUnit').value = found.unit || '';
+                    return;
+                }
+            }
+
+            // Lookup in baseline demand items
+            const match = demandItems.find(it => it.rmCode === cleanCode);
+            if (match) {
+                document.getElementById('newRMName').value = match.itemName || '';
+                document.getElementById('newRMUnit').value = match.unit || '';
+            }
+        }
+
+        function submitItemForm() {
+            if (!isUserAdmin()) {
+                alert("Permission Denied: Only administrators can modify raw material items.");
+                return;
+            }
+
+            const code = document.getElementById('newRMCode').value.trim();
+            const name = document.getElementById('newRMName').value.trim();
+            const unit = document.getElementById('newRMUnit').value.trim() || 'Pcs';
+            const cat = document.getElementById('newRMCategory').value;
+
+            if (!code || !name) {
+                alert("Please enter RM Code and Item Name!");
+                return;
+            }
+
+            if (editingItemIndex !== null && demandItems[editingItemIndex]) {
+                // EDIT / REPLACE EXISTING ITEM
+                const targetItem = demandItems[editingItemIndex];
+                const oldName = targetItem.itemName;
+                const slNum = targetItem.sl || (editingItemIndex + 1);
+
+                targetItem.rmCode = code;
+                targetItem.itemName = name;
+                targetItem.unit = unit;
+                targetItem.category = cat;
+
+                if (!targetItem.months) {
+                    targetItem.months = {};
+                    ALL_MONTHS.forEach(m => {
+                        targetItem.months[m] = { requir: '', received: '', pct: '0%', need: '0' };
+                    });
+                }
+
+                recalculateItemTotals(targetItem);
+
+                closeAddItemModal();
+                renderDemandTable();
+                saveDemandData();
+
+                showToast(`✓ Serial #${slNum} replaced with "${name}" (${code})!`);
+            } else {
+                // ADD BRAND NEW ITEM
+                const req = document.getElementById('newRMRequir').value.trim() || '0';
+                const rec = document.getElementById('newRMReceived').value.trim() || '0';
+
+                const monthData = {};
+                ALL_MONTHS.forEach(m => {
+                    monthData[m] = { requir: '', received: '', pct: '0%', need: '0' };
+                });
+
+                // Set Jul-26
+                const reqNum = parseFloat(req) || 0;
+                const recNum = parseFloat(rec) || 0;
+                const pct = reqNum > 0 ? Math.round((recNum / reqNum) * 100) + '%' : '0%';
+                const need = reqNum - recNum;
+                monthData['Jul-26'] = {
+                    requir: req,
+                    received: rec,
+                    pct: pct,
+                    need: String(need)
+                };
+
+                const newItem = {
+                    category: cat,
+                    sl: String(demandItems.filter(it => it.category === cat).length + 1),
+                    rmCode: code,
+                    itemName: name,
+                    unit: unit,
+                    months: monthData,
+                    totalReq: req,
+                    totalRec: rec,
+                    totalPending: String(need),
+                    yearlyPct: pct
+                };
+
+                demandItems.push(newItem);
+                closeAddItemModal();
+                renderDemandTable();
+                saveDemandData();
+
+                showToast(`✓ Added ${name} (${code}) to ${cat}!`);
+            }
+        }
+
+        function submitNewItem() {
+            submitItemForm();
+        }
+
+        // Global keydown listeners for modal UX
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAddItemModal();
+                closeGroupAnalysisModal();
+                closeHistoryArchiveModal();
+                closeMonthClosingModal();
+                const dd = document.getElementById('serialVisDropdown');
+                if (dd) dd.classList.remove('active');
+            } else if (e.key === 'Enter') {
+                const modal = document.getElementById('addItemModal');
+                if (modal && modal.classList.contains('active') && e.target && e.target.tagName === 'INPUT') {
+                    e.preventDefault();
+                    submitItemForm();
+                }
+            }
+        });
+
+        function exportToCSV() {
+            let csv = [];
+            let h1 = ['SL No', 'RM Code', 'Item Name', 'Unit'];
+            ALL_MONTHS.forEach(m => {
+                h1.push(`${m} Requir`, `${m} Received`, `${m} %`, `${m} NeeD`);
+            });
+            h1.push('Total Request', 'Total Received', 'Total Pending', 'Yearly Received %');
+            csv.push(h1.map(h => `"${h}"`).join(','));
+
+            demandItems.forEach(item => {
+                let row = [
+                    item.sl || '',
+                    item.rmCode || '',
+                    item.itemName || '',
+                    item.unit || ''
+                ];
+                ALL_MONTHS.forEach(m => {
+                    const md = item.months[m] || {};
+                    row.push(md.requir || '', md.received || '', md.pct || '', md.need || '');
+                });
+                row.push(item.totalReq || '', item.totalRec || '', item.totalPending || '', item.yearlyPct || '');
+                csv.push(row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','));
+            });
+
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', `MEP_FAN_Monthly_RM_Demand_Vs_Received_2026_2027.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("âœ“ Exported Monthly RM Demand CSV successfully!");
+        }
+
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toastMsg');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2600);
+        }
+
+        // ==========================================
+        // MODEL-WISE RM REQUIREMENT BREAKDOWN MODAL
+        // ==========================================
+        function openModelWiseBreakdownModal(targetRmCode = '', targetMonthKey = '') {
+            const modal = document.getElementById('modelWiseModal');
+            if (!modal) return;
+
+            // If month was passed as first argument
+            if (ALL_MONTHS.includes(targetRmCode) || targetRmCode === 'All') {
+                targetMonthKey = targetRmCode;
+                targetRmCode = '';
+            }
+
+            const sel = document.getElementById('modelWiseMonthSelect');
+            if (sel) {
+                if (targetMonthKey && (ALL_MONTHS.includes(targetMonthKey) || targetMonthKey === 'All')) {
+                    sel.value = targetMonthKey;
+                } else if (activeMonthFilter !== 'All') {
+                    sel.value = activeMonthFilter;
+                } else {
+                    sel.value = 'Sep-26';
+                }
+            }
+
+            const searchInput = document.getElementById('modelWiseSearchInput');
+            if (searchInput) {
+                searchInput.value = targetRmCode || '';
+            }
+
+            renderModelWiseTable();
+            modal.classList.add('active');
+        }
+
+        function closeModelWiseModal() {
+            const modal = document.getElementById('modelWiseModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function renderModelWiseTable() {
+            const thead = document.getElementById('modelWiseTableHead');
+            const tbody = document.getElementById('modelWiseTableBody');
+            const tfoot = document.getElementById('modelWiseTableFoot');
+            const summaryDiv = document.getElementById('modelWisePlanSummary');
+            if (!thead || !tbody || !tfoot) return;
+
+            const selectedMonth = document.getElementById('modelWiseMonthSelect')?.value || 'Jul-26';
+            const searchTerm = (document.getElementById('modelWiseSearchInput')?.value || '').trim().toLowerCase();
+
+            const prodPlan = getLiveProductionPlan();
+            const bomSummaryList = getLiveBOMSummaryData();
+            const modelPlanByMonth = getModelProductionTargetMap(prodPlan);
+
+            // Compute model target for chosen month (or all 12 months sum)
+            const modelTargets = {};
+            let totalCeilingFanTarget = 0;
+
+            MODEL_CONFIGS.forEach(mc => {
+                let t = 0;
+                if (selectedMonth === 'All') {
+                    for (let i = 0; i < 12; i++) {
+                        t += (modelPlanByMonth[i][mc.key] || 0);
+                    }
+                } else {
+                    const mIdx = ALL_MONTHS.indexOf(selectedMonth);
+                    if (mIdx !== -1) {
+                        t = (modelPlanByMonth[mIdx][mc.key] || 0);
+                    }
+                }
+                modelTargets[mc.key] = t;
+                totalCeilingFanTarget += t;
+            });
+
+            if (summaryDiv) {
+                summaryDiv.innerHTML = `Total Fan Plan (${selectedMonth}): <strong style="color:#15803d; font-size:0.85rem;">${totalCeilingFanTarget.toLocaleString()} Pcs</strong>`;
+            }
+
+            // Build Header
+            let headHTML = `
+                <tr style="background:#f472b6; color:#0f172a;">
+                    <th style="width:36px; text-align:center; padding:6px 4px; border:1px solid #cbd5e1;">SL</th>
+                    <th style="width:105px; text-align:left; padding:6px 8px; border:1px solid #cbd5e1;">RM Code</th>
+                    <th style="width:230px; text-align:left; padding:6px 8px; border:1px solid #cbd5e1;">Item Name</th>
+                    <th style="width:48px; text-align:center; padding:6px 4px; border:1px solid #cbd5e1;">Unit</th>
+                    <th style="width:52px; text-align:center; padding:6px 4px; border:1px solid #cbd5e1;">Type</th>
+            `;
+
+            MODEL_CONFIGS.forEach(mc => {
+                const p = modelTargets[mc.key] || 0;
+                headHTML += `
+                    <th style="min-width:85px; text-align:center; padding:4px 6px; border:1px solid #cbd5e1;">
+                        <div style="font-weight:900;">${escapeHTML(mc.short)}</div>
+                        <div style="font-size:10px; font-weight:700; color:#0f2942; background:rgba(255,255,255,0.7); border-radius:4px; padding:1px 3px; margin-top:2px;">Plan: ${p.toLocaleString()}</div>
+                    </th>
+                `;
+            });
+
+            headHTML += `
+                    <th style="min-width:110px; text-align:right; padding:6px 8px; background:#0284c7; color:#ffffff; border:1px solid #cbd5e1;">Total RM Demand</th>
+                </tr>
+            `;
+            thead.innerHTML = headHTML;
+
+            // Filter BOM items
+            const filteredBOM = bomSummaryList.filter(item => {
+                if (!searchTerm) return true;
+                const str = `${item.code} ${item.name} ${item.category || ''} ${item.unit || ''} ${item.type || ''}`.toLowerCase();
+                return str.includes(searchTerm);
+            });
+
+            // Build Body
+            let bodyHTML = '';
+            const modelDemandTotals = {};
+            MODEL_CONFIGS.forEach(mc => { modelDemandTotals[mc.key] = 0; });
+            let grandTotalDemand = 0;
+
+            filteredBOM.forEach((item, idx) => {
+                let rowDemandSum = 0;
+                let cellsHTML = '';
+
+                MODEL_CONFIGS.forEach(mc => {
+                    const planQty = modelTargets[mc.key] || 0;
+                    const bomRatio = parseFloat(item.bom ? item.bom[mc.key] : 0) || 0;
+                    const req = planQty * bomRatio;
+                    rowDemandSum += req;
+                    modelDemandTotals[mc.key] += req;
+
+                    const title = `Plan: ${planQty.toLocaleString()} × Ratio: ${bomRatio} = ${req.toLocaleString()}`;
+                    cellsHTML += `
+                        <td style="text-align:right; font-family:'Times New Roman', Times, serif; font-variant-numeric:tabular-nums; padding:4px 6px; border:1px solid #cbd5e1;" title="${escapeAttr(title)}">
+                            ${req > 0 ? (req % 1 === 0 ? req.toLocaleString() : req.toFixed(3)) : '-'}
+                        </td>
+                    `;
+                });
+
+                grandTotalDemand += rowDemandSum;
+
+                bodyHTML += `
+                    <tr style="${idx % 2 === 1 ? 'background:#f8fafc;' : ''}">
+                        <td style="text-align:center; font-weight:700; color:#64748b; border:1px solid #cbd5e1;">${idx + 1}</td>
+                        <td style="font-weight:700; color:#0f2942; font-family:var(--font-mono); padding-left:8px; border:1px solid #cbd5e1;">${escapeHTML(item.code || '-')}</td>
+                        <td style="font-weight:700; color:#1e293b; padding-left:8px; border:1px solid #cbd5e1;" title="${escapeAttr(item.name || '')}">${escapeHTML(item.name || '-')}</td>
+                        <td style="text-align:center; color:#64748b; border:1px solid #cbd5e1;">${escapeHTML(item.unit || '-')}</td>
+                        <td style="text-align:center; font-size:11px; font-weight:700; color:#0369a1; border:1px solid #cbd5e1;">${escapeHTML(item.type || '-')}</td>
+                        ${cellsHTML}
+                        <td style="text-align:right; font-weight:900; color:#0284c7; background:#f0f9ff; padding-right:8px; font-family:'Times New Roman', Times, serif; font-variant-numeric:tabular-nums; border:1px solid #cbd5e1;">
+                            ${rowDemandSum > 0 ? (rowDemandSum % 1 === 0 ? rowDemandSum.toLocaleString() : rowDemandSum.toFixed(3)) : '-'}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            if (filteredBOM.length === 0) {
+                bodyHTML = `<tr><td colspan="15" style="text-align:center; padding:30px; color:#94a3b8; font-weight:700;">No raw materials matched your search.</td></tr>`;
+            }
+
+            tbody.innerHTML = bodyHTML;
+
+            // Build Footer
+            let footHTML = `
+                <tr style="background:#0f2942; color:#ffffff; font-weight:900;">
+                    <td colspan="5" style="text-align:right; padding:6px 10px; font-size:12px; letter-spacing:0.5px; border:1px solid #1e293b;">TOTAL MODEL-WISE DEMAND:</td>
+            `;
+
+            MODEL_CONFIGS.forEach(mc => {
+                const tot = modelDemandTotals[mc.key] || 0;
+                footHTML += `
+                    <td style="text-align:right; padding:6px 6px; font-family:'Times New Roman', Times, serif; font-variant-numeric:tabular-nums; color:#38bdf8; border:1px solid #1e293b;">
+                        ${tot > 0 ? (tot % 1 === 0 ? tot.toLocaleString() : tot.toFixed(2)) : '-'}
+                    </td>
+                `;
+            });
+
+            footHTML += `
+                    <td style="text-align:right; padding:6px 8px; color:#4ade80; font-size:13px; font-family:'Times New Roman', Times, serif; font-variant-numeric:tabular-nums; border:1px solid #1e293b;">
+                        ${grandTotalDemand > 0 ? (grandTotalDemand % 1 === 0 ? grandTotalDemand.toLocaleString() : grandTotalDemand.toFixed(2)) : '-'}
+                    </td>
+                </tr>
+            `;
+            tfoot.innerHTML = footHTML;
+        }
+
+        function exportModelWiseCSV() {
+            const selectedMonth = document.getElementById('modelWiseMonthSelect')?.value || 'Jul-26';
+            const prodPlan = getLiveProductionPlan();
+            const bomSummaryList = getLiveBOMSummaryData();
+            const modelPlanByMonth = getModelProductionTargetMap(prodPlan);
+
+            const modelTargets = {};
+            MODEL_CONFIGS.forEach(mc => {
+                let t = 0;
+                if (selectedMonth === 'All') {
+                    for (let i = 0; i < 12; i++) t += (modelPlanByMonth[i][mc.key] || 0);
+                } else {
+                    const mIdx = ALL_MONTHS.indexOf(selectedMonth);
+                    if (mIdx !== -1) t = (modelPlanByMonth[mIdx][mc.key] || 0);
+                }
+                modelTargets[mc.key] = t;
+            });
+
+            let csv = `MEP Fan Ltd. - Model-Wise RM Requirement (${selectedMonth})\r\n`;
+            let headerRow = ['SL', 'RM Code', 'Item Name', 'Unit', 'Type'];
+            MODEL_CONFIGS.forEach(mc => {
+                headerRow.push(`${mc.short} (Plan: ${modelTargets[mc.key] || 0})`);
+            });
+            headerRow.push('Total RM Demand');
+            csv += headerRow.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',') + '\r\n';
+
+            bomSummaryList.forEach((item, idx) => {
+                let rowSum = 0;
+                let row = [
+                    idx + 1,
+                    item.code || '',
+                    item.name || '',
+                    item.unit || '',
+                    item.type || ''
+                ];
+                MODEL_CONFIGS.forEach(mc => {
+                    const plan = modelTargets[mc.key] || 0;
+                    const ratio = parseFloat(item.bom ? item.bom[mc.key] : 0) || 0;
+                    const req = plan * ratio;
+                    rowSum += req;
+                    row.push(req > 0 ? req : 0);
+                });
+                row.push(rowSum);
+                csv += row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',') + '\r\n';
+            });
+
+            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `MEP_Model_Wise_RM_Requirement_${selectedMonth}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("📥 Exported Model-Wise RM Requirement to CSV!");
+        }
+
+        function updateLiveClock() {
+            if (typeof runSubReportLiveClock === 'function') {
+                runSubReportLiveClock();
+                return;
+            }
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            const formattedHours = String(hours).padStart(2, '0');
+            const slottedTime = `<span class="t-num-slot">${formattedHours[0]}</span><span class="t-num-slot">${formattedHours[1]}</span>:<span class="t-num-slot">${minutes[0]}</span><span class="t-num-slot">${minutes[1]}</span>:<span class="t-num-slot">${seconds[0]}</span><span class="t-num-slot">${seconds[1]}</span> <span class="t-ampm-slot">${ampm}</span>`;
+
+            const dayEl = document.getElementById('liveDayText');
+            const timeEl = document.getElementById('liveTimeText');
+            if (dayEl) dayEl.innerText = dateStr;
+            if (timeEl) timeEl.innerHTML = slottedTime;
+        }
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,2049 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Finish Good (FG) - Stock Movement Report | Closing (ERP) | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-primary-hover: #0369a1;
+            --brand-dark: #0f2942;
+            --header-gradient: linear-gradient(135deg, #0a1e33 0%, #0f2942 50%, #1e3a5f 100%);
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-soft: #cbd5e1;
+            --border-cell: #e2e8f0;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --accent-success: #059669;
+            --accent-danger: #e11d48;
+            --accent-purple: #7c3aed;
+            --accent-amber: #d97706;
+            --accent-paste: #06b6d4;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-back-portal:hover {
+            background: #f0f7ff;
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: translateX(-2px);
+        }
+
+        .nav-brand-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1.2;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        /* Live Clock - Borderless Seamless Typography */
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.22;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .live-day-text {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: -0.1px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono, monospace);
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.6px;
+        }
+
+        /* Main Content */
+        .workspace-main {
+            flex: 1;
+            padding: 16px 20px 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 100%;
+        }
+
+        /* Report Header Banner */
+        .report-header-banner {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .company-header-group h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .company-header-sub {
+            font-size: 0.82rem;
+            color: #475569;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .tag-pill {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 800;
+        }
+
+        .tag-filter-active {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 800;
+        }
+
+        .date-time-tag {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            padding: 2px 10px;
+            border-radius: 8px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1.5px solid transparent;
+        }
+
+        .btn-action-paste {
+            background: #10b981;
+            color: #ffffff;
+            border-color: #059669;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-action-paste:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-action-outline {
+            background: #ffffff;
+            color: #334155;
+            border-color: #cbd5e1;
+        }
+
+        .btn-action-outline:hover {
+            background: #f1f5f9;
+            color: #0f2942;
+        }
+
+        /* 6 KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .kpi-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 2px;
+        }
+
+        .kpi-value {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #0f2942;
+            line-height: 1.2;
+        }
+
+        .kpi-icon-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Filter Toolbar */
+        .filter-toolbar {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 320px;
+            flex: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 36px;
+            padding: 0 12px 0 34px;
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-family: inherit;
+            color: #0f2942;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            background: #ffffff;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            stroke: #64748b;
+            fill: none;
+            stroke-width: 2.2;
+            pointer-events: none;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-label {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .filter-select {
+            height: 36px;
+            padding: 0 12px;
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.80rem;
+            font-weight: 600;
+            color: #0f2942;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            border-color: var(--brand-primary);
+        }
+
+        .btn-reset-filter {
+            height: 36px;
+            padding: 0 12px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset-filter:hover {
+            background: #e2e8f0;
+            color: #0f2942;
+        }
+
+        .stats-count-tag {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #64748b;
+            font-family: var(--font-mono);
+        }
+
+        /* Table Card Container */
+        .table-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(15, 41, 66, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            max-height: calc(100vh - 350px);
+            min-height: 400px;
+            position: relative;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.78rem;
+            text-align: left;
+        }
+
+        /* ==========================================================================
+           PROFESSIONAL FREEZE PANE SYSTEM (Columns 0 to 5: Up to Unit Column Frozen)
+           ========================================================================== */
+        :root {
+            --w-col-sl: 40px;
+            --w-col-comp: 55px;
+            --w-col-cat: 95px;
+            --w-col-code: 130px;
+            --w-col-name: 260px;
+            --w-col-unit: 48px;
+
+            --left-col-sl: 0px;
+            --left-col-comp: 40px;                          /* 0 + 40 */
+            --left-col-cat: 95px;                           /* 40 + 55 */
+            --left-col-code: 190px;                         /* 95 + 95 */
+            --left-col-name: 320px;                         /* 190 + 130 */
+            --left-col-unit: 580px;                         /* 320 + 260 */
+            --total-frozen-w: 628px;                        /* 580 + 48 */
+        }
+
+        .data-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: max-content;
+            min-width: 100%;
+            font-size: 0.76rem;
+            table-layout: fixed;
+            background: #ffffff;
+        }
+
+        .data-table thead th {
+            background: #0f2942;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 7px 6px;
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 2px solid #0284c7;
+            text-align: right;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .data-table thead th.th-left { text-align: left; }
+        .data-table thead th.th-center { text-align: center; }
+
+        /* ERP Exact Table Header Themes Matching Screenshot 4 */
+        .th-erp-normal {
+            background: #ffffff !important;
+            color: #0f2942 !important;
+            border-top: 1.5px solid #334155 !important;
+            border-bottom: 1.5px solid #334155 !important;
+            border-right: 1px solid #cbd5e1 !important;
+            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        .th-erp-cyan {
+            background: #009688 !important; /* Receive Group Vibrant Teal */
+            color: #ffffff !important;
+            border-top: 1.5px solid #00796b !important;
+            border-bottom: 1.5px solid #00796b !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.25) !important;
+            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            text-align: right !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        .th-erp-yellow {
+            background: #f59e0b !important; /* Transfer Group Vibrant Amber/Yellow */
+            color: #ffffff !important;
+            border-top: 1.5px solid #d97706 !important;
+            border-bottom: 1.5px solid #d97706 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.25) !important;
+            font-weight: 800 !important;
+            font-size: 0.70rem !important;
+            text-align: right !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        .th-erp-dark-teal {
+            background: #004d40 !important; /* Total Stock Dark Teal */
+            color: #ffffff !important;
+            border-top: 1.5px solid #00332c !important;
+            border-bottom: 1.5px solid #00332c !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.25) !important;
+            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            text-align: right !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        .th-erp-pink {
+            background: #e91e63 !important; /* Issue Group Vibrant Pink/Rose */
+            color: #ffffff !important;
+            border-top: 1.5px solid #c2185b !important;
+            border-bottom: 1.5px solid #c2185b !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.25) !important;
+            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            text-align: right !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        .th-erp-dark-pink {
+            background: #ad1457 !important; /* OUT Total Dark Pink */
+            color: #ffffff !important;
+            border-top: 1.5px solid #880e4f !important;
+            border-bottom: 1.5px solid #880e4f !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.25) !important;
+            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            text-align: right !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
+        }
+
+        /* Frozen Thead Columns (Top + Left Sticky, z-index: 35) */
+        .data-table thead th.th-frozen-0 {
+            position: sticky !important;
+            left: var(--left-col-sl) !important;
+            width: var(--w-col-sl) !important;
+            min-width: var(--w-col-sl) !important;
+            max-width: var(--w-col-sl) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-1 {
+            position: sticky !important;
+            left: var(--left-col-comp) !important;
+            width: var(--w-col-comp) !important;
+            min-width: var(--w-col-comp) !important;
+            max-width: var(--w-col-comp) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-2 {
+            position: sticky !important;
+            left: var(--left-col-cat) !important;
+            width: var(--w-col-cat) !important;
+            min-width: var(--w-col-cat) !important;
+            max-width: var(--w-col-cat) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-3 {
+            position: sticky !important;
+            left: var(--left-col-code) !important;
+            width: var(--w-col-code) !important;
+            min-width: var(--w-col-code) !important;
+            max-width: var(--w-col-code) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-4 {
+            position: sticky !important;
+            left: var(--left-col-name) !important;
+            width: var(--w-col-name) !important;
+            min-width: var(--w-col-name) !important;
+            max-width: var(--w-col-name) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+        }
+        .data-table thead th.th-frozen-5 {
+            position: sticky !important;
+            left: var(--left-col-unit) !important;
+            width: var(--w-col-unit) !important;
+            min-width: var(--w-col-unit) !important;
+            max-width: var(--w-col-unit) !important;
+            z-index: 35 !important;
+            background-color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.18);
+        }
+
+        /* Frozen Body Columns (Left Sticky, 100% Solid Opaque Background, z-index: 15) */
+        .data-table tbody td.td-frozen-0 {
+            position: sticky !important;
+            left: var(--left-col-sl) !important;
+            width: var(--w-col-sl) !important;
+            min-width: var(--w-col-sl) !important;
+            max-width: var(--w-col-sl) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-1 {
+            position: sticky !important;
+            left: var(--left-col-comp) !important;
+            width: var(--w-col-comp) !important;
+            min-width: var(--w-col-comp) !important;
+            max-width: var(--w-col-comp) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-2 {
+            position: sticky !important;
+            left: var(--left-col-cat) !important;
+            width: var(--w-col-cat) !important;
+            min-width: var(--w-col-cat) !important;
+            max-width: var(--w-col-cat) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-3 {
+            position: sticky !important;
+            left: var(--left-col-code) !important;
+            width: var(--w-col-code) !important;
+            min-width: var(--w-col-code) !important;
+            max-width: var(--w-col-code) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-4 {
+            position: sticky !important;
+            left: var(--left-col-name) !important;
+            width: var(--w-col-name) !important;
+            min-width: var(--w-col-name) !important;
+            max-width: var(--w-col-name) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            box-sizing: border-box;
+        }
+        .data-table tbody td.td-frozen-5 {
+            position: sticky !important;
+            left: var(--left-col-unit) !important;
+            width: var(--w-col-unit) !important;
+            min-width: var(--w-col-unit) !important;
+            max-width: var(--w-col-unit) !important;
+            z-index: 15 !important;
+            background-color: #ffffff !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.18);
+            box-sizing: border-box;
+        }
+
+        /* Hover Solid Preservation on Frozen Columns */
+        .data-table tbody tr:hover td.td-frozen-0,
+        .data-table tbody tr:hover td.td-frozen-1,
+        .data-table tbody tr:hover td.td-frozen-2,
+        .data-table tbody tr:hover td.td-frozen-3,
+        .data-table tbody tr:hover td.td-frozen-4,
+        .data-table tbody tr:hover td.td-frozen-5,
+        .data-table tbody tr:hover td.td-frozen-6 {
+            background-color: #f0fdf4 !important;
+        }
+
+        /* Tfoot Frozen Total Cell */
+        .data-table tfoot td.tfoot-frozen {
+            position: sticky !important;
+            left: 0 !important;
+            z-index: 25 !important;
+            background-color: #0f2942 !important;
+            border-right: 2.5px solid #0284c7 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.25);
+        }
+
+        .badge-category {
+            display: inline-block;
+            font-size: 0.70rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .badge-category-fg {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+        }
+
+        .badge-category-sfg {
+            background: #f5f3ff;
+            color: #7c3aed;
+            border: 1px solid #ddd6fe;
+        }
+
+        .badge-category-rm {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .data-table tbody tr td {
+            padding: 6px 8px;
+            border-bottom: 1px solid var(--border-cell);
+            border-right: 1px solid var(--border-cell);
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            vertical-align: middle;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr td.td-left {
+            text-align: left;
+            font-family: var(--font-sans);
+        }
+
+        .data-table tbody tr td.td-center {
+            text-align: center;
+        }
+
+        .data-table tbody tr:hover td {
+            background-color: #f0fdf4;
+        }
+
+        .item-name-cell {
+            font-weight: 700;
+            color: #0f2942;
+            font-size: 0.78rem;
+            max-width: 320px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Badges */
+        .code-pill {
+            display: inline-flex;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #0369a1;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            padding: 1px 5px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .cat-badge {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: 0.66rem;
+            font-weight: 800;
+            color: #7c3aed;
+            background: #f5f3ff;
+            border: 1px solid #ddd6fe;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .unit-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            font-weight: 800;
+            color: #047857;
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+            padding: 1px 4px;
+            border-radius: 4px;
+        }
+
+        /* Grand Total Row */
+        .grand-total-row td {
+            background: #0f2942 !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 0.80rem !important;
+            padding: 10px 8px !important;
+            border-top: 2.5px solid #0284c7 !important;
+            text-align: right;
+            font-family: var(--font-mono);
+            position: sticky;
+            bottom: 0;
+            z-index: 18;
+            white-space: nowrap;
+        }
+
+        .grand-title {
+            text-align: left !important;
+            font-family: var(--font-sans) !important;
+            color: #38bdf8 !important;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 41, 66, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+            animation: fadeInModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            background: #f8fafc;
+            border-bottom: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+            line-height: 1;
+        }
+
+        .btn-modal-close:hover {
+            color: #e11d48;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-footer {
+            padding: 14px 20px;
+            background: #f8fafc;
+            border-top: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast Feedback Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f2942;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1300px) {
+            .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+            .btn-nav-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0f2942;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            font-family: inherit;
+            line-height: 1.2;
+        }
+
+        .btn-nav-action:hover {
+            background: #f0f7ff;
+            border-color: #0284c7;
+            color: #0284c7;
+            transform: translateX(-2px);
+        }
+
+        .btn-nav-dash {
+            background: #f8fafc;
+            color: #0369a1;
+            border-color: #bae6fd;
+        }
+
+        .btn-nav-dash:hover {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- Top Navbar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                                                
+                <div>
+                    <div class="nav-brand-title">CLOSING (ERP)</div>
+                    <div class="nav-brand-sub">Finish Good (FG)</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Live Clock (Seamless Clean Blue Typography) -->
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading day...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- Report Header Banner -->
+        <div class="report-header-banner">
+            <div class="company-header-group">
+                <h1>
+                    <span>Stock Movement Report (Finish Good - FG)</span>
+                    <span class="tag-pill">Closing (ERP)</span>
+                    <span class="tag-filter-active">Item Group: Finished Goods Only</span>
+                </h1>
+                <div class="company-header-sub">
+                    <span>MEP FAN LTD. • Warehouse: <strong>FAN Floor-68</strong></span>
+                    <span>•</span>
+                    <span class="date-time-tag" id="reportDateBadge" onclick="changeDateInterval()" title="Click to Change Date Interval" style="cursor:pointer;">📅 Date Interval: 2026-09-01 to 2026-09-03</span>
+                    <span>•</span>
+                    <span class="date-time-tag" id="reportTimeBadge" onclick="changeReportingTime()" title="Click to Change Reporting Time" style="cursor:pointer;">⏰ Reporting Time: 10:16 AM 03-09-2026</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" class="btn-action btn-action-paste" onclick="openPasteModal()" title="Copy entire table from ERP and paste here (Auto-extracts Finished Goods only)">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    <span>📋 Paste ERP Grid</span>
+                </button>
+                <button type="button" class="btn-action btn-action-outline" onclick="exportToCSV()" title="Export CSV spreadsheet">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export CSV</span>
+                </button>
+                <button type="button" class="btn-action btn-action-outline" onclick="window.print()" title="Print report">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 6 Executive KPI Summary Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Opening Stock</div>
+                    <div class="kpi-value" id="kpiOpening">0 Pcs</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#e0f2fe; color:#0284c7;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Production In</div>
+                    <div class="kpi-value" id="kpiReceive" style="color: #0284c7;">0 Pcs</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#e0f2fe; color:#0284c7;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Gross Total Stock</div>
+                    <div class="kpi-value" id="kpiTotalStock" style="color: #0891b2;">0 Pcs</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#ecfeff; color:#0891b2;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Out / Issue</div>
+                    <div class="kpi-value" id="kpiOut" style="color: #e11d48;">0 Pcs</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#ffe4e6; color:#e11d48;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Floor Closing Stock</div>
+                    <div class="kpi-value" id="kpiClosing" style="color: #059669;">0 Pcs</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#d1fae5; color:#059669;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Finished Goods Items</div>
+                    <div class="kpi-value" id="kpiItemCount" style="color: #7c3aed;">208 Items</div>
+                </div>
+                <div class="kpi-icon-box" style="background:#f5f3ff; color:#7c3aed;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="filter-toolbar">
+            <div class="toolbar-left">
+                <!-- Search Box -->
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="searchInput" placeholder="Search Item Name, Code, Category, Unit..." oninput="applyFilters()">
+                </div>
+
+                <!-- Primary Category-wise Filter Dropdown -->
+                <div class="filter-group" style="display:inline-flex; align-items:center; gap:8px;">
+                    <span class="filter-label" style="color: #0f2942; font-weight: 800; font-size: 0.78rem;">📁 Category:</span>
+                    <select id="categoryFilter" class="filter-select" onchange="applyFilters()" style="min-width: 220px; font-weight: 800; border: 1.5px solid #0284c7; background: #f0f9ff; color: #0369a1; padding: 7px 12px; border-radius: 8px; outline: none;">
+                        <option value="ALL">All Categories</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn-reset-filter" onclick="resetFilters()">Reset</button>
+            </div>
+
+            <div class="stats-count-tag" id="recordStatsTag">
+                Showing 0 of 0 Items
+            </div>
+        </div>
+
+        <!-- Table Card Container -->
+        <div class="table-card">
+            <div style="text-align: center; padding: 14px 10px 10px 10px; border-bottom: 1px solid #cbd5e1; background: #ffffff;">
+                <h2 style="font-size: 1.35rem; font-weight: 800; color: #0f2942; margin-bottom: 3px; font-family: var(--font-sans);">Stock Movement Report (Finish Good - FG)</h2>
+                <div style="font-size: 0.88rem; font-weight: 700; color: #475569; font-family: var(--font-sans);" id="erpDateIntervalDisplay">Date Interval: 2026-08-01 to 2026-08-29</div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="closingFgTable">
+                    <thead>
+                        <!-- Populated dynamically with exact 24 ERP columns matching Screenshot 1 -->
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                    <tfoot id="tableFoot">
+                        <!-- Populated by JavaScript -->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+
+    </main>
+
+    <!-- Paste ERP Modal -->
+    <div class="modal-backdrop" id="pasteModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="font-weight: 800; font-size: 1.05rem;">📋 Paste ERP Stock Movement Report (Finished Goods Auto-Extract)</div>
+                <button type="button" class="btn-modal-close" onclick="closePasteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="font-size: 0.82rem; color: #475569; line-height: 1.4;">
+                    Paste the entire ERP Stock Movement Report text below. The system will <strong>automatically extract and save only rows where Item Group is <code>Finished Goods</code></strong> and omit raw materials, scrap, machines, etc.:
+                </div>
+                <textarea id="pasteInput" rows="12" placeholder="S/L&#9;Company&#9;Item Group&#9;Product Category&#9;Code&#9;Item Name&#9;Unit&#9;Opening...&#10;1&#9;3&#9;Finished Goods&#9;Fan Group&#9;EF0801OW/EF0801OW&#9;08 Inch Fresh Air Exhaust Fan Off White&#9;Pcs&#9;22.00000000..." style="font-family: var(--font-mono); font-size: 0.78rem; width: 100%; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px; outline: none;"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-action btn-action-outline" onclick="closePasteModal()">Cancel</button>
+                <button type="button" class="btn-action btn-action-paste" onclick="processBulkPaste()">⚡ Extract &amp; Save Finished Goods</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastBox">Notification Message</div>
+
+    <!-- Scripts -->
+    <script src="closing_fg_data.js"></script>
+    <script>
+        const STORAGE_KEY = 'mep_closing_fg_data';
+        let itemsList = [];
+
+        // Exact 26 columns matching ERP Screenshot 4: Stock Movement Report
+        const ERP_COLUMNS_DEF = [
+            { key: 'origSl', name: 'S/L', align: 'center', type: 'normal', width: '40px' },
+            { key: 'company', name: 'Company', align: 'left', type: 'normal', width: '55px' },
+            { key: 'category', name: 'Category', align: 'left', type: 'normal', width: '95px' },
+            { key: 'code', name: 'Code', align: 'left', type: 'normal', width: '130px' },
+            { key: 'itemName', name: 'Item Name', align: 'left', type: 'normal', width: '260px' },
+            { key: 'unit', name: 'Unit', align: 'center', type: 'normal', width: '48px' },
+            // Cyan / Teal Receive Group
+            { key: 'opening', name: 'Opening', align: 'right', type: 'cyan', width: '85px' },
+            { key: 'localPurchase', name: 'Local Purchase', align: 'right', type: 'cyan', width: '95px' },
+            { key: 'lcPurchase', name: 'LC Purchase', align: 'right', type: 'cyan', width: '90px' },
+            { key: 'production', name: 'Production', align: 'right', type: 'cyan', width: '85px' },
+            { key: 'salesReturn', name: 'Sales Return', align: 'right', type: 'cyan', width: '85px' },
+            // Yellow Transfer Sub-Group
+            { key: 'transferFloor', name: 'Production Floor', align: 'right', type: 'yellow', width: '105px' },
+            { key: 'transferDP', name: 'Distribution Point', align: 'right', type: 'yellow', width: '110px' },
+            { key: 'transferOthers', name: 'Others', align: 'right', type: 'yellow', width: '75px' },
+            { key: 'transferTotal', name: 'Total', align: 'right', type: 'yellow', width: '85px' },
+            // Other & Total Stock
+            { key: 'otherReceive', name: 'Other', align: 'right', type: 'cyan', width: '90px' },
+            { key: 'totalStock', name: 'Total Stock', align: 'right', type: 'dark-teal', width: '95px' },
+            // Pink Issue Group
+            { key: 'lineIssue', name: 'Line Issue', align: 'right', type: 'pink', width: '85px' },
+            { key: 'sales', name: 'Sales', align: 'right', type: 'pink', width: '85px' },
+            { key: 'transfer', name: 'Transfer', align: 'right', type: 'pink', width: '95px' },
+            { key: 'otherIssue', name: 'Other', align: 'right', type: 'pink', width: '85px' },
+            { key: 'outTotal', name: 'OUT Total', align: 'right', type: 'dark-pink', width: '95px' },
+            // Closing Group
+            { key: 'closing', name: 'Closing', align: 'right', type: 'normal', width: '85px' },
+            { key: 'binClosing', name: 'Bin Closing', align: 'right', type: 'normal', width: '85px' },
+            { key: 'diff', name: 'Diff', align: 'right', type: 'normal', width: '70px' },
+            { key: 'rate', name: 'Rate', align: 'right', type: 'normal', width: '85px' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check session authentication
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+
+            loadDataset();
+            loadDateInterval();
+            loadReportingTime();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+
+        function loadDateInterval() {
+            const savedDate = localStorage.getItem('mep_closing_fg_date_interval') || localStorage.getItem('mep_erp_date_interval') || '2026-09-01 to 2026-09-03';
+            const badge = document.getElementById('reportDateBadge');
+            if (badge) badge.innerText = '📅 Date Interval: ' + savedDate;
+            const display = document.getElementById('erpDateIntervalDisplay');
+            if (display) display.innerText = 'Date Interval: ' + savedDate;
+        }
+
+        function changeDateInterval() {
+            const current = localStorage.getItem('mep_closing_fg_date_interval') || localStorage.getItem('mep_erp_date_interval') || '2026-09-01 to 2026-09-03';
+            const newDate = prompt("Enter Date Interval for Finish Good (FG):", current);
+            if (newDate && newDate.trim()) {
+                localStorage.setItem('mep_closing_fg_date_interval', newDate.trim());
+                localStorage.setItem('closingDate_closing_fg', newDate.trim());
+                localStorage.setItem('mep_erp_date_interval', newDate.trim());
+                loadDateInterval();
+                showToast(`📅 Date Interval updated to ${newDate.trim()}`);
+            }
+        }
+
+        function loadReportingTime() {
+            const savedTime = localStorage.getItem('mep_closing_fg_reporting_time') || '10:16 AM 03-09-2026';
+            const badge = document.getElementById('reportTimeBadge');
+            if (badge) badge.innerText = '⏰ Reporting Time: ' + savedTime;
+        }
+
+        function changeReportingTime() {
+            const current = localStorage.getItem('mep_closing_fg_reporting_time') || '10:16 AM 03-09-2026';
+            const newTime = prompt("Enter Reporting Time for Finish Good (FG):", current);
+            if (newTime && newTime.trim()) {
+                localStorage.setItem('mep_closing_fg_reporting_time', newTime.trim());
+                loadReportingTime();
+                showToast(`⏰ Reporting Time updated to ${newTime.trim()}`);
+            }
+        }
+
+        function sanitizeDataset(items) {
+            if (!Array.isArray(items)) return [];
+
+            return items.filter(item => {
+                const name = (item.itemName || item.name || '').trim().toLowerCase();
+                const code = (item.code || '').trim().toLowerCase();
+                const erpCode = (item.erpCode || '').trim().toLowerCase();
+                const sl = String(item.origSl || item.sl || '').trim().toLowerCase();
+
+                if (code === 'code' || erpCode === 'erp code' || name === 'item name' || sl === 's/l' || sl === 'sl') return false;
+                if ((name === 'item' || name === '') && !code && !erpCode) return false;
+                if (name.includes('stock movement report') || name.includes('date interval')) return false;
+                return true;
+            }).map((item, idx) => {
+                item.sl = idx + 1;
+                item.origSl = String(item.origSl || (idx + 1));
+                item.itemName = item.itemName || item.name || 'Item';
+                item.name = item.itemName;
+                item.company = item.company || 'FAN';
+                item.category = item.category || 'Finished Goods';
+                item.code = item.code || '';
+                item.unit = item.unit || 'Pcs';
+
+                // Self-repair any column shift from previous buggy paste (e.g. Code received Item Name, Item Name received Unit)
+                const isShifted = (item.itemName === 'Pcs' || item.itemName === 'PKT' || item.itemName === 'Set' || item.itemName === 'PCS') && 
+                                  (!isNaN(parseFloat(item.unit)) || item.unit === '0' || item.unit === '0.00000000' || item.unit === '21.00000000');
+                if (isShifted) {
+                    const origName = item.code;
+                    const origUnit = item.itemName;
+                    const origOpening = parseFloat(item.unit) || 0;
+                    let matchedCode = '';
+                    if (typeof RAW_CLOSING_FG_DATA !== 'undefined' && Array.isArray(RAW_CLOSING_FG_DATA)) {
+                        const found = RAW_CLOSING_FG_DATA.find(b => b.itemName && (b.itemName.toLowerCase().includes(origName.toLowerCase().slice(0, 15)) || origName.toLowerCase().includes(b.itemName.toLowerCase().slice(0, 15))));
+                        if (found) {
+                            matchedCode = found.code;
+                        }
+                    }
+                    item.code = matchedCode || origName;
+                    item.itemName = origName;
+                    item.name = origName;
+                    item.unit = origUnit;
+                    item.opening = origOpening;
+                }
+
+                const cleanNumVal = (v) => {
+                    if (v === null || v === undefined || v === '') return 0;
+                    const n = parseFloat(String(v).replace(/,/g, '').trim());
+                    return isNaN(n) ? 0 : n;
+                };
+
+                item.opening = cleanNumVal(item.opening);
+                item.localPurchase = cleanNumVal(item.localPurchase);
+                item.lcPurchase = cleanNumVal(item.lcPurchase);
+                item.production = cleanNumVal(item.production);
+                item.salesReturn = cleanNumVal(item.salesReturn);
+                item.transferFloor = cleanNumVal(item.transferFloor);
+                item.transferDP = cleanNumVal(item.transferDP);
+                item.transferOthers = cleanNumVal(item.transferOthers);
+                item.transferTotal = cleanNumVal(item.transferTotal);
+                item.otherReceive = cleanNumVal(item.otherReceive !== undefined ? item.otherReceive : (item.othersReceive !== undefined ? item.othersReceive : item.totalReceive));
+                
+                const recTotal = item.opening + item.localPurchase + item.lcPurchase + item.production + item.salesReturn + item.transferTotal + item.otherReceive;
+                item.totalStock = (item.totalStock !== undefined && item.totalStock !== null && item.totalStock !== '') ? cleanNumVal(item.totalStock) : recTotal;
+
+                item.lineIssue = cleanNumVal(item.lineIssue);
+                item.sales = cleanNumVal(item.sales);
+                item.transfer = cleanNumVal(item.transfer);
+                item.otherIssue = cleanNumVal(item.otherIssue);
+                const outCalc = item.lineIssue + item.sales + item.transfer + item.otherIssue;
+                item.outTotal = (item.outTotal !== undefined && item.outTotal !== null && item.outTotal !== '') ? cleanNumVal(item.outTotal) : outCalc;
+
+                // PRESERVE ACTUAL ERP CLOSING & BIN CLOSING WITHOUT DRIFT OR ZEROING
+                item.closing = (item.closing !== undefined && item.closing !== null && item.closing !== '') ? cleanNumVal(item.closing) : (item.totalStock - item.outTotal);
+                item.binClosing = (item.binClosing !== undefined && item.binClosing !== null && item.binClosing !== '') ? cleanNumVal(item.binClosing) : item.closing;
+                item.diff = cleanNumVal(item.diff);
+                item.rate = cleanNumVal(item.rate);
+
+                // Self-repair any previously shifted row in storage:
+                // Signature: item.diff has rate (> 10) and item.rate is 0, item.binClosing is 0
+                if (item.diff > 10 && item.rate === 0) {
+                    item.rate = item.diff;
+                    item.diff = 0;
+                    if (item.binClosing === 0 && item.closing > 0) {
+                        item.binClosing = item.closing;
+                        item.closing = item.outTotal;
+                        item.outTotal = 0;
+                    }
+                }
+
+                // If Bin Closing is 0 but RAW_CLOSING_FG_DATA baseline has verified quantity:
+                if (item.binClosing === 0 && item.code) {
+                    const rawItem = (typeof RAW_CLOSING_FG_DATA !== 'undefined' && Array.isArray(RAW_CLOSING_FG_DATA))
+                        ? RAW_CLOSING_FG_DATA.find(r => r.code === item.code)
+                        : null;
+                    if (rawItem && rawItem.binClosing > 0) {
+                        item.binClosing = rawItem.binClosing;
+                    }
+                }
+
+                return item;
+            });
+        }
+
+        function loadDataset() {
+            let base = [];
+            if (typeof RAW_CLOSING_FG_DATA !== 'undefined' && Array.isArray(RAW_CLOSING_FG_DATA)) {
+                base = RAW_CLOSING_FG_DATA;
+            }
+
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const list = JSON.parse(saved);
+                    if (Array.isArray(list) && list.length > 0) {
+                        itemsList = sanitizeDataset(list);
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(itemsList));
+                        buildCategoryFilter();
+                        applyFilters();
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Failed to parse saved FG closing data:', e);
+                }
+            }
+
+            itemsList = sanitizeDataset(JSON.parse(JSON.stringify(base)));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(itemsList));
+            buildCategoryFilter();
+            applyFilters();
+        }
+
+        function buildCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            if (!select) return;
+
+            const catCounts = {};
+            itemsList.forEach(item => {
+                const cat = (item.category || 'Uncategorized').trim();
+                if (cat) catCounts[cat] = (catCounts[cat] || 0) + 1;
+            });
+
+            let html = `<option value="ALL">📁 All Categories (${itemsList.length} Items)</option>`;
+            Object.keys(catCounts).sort().forEach(cat => {
+                html += `<option value="${escapeHTML(cat)}">📂 ${escapeHTML(cat)} (${catCounts[cat]} Items)</option>`;
+            });
+
+            select.innerHTML = html;
+            select.value = 'ALL';
+        }
+
+        function applyFilters() {
+            const query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+            const catFilter = document.getElementById('categoryFilter') ? document.getElementById('categoryFilter').value : 'ALL';
+
+            const filtered = itemsList.filter(item => {
+                if (query) {
+                    const matchName = (item.itemName || '').toLowerCase().includes(query);
+                    const matchCode = (item.code || '').toLowerCase().includes(query);
+                    const matchCat = (item.category || '').toLowerCase().includes(query);
+                    const matchUnit = (item.unit || '').toLowerCase().includes(query);
+                    if (!matchName && !matchCode && !matchCat && !matchUnit) return false;
+                }
+
+                if (catFilter !== 'ALL') {
+                    if ((item.category || '').trim() !== catFilter) return false;
+                }
+
+                return true;
+            });
+
+            renderTable(filtered);
+            updateKpiCards(filtered);
+
+            const catNotice = catFilter !== 'ALL' ? ` (Category: ${catFilter})` : '';
+            document.getElementById('recordStatsTag').innerText = `Showing ${filtered.length} of ${itemsList.length} Items${catNotice}`;
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            const catSel = document.getElementById('categoryFilter');
+            if (catSel) catSel.value = 'ALL';
+            applyFilters();
+        }
+
+        function formatCellNum(val) {
+            if (val === null || val === undefined || val === '') return '';
+            const s = String(val).trim();
+            if (s === '' || s === '0' || s === '0.00000000' || s === '0.0000' || s === '0.00') return '0';
+            const num = parseFloat(s.replace(/,/g, ''));
+            if (isNaN(num)) return escapeHTML(s);
+            if (num === 0) return '0';
+            return num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 4 });
+        }
+
+        function renderTable(data) {
+            const table = document.getElementById('closingFgTable');
+            const thead = table.querySelector('thead');
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+
+            // 2-level header matching ERP Screenshot 4
+            let theadHtml = `
+                <tr>
+                    <th rowspan="2" class="th-erp-normal th-frozen-0" style="width:40px;">S/L</th>
+                    <th rowspan="2" class="th-erp-normal th-frozen-1" style="width:55px;">Company</th>
+                    <th rowspan="2" class="th-erp-normal th-frozen-2" style="width:95px;">Category</th>
+                    <th rowspan="2" class="th-erp-normal th-frozen-3" style="width:130px;">Code</th>
+                    <th rowspan="2" class="th-erp-normal th-frozen-4" style="width:260px;">Item Name</th>
+                    <th rowspan="2" class="th-erp-normal th-frozen-5" style="width:48px;">Unit</th>
+                    <th rowspan="2" class="th-erp-cyan" style="width:85px;">Opening</th>
+                    <th rowspan="2" class="th-erp-cyan" style="width:95px;">Local Purchase</th>
+                    <th rowspan="2" class="th-erp-cyan" style="width:90px;">LC Purchase</th>
+                    <th rowspan="2" class="th-erp-cyan" style="width:85px;">Production</th>
+                    <th rowspan="2" class="th-erp-cyan" style="width:85px;">Sales Return</th>
+                    <th colspan="4" class="th-erp-cyan th-center" style="border-bottom:1px solid rgba(255,255,255,0.3)!important;">Transfer</th>
+                    <th rowspan="2" class="th-erp-cyan" style="width:90px;">Other</th>
+                    <th rowspan="2" class="th-erp-dark-teal" style="width:95px;">Total Stock</th>
+                    <th rowspan="2" class="th-erp-pink" style="width:85px;">Line Issue</th>
+                    <th rowspan="2" class="th-erp-pink" style="width:85px;">Sales</th>
+                    <th rowspan="2" class="th-erp-pink" style="width:95px;">Transfer</th>
+                    <th rowspan="2" class="th-erp-pink" style="width:85px;">Other</th>
+                    <th rowspan="2" class="th-erp-dark-pink" style="width:95px;">OUT Total</th>
+                    <th rowspan="2" class="th-erp-normal" style="width:85px;">Closing</th>
+                    <th rowspan="2" class="th-erp-normal" style="width:85px;">Bin Closing</th>
+                    <th rowspan="2" class="th-erp-normal" style="width:70px;">Diff</th>
+                    <th rowspan="2" class="th-erp-normal" style="width:85px;">Rate</th>
+                </tr>
+                <tr>
+                    <th class="th-erp-yellow" style="width:105px; top:28px;">Production Floor</th>
+                    <th class="th-erp-yellow" style="width:110px; top:28px;">Distribution Point</th>
+                    <th class="th-erp-yellow" style="width:75px; top:28px;">Others</th>
+                    <th class="th-erp-yellow" style="width:85px; top:28px;">Total</th>
+                </tr>
+            `;
+            thead.innerHTML = theadHtml;
+
+            tbody.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="26" style="text-align: center; padding: 40px; color: #64748b; font-weight: 600;">
+                            🔍 No items matched your search criteria.
+                        </td>
+                    </tr>
+                `;
+                tfoot.innerHTML = '';
+                return;
+            }
+
+            const colSums = {};
+            ERP_COLUMNS_DEF.forEach(c => {
+                if (c.align === 'right') colSums[c.key] = 0;
+            });
+
+            data.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                let trHtml = '';
+
+                ERP_COLUMNS_DEF.forEach((col, colIdx) => {
+                    const val = item[col.key];
+                    const freezeClass = colIdx < 6 ? ` td-frozen-${colIdx}` : '';
+                    if (col.align === 'right') {
+                        const num = parseFloat(val) || 0;
+                        colSums[col.key] += num;
+                        const formatted = formatCellNum(val);
+                        trHtml += `<td class="${freezeClass}" style="text-align:right; font-family:var(--font-mono);">${formatted}</td>`;
+                    } else if (col.align === 'center') {
+                        if (col.key === 'origSl') {
+                            trHtml += `<td class="td-center${freezeClass}" style="font-weight:700; color:#475569;">${escapeHTML(String(item.origSl || (idx + 1)))}</td>`;
+                        } else if (col.key === 'unit') {
+                            trHtml += `<td class="td-center${freezeClass}"><span class="unit-badge">${escapeHTML(String(val || 'Pcs'))}</span></td>`;
+                        } else {
+                            trHtml += `<td class="td-center${freezeClass}">${escapeHTML(String(val || ''))}</td>`;
+                        }
+                    } else {
+                        if (col.key === 'code') {
+                            trHtml += `<td class="td-left${freezeClass}"><span class="code-pill">${escapeHTML(String(val || ''))}</span></td>`;
+                        } else if (col.key === 'itemName') {
+                            trHtml += `<td class="td-left item-name-cell${freezeClass}" title="${escapeHTML(String(val || ''))}">${escapeHTML(String(val || ''))}</td>`;
+                        } else if (col.key === 'category') {
+                            let catClass = 'badge-category-fg';
+                            const catUpper = String(val || '').toUpperCase();
+                            if (catUpper.includes('SFG')) catClass = 'badge-category-sfg';
+                            else if (catUpper.includes('RAW') || catUpper.includes('MATERIAL')) catClass = 'badge-category-rm';
+                            trHtml += `<td class="td-left${freezeClass}"><span class="badge-category ${catClass}">${escapeHTML(String(val || 'Finished Goods'))}</span></td>`;
+                        } else if (col.key === 'company') {
+                            trHtml += `<td class="td-left${freezeClass}" style="font-weight:700; color:#475569;">${escapeHTML(String(val || 'FAN'))}</td>`;
+                        } else {
+                            trHtml += `<td class="td-left${freezeClass}">${escapeHTML(String(val || ''))}</td>`;
+                        }
+                    }
+                });
+
+                tr.innerHTML = trHtml;
+                tbody.appendChild(tr);
+            });
+
+            // Grand Total Footer
+            let tfootHtml = `<tr class="grand-total-row">`;
+            tfootHtml += `<td colspan="6" class="grand-title tfoot-frozen">TOTAL (${data.length} ITEMS)</td>`;
+            ERP_COLUMNS_DEF.forEach((col, colIdx) => {
+                if (colIdx >= 6 && col.align === 'right') {
+                    const sumVal = colSums[col.key] || 0;
+                    tfootHtml += `<td style="text-align:right; font-family:var(--font-mono); font-weight:800;">${sumVal === 0 ? '0' : formatNum(sumVal)}</td>`;
+                }
+            });
+            tfootHtml += `</tr>`;
+            tfoot.innerHTML = tfootHtml;
+        }
+
+        function updateKpiCards(data) {
+            let sumOpening = 0;
+            let sumReceive = 0;
+            let sumTotalStock = 0;
+            let sumOut = 0;
+            let sumClosing = 0;
+
+            data.forEach(item => {
+                const op = Number(item.opening || 0);
+                const rec = Number(item.production || item.totalReceive || item.otherReceive || 0);
+                const totStk = Number(item.totalStock || (op + rec));
+                const out = Number(item.outTotal || item.totalIssue || 0);
+                const clos = Number(item.binClosing || item.closing || (totStk - out));
+
+                sumOpening += op;
+                sumReceive += rec;
+                sumTotalStock += totStk;
+                sumOut += out;
+                sumClosing += clos;
+            });
+
+            if (document.getElementById('kpiOpening')) document.getElementById('kpiOpening').innerText = sumOpening.toLocaleString('en-US') + ' Pcs';
+            if (document.getElementById('kpiReceive')) document.getElementById('kpiReceive').innerText = sumReceive.toLocaleString('en-US') + ' Pcs';
+            if (document.getElementById('kpiTotalStock')) document.getElementById('kpiTotalStock').innerText = sumTotalStock.toLocaleString('en-US') + ' Pcs';
+            if (document.getElementById('kpiOut')) document.getElementById('kpiOut').innerText = sumOut.toLocaleString('en-US') + ' Pcs';
+            if (document.getElementById('kpiClosing')) document.getElementById('kpiClosing').innerText = sumClosing.toLocaleString('en-US') + ' Pcs';
+            if (document.getElementById('kpiItemCount')) document.getElementById('kpiItemCount').innerText = `${data.length} Items`;
+        }
+
+        function openPasteModal() {
+            document.getElementById('pasteInput').value = '';
+            document.getElementById('pasteModal').classList.add('show');
+            document.getElementById('pasteModal').classList.add('active');
+            document.getElementById('pasteInput').focus();
+        }
+
+        function closePasteModal() {
+            document.getElementById('pasteModal').classList.remove('show');
+            document.getElementById('pasteModal').classList.remove('active');
+        }
+
+        function processBulkPaste() {
+            const rawText = document.getElementById('pasteInput').value.trim();
+            if (!rawText) {
+                showToast('⚠️ Please paste table data from ERP.');
+                return;
+            }
+
+            const dateMatch = rawText.match(/(?:Date Interval[:\s]*|Date[:\s]*)([0-9]{4}-[0-9]{2}-[0-9]{2}\s*to\s*[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1,2}-[A-Za-z]{3}-[0-9]{2,4}\s*to\s*[0-9]{1,2}-[A-Za-z]{3}-[0-9]{2,4})/i);
+            if (dateMatch && dateMatch[1]) {
+                const matchedDate = dateMatch[1].trim();
+                localStorage.setItem('mep_closing_fg_date_interval', matchedDate);
+                localStorage.setItem('closingDate_closing_fg', matchedDate);
+                localStorage.setItem('mep_erp_date_interval', matchedDate);
+                loadDateInterval();
+            }
+
+            const timeMatch = rawText.match(/Reporting Time[:\s]*([0-9]{1,2}:[0-9]{2}\s*(?:AM|PM|am|pm)?(?:\s+[0-9]{2}-[0-9]{2}-[0-9]{4})?)/i);
+            if (timeMatch && timeMatch[1]) {
+                const matchedTime = timeMatch[1].trim();
+                localStorage.setItem('mep_closing_fg_reporting_time', matchedTime);
+                loadReportingTime();
+            }
+
+            const rawLines = rawText.split(/\r?\n/).filter(l => l.trim().length > 0);
+            const cleanN = (v) => {
+                if (v === null || v === undefined || v === '') return 0;
+                const c = String(v).replace(/,/g, '').trim();
+                const n = parseFloat(c);
+                return isNaN(n) ? 0 : n;
+            };
+
+            let headerLineIndex = -1;
+            let headerCells = [];
+            let groupColIndex = -1;
+
+            for (let i = 0; i < Math.min(rawLines.length, 12); i++) {
+                const line = rawLines[i].trim();
+                const cells = line.split('\t').map(c => c.trim());
+                const joined = cells.join(' ').toLowerCase();
+
+                if (cells.length >= 4 && (
+                    joined.includes('item name') || 
+                    joined.includes('erp code') || 
+                    (joined.includes('code') && joined.includes('opening')) ||
+                    (joined.includes('company') && joined.includes('category')) ||
+                    joined.includes('production') ||
+                    joined.includes('consumption') ||
+                    joined.includes('item group') ||
+                    joined.includes('finished good')
+                )) {
+                    headerLineIndex = i;
+                    headerCells = cells;
+                    break;
+                }
+            }
+
+            // Identify column index for "Item Group" or "Group"
+            if (headerCells.length > 0) {
+                headerCells.forEach((c, idx) => {
+                    const cLow = c.toLowerCase().trim();
+                    if (cLow === 'item group' || cLow === 'group' || cLow === 'item type' || cLow === 'category' || cLow === 'item category') {
+                        if (groupColIndex === -1 || cLow === 'item group' || cLow === 'group') {
+                            groupColIndex = idx;
+                        }
+                    }
+                });
+            }
+
+            // If header did not explicitly specify groupColIndex, scan sample data rows to find the group column
+            if (groupColIndex === -1) {
+                const scanLines = headerLineIndex !== -1 ? rawLines.slice(headerLineIndex + 1, headerLineIndex + 10) : rawLines.slice(0, 10);
+                for (let line of scanLines) {
+                    const cells = line.split('\t').map(c => c.trim().toLowerCase());
+                    const fgIdx = cells.findIndex(c => c === 'finished good' || c === 'finished goods' || c === 'raw material' || c === 'semi finished');
+                    if (fgIdx !== -1) {
+                        groupColIndex = fgIdx;
+                        break;
+                    }
+                }
+            }
+
+            // Header Column Map
+            let colMap = {};
+            if (headerCells.length > 0) {
+                headerCells.forEach((c, idx) => {
+                    const cLow = c.toLowerCase().trim();
+                    if (cLow === 's/l' || cLow === 'sl') colMap.sl = idx;
+                    else if (cLow === 'company') colMap.company = idx;
+                    else if (cLow === 'item group' || cLow === 'group') colMap.group = idx;
+                    else if (cLow === 'category' || cLow === 'item category') colMap.category = idx;
+                    else if (cLow === 'item code' || cLow === 'code') colMap.code = idx;
+                    else if (cLow === 'item name' || cLow === 'name' || cLow === 'item description') colMap.itemName = idx;
+                    else if (cLow === 'unit') colMap.unit = idx;
+                    else if (cLow === 'opening') colMap.opening = idx;
+                    else if (cLow === 'local purchase') colMap.localPurchase = idx;
+                    else if (cLow === 'lc purchase') colMap.lcPurchase = idx;
+                    else if (cLow === 'production' || cLow === 'production receive') colMap.production = idx;
+                    else if (cLow === 'sales return') colMap.salesReturn = idx;
+                    else if (cLow.includes('floor') || cLow.includes('transfer production floor')) colMap.transferFloor = idx;
+                    else if (cLow.includes('distribution') || cLow.includes('transfer dp')) colMap.transferDP = idx;
+                    else if (cLow.includes('transfer other') || cLow.includes('others')) colMap.transferOthers = idx;
+                    else if (cLow === 'transfer total' || cLow === 'total transfer') colMap.transferTotal = idx;
+                    else if (cLow === 'other' || cLow === 'others receive' || cLow === 'other receive') colMap.otherReceive = idx;
+                    else if (cLow === 'total stock' || cLow === 'total receive') colMap.totalStock = idx;
+                    else if (cLow === 'line issue' || cLow === 'consumption') colMap.lineIssue = idx;
+                    else if (cLow === 'sales') colMap.sales = idx;
+                    else if (cLow === 'transfer' || cLow === 'wip issue') colMap.transfer = idx;
+                    else if (cLow === 'other issue' || cLow === 'issue other') colMap.otherIssue = idx;
+                    else if (cLow === 'out total' || cLow === 'total issue') colMap.outTotal = idx;
+                    else if (cLow === 'closing') colMap.closing = idx;
+                    else if (cLow === 'bin closing') colMap.binClosing = idx;
+                    else if (cLow === 'diff') colMap.diff = idx;
+                    else if (cLow === 'rate') colMap.rate = idx;
+                });
+            }
+
+            let dataLines = headerLineIndex !== -1 ? rawLines.slice(headerLineIndex + 1) : rawLines;
+            const newItems = [];
+            let slCounter = 1;
+            let totalRowsParsed = 0;
+            let excludedNonFgCount = 0;
+
+            dataLines.forEach(line => {
+                if (!line.trim()) return;
+                const cols = line.split('\t').map(c => c.trim());
+                if (cols.length < 2) return;
+
+                const firstCol = (cols[0] || '').toLowerCase();
+                if (firstCol === 'total' || firstCol === 'grand total' || firstCol.startsWith('date interval') || firstCol.startsWith('stock movement')) return;
+
+                totalRowsParsed++;
+
+                // 🔍 Filter by Item Group: Only exclude rows that explicitly belong to non-Finished Goods
+                const isExplicitNonFg = cols.some(cell => {
+                    const cellLow = (cell || '').toLowerCase().trim();
+                    return cellLow === 'raw material' || cellLow === 'raw materials' || 
+                           cellLow === 'semi finished' || cellLow === 'semi finished goods' || cellLow === 'sfg' || 
+                           cellLow === 'fan scrap' || cellLow === 'scrap' || 
+                           cellLow === 'packing material' || cellLow === 'packing materials';
+                });
+
+                if (isExplicitNonFg) {
+                    excludedNonFgCount++;
+                    return; // Skip non-Finished Good rows
+                }
+
+                // Trim any trailing empty cells caused by copy-pasting web tables with trailing tabs
+                while (cols.length > 0 && cols[cols.length - 1] === '') {
+                    cols.pop();
+                }
+
+                const L = cols.length;
+
+                // 🎯 Smart Column Anchor: Find the Unit column (Pcs, PKT, Set, Kg)
+                let unitIdx = -1;
+                for (let i = 1; i <= 6 && i < cols.length; i++) {
+                    const c = (cols[i] || '').trim().toLowerCase();
+                    if (c === 'pcs' || c === 'pkt' || c === 'set' || c === 'kg' || c === 'mtr' || c === 'box' || c === 'packet') {
+                        unitIdx = i;
+                        break;
+                    }
+                }
+
+                let compVal = 'FAN';
+                let catVal = 'Finished Goods';
+                let codeVal = '';
+                let nameVal = '';
+                let unitVal = 'Pcs';
+                let openingVal = 0, locPurVal = 0, lcPurVal = 0, prdVal = 0, slsRetVal = 0;
+                let tfFloorVal = 0, tfDPVal = 0, tfOthVal = 0, tfTotVal = 0, othRecVal = 0, totStkVal = 0;
+                let lineIssVal = 0, slsVal = 0, tfIssVal = 0, othIssVal = 0, outTotVal = 0;
+                let closVal = 0, binClosVal = 0, diffVal = 0, rateVal = 0;
+
+                if (unitIdx >= 2) {
+                    // Positional extraction anchored to Unit column:
+                    unitVal = cols[unitIdx];
+                    nameVal = cols[unitIdx - 1] || 'Item';
+                    codeVal = cols[unitIdx - 2] || '';
+
+                    if (unitIdx === 3) {
+                        catVal = cols[0] || 'Finished Goods';
+                    } else if (unitIdx === 4) {
+                        compVal = cols[0] || 'FAN';
+                        catVal = cols[1] || 'Finished Goods';
+                    } else if (unitIdx >= 5) {
+                        compVal = cols[1] || 'FAN';
+                        catVal = cols[2] || 'Finished Goods';
+                    }
+
+                    // Forward column extraction from Unit (Standard ERP layout: 20 columns after Unit)
+                    if (L >= unitIdx + 18) {
+                        openingVal = cleanN(cols[unitIdx + 1]);
+                        locPurVal = cleanN(cols[unitIdx + 2]);
+                        lcPurVal = cleanN(cols[unitIdx + 3]);
+                        prdVal = cleanN(cols[unitIdx + 4]);
+                        slsRetVal = cleanN(cols[unitIdx + 5]);
+                        tfFloorVal = cleanN(cols[unitIdx + 6]);
+                        tfDPVal = cleanN(cols[unitIdx + 7]);
+                        tfOthVal = cleanN(cols[unitIdx + 8]);
+                        tfTotVal = cleanN(cols[unitIdx + 9]);
+                        othRecVal = cleanN(cols[unitIdx + 10]); // Receive Other (Red Box 1)
+                        totStkVal = cleanN(cols[unitIdx + 11]);
+                        lineIssVal = cleanN(cols[unitIdx + 12]);
+                        slsVal = cleanN(cols[unitIdx + 13]);
+                        tfIssVal = cleanN(cols[unitIdx + 14]);  // Issue Transfer (Red Box 2)
+                        othIssVal = cleanN(cols[unitIdx + 15]);
+                        outTotVal = cleanN(cols[unitIdx + 16]);
+                        closVal = cleanN(cols[unitIdx + 17]);
+                        binClosVal = cleanN(cols[unitIdx + 18]); // BIN CLOSING - 100% exact from ERP!
+
+                        if (L >= unitIdx + 20) {
+                            diffVal = cleanN(cols[unitIdx + 19]);
+                            rateVal = cleanN(cols[unitIdx + 20]);
+                        } else if (L === unitIdx + 19) {
+                            rateVal = cleanN(cols[unitIdx + 19]);
+                        }
+                    } else {
+                        // Reverse mapping fallback when row has fewer columns
+                        openingVal = cleanN(cols[unitIdx + 1]);
+                        rateVal = cleanN(cols[L - 1]);
+                        diffVal = cleanN(cols[L - 2]);
+                        binClosVal = cleanN(cols[L - 3]);
+                        closVal = cleanN(cols[L - 4]);
+                        outTotVal = cleanN(cols[L - 5]);
+                        othIssVal = cleanN(cols[L - 6]);
+                        tfIssVal = cleanN(cols[L - 7]);
+                        slsVal = cleanN(cols[L - 8]);
+                        lineIssVal = cleanN(cols[L - 9]);
+                        totStkVal = cleanN(cols[L - 10]);
+                        othRecVal = cleanN(cols[L - 11]);
+                    }
+                } else if (colMap.code !== undefined && colMap.itemName !== undefined) {
+                    codeVal = cols[colMap.code] || '';
+                    nameVal = cols[colMap.itemName] || 'Item';
+                    unitVal = colMap.unit !== undefined ? (cols[colMap.unit] || 'Pcs') : 'Pcs';
+                    openingVal = colMap.opening !== undefined ? cleanN(cols[colMap.opening]) : 0;
+                    totStkVal = colMap.totalStock !== undefined ? cleanN(cols[colMap.totalStock]) : openingVal;
+                    tfIssVal = colMap.transfer !== undefined ? cleanN(cols[colMap.transfer]) : 0;
+                    outTotVal = colMap.outTotal !== undefined ? cleanN(cols[colMap.outTotal]) : 0;
+                    closVal = colMap.closing !== undefined ? cleanN(cols[colMap.closing]) : (totStkVal - outTotVal);
+                    binClosVal = colMap.binClosing !== undefined ? cleanN(cols[colMap.binClosing]) : closVal;
+                    diffVal = colMap.diff !== undefined ? cleanN(cols[colMap.diff]) : 0;
+                    rateVal = colMap.rate !== undefined ? cleanN(cols[colMap.rate]) : 0;
+                }
+
+                // Honor explicit colMap if available
+                if (colMap.binClosing !== undefined && cols[colMap.binClosing] !== undefined) {
+                    binClosVal = cleanN(cols[colMap.binClosing]);
+                } else {
+                    codeVal = cols[0] || '';
+                    nameVal = cols[1] || 'Item';
+                    unitVal = cols[2] || 'Pcs';
+                    openingVal = cleanN(cols[3]);
+                    totStkVal = cleanN(cols[L - 10]);
+                    outTotVal = cleanN(cols[L - 5]);
+                    closVal = cleanN(cols[L - 4]);
+                    binClosVal = cleanN(cols[L - 3]);
+                    diffVal = cleanN(cols[L - 2]);
+                    rateVal = cleanN(cols[L - 1]);
+                }
+
+                const item = {
+                    id: "fg_erp_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
+                    sl: slCounter++,
+                    origSl: colMap.sl !== undefined ? cols[colMap.sl] : String(slCounter - 1),
+                    company: compVal || 'FAN',
+                    category: catVal,
+                    code: codeVal,
+                    itemName: nameVal,
+                    name: nameVal,
+                    unit: unitVal,
+                    opening: openingVal,
+                    localPurchase: locPurVal,
+                    lcPurchase: lcPurVal,
+                    production: prdVal,
+                    salesReturn: slsRetVal,
+                    transferFloor: tfFloorVal,
+                    transferDP: tfDPVal,
+                    transferOthers: tfOthVal,
+                    transferTotal: tfTotVal,
+                    otherReceive: othRecVal,
+                    totalStock: totStkVal,
+                    lineIssue: lineIssVal,
+                    sales: slsVal,
+                    transfer: tfIssVal,
+                    otherIssue: othIssVal,
+                    outTotal: outTotVal,
+                    closing: closVal,
+                    binClosing: binClosVal,
+                    diff: diffVal,
+                    rate: rateVal,
+                    rawCols: cols
+                };
+
+                newItems.push(item);
+            });
+
+            const sanitized = sanitizeDataset(newItems);
+            if (sanitized.length === 0) {
+                showToast('❌ No Finished Good items found in pasted data.');
+                return;
+            }
+
+            itemsList = sanitized;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(itemsList));
+            buildCategoryFilter();
+            applyFilters();
+            closePasteModal();
+            showToast(`✅ Successfully imported ${itemsList.length} Finished Good items (Filtered out ${excludedNonFgCount} non-FG rows)!`);
+        }
+
+        function exportToCSV() {
+            let csv = ERP_COLUMNS_DEF.map(c => `"${c.name}"`).join(",") + "\r\n";
+            itemsList.forEach((item) => {
+                const rowVals = ERP_COLUMNS_DEF.map(col => {
+                    const val = item[col.key];
+                    if (val === null || val === undefined) return '""';
+                    return `"${String(val).replace(/"/g, '""')}"`;
+                });
+                csv += rowVals.join(",") + "\r\n";
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            const dateStr = localStorage.getItem('mep_closing_fg_date_interval') || '2026-08-29';
+            link.setAttribute('download', `Stock_Movement_Report_Finish_Good_FG_${dateStr.replace(/[^0-9a-zA-Z]/g, '_')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('📥 Finish Good (FG) CSV exported successfully!');
+        }
+
+        function formatNum(val) {
+            const num = Number(val);
+            if (isNaN(num) || num === 0) return '0.00';
+            return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        /**
+         * Live Clock Function
+         */
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayDateElem = document.getElementById('liveDayText');
+            const timeElem = document.getElementById('liveTimeText');
+
+            if (dayDateElem) {
+                dayDateElem.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            }
+            if (timeElem) {
+                timeElem.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+            }
+        }
+
+        /**
+         * Show Toast Feedback Notification
+         */
+        function showToast(msg) {
+            const box = document.getElementById('toastBox');
+            box.innerText = msg;
+            box.classList.add('show');
+            setTimeout(() => {
+                box.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>
+
+
+
+
+

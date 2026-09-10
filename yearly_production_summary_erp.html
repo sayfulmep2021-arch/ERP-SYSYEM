@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="portal_guard.js"></script>
+    <link rel="stylesheet" href="corporate_design_system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yearly Production Summary (ERP) - Executive ERP Reconciliation | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; }
+        body { font-family: 'Times New Roman', Times, serif !important; }
+        :root {
+            --brand-primary: #0284c7;
+            --brand-dark: #0f2942;
+            --bg-page: #f8fafc;
+            --border-soft: #cbd5e1;
+            --border-light: #e2e8f0;
+            --text-heading: #0f2942;
+            --text-body: #1e293b;
+            --text-muted: #64748b;
+            --font-sans: 'Times New Roman', Times, serif;
+            --font-mono: 'Times New Roman', Times, serif;
+
+            /* ERP Excel Palette Matching Screenshot */
+            --th-peach-bg: #ffedd5;
+            --th-peach-border: #fed7aa;
+            --th-total-bg: #10b981;
+            --th-total-dark: #059669;
+            --th-month-navy: #1e3a8a;
+            --cat-yellow: #fef08a;
+            --cat-yellow-border: #facc15;
+            --cat-yellow-text: #713f12;
+            --row-alt: #fcfdfe;
+
+            /* Frozen Column Exact Pixel Coordinates */
+            --w-sl: 50px;
+            --w-code: 140px;
+            --w-name: 300px;
+            --w-unit: 60px;
+            --w-total: 100px;
+            --w-month: 100px;
+            
+            --left-sl: 0px;
+            --left-code: 50px;
+            --left-name: 190px;
+            --left-unit: 490px;
+            --left-total: 550px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(15, 41, 66, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-back-portal:hover {
+            background: #f0f7ff;
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            transform: translateX(-2px);
+        }
+
+        .nav-brand-title {
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .auto-live-tag {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .auto-live-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Top Right Live Clock */
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0 4px 0 0;
+            box-shadow: none;
+            user-select: none;
+            height: auto;
+        }
+
+        .live-clock-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            line-height: 1.22;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .live-day-text {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #0284c7;
+            letter-spacing: -0.1px;
+        }
+
+        .live-time-text {
+            font-family: var(--font-mono, monospace);
+            font-size: 1.18rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: 0.6px;
+        }
+
+        /* Workspace Main */
+        .workspace-main {
+            padding: 16px 20px 32px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* ==========================================================================
+           1. Professional Executive Report Header Section
+           ========================================================================== */
+        .report-header-section {
+            background: #ffffff;
+            border: 1.5px solid var(--border-light);
+            border-radius: 12px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 3px 12px rgba(15, 41, 66, 0.03);
+        }
+
+        .report-header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .report-header-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .report-header-title-row h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #0f2942;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .report-header-sub {
+            font-size: 0.80rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .report-header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .audit-scope-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding: 4px 12px;
+            background: #f0f9ff;
+            border: 1.5px solid #bae6fd;
+            border-radius: 8px;
+        }
+
+        .audit-scope-label {
+            font-size: 0.64rem;
+            font-weight: 800;
+            color: #0369a1;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .audit-scope-years {
+            font-family: var(--font-mono);
+            font-size: 0.96rem;
+            font-weight: 900;
+            color: #0c4a6e;
+        }
+
+        .report-action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-corp {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.80rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .btn-corp-primary {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-corp-primary:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-corp-outline {
+            background: #ffffff;
+            color: #334155;
+            border: 1.5px solid #cbd5e1;
+        }
+
+        .btn-corp-outline:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        /* ==========================================================================
+           2. Separate Professional "FILTER REPORT" Card
+           ========================================================================== */
+        .filter-report-card {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 16px rgba(15, 41, 66, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .filter-report-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1.5px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .filter-report-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: #0f2942;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .filter-report-subtitle {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .filter-report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .filter-field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+        }
+
+        .filter-field-label {
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-select-trigger {
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            user-select: none;
+        }
+
+        .filter-select-trigger:hover {
+            border-color: #0284c7;
+            background: #f0f9ff;
+        }
+
+        .filter-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            width: 100%;
+            min-width: 250px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(15, 41, 66, 0.15);
+            padding: 10px;
+            z-index: 60;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .filter-dropdown-menu.show {
+            display: flex;
+        }
+
+        .filter-search-box {
+            padding: 6px 10px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-family: inherit;
+            outline: none;
+            width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .filter-search-box:focus {
+            border-color: #0284c7;
+        }
+
+        .filter-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+            max-height: 180px;
+        }
+
+        .filter-option-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            user-select: none;
+        }
+
+        .filter-option-item:hover {
+            background: #f1f5f9;
+        }
+
+        .filter-option-item input[type="checkbox"] {
+            accent-color: #0284c7;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .filter-quick-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 4px;
+        }
+
+        .btn-link-action {
+            background: transparent;
+            border: none;
+            color: #0284c7;
+            font-size: 0.70rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .btn-link-action:hover {
+            color: #0369a1;
+        }
+
+        /* Filter Report Footer with Actions & Active Pills */
+        .filter-report-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1.5px solid #f1f5f9;
+        }
+
+        .active-pills-wrap {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            border: 1px solid #bae6fd;
+        }
+
+        .filter-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-corp-sm {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .btn-corp-accent {
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-corp-accent:hover {
+            background: #0369a1;
+        }
+
+        .btn-corp-subtle {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-corp-subtle:hover {
+            background: #e2e8f0;
+        }
+
+        /* KPI Counters Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 6px rgba(15, 41, 66, 0.02);
+        }
+
+        .kpi-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .kpi-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kpi-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #0f2942;
+            line-height: 1.15;
+        }
+
+        /* ==========================================================================
+           3. Modern Professional Data Table & Airtight Solid Frozen Column Architecture
+           ========================================================================== */
+        .table-card-container {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(15, 41, 66, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-responsive-box {
+            width: 100%;
+            max-height: calc(100vh - 280px);
+            min-height: 480px;
+            overflow-x: auto;
+            overflow-y: auto;
+            position: relative;
+            background: #ffffff;
+        }
+
+        /* Fixed Table Layout for Mathematical Coordinate Locking */
+        .production-matrix-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            table-layout: fixed;
+            width: max-content;
+            font-size: 0.80rem;
+            white-space: nowrap;
+            background: #ffffff;
+        }
+
+        /* Header Rows */
+        .production-matrix-table th {
+            padding: 9px 10px;
+            border-bottom: 2px solid #334155;
+            border-right: 1px solid #cbd5e1;
+            text-align: center;
+            user-select: none;
+            font-weight: 800;
+            position: sticky;
+            top: 0;
+            z-index: 25;
+            box-sizing: border-box;
+        }
+
+        /* Frozen Column Base Coordinates & 100% Solid Backgrounds */
+        .col-freeze-sl {
+            position: sticky !important;
+            left: var(--left-sl) !important;
+            width: var(--w-sl) !important;
+            min-width: var(--w-sl) !important;
+            max-width: var(--w-sl) !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            text-align: center;
+            font-weight: 700;
+            z-index: 15;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .col-freeze-code {
+            position: sticky !important;
+            left: var(--left-code) !important;
+            width: var(--w-code) !important;
+            min-width: var(--w-code) !important;
+            max-width: var(--w-code) !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            font-family: var(--font-mono);
+            font-weight: 800;
+            color: #0284c7;
+            z-index: 15;
+            border-right: 1px solid #e2e8f0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .col-freeze-name {
+            position: sticky !important;
+            left: var(--left-name) !important;
+            width: var(--w-name) !important;
+            min-width: var(--w-name) !important;
+            max-width: var(--w-name) !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            font-weight: 700;
+            color: #0f2942;
+            z-index: 15;
+            border-right: 1px solid #e2e8f0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .col-freeze-unit {
+            position: sticky !important;
+            left: var(--left-unit) !important;
+            width: var(--w-unit) !important;
+            min-width: var(--w-unit) !important;
+            max-width: var(--w-unit) !important;
+            box-sizing: border-box;
+            background-color: #ffffff !important;
+            text-align: center;
+            font-weight: 700;
+            color: #64748b;
+            z-index: 15;
+            border-right: 1px solid #cbd5e1;
+        }
+
+        /* Solid Right Divider Wall on Total Column */
+        .col-freeze-total {
+            position: sticky !important;
+            left: var(--left-total) !important;
+            width: var(--w-total) !important;
+            min-width: var(--w-total) !important;
+            max-width: var(--w-total) !important;
+            box-sizing: border-box;
+            background-color: #e6fffa !important;
+            font-family: var(--font-mono);
+            font-weight: 900;
+            font-size: 0.84rem;
+            color: #065f46;
+            text-align: right;
+            border-right: 2.5px solid #059669 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16);
+            z-index: 16;
+        }
+
+        /* Frozen Headers Overrides (Layer Priority z-index: 35) */
+        .production-matrix-table th.col-freeze-sl {
+            z-index: 35 !important;
+            background-color: var(--th-peach-bg) !important;
+            color: #0f2942 !important;
+        }
+
+        .production-matrix-table th.col-freeze-code {
+            z-index: 35 !important;
+            background-color: var(--th-peach-bg) !important;
+            color: #0f2942 !important;
+        }
+
+        .production-matrix-table th.col-freeze-name {
+            z-index: 35 !important;
+            background-color: var(--th-peach-bg) !important;
+            color: #0f2942 !important;
+        }
+
+        .production-matrix-table th.col-freeze-unit {
+            z-index: 35 !important;
+            background-color: #e2e8f0 !important;
+            color: #0f2942 !important;
+        }
+
+        .production-matrix-table th.col-freeze-total {
+            z-index: 36 !important;
+            background-color: var(--th-total-bg) !important;
+            color: #ffffff !important;
+            border-right: 2.5px solid var(--th-total-dark) !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16);
+        }
+
+        /* Month Header Columns - Deep Navy Blue for ERP */
+        .th-month-col {
+            width: var(--w-month);
+            min-width: var(--w-month);
+            max-width: var(--w-month);
+            box-sizing: border-box;
+            background: var(--th-month-navy) !important;
+            color: #ffffff !important;
+            font-size: 0.78rem !important;
+            font-weight: 700 !important;
+            border-right: 1px solid #3b82f6 !important;
+            z-index: 20;
+        }
+
+        /* Table Data Cells */
+        .production-matrix-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            font-size: 0.78rem;
+            color: #1e293b;
+            box-sizing: border-box;
+        }
+
+        /* Hover State with Full Solid Opacity */
+        .production-matrix-table tbody tr:hover td {
+            background-color: #f0f9ff !important;
+        }
+        .production-matrix-table tbody tr:hover td.col-freeze-total {
+            background-color: #d1fae5 !important;
+        }
+
+        /* Month Data Cells */
+        .td-qty-num {
+            text-align: right;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .td-qty-zero {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        /* Category Subtotal Row - Completely Solid Opaque Yellow */
+        .tr-category-header td {
+            background-color: var(--cat-yellow) !important;
+            color: var(--cat-yellow-text);
+            font-weight: 900;
+            border-top: 1.5px solid var(--cat-yellow-border) !important;
+            border-bottom: 1.5px solid var(--cat-yellow-border) !important;
+            padding: 8px 10px;
+        }
+
+        .tr-category-header td.col-freeze-sl,
+        .tr-category-header td.col-freeze-code,
+        .tr-category-header td.col-freeze-name,
+        .tr-category-header td.col-freeze-unit {
+            background-color: var(--cat-yellow) !important;
+            z-index: 18 !important;
+        }
+
+        .tr-category-header td.col-freeze-total {
+            background-color: var(--cat-yellow) !important;
+            color: #854d0e !important;
+            border-right: 2.5px solid #ca8a04 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16);
+            z-index: 19 !important;
+        }
+
+        /* Grand Total Row at Bottom - Sticky Footer */
+        .tr-grand-total td {
+            background-color: #fef08a !important;
+            color: #713f12 !important;
+            font-weight: 900 !important;
+            font-size: 0.88rem !important;
+            border-top: 2.5px solid #ca8a04 !important;
+            border-bottom: 2.5px solid #ca8a04 !important;
+            padding: 9px 10px;
+            position: sticky;
+            bottom: 0;
+            z-index: 25;
+        }
+
+        .tr-grand-total td.col-freeze-sl,
+        .tr-grand-total td.col-freeze-code,
+        .tr-grand-total td.col-freeze-name,
+        .tr-grand-total td.col-freeze-unit {
+            z-index: 28 !important;
+            background-color: #fef08a !important;
+        }
+
+        .tr-grand-total td.col-freeze-total {
+            z-index: 29 !important;
+            background-color: #fef08a !important;
+            border-right: 2.5px solid #ca8a04 !important;
+            box-shadow: 4px 0 10px -2px rgba(15, 41, 66, 0.16);
+        }
+
+        /* Toast Feedback */
+        .toast-box {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f2942;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.25s ease;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .toast-box.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media print {
+            .portal-nav, .filter-report-card, .report-action-buttons, .mep-frozen-sidebar {
+                display: none !important;
+            }
+            body, .workspace-main {
+                padding: 0 !important;
+                background: #ffffff !important;
+            }
+            .table-responsive-box {
+                max-height: none !important;
+                overflow: visible !important;
+            }
+        }
+
+        /* Month Header Status Pills */
+        .month-header-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .month-header-name {
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+        .month-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 12px;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .month-status-pill:hover {
+            transform: scale(1.06);
+        }
+
+        .month-status-pill.closed {
+            background: #1e3a8a;
+            color: #ffffff;
+            border: 1px solid #3b82f6;
+        }
+
+        .month-status-pill.live {
+            background: #059669;
+            color: #ffffff;
+            border: 1px solid #34d399;
+            animation: pulse-live 2s infinite;
+        }
+
+        @keyframes pulse-live {
+            0% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(5, 150, 105, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); }
+        }
+
+        /* Interactive Audit Cell */
+        .td-clickable-audit {
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+
+        .td-clickable-audit:hover {
+            background-color: #e0f2fe !important;
+            color: #0284c7 !important;
+            font-weight: 800;
+            outline: 1.5px solid #0284c7;
+            z-index: 10;
+        }
+
+        .cell-lock-icon {
+            font-size: 0.65rem;
+            margin-left: 3px;
+            opacity: 0.75;
+            vertical-align: middle;
+        }
+
+        /* Modal Overlay & Card System */
+        .audit-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 41, 66, 0.65);
+            backdrop-filter: blur(6px);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .audit-modal-backdrop.active {
+            display: flex;
+        }
+
+        .audit-modal-card {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 20px 50px rgba(15, 41, 66, 0.3);
+            width: 100%;
+            max-width: 860px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            border: 1.5px solid #cbd5e1;
+            animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .audit-modal-header {
+            background: linear-gradient(135deg, #0f2942 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .audit-modal-header h3 {
+            font-size: 1.12rem;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .audit-modal-close-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #ffffff;
+            font-size: 1.3rem;
+            line-height: 1;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .audit-modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .audit-modal-body {
+            padding: 20px 24px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .audit-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .audit-info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+
+        .audit-info-box .box-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .audit-info-box .box-val {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #0f2942;
+        }
+
+        .audit-layer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+
+        .audit-layer-badge.closed {
+            background: #dbeafe;
+            color: #1e3a8a;
+            border: 1px solid #93c5fd;
+        }
+
+        .audit-layer-badge.live {
+            background: #dcfce7;
+            color: #065f46;
+            border: 1px solid #86efac;
+        }
+
+        .audit-table-wrap {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .audit-breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+        }
+
+        .audit-breakdown-table th {
+            background: #f1f5f9;
+            color: #0f2942;
+            font-weight: 800;
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1.5px solid #cbd5e1;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .audit-breakdown-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .audit-breakdown-table tr:hover td {
+            background: #f8fafc;
+        }
+
+        .audit-formula-box {
+            background: #eff6ff;
+            border: 1px dashed #3b82f6;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.82rem;
+            color: #1e3a8a;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .audit-modal-footer {
+            background: #f8fafc;
+            border-top: 1.5px solid #e2e8f0;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        /* Closing Modal Styles */
+        .closing-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.80rem;
+        }
+
+        .closing-table th {
+            background: #f1f5f9;
+            padding: 8px 10px;
+            font-weight: 800;
+            color: #0f2942;
+            border-bottom: 2px solid #cbd5e1;
+            text-align: left;
+        }
+
+        .closing-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+
+        .closing-table tr:hover td {
+            background: #f8fafc;
+        }
+
+        .btn-action-lock {
+            background: #1e3a8a;
+            color: #ffffff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-action-lock:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-action-reopen {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-action-reopen:hover {
+            background: #fee2e2;
+        }
+
+        .btn-action-inspect {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            margin-right: 4px;
+        }
+
+        .btn-action-inspect:hover {
+            background: #dbeafe;
+        }
+    </style>
+    <link rel="stylesheet" href="report_sidebar.css">
+</head>
+<body class="corp-themed">
+
+    <!-- 1. Top Navigation Bar -->
+    <header class="portal-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html?view=hub" class="btn-back-portal" title="Return to Department Hub">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <span>Choose Your Report</span>
+                </a>
+                <div>
+                    <div class="nav-brand-title">MEP FAN LIMITED</div>
+                    <div class="nav-brand-sub">
+                        <span>All Yearly Report › Yearly Production Summary (ERP)</span>
+                        <span class="auto-live-tag">ERP AUDITED</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <div class="live-clock-badge" id="liveClockBadge" title="Live System Day & Time">
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="liveDayText">Loading date...</span>
+                        <span class="live-time-text" id="liveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Main Workspace -->
+    <main class="workspace-main">
+
+        <!-- 1. Professional Executive Report Header Section -->
+        <div class="report-header-section">
+            <div class="report-header-left">
+                <div class="report-header-title-row">
+                    <h1>
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                        <span>Yearly Production Summary (ERP)</span>
+                    </h1>
+                </div>
+                <div class="report-header-sub">Production Performance &amp; Fiscal Year (July–June) ERP Reconciliation Matrix</div>
+            </div>
+
+            <div class="report-header-right">
+                <div class="audit-scope-chip">
+                    <span class="audit-scope-label">Audit Scope</span>
+                    <span class="audit-scope-years">2022 – 2030</span>
+                </div>
+                <div class="report-action-buttons">
+                    <button type="button" class="btn-corp btn-corp-primary" onclick="openMonthClosingModal()" title="Month Closing & Historical Archive Management" style="background: linear-gradient(135deg, #1e3a8a, #0284c7); border: none; box-shadow: 0 2px 8px rgba(30,58,138,0.25);">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <span>Month Closing & Archive</span>
+                    </button>
+                    <button type="button" class="btn-corp btn-corp-outline" onclick="resetAllFilters()" title="Reset All Filters">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+                        <span>Reset Filters</span>
+                    </button>
+                    <button type="button" class="btn-corp btn-corp-primary" onclick="exportToCSV()" title="Export Filtered Data to CSV/Excel">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Export Excel</span>
+                    </button>
+                    <button type="button" class="btn-corp btn-corp-outline" onclick="window.print()" title="Print Current View">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        <span>Print</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Separate Professional "FILTER REPORT" Card -->
+        <div class="filter-report-card">
+            <div class="filter-report-header">
+                <div class="filter-report-title">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                    <span>FILTER REPORT</span>
+                </div>
+                <div class="filter-report-subtitle">
+                    Select dynamic criteria to customize report view
+                </div>
+            </div>
+
+            <div class="filter-report-grid">
+                <!-- 1. Year Filter (2022–2030) -->
+                <div class="filter-field-group">
+                    <div class="filter-field-label">
+                        <span>Year</span>
+                        <span id="yearSelectionBadge" style="color:#0284c7; font-weight:800;">2026</span>
+                    </div>
+                    <button type="button" class="filter-select-trigger" onclick="toggleDropdown('yearDropdownMenu')">
+                        <span id="yearSelectText">Year: 2026</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="filter-dropdown-menu" id="yearDropdownMenu">
+                        <div class="filter-quick-actions">
+                            <button type="button" class="btn-link-action" onclick="selectAllYears(true)">Select All</button>
+                            <button type="button" class="btn-link-action" onclick="selectAllYears(false)">Clear</button>
+                        </div>
+                        <div class="filter-options-list" id="yearOptionsList">
+                            <!-- 2022 to 2030 checkboxes -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Month Filter (Fiscal July - June) -->
+                <div class="filter-field-group">
+                    <div class="filter-field-label">
+                        <span>Month</span>
+                        <span id="monthSelectionBadge" style="color:#0284c7; font-weight:800;">All Months (12)</span>
+                    </div>
+                    <button type="button" class="filter-select-trigger" onclick="toggleDropdown('monthDropdownMenu')">
+                        <span id="monthSelectText">All Months (12)</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="filter-dropdown-menu" id="monthDropdownMenu">
+                        <div class="filter-quick-actions">
+                            <button type="button" class="btn-link-action" onclick="selectAllMonths(true)">Select All</button>
+                            <button type="button" class="btn-link-action" onclick="selectYtdMonths()">YTD (Jul-Aug)</button>
+                            <button type="button" class="btn-link-action" onclick="selectAllMonths(false)">Clear</button>
+                        </div>
+                        <div class="filter-options-list" id="monthOptionsList">
+                            <!-- July to June checkboxes -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Category Filter -->
+                <div class="filter-field-group">
+                    <div class="filter-field-label">
+                        <span>Category</span>
+                        <span id="catSelectionBadge" style="color:#0284c7; font-weight:800;">All Categories (4)</span>
+                    </div>
+                    <button type="button" class="filter-select-trigger" onclick="toggleDropdown('catDropdownMenu')">
+                        <span id="catSelectText">All Categories (4)</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="filter-dropdown-menu" id="catDropdownMenu">
+                        <div class="filter-quick-actions">
+                            <button type="button" class="btn-link-action" onclick="selectAllCategories(true)">Select All</button>
+                            <button type="button" class="btn-link-action" onclick="selectAllCategories(false)">Clear</button>
+                        </div>
+                        <div class="filter-options-list" id="catOptionsList">
+                            <!-- Categories checkboxes -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Item Search & Multi-Select -->
+                <div class="filter-field-group">
+                    <div class="filter-field-label">
+                        <span>Item</span>
+                        <span id="itemSelectionBadge" style="color:#0284c7; font-weight:800;">All Items (30)</span>
+                    </div>
+                    <button type="button" class="filter-select-trigger" onclick="toggleDropdown('itemDropdownMenu')">
+                        <span id="itemSelectText">All Items (30)</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="filter-dropdown-menu" id="itemDropdownMenu" style="min-width: 290px;">
+                        <input type="text" class="filter-search-box" id="itemSearchInput" placeholder="🔍 Search Code or Name..." oninput="filterItemOptionsList()">
+                        <div class="filter-quick-actions">
+                            <button type="button" class="btn-link-action" onclick="selectAllItems(true)">Select All</button>
+                            <button type="button" class="btn-link-action" onclick="selectAllItems(false)">Clear</button>
+                        </div>
+                        <div class="filter-options-list" id="itemOptionsList">
+                            <!-- Item options checkboxes -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Card Footer: Active Pills & Action Buttons -->
+            <div class="filter-report-footer">
+                <div class="active-pills-wrap" id="activeFilterPills">
+                    <span style="font-size:0.72rem; font-weight:800; color:#64748b;">Active Filters:</span>
+                    <span class="filter-pill">Year: 2026</span>
+                    <span class="filter-pill">All Months (July–June)</span>
+                    <span class="filter-pill">All Items</span>
+                </div>
+                <div class="filter-card-actions">
+                    <button type="button" class="btn-corp-sm btn-corp-subtle" onclick="resetAllFilters()">Reset</button>
+                    <button type="button" class="btn-corp-sm btn-corp-accent" onclick="applyFilterAction()">Apply Filter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Quick Counters -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#e0f2fe; color:#0284c7;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-label">Filtered ERP Production</span>
+                    <span class="kpi-value" id="kpiTotalProduction">0 Units</span>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#dcfce7; color:#16a34a;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-label">Active Items</span>
+                    <span class="kpi-value" id="kpiActiveItems">30</span>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#fef3c7; color:#d97706;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-label">Selected Months</span>
+                    <span class="kpi-value" id="kpiSelectedMonths">12</span>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#f3e8ff; color:#9333ea;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <div class="kpi-info">
+                    <span class="kpi-label">Fiscal Scope</span>
+                    <span class="kpi-value" id="kpiFiscalScope" style="font-size:0.95rem;">July – June</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Main ERP Data Table Container with Airtight Solid Frozen Columns -->
+        <div class="table-card-container">
+            <div class="table-responsive-box" id="tableScrollBox">
+                <table class="production-matrix-table" id="yearlyErpMatrixTable">
+                    <colgroup id="tableColGroup">
+                        <col style="width: var(--w-sl); min-width: var(--w-sl); max-width: var(--w-sl);">
+                        <col style="width: var(--w-code); min-width: var(--w-code); max-width: var(--w-code);">
+                        <col style="width: var(--w-name); min-width: var(--w-name); max-width: var(--w-name);">
+                        <col style="width: var(--w-unit); min-width: var(--w-unit); max-width: var(--w-unit);">
+                        <col style="width: var(--w-total); min-width: var(--w-total); max-width: var(--w-total);">
+                        <!-- Month cols will be inserted dynamically here -->
+                    </colgroup>
+                    <thead>
+                        <tr class="tr-col-headers" id="trColHeaders">
+                            <th class="col-freeze-sl">Sl No</th>
+                            <th class="col-freeze-code">Code</th>
+                            <th class="col-freeze-name">Item Name</th>
+                            <th class="col-freeze-unit">Unit</th>
+                            <th class="col-freeze-total">Total</th>
+                            <!-- Month headers dynamically inserted -->
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated dynamically with individual, solid cells -->
+                    </tbody>
+                    <tfoot id="tableFoot">
+                        <!-- Populated dynamically with individual, solid cells -->
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="toast-box" id="toastBox">Filter updated</div>
+
+    <!-- Link Details / Cell Audit Modal -->
+    <div class="audit-modal-backdrop" id="linkDetailsModal" onclick="if(event.target === this) closeCellAuditModal()">
+        <div class="audit-modal-card">
+            <div class="audit-modal-header">
+                <h3>
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <span>Production Data Link &amp; Origin Audit</span>
+                </h3>
+                <button type="button" class="audit-modal-close-btn" onclick="closeCellAuditModal()" title="Close">&times;</button>
+            </div>
+            <div class="audit-modal-body">
+                <!-- Top Summary Cards -->
+                <div class="audit-info-grid">
+                    <div class="audit-info-box">
+                        <div class="box-label">Item Identification</div>
+                        <div class="box-val" id="auditItemCode" style="color:#0284c7;">-</div>
+                        <div style="font-size:0.75rem; color:#64748b; margin-top:2px;" id="auditItemName">-</div>
+                    </div>
+                    <div class="audit-info-box">
+                        <div class="box-label">Audit Period</div>
+                        <div class="box-val" id="auditPeriodText">-</div>
+                        <div style="font-size:0.75rem; color:#64748b; margin-top:2px;">Fiscal Scope (July–June)</div>
+                    </div>
+                    <div class="audit-info-box">
+                        <div class="box-label">Data Architecture Layer</div>
+                        <div id="auditLayerBadgeContainer" style="margin-top:4px;">-</div>
+                    </div>
+                    <div class="audit-info-box">
+                        <div class="box-label">Total Verified Qty</div>
+                        <div class="box-val" id="auditTotalQty" style="font-size:1.15rem; color:#059669;">0 Pcs</div>
+                    </div>
+                </div>
+
+                <!-- Origin & Link Traceability -->
+                <div class="audit-info-box" style="background:#f1f5f9; border-left:4px solid #0284c7;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <span style="font-weight:800; color:#0f2942; font-size:0.82rem;">Source of Truth:</span>
+                            <span style="color:#0284c7; font-weight:700; font-size:0.82rem;" id="auditSourceRef">assemble_summary.html ➔ PRODUCTION RECEIVE</span>
+                        </div>
+                        <div>
+                            <span style="font-weight:800; color:#0f2942; font-size:0.82rem;">Linking Rule:</span>
+                            <span style="color:#1e293b; font-size:0.82rem;">Triple-Key Matching [Item Code + Month + Year]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line-Item Matched Records Table -->
+                <div>
+                    <div style="font-size:0.82rem; font-weight:800; color:#0f2942; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span>Matched Source Production Records (<span id="auditRecordCount">0</span>)</span>
+                        <span style="font-size:0.72rem; color:#64748b; font-weight:600;">Multi-Entry Summation Enabled</span>
+                    </div>
+                    <div class="audit-table-wrap">
+                        <table class="audit-breakdown-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px; text-align:center;">#</th>
+                                    <th>Source Record ID</th>
+                                    <th>ERP Code</th>
+                                    <th>Source Item Code</th>
+                                    <th>Item Name</th>
+                                    <th style="text-align:right;">Production Receive</th>
+                                    <th>Source Interval / File</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditBreakdownTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Mathematical Formula -->
+                <div class="audit-formula-box" id="auditFormulaText">
+                    Summation Formula: Sum of all valid matching PRODUCTION RECEIVE records in assemble_summary.html for this Item Code, Month, and Year.
+                </div>
+
+                <!-- Snapshot Metadata (if closed) -->
+                <div id="auditSnapshotMetaBox" style="display:none; background:#f0f7ff; border:1px solid #bfdbfe; border-radius:8px; padding:10px 14px; font-size:0.78rem; color:#1e3a8a;">
+                    <div style="font-weight:800; margin-bottom:4px;">🔒 Snapshot Audit Record:</div>
+                    <div id="auditSnapshotMetaContent"></div>
+                </div>
+            </div>
+            <div class="audit-modal-footer">
+                <a href="assemble_summary.html" target="_blank" class="btn-corp-sm btn-corp-subtle" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    <span>View in assemble_summary.html</span>
+                </a>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn-corp-sm btn-corp-subtle" onclick="closeCellAuditModal()">Close</button>
+                    <button type="button" class="btn-corp-sm btn-corp-accent" id="auditActionCloseMonthBtn" onclick="triggerCloseMonthFromAudit()">Lock &amp; Archive This Month</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Month Closing & Historical Snapshot Management Modal -->
+    <div class="audit-modal-backdrop" id="monthClosingModal" onclick="if(event.target === this) closeMonthClosingModal()">
+        <div class="audit-modal-card" style="max-width: 960px;">
+            <div class="audit-modal-header" style="background: linear-gradient(135deg, #0f2942 0%, #1e3a8a 100%);">
+                <h3>
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span>Monthly Production Closing &amp; Historical Archive</span>
+                </h3>
+                <button type="button" class="audit-modal-close-btn" onclick="closeMonthClosingModal()" title="Close">&times;</button>
+            </div>
+            <div class="audit-modal-body">
+                <!-- Modal Top Description & Controls -->
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:#f8fafc; padding:12px 16px; border-radius:8px; border:1px solid #e2e8f0;">
+                    <div>
+                        <div style="font-size:0.92rem; font-weight:800; color:#0f2942;">Dual-Layer Production Engine Management</div>
+                        <div style="font-size:0.75rem; color:#64748b;">Closed months are permanently frozen in immutable snapshots. Open months compute live from assemble_summary.html.</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:0.78rem; font-weight:700; color:#475569;">Target Fiscal Year:</span>
+                        <select id="modalClosingYearSelect" style="padding:6px 12px; border-radius:6px; border:1.5px solid #cbd5e1; font-weight:800; color:#0284c7; outline:none;" onchange="renderMonthClosingModal()">
+                            <option value="2026" selected>2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- KPI Summary Badges -->
+                <div class="audit-info-grid">
+                    <div class="audit-info-box">
+                        <div class="box-label">Archived Closed Months</div>
+                        <div class="box-val" id="kpiModalClosedCount" style="color:#1e3a8a;">0 / 12</div>
+                    </div>
+                    <div class="audit-info-box">
+                        <div class="box-label">Live Active Months</div>
+                        <div class="box-val" id="kpiModalLiveCount" style="color:#059669;">0 / 12</div>
+                    </div>
+                    <div class="audit-info-box">
+                        <div class="box-label">Total Archived Production</div>
+                        <div class="box-val" id="kpiModalArchivedQty" style="color:#0284c7;">0 Units</div>
+                    </div>
+                </div>
+
+                <!-- 12-Month Closing & Snapshot Table -->
+                <div class="audit-table-wrap">
+                    <table class="closing-table">
+                        <thead>
+                            <tr>
+                                <th style="width:40px; text-align:center;">#</th>
+                                <th>Fiscal Month</th>
+                                <th>Archive Status</th>
+                                <th>Closing Date &amp; Verifier</th>
+                                <th style="text-align:right;">Total Production</th>
+                                <th style="text-align:center;">Active Items</th>
+                                <th style="text-align:center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="closingModalTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Disaster Recovery & Archive Backup -->
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <div style="font-weight:800; font-size:0.80rem; color:#0f2942;">Snapshot Archive Backup &amp; Recovery</div>
+                        <div style="font-size:0.72rem; color:#64748b;">Safely export full immutable historical snapshots or restore from JSON backup.</div>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" class="btn-corp-sm btn-corp-subtle" onclick="handleExportSnapshots()" title="Download JSON file of all snapshots">
+                            📥 Export Archive (JSON)
+                        </button>
+                        <button type="button" class="btn-corp-sm btn-corp-subtle" onclick="document.getElementById('importSnapshotInput').click()" title="Restore snapshots from JSON file">
+                            📤 Restore Archive
+                        </button>
+                        <input type="file" id="importSnapshotInput" accept=".json" style="display:none;" onchange="handleRestoreSnapshots(event)">
+                        <button type="button" class="btn-corp-sm btn-corp-subtle" onclick="handleResetFactoryBaseline()" style="color:#b91c1c;" title="Reset snapshots to verified baseline">
+                            🔄 Reset Baseline
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="audit-modal-footer">
+                <div style="font-size:0.75rem; color:#64748b;">
+                    🔐 Audit Guard Active: Only Authorized Supervisors can close and freeze monthly archives.
+                </div>
+                <button type="button" class="btn-corp-sm btn-corp-accent" onclick="closeMonthClosingModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Database, ERP Engine & Monthly Archive Scripts -->
+    <script src="master_database.js"></script>
+    <script src="yearly_production_summary_erp_data.js"></script>
+    <script src="assemble_summary_data.js"></script>
+    <script src="fan_assemble_erp_data.js"></script>
+    <script src="erp_engine.js"></script>
+    <script src="monthly_production_archive_engine.js"></script>
+    <script>
+        const FISCAL_MONTHS = [
+            "July", "August", "September", "October", "November", "December",
+            "January", "February", "March", "April", "May", "June"
+        ];
+
+        const ALL_YEARS = ["2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"];
+
+        let RAW_ERP_DATA = (function() {
+            try {
+                const stored = localStorage.getItem('mep_yearly_erp_production_data');
+                if (stored) return JSON.parse(stored);
+            } catch(e) {}
+            if (typeof DEFAULT_YEARLY_ERP_DATA !== 'undefined') {
+                return DEFAULT_YEARLY_ERP_DATA;
+            }
+            return { "2026": [] };
+        })();
+
+        function reloadERPData() {
+            try {
+                const stored = localStorage.getItem('mep_yearly_erp_production_data');
+                if (stored) {
+                    RAW_ERP_DATA = JSON.parse(stored);
+                    return;
+                }
+            } catch(e) {}
+            if (typeof DEFAULT_YEARLY_ERP_DATA !== 'undefined') {
+                RAW_ERP_DATA = DEFAULT_YEARLY_ERP_DATA;
+            }
+        }
+
+        // Active Filter States
+        const filterState = {
+            selectedYears: ["2026"],
+            selectedMonths: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // 0-indexed: July to June
+            selectedCategories: ["Ceiling Fan", "Exhaust Fan", "Rechargeable Table Fan", "Blade"],
+            selectedItems: [], // empty means all selected
+            searchQuery: ""
+        };
+
+        // Initialize Filter Options
+        function initFilters() {
+            // 1. Year Options (Strict Range: 2022 to 2030)
+            const yearListEl = document.getElementById('yearOptionsList');
+            yearListEl.innerHTML = ALL_YEARS.map(yr => `
+                <label class="filter-option-item">
+                    <input type="checkbox" value="${yr}" ${filterState.selectedYears.includes(yr) ? 'checked' : ''} onchange="onYearChange()">
+                    <span>${yr}</span>
+                </label>
+            `).join('');
+
+            // 2. Month Options (Fiscal Year: July to June)
+            const monthListEl = document.getElementById('monthOptionsList');
+            monthListEl.innerHTML = FISCAL_MONTHS.map((m, idx) => `
+                <label class="filter-option-item">
+                    <input type="checkbox" value="${idx}" ${filterState.selectedMonths.includes(idx) ? 'checked' : ''} onchange="onMonthChange()">
+                    <span>${m}</span>
+                </label>
+            `).join('');
+
+            // 3. Category Options
+            const catListEl = document.getElementById('catOptionsList');
+            const cats = RAW_ERP_DATA["2026"].map(c => c.category);
+            catListEl.innerHTML = cats.map(c => `
+                <label class="filter-option-item">
+                    <input type="checkbox" value="${c}" ${filterState.selectedCategories.includes(c) ? 'checked' : ''} onchange="onCategoryChange()">
+                    <span>${c}</span>
+                </label>
+            `).join('');
+
+            // 4. Item Options
+            populateItemOptions();
+
+            updateFilterUIBadges();
+        }
+
+        function populateItemOptions() {
+            const itemListEl = document.getElementById('itemOptionsList');
+            const allItems = [];
+            RAW_ERP_DATA["2026"].forEach(cat => {
+                cat.items.forEach(it => {
+                    allItems.push(it);
+                });
+            });
+
+            itemListEl.innerHTML = allItems.map(it => `
+                <label class="filter-option-item item-option-row" data-code="${it.code.toLowerCase()}" data-name="${it.name.toLowerCase()}">
+                    <input type="checkbox" value="${it.code}" ${filterState.selectedItems.length === 0 || filterState.selectedItems.includes(it.code) ? 'checked' : ''} onchange="onItemChange()">
+                    <div style="display:flex; flex-direction:column; gap:1px; line-height:1.2;">
+                        <span style="font-weight:700; color:#0284c7;">${it.code}</span>
+                        <span style="font-size:0.70rem; color:#64748b;">${it.name}</span>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function filterItemOptionsList() {
+            const q = document.getElementById('itemSearchInput').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('.item-option-row');
+            rows.forEach(r => {
+                const code = r.getAttribute('data-code');
+                const name = r.getAttribute('data-name');
+                if (!q || code.includes(q) || name.includes(q)) {
+                    r.style.display = 'flex';
+                } else {
+                    r.style.display = 'none';
+                }
+            });
+        }
+
+        // Toggle Filter Dropdowns
+        function toggleDropdown(id) {
+            const el = document.getElementById(id);
+            const isShown = el.classList.contains('show');
+            document.querySelectorAll('.filter-dropdown-menu').forEach(m => m.classList.remove('show'));
+            if (!isShown) el.classList.add('show');
+        }
+
+        // Close dropdown when clicked outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.filter-field-group')) {
+                document.querySelectorAll('.filter-dropdown-menu').forEach(m => m.classList.remove('show'));
+            }
+        });
+
+        // Filter Handlers
+        function onYearChange() {
+            const checked = Array.from(document.querySelectorAll('#yearOptionsList input:checked')).map(i => i.value);
+            filterState.selectedYears = checked.length > 0 ? checked : ["2026"];
+            updateFilterUIBadges();
+            renderTable();
+        }
+
+        function selectAllYears(selectAll) {
+            document.querySelectorAll('#yearOptionsList input').forEach(i => i.checked = selectAll);
+            onYearChange();
+        }
+
+        function onMonthChange() {
+            const checked = Array.from(document.querySelectorAll('#monthOptionsList input:checked')).map(i => parseInt(i.value));
+            filterState.selectedMonths = checked.length > 0 ? checked : [0];
+            updateFilterUIBadges();
+            renderTable();
+        }
+
+        function selectAllMonths(selectAll) {
+            document.querySelectorAll('#monthOptionsList input').forEach(i => i.checked = selectAll);
+            onMonthChange();
+        }
+
+        function selectYtdMonths() {
+            document.querySelectorAll('#monthOptionsList input').forEach((i, idx) => {
+                i.checked = (idx <= 1); // July to August
+            });
+            onMonthChange();
+        }
+
+        function onCategoryChange() {
+            const checked = Array.from(document.querySelectorAll('#catOptionsList input:checked')).map(i => i.value);
+            filterState.selectedCategories = checked;
+            updateFilterUIBadges();
+            renderTable();
+        }
+
+        function selectAllCategories(selectAll) {
+            document.querySelectorAll('#catOptionsList input').forEach(i => i.checked = selectAll);
+            onCategoryChange();
+        }
+
+        function onItemChange() {
+            const totalInputs = document.querySelectorAll('#itemOptionsList input').length;
+            const checked = Array.from(document.querySelectorAll('#itemOptionsList input:checked')).map(i => i.value);
+            if (checked.length === totalInputs || checked.length === 0) {
+                filterState.selectedItems = []; // all
+            } else {
+                filterState.selectedItems = checked;
+            }
+            updateFilterUIBadges();
+            renderTable();
+        }
+
+        function selectAllItems(selectAll) {
+            document.querySelectorAll('#itemOptionsList input').forEach(i => i.checked = selectAll);
+            onItemChange();
+        }
+
+        function applyFilterAction() {
+            document.querySelectorAll('.filter-dropdown-menu').forEach(m => m.classList.remove('show'));
+            renderTable();
+            showToast("Filters applied successfully");
+        }
+
+        function resetAllFilters() {
+            filterState.selectedYears = ["2026"];
+            filterState.selectedMonths = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+            filterState.selectedCategories = ["Ceiling Fan", "Exhaust Fan", "Rechargeable Table Fan", "Blade"];
+            filterState.selectedItems = [];
+            filterState.searchQuery = "";
+
+            initFilters();
+            renderTable();
+            showToast("Filters reset to default view");
+        }
+
+        function updateFilterUIBadges() {
+            // Year text
+            const yrTxt = filterState.selectedYears.length === ALL_YEARS.length ? "All Years (2022–2030)" : filterState.selectedYears.join(', ');
+            document.getElementById('yearSelectText').textContent = yrTxt;
+            document.getElementById('yearSelectionBadge').textContent = yrTxt;
+
+            // Month text
+            const mTxt = filterState.selectedMonths.length === 12 ? "All Months (12)" : `${filterState.selectedMonths.length} Months Selected`;
+            document.getElementById('monthSelectText').textContent = mTxt;
+            document.getElementById('monthSelectionBadge').textContent = mTxt;
+
+            // Cat text
+            const cTxt = filterState.selectedCategories.length === 4 ? "All Categories (4)" : `${filterState.selectedCategories.length} Categories`;
+            document.getElementById('catSelectText').textContent = cTxt;
+            document.getElementById('catSelectionBadge').textContent = cTxt;
+
+            // Item text
+            const itTxt = filterState.selectedItems.length === 0 ? "All Items (30)" : `${filterState.selectedItems.length} Items Selected`;
+            document.getElementById('itemSelectText').textContent = itTxt;
+            document.getElementById('itemSelectionBadge').textContent = itTxt;
+
+            // Active filter pills
+            const pillsContainer = document.getElementById('activeFilterPills');
+            let pillsHtml = `<span style="font-size:0.72rem; font-weight:800; color:#64748b;">Active Filters:</span>`;
+            pillsHtml += `<span class="filter-pill">Year: ${yrTxt}</span>`;
+            pillsHtml += `<span class="filter-pill">${mTxt}</span>`;
+            if (filterState.selectedCategories.length < 4) {
+                pillsHtml += `<span class="filter-pill">${cTxt}</span>`;
+            }
+            if (filterState.selectedItems.length > 0) {
+                pillsHtml += `<span class="filter-pill">${itTxt}</span>`;
+            }
+            pillsContainer.innerHTML = pillsHtml;
+        }
+
+        /**
+         * Render Table Columns & Filtered Data with Airtight Solid Cells
+         */
+        function renderTable() {
+            reloadERPData();
+            const theadTr = document.getElementById('trColHeaders');
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+            const colGroup = document.getElementById('tableColGroup');
+
+            const activeMonths = filterState.selectedMonths; // Array of 0-indexed month integers (July to June)
+
+            // 1. Render ColGroup
+            let colGroupHtml = `
+                <col style="width: var(--w-sl); min-width: var(--w-sl); max-width: var(--w-sl);">
+                <col style="width: var(--w-code); min-width: var(--w-code); max-width: var(--w-code);">
+                <col style="width: var(--w-name); min-width: var(--w-name); max-width: var(--w-name);">
+                <col style="width: var(--w-unit); min-width: var(--w-unit); max-width: var(--w-unit);">
+                <col style="width: var(--w-total); min-width: var(--w-total); max-width: var(--w-total);">
+            `;
+            activeMonths.forEach(() => {
+                colGroupHtml += `<col style="width: var(--w-month); min-width: var(--w-month); max-width: var(--w-month);">`;
+            });
+            colGroup.innerHTML = colGroupHtml;
+
+            // 2. Render Table Column Headers
+            let headersHtml = `
+                <th class="col-freeze-sl">Sl No</th>
+                <th class="col-freeze-code">Code</th>
+                <th class="col-freeze-name">Item Name</th>
+                <th class="col-freeze-unit">Unit</th>
+                <th class="col-freeze-total">Total</th>
+            `;
+
+            const primaryYr = filterState.selectedYears[0] || "2026";
+
+            activeMonths.forEach(mIdx => {
+                const mName = FISCAL_MONTHS[mIdx];
+                const isClosed = (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined')
+                    ? MONTHLY_ARCHIVE_ENGINE.isMonthClosed(primaryYr, mName)
+                    : false;
+
+                const badgeHtml = isClosed
+                    ? `<span class="month-status-pill closed" onclick="event.stopPropagation(); openMonthClosingModal('${mName}')" title="Historical Snapshot Locked (Click to manage)">🔒 Closed</span>`
+                    : `<span class="month-status-pill live" onclick="event.stopPropagation(); openMonthClosingModal('${mName}')" title="Live Dynamic Link with assemble_summary.html (Click to manage)">🟢 Live</span>`;
+
+                headersHtml += `
+                    <th class="th-month-col" title="${mName} ${primaryYr} - ${isClosed ? 'Historical Snapshot Locked' : 'Live Dynamic Link'}">
+                        <div class="month-header-wrap">
+                            <span class="month-header-name">${mName}</span>
+                            ${badgeHtml}
+                        </div>
+                    </th>
+                `;
+            });
+
+            theadTr.innerHTML = headersHtml;
+
+            // 3. Aggregate and Filter Data
+            let grandTotal = 0;
+            let grandMonthTotals = new Array(activeMonths.length).fill(0);
+            let totalRenderedItems = 0;
+            let tbodyHtml = '';
+
+            const activeYears = filterState.selectedYears;
+
+            // Iterate categories
+            RAW_ERP_DATA["2026"].forEach(catData => {
+                if (!filterState.selectedCategories.includes(catData.category)) return;
+
+                // Filter items in this category
+                const filteredItems = catData.items.filter(item => {
+                    if (filterState.selectedItems.length > 0 && !filterState.selectedItems.includes(item.code)) {
+                        return false;
+                    }
+                    return true;
+                });
+
+                if (filteredItems.length === 0) return;
+
+                // Compute Category Subtotals
+                let catTotal = 0;
+                let catMonthTotals = new Array(activeMonths.length).fill(0);
+
+                let catItemsHtml = '';
+                filteredItems.forEach((item, itemIdx) => {
+                    totalRenderedItems++;
+                    // Combine item quantities across selected years if multiple years selected
+                    let itemMonthVals = new Array(activeMonths.length).fill(0);
+                    let itemResolvedStates = new Array(activeMonths.length);
+                    let itemTotal = 0;
+
+                    activeYears.forEach(yr => {
+                        const yrCat = RAW_ERP_DATA[yr] ? RAW_ERP_DATA[yr].find(c => c.category === catData.category) : null;
+                        const yrItem = yrCat ? yrCat.items.find(i => i.code === item.code) : null;
+
+                        activeMonths.forEach((mIdx, colIdx) => {
+                            const mName = FISCAL_MONTHS[mIdx];
+                            const fallbackVal = (yrItem && yrItem.months && yrItem.months[mIdx] !== undefined) ? yrItem.months[mIdx] : 0;
+                            
+                            const resolved = (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined')
+                                ? MONTHLY_ARCHIVE_ENGINE.resolveMonthlyItemProduction(yr, mName, item.code, fallbackVal)
+                                : { qty: fallbackVal, isClosed: false, status: 'LIVE' };
+
+                            itemMonthVals[colIdx] += (resolved.qty || 0);
+                            itemResolvedStates[colIdx] = resolved;
+                        });
+                    });
+
+                    itemTotal = itemMonthVals.reduce((acc, v) => acc + v, 0);
+                    catTotal += itemTotal;
+                    itemMonthVals.forEach((v, colIdx) => {
+                        catMonthTotals[colIdx] += v;
+                    });
+
+                    // Build Month TD cells with interactive click-to-audit
+                    const monthTds = itemMonthVals.map((v, colIdx) => {
+                        const isZero = (v === 0);
+                        const mIdx = activeMonths[colIdx];
+                        const mName = FISCAL_MONTHS[mIdx];
+                        const resState = itemResolvedStates[colIdx];
+                        const isClosed = resState ? resState.isClosed : false;
+
+                        return `
+                            <td class="td-qty-num td-clickable-audit ${isZero ? 'td-qty-zero' : ''}" 
+                                onclick="openCellAuditModal('${primaryYr}', '${mName}', '${escapeJS(item.code)}', '${escapeJS(item.name)}')"
+                                title="Click to view origin, source records, and audit formula (${mName} ${primaryYr})">
+                                ${v.toLocaleString('en-US')}
+                                ${isClosed && !isZero ? '<span class="cell-lock-icon" title="Historical Snapshot Locked">🔒</span>' : ''}
+                            </td>
+                        `;
+                    }).join('');
+
+                    catItemsHtml += `
+                        <tr>
+                            <td class="col-freeze-sl">${itemIdx + 1}</td>
+                            <td class="col-freeze-code" title="${item.code}">${item.code}</td>
+                            <td class="col-freeze-name" title="${item.name}">${item.name}</td>
+                            <td class="col-freeze-unit">${item.unit}</td>
+                            <td class="col-freeze-total">${itemTotal.toLocaleString('en-US')}</td>
+                            ${monthTds}
+                        </tr>
+                    `;
+                });
+
+                // Add to Grand Totals
+                grandTotal += catTotal;
+                catMonthTotals.forEach((v, colIdx) => {
+                    grandMonthTotals[colIdx] += v;
+                });
+
+                // Build Category Header Row (Individual solid cells for airtight freeze)
+                const catMonthTds = catMonthTotals.map(v => `
+                    <td class="td-qty-num">${v.toLocaleString('en-US')}</td>
+                `).join('');
+
+                tbodyHtml += `
+                    ${catItemsHtml}
+                    <tr class="tr-category-header">
+                        <td class="col-freeze-sl"></td>
+                        <td class="col-freeze-code"></td>
+                        <td class="col-freeze-name" style="text-align:left; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">${catData.category}</td>
+                        <td class="col-freeze-unit" style="text-align:center; font-weight:700;">Total</td>
+                        <td class="col-freeze-total">${catTotal.toLocaleString('en-US')}</td>
+                        ${catMonthTds}
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = tbodyHtml;
+
+            // 4. Build Grand Total Row (Individual solid cells for airtight freeze)
+            const grandMonthTds = grandMonthTotals.map(v => `
+                <td class="td-qty-num">${v.toLocaleString('en-US')}</td>
+            `).join('');
+
+            tfoot.innerHTML = `
+                <tr class="tr-grand-total">
+                    <td class="col-freeze-sl"></td>
+                    <td class="col-freeze-code"></td>
+                    <td class="col-freeze-name" style="text-align:left; font-weight:900; font-size:0.92rem; text-transform:uppercase;">TOTAL ERP PRODUCTION</td>
+                    <td class="col-freeze-unit" style="text-align:center; font-weight:800;">All</td>
+                    <td class="col-freeze-total">${grandTotal.toLocaleString('en-US')}</td>
+                    ${grandMonthTds}
+                </tr>
+            `;
+
+            // 5. Update KPI Metrics
+            document.getElementById('kpiTotalProduction').textContent = `${grandTotal.toLocaleString('en-US')} Units`;
+            document.getElementById('kpiActiveItems').textContent = totalRenderedItems;
+            document.getElementById('kpiSelectedMonths').textContent = activeMonths.length;
+        }
+
+        // Current Audit State
+        let currentAuditState = {
+            year: "2026",
+            month: "August",
+            code: "",
+            name: ""
+        };
+
+        function openCellAuditModal(year, monthName, itemCode, itemName) {
+            currentAuditState = { year, month: monthName, code: itemCode, name: itemName };
+
+            document.getElementById('auditItemCode').textContent = itemCode;
+            document.getElementById('auditItemName').textContent = itemName;
+            document.getElementById('auditPeriodText').textContent = `${monthName} ${year}`;
+
+            let fallback = 0;
+            const mIdx = FISCAL_MONTHS.indexOf(monthName);
+            if (RAW_ERP_DATA[year]) {
+                for (const cat of RAW_ERP_DATA[year]) {
+                    const it = cat.items.find(i => i.code === itemCode);
+                    if (it && it.months && mIdx !== -1) {
+                        fallback = it.months[mIdx];
+                        break;
+                    }
+                }
+            }
+
+            const resolved = (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined')
+                ? MONTHLY_ARCHIVE_ENGINE.resolveMonthlyItemProduction(year, monthName, itemCode, fallback)
+                : { qty: fallback, isClosed: false, status: 'LIVE', sourceRecords: [] };
+
+            const badgeContainer = document.getElementById('auditLayerBadgeContainer');
+            const closeBtn = document.getElementById('auditActionCloseMonthBtn');
+            const snapBox = document.getElementById('auditSnapshotMetaBox');
+
+            if (resolved.isClosed) {
+                badgeContainer.innerHTML = `<span class="audit-layer-badge closed">🔒 Historical Snapshot (Locked Archive)</span>`;
+                closeBtn.style.display = 'none';
+                snapBox.style.display = 'block';
+                const meta = resolved.snapshotMeta || {};
+                document.getElementById('auditSnapshotMetaContent').innerHTML = `
+                    <div><strong>Snapshot ID:</strong> ${meta.snapshotId || 'N/A'} (v${meta.version || '1.0'})</div>
+                    <div><strong>Closed On:</strong> ${meta.closedDateStr || meta.closedAt || 'N/A'}</div>
+                    <div><strong>Closed By:</strong> ${meta.closedBy || 'Supervisor'}</div>
+                    <div><strong>Status:</strong> Immutable Archive (Future edits in source data cannot alter this)</div>
+                `;
+            } else {
+                badgeContainer.innerHTML = `<span class="audit-layer-badge live">🟢 Live Dynamic Link (Assemble Summary)</span>`;
+                closeBtn.style.display = 'inline-flex';
+                closeBtn.textContent = `Lock & Archive Month (${monthName} ${year})`;
+                snapBox.style.display = 'none';
+            }
+
+            document.getElementById('auditTotalQty').textContent = `${(resolved.qty || 0).toLocaleString('en-US')} Pcs`;
+            document.getElementById('auditRecordCount').textContent = (resolved.sourceRecords || []).length;
+            document.getElementById('auditFormulaText').textContent = resolved.formula || 'Sum of matched records';
+
+            // Populate Breakdown Table
+            const tbody = document.getElementById('auditBreakdownTableBody');
+            if (!resolved.sourceRecords || resolved.sourceRecords.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding:18px; color:#94a3b8; font-style:italic;">
+                            No production receive records found in assemble_summary.html for this item in ${monthName} ${year} (Quantity: 0).
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tbody.innerHTML = resolved.sourceRecords.map((r, idx) => `
+                    <tr>
+                        <td style="text-align:center; font-weight:700; color:#64748b;">${idx + 1}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.75rem; color:#0284c7;">${r.id || '-'}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.75rem;">${r.erpCode || '-'}</td>
+                        <td style="font-weight:700;">${r.code || '-'}</td>
+                        <td>${r.name || itemName}</td>
+                        <td style="text-align:right; font-weight:800; color:#059669; font-family:var(--font-mono);">${(r.qty || 0).toLocaleString('en-US')}</td>
+                        <td style="font-size:0.72rem; color:#64748b;">${r.dateInterval || r.sourceFile || 'assemble_summary.html'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            document.getElementById('linkDetailsModal').classList.add('active');
+        }
+
+        function closeCellAuditModal() {
+            document.getElementById('linkDetailsModal').classList.remove('active');
+        }
+
+        function triggerCloseMonthFromAudit() {
+            if (!currentAuditState.month || !currentAuditState.year) return;
+            closeCellAuditModal();
+            openMonthClosingModal(currentAuditState.month);
+        }
+
+        function openMonthClosingModal(preselectMonth) {
+            const yr = filterState.selectedYears[0] || "2026";
+            document.getElementById('modalClosingYearSelect').value = yr;
+            renderMonthClosingModal();
+            document.getElementById('monthClosingModal').classList.add('active');
+        }
+
+        function closeMonthClosingModal() {
+            document.getElementById('monthClosingModal').classList.remove('active');
+        }
+
+        function renderMonthClosingModal() {
+            const yr = document.getElementById('modalClosingYearSelect').value;
+            const tbody = document.getElementById('closingModalTableBody');
+            let closedCount = 0;
+            let totalArchivedQty = 0;
+
+            const rowsHtml = FISCAL_MONTHS.map((mName, mIdx) => {
+                const isClosed = (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined')
+                    ? MONTHLY_ARCHIVE_ENGINE.isMonthClosed(yr, mName)
+                    : false;
+                const snap = (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined')
+                    ? MONTHLY_ARCHIVE_ENGINE.getSnapshot(yr, mName)
+                    : null;
+
+                if (isClosed) {
+                    closedCount++;
+                    totalArchivedQty += (snap && snap.totalQty ? snap.totalQty : 0);
+                }
+
+                // Compute month production total for display
+                let monthProd = 0;
+                let activeItemsCount = 0;
+                if (isClosed && snap) {
+                    monthProd = snap.totalQty || 0;
+                    activeItemsCount = snap.activeItemsCount || 0;
+                } else {
+                    // Compute live total for open month
+                    if (RAW_ERP_DATA[yr]) {
+                        RAW_ERP_DATA[yr].forEach(cat => {
+                            cat.items.forEach(it => {
+                                const fallbackVal = it.months ? (it.months[mIdx] || 0) : 0;
+                                const res = (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined')
+                                    ? MONTHLY_ARCHIVE_ENGINE.resolveMonthlyItemProduction(yr, mName, it.code, fallbackVal)
+                                    : { qty: fallbackVal };
+                                const q = res.qty || 0;
+                                monthProd += q;
+                                if (q > 0) activeItemsCount++;
+                            });
+                        });
+                    }
+                }
+
+                const statusBadge = isClosed
+                    ? `<span class="month-status-pill closed">🔒 CLOSED</span>`
+                    : `<span class="month-status-pill live">🟢 LIVE (Open)</span>`;
+
+                const verifierInfo = isClosed && snap
+                    ? `<div style="font-size:0.75rem; font-weight:700; color:#0f2942;">${snap.closedDateStr || snap.closedAt}</div>
+                       <div style="font-size:0.70rem; color:#64748b;">By: ${snap.closedBy || 'Supervisor'}</div>`
+                    : `<span style="color:#94a3b8; font-size:0.75rem;">Live Source Sync (Unclosed)</span>`;
+
+                const actionBtns = isClosed
+                    ? `
+                        <button type="button" class="btn-action-inspect" onclick="inspectSnapshotDetail('${yr}', '${mName}')" title="Inspect snapshot details">👁️ View</button>
+                        <button type="button" class="btn-action-reopen" onclick="handleReopenMonthAction('${yr}', '${mName}')" title="Admin Reopen to Live mode">🔓 Reopen</button>
+                      `
+                    : `
+                        <button type="button" class="btn-action-lock" onclick="handleCloseMonthAction('${yr}', '${mName}')" title="Freeze and lock this month in immutable archive">
+                            🔒 Close &amp; Lock Month
+                        </button>
+                      `;
+
+                return `
+                    <tr>
+                        <td style="text-align:center; font-weight:700; color:#64748b;">${mIdx + 1}</td>
+                        <td style="font-weight:800; font-size:0.86rem; color:#0f2942;">${mName} ${yr}</td>
+                        <td>${statusBadge}</td>
+                        <td>${verifierInfo}</td>
+                        <td style="text-align:right; font-weight:800; font-family:var(--font-mono); font-size:0.85rem; color:${isClosed ? '#1e3a8a' : '#059669'};">
+                            ${monthProd.toLocaleString('en-US')} Units
+                        </td>
+                        <td style="text-align:center; font-weight:700;">${activeItemsCount}</td>
+                        <td style="text-align:center;">${actionBtns}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            tbody.innerHTML = rowsHtml;
+
+            document.getElementById('kpiModalClosedCount').textContent = `${closedCount} / 12`;
+            document.getElementById('kpiModalLiveCount').textContent = `${12 - closedCount} / 12`;
+            document.getElementById('kpiModalArchivedQty').textContent = `${totalArchivedQty.toLocaleString('en-US')} Units`;
+        }
+
+        function handleCloseMonthAction(year, monthName) {
+            const confirmed = confirm(`Are you sure you want to CLOSE & ARCHIVE ${monthName} ${year}?\n\nThis will take an immutable snapshot of all production receive numbers from assemble_summary.html and lock the month permanently.`);
+            if (!confirmed) return;
+
+            if (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined') {
+                const user = (typeof window.getCurrentUser === 'function') ? window.getCurrentUser() : "Sayful Islam (SENIOR SUPERVISOR)";
+                const res = MONTHLY_ARCHIVE_ENGINE.closeMonth(year, monthName, user, `Closed and locked via ERP Summary Portal`);
+                if (res && res.success) {
+                    renderMonthClosingModal();
+                    renderTable();
+                    showToast(`🔒 ${monthName} ${year} closed and locked in Historical Archive!`);
+                }
+            }
+        }
+
+        function handleReopenMonthAction(year, monthName) {
+            const confirmed = confirm(`ADMIN OVERRIDE: Are you sure you want to REOPEN ${monthName} ${year} back to Live Dynamic mode?\n\nHistorical lock will be removed and live changes in source data will reflect.`);
+            if (!confirmed) return;
+
+            if (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined') {
+                const res = MONTHLY_ARCHIVE_ENGINE.reopenMonth(year, monthName);
+                if (res && res.success) {
+                    renderMonthClosingModal();
+                    renderTable();
+                    showToast(`🔓 ${monthName} ${year} reopened to Live Dynamic mode.`);
+                }
+            }
+        }
+
+        function inspectSnapshotDetail(year, monthName) {
+            if (typeof MONTHLY_ARCHIVE_ENGINE === 'undefined') return;
+            const snap = MONTHLY_ARCHIVE_ENGINE.getSnapshot(year, monthName);
+            if (!snap) {
+                alert("Snapshot details not found.");
+                return;
+            }
+            alert(`🔒 SNAPSHOT AUDIT DETAILS:
+Snapshot ID: ${snap.snapshotId}
+Period: ${snap.month} ${snap.year}
+Status: ${snap.status}
+Closed At: ${snap.closedDateStr || snap.closedAt}
+Closed By: ${snap.closedBy}
+Total Production: ${(snap.totalQty || 0).toLocaleString()} Units
+Active Catalog Items: ${snap.activeItemsCount || 0}
+Source: ${snap.sourceRef}`);
+        }
+
+        function handleExportSnapshots() {
+            if (typeof MONTHLY_ARCHIVE_ENGINE === 'undefined') return;
+            const jsonStr = MONTHLY_ARCHIVE_ENGINE.exportSnapshotsJSON();
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `MEP_Monthly_Production_Snapshots_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("📥 Snapshots archive exported to JSON!");
+        }
+
+        function handleRestoreSnapshots(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                if (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined') {
+                    const res = MONTHLY_ARCHIVE_ENGINE.restoreSnapshotsJSON(content);
+                    if (res && res.success) {
+                        renderMonthClosingModal();
+                        renderTable();
+                        showToast(`✅ Successfully restored ${res.count} monthly snapshots!`);
+                    } else {
+                        alert("Failed to restore snapshots: " + (res.message || "Invalid file format"));
+                    }
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function handleResetFactoryBaseline() {
+            const confirmed = confirm("WARNING: Resetting to Factory Baseline will restore default verified snapshots (July & August 2026, Full 2025) and clear custom closures. Proceed?");
+            if (!confirmed) return;
+
+            if (typeof MONTHLY_ARCHIVE_ENGINE !== 'undefined') {
+                MONTHLY_ARCHIVE_ENGINE.resetToFactoryBaseline();
+                renderMonthClosingModal();
+                renderTable();
+                showToast("🔄 Reset to default verified baseline snapshots.");
+            }
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const table = document.getElementById('yearlyErpMatrixTable');
+            let csv = [];
+            const rows = table.querySelectorAll('tr');
+
+            rows.forEach(r => {
+                const cols = r.querySelectorAll('th, td');
+                let row = [];
+                cols.forEach(c => {
+                    let text = c.innerText.replace(/"/g, '""').trim();
+                    row.push(`"${text}"`);
+                });
+                if (row.length > 0) csv.push(row.join(','));
+            });
+
+            const csvFile = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(csvFile);
+            link.setAttribute('download', `Yearly_Production_Summary_ERP_${filterState.selectedYears.join('_')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("CSV file exported successfully");
+        }
+
+        // Live Clock
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = String(now.getDate()).padStart(2, '0');
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+            
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayEl = document.getElementById('liveDayText');
+            const timeEl = document.getElementById('liveTimeText');
+            if (dayEl) dayEl.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            if (timeEl) timeEl.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Helper to safely escape strings inside inline JS
+        function escapeJS(str) {
+            if (!str) return '';
+            return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        // Initialize Page & Verify Authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.validateCurrentSession === 'function') {
+                if (!window.validateCurrentSession().valid) {
+                    window.location.replace('index.html');
+                    return;
+                }
+            } else if (sessionStorage.getItem('portal_auth_status') !== 'true') {
+                window.location.replace('index.html');
+                return;
+            }
+            
+            initFilters();
+            renderTable();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+
+            // Real-time synchronization when All Section SFG, Assemble Summary or Archive snapshots change
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'mep_yearly_erp_production_data' ||
+                    e.key === 'mep_monthly_production_snapshots' ||
+                    e.key === 'mep_assemble_custom_data' ||
+                    e.key === 'mep_fan_assemble_erp_data' ||
+                    e.key === 'smart_cloud_sync_time') {
+                    reloadERPData();
+                    renderTable();
+                    showToast("🔄 Data synchronized with latest ERP changes!");
+                }
+            });
+
+            window.addEventListener('mep_monthly_production_snapshot_updated', () => {
+                renderTable();
+                if (document.getElementById('monthClosingModal').classList.contains('active')) {
+                    renderMonthClosingModal();
+                }
+            });
+
+            window.addEventListener('mep_assemble_summary_updated', () => {
+                renderTable();
+                showToast("🟢 Live Assemble Summary update received!");
+            });
+
+            window.addEventListener('focus', () => {
+                reloadERPData();
+                renderTable();
+            });
+
+            // Auto open modal query check for testing or direct navigation
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('autoOpenAudit') === '1') {
+                setTimeout(() => openCellAuditModal('2026', 'August', 'CF5601/CF5601IV', '56 Inch Premium Ceiling Fan - Ivory'), 300);
+            } else if (urlParams.get('autoOpenLiveAudit') === '1') {
+                setTimeout(() => openCellAuditModal('2026', 'September', 'CF5601/CF5601IV', '56 Inch Premium Ceiling Fan - Ivory'), 300);
+            } else if (urlParams.get('autoOpenClosing') === '1') {
+                setTimeout(() => openMonthClosingModal(), 300);
+            }
+        });
+    </script>
+    <script src="report_sidebar.js"></script>
+</body>
+</html>

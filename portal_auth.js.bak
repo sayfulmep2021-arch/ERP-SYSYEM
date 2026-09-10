@@ -1,0 +1,733 @@
+﻿/**
+ * MEP Portal - Corporate Authentication, Session & View Routing Engine
+ * Credentials validation, role-based views (ADMIN vs View), inactivity tracker, and page routing
+ * Auto-extracted from index.html during Phase 3 modularization
+ */
+        // Official Credentials Configuration
+        const AUTH_CONFIG = {
+            adminUsername: "ADMIN",
+            adminPassword: "9642",
+            viewUsername: "View",
+            viewPassword: "1234"
+        };
+
+        const STORAGE_KEYS = {
+            isAuthenticated: "portal_auth_status",
+            lastActivity: "portal_last_active_time"
+        };
+
+        function isPageReload() {
+            try {
+                const nav = performance.getEntriesByType('navigation');
+                if (nav && nav.length > 0) {
+                    return nav[0].type === 'reload';
+                }
+                if (performance.navigation) {
+                    return performance.navigation.type === 1; // TYPE_RELOAD
+                }
+            } catch(e) {}
+            return false;
+        }
+
+        function browseAllReportsAction(event) {
+            if (event) event.stopPropagation();
+            resetInactivityTimer();
+
+            // Animate department cards on the right with a sequential wave pulse to guide user selection
+            const cards = document.querySelectorAll('.dept-card-btn');
+            cards.forEach((card, idx) => {
+                setTimeout(() => {
+                    card.classList.add('dept-card-pulse');
+                    setTimeout(() => card.classList.remove('dept-card-pulse'), 700);
+                }, idx * 45);
+            });
+
+            // Focus on Choose Your Report panel without entering any individual report
+            const mainPanel = document.querySelector('.dept-hub-panel');
+            if (mainPanel) {
+                mainPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            showToast("Please select any report category from the right panel");
+        }
+
+        // Universal Master Report Mapping Dictionary
+        const REPORT_TITLE_TO_FILE_MAP = {
+            'Production Plan': 'production_plan.html',
+            'Monthly RM Demand Vs Received': 'monthly_rm_demand_vs_received.html',
+            'Assemble Summary': 'assemble_summary.html',
+            'Armature Summary': 'armature_summary.html',
+            'FG Summary': 'fg_summary.html',
+            'BOM': 'bom.html',
+            'BOM (Bill of Materials)': 'bom.html',
+            'BOM With SFG': 'bom_with_sfg.html',
+            'Daily FG Production Entry': 'daily_fg_production_entry.html',
+            'Daily Production Received Assemble (All)': 'daily_production_received_assemble.html',
+            'Daily Production Received Assemble': 'daily_production_received_assemble.html',
+            'Daily Production Plan': 'daily_production_plan.html',
+            'Check Floor Stock': 'check_floor_stock.html',
+            'Fan Damage Calculation Entry': 'fan_damage_calculation_entry.html',
+            'All Section SFG': 'report_all_section_sfg.html',
+            'Fan Assemble': 'fan_assemble_erp.html',
+            'Fan Assemble (Closing ERP)': 'fan_assemble_erp.html',
+            'Armature & Winding': 'armature_winding_erp.html',
+            'Armature & Winding (Closing ERP)': 'armature_winding_erp.html',
+            'Finish Good (FG)': 'closing_finish_good_fg.html',
+            'Finish Good FG (Closing ERP)': 'closing_finish_good_fg.html',
+            'Closing All SFG': 'closing_all_sfg.html',
+            'Closing All SFG (Closing ERP)': 'closing_all_sfg.html',
+            'Store Position Report': 'store_position_report.html',
+            'Monthly Production Summary (Physical)': 'monthly_production_summary_physical.html',
+            'Monthly Production Summary': 'monthly_production_summary_physical.html',
+            'Monthly Damage Summary': 'monthly_damage_summary.html',
+            'Yearly Production Summary (Physical)': 'yearly_production_summary_physical.html',
+            'Yearly Production Summary (ERP)': 'yearly_production_summary_erp.html',
+            'Yearly Damage Summary': 'yearly_damage_summary.html',
+            'FG Pending Report': 'fg_pending_report.html',
+            'Check FG Need Item': 'check_fg_need_item.html',
+            'Check RM (Prd. Possible)': 'check_rm_prd_possible.html',
+            'Check RM Prd Possible': 'check_rm_prd_possible.html',
+            'Master Database': 'master.html',
+            'Master': 'master.html',
+            'Central Item Master Database': 'master.html'
+        };
+
+        window.navigateToReportPage = function(targetUrl, event) {
+            if (event) {
+                try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
+            }
+            if (!targetUrl || targetUrl === '#') {
+                showToast("ℹ️ This report is currently undergoing scheduled data maintenance.");
+                return;
+            }
+
+            const cleanFile = targetUrl.split('/').pop().split('?')[0].toLowerCase();
+
+            // Permission Check for View-Only User
+            if (isCurrentUserViewOnly()) {
+                const rawPerms = localStorage.getItem('portal_view_page_permissions');
+                if (rawPerms) {
+                    try {
+                        const perms = JSON.parse(rawPerms);
+                        if (perms && perms[cleanFile] === false) {
+                            alert("Access Denied: You do not have permission to view this report page.");
+                            return;
+                        }
+                    } catch(e) {}
+                }
+            }
+
+            // Ensure active session is preserved & synchronized across sessionStorage & localStorage
+            sessionStorage.setItem(STORAGE_KEYS.isAuthenticated, "true");
+            localStorage.setItem(STORAGE_KEYS.isAuthenticated, "true");
+            sessionStorage.setItem(STORAGE_KEYS.lastActivity, Date.now().toString());
+
+            window.location.href = targetUrl;
+        };
+
+        window.handleSubReportClick = function(moduleName, reportTitle, event) {
+            if (event) {
+                try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
+            }
+            const normalizedTitle = (reportTitle || '').trim();
+            const targetUrl = REPORT_TITLE_TO_FILE_MAP[normalizedTitle];
+            if (targetUrl) {
+                window.navigateToReportPage(targetUrl, event);
+            } else {
+                showToast(`ℹ️ "${normalizedTitle}" is currently undergoing scheduled data maintenance.`);
+            }
+        };
+
+        window.openMasterPage = function(event) {
+            if (typeof window.navigateToReportPage === 'function') {
+                window.navigateToReportPage('master.html', event);
+            } else {
+                window.location.href = 'master.html';
+            }
+        };
+
+        /**
+         * Initialize & check session on page load
+         * Checks both sessionStorage and localStorage for seamless cross-tab & direct file launch support
+         */
+        function initSession() {
+            const isAuth = (sessionStorage.getItem(STORAGE_KEYS.isAuthenticated) === "true") ||
+                           (localStorage.getItem(STORAGE_KEYS.isAuthenticated) === "true");
+
+            if (isAuth) {
+                // Ensure synchronization across both storage tiers
+                sessionStorage.setItem(STORAGE_KEYS.isAuthenticated, "true");
+                localStorage.setItem(STORAGE_KEYS.isAuthenticated, "true");
+
+                const storedRole = sessionStorage.getItem('portal_auth_role') || localStorage.getItem('portal_auth_role') || 'ADMIN';
+                const isViewOnly = (sessionStorage.getItem('portal_view_only') === 'true') ||
+                                   (localStorage.getItem('portal_view_only') === 'true') ||
+                                   (storedRole === 'VIEW');
+                const sig = sessionStorage.getItem('portal_auth_sig') ||
+                            localStorage.getItem('portal_auth_sig') ||
+                            btoa((isViewOnly ? 'VIEW' : 'ADMIN') + ':::MEP_SECURE_PORTAL_2026');
+
+                sessionStorage.setItem('portal_auth_role', storedRole);
+                localStorage.setItem('portal_auth_role', storedRole);
+                sessionStorage.setItem('portal_view_only', isViewOnly ? "true" : "false");
+                localStorage.setItem('portal_view_only', isViewOnly ? "true" : "false");
+                sessionStorage.setItem('portal_auth_sig', sig);
+                localStorage.setItem('portal_auth_sig', sig);
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const viewParam = urlParams.get('view');
+                const currentView = sessionStorage.getItem('portal_current_view');
+                const targetMod = urlParams.get('mod') || sessionStorage.getItem('portal_hub_module');
+
+                if (viewParam === 'main') {
+                    sessionStorage.setItem('portal_current_view', 'main');
+                    switchToMainInterfaceView();
+                } else if (viewParam === 'dashboard') {
+                    window.location.href = 'fg_pending_report.html';
+                } else if (viewParam === 'hub') {
+                    sessionStorage.setItem('portal_current_view', 'hub');
+                    switchToDepartmentHub(targetMod);
+                } else if (currentView === 'dashboard') {
+                    sessionStorage.setItem('portal_current_view', 'main');
+                    switchToMainInterfaceView();
+                } else if (currentView === 'hub') {
+                    switchToDepartmentHub(targetMod);
+                } else {
+                    switchToMainInterfaceView();
+                }
+                applyViewOnlyStateUI();
+            } else {
+                // Not authenticated: show Lock Screen
+                showLoginView();
+            }
+            initNotificationState();
+        }
+
+        /**
+         * Switch UI to Dashboard
+         */
+        function showDashboardView() {
+            var loginView = document.getElementById('loginView');
+            var hubView = document.getElementById('departmentHubView');
+            var dashView = document.getElementById('dashboardView');
+            var mainView = document.getElementById('mainInterfaceView');
+
+            if (loginView) loginView.style.setProperty('display', 'none', 'important');
+            if (hubView) hubView.style.setProperty('display', 'none', 'important');
+            if (dashView) dashView.style.setProperty('display', 'flex', 'important');
+            if (mainView) mainView.style.setProperty('display', 'none', 'important');
+        }
+
+        function showLoginView() {
+            var dashView = document.getElementById('dashboardView');
+            var hubView = document.getElementById('departmentHubView');
+            var mainView = document.getElementById('mainInterfaceView');
+            var loginView = document.getElementById('loginView');
+
+            if (dashView) dashView.style.setProperty('display', 'none', 'important');
+            if (hubView) hubView.style.setProperty('display', 'none', 'important');
+            if (mainView) mainView.style.setProperty('display', 'none', 'important');
+            if (loginView) loginView.style.setProperty('display', 'flex', 'important');
+
+            // Default to ADMIN role
+            if (typeof selectRole === 'function') {
+                selectRole('ADMIN');
+            } else {
+                const usernameInput = document.getElementById('username');
+                if (usernameInput) usernameInput.value = 'ADMIN';
+            }
+
+            const passwordInput = document.getElementById('password');
+            if (passwordInput) {
+                passwordInput.value = '';
+                passwordInput.classList.remove('input-error');
+                setTimeout(() => passwordInput.focus(), 120);
+            }
+
+            const errorBox = document.getElementById('loginError');
+            if (errorBox) errorBox.classList.remove('show');
+        }
+
+        function updateNavState(activeView) {
+            const isMain = (activeView === 'main');
+            const isHub = (activeView === 'hub');
+            const isDash = (activeView === 'dashboard');
+
+            document.querySelectorAll('.btn-nav-main, .btn-rail-main').forEach(el => {
+                if (isMain) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+            document.querySelectorAll('.btn-nav-home, .btn-rail-home').forEach(el => {
+                if (isHub) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+            document.querySelectorAll('.btn-nav-dash, .btn-rail-dash').forEach(el => {
+                if (isDash) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+        }
+
+        function switchToMainInterfaceView() {
+            resetInactivityTimer();
+            sessionStorage.setItem('portal_current_view', 'main');
+            sessionStorage.removeItem('portal_hub_module');
+            var loginView = document.getElementById('loginView');
+            var hubView = document.getElementById('departmentHubView');
+            var dashView = document.getElementById('dashboardView');
+            var mainView = document.getElementById('mainInterfaceView');
+
+            if (loginView) loginView.style.setProperty('display', 'none', 'important');
+            if (hubView) hubView.style.setProperty('display', 'none', 'important');
+            if (dashView) dashView.style.setProperty('display', 'none', 'important');
+            if (mainView) mainView.style.setProperty('display', 'flex', 'important');
+
+            updateNavState('main');
+
+            if (typeof renderProductionPerformanceDashboard === 'function') {
+                renderProductionPerformanceDashboard();
+            }
+
+            applyViewOnlyStateUI();
+
+            if (window.location.search) {
+                try {
+                    window.history.replaceState(null, '', window.location.pathname);
+                } catch(e) {}
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchToDashboardView() {
+            window.location.href = 'fg_pending_report.html';
+        }
+
+        function switchToDepartmentHub(targetModuleId) {
+            resetInactivityTimer();
+            sessionStorage.setItem('portal_current_view', 'hub');
+            var loginView = document.getElementById('loginView');
+            var dashView = document.getElementById('dashboardView');
+            var mainView = document.getElementById('mainInterfaceView');
+            var hubView = document.getElementById('departmentHubView');
+
+            if (loginView) loginView.style.setProperty('display', 'none', 'important');
+            if (dashView) dashView.style.setProperty('display', 'none', 'important');
+            if (mainView) mainView.style.setProperty('display', 'none', 'important');
+            if (hubView) hubView.style.setProperty('display', 'flex', 'important');
+
+            updateNavState('hub');
+            applyViewOnlyStateUI();
+
+            if (targetModuleId) {
+                selectDepartmentModule(targetModuleId);
+            } else {
+                sessionStorage.removeItem('portal_hub_module');
+                document.querySelectorAll('.dept-card-btn').forEach(function(card) {
+                    card.classList.remove('active-dept');
+                });
+                var emptyState = document.getElementById('hubEmptyState');
+                var container = document.getElementById('hubActiveModuleContainer');
+                if (emptyState) {
+                    emptyState.classList.remove('is-hidden');
+                    emptyState.style.setProperty('display', 'flex', 'important');
+                }
+                if (container) {
+                    container.classList.add('is-hidden');
+                    container.style.setProperty('display', 'none', 'important');
+                    container.innerHTML = '';
+                }
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function initNotificationState() {
+            const isRead = localStorage.getItem('mep_notif_read_v1') === 'true';
+            document.querySelectorAll('.notif-badge-dot').forEach(el => {
+                el.style.display = isRead ? 'none' : 'block';
+            });
+        }
+
+        function toggleNotificationPanel() {
+            const panel = document.getElementById('notificationPanel');
+            if (!panel) return;
+            const isActive = panel.classList.contains('active');
+            if (isActive) {
+                panel.classList.remove('active');
+            } else {
+                panel.classList.add('active');
+                localStorage.setItem('mep_notif_read_v1', 'true');
+                document.querySelectorAll('.notif-badge-dot').forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+        }
+
+        function closeNotificationPanel() {
+            const panel = document.getElementById('notificationPanel');
+            if (panel) panel.classList.remove('active');
+        }
+
+        /**
+         * Toggle Password Visibility (Show / Hide)
+         */
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeOffIcon = document.getElementById('eyeOffIcon');
+
+            if (!pwdInput) return;
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                if (eyeIcon) eyeIcon.style.display = 'none';
+                if (eyeOffIcon) eyeOffIcon.style.display = 'block';
+            } else {
+                pwdInput.type = 'password';
+                if (eyeIcon) eyeIcon.style.display = 'block';
+                if (eyeOffIcon) eyeOffIcon.style.display = 'none';
+            }
+        }
+
+        /**
+         * Toggle Username / Role Dropdown Menu
+         */
+        function toggleRoleDropdown(forceClose = false) {
+            const menu = document.getElementById('roleDropdownMenu');
+            const btn = document.getElementById('roleSelectorBtn');
+            if (!menu || !btn) return;
+
+            const isOpen = forceClose ? false : !menu.classList.contains('show');
+            if (isOpen) {
+                menu.classList.add('show');
+                btn.setAttribute('aria-expanded', 'true');
+            } else {
+                menu.classList.remove('show');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        // Close dropdown when user clicks outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('userRoleDropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                toggleRoleDropdown(true);
+            }
+        });
+
+        /**
+         * Select User Role (ADMIN vs View)
+         */
+        function selectRole(role) {
+            const usernameInput = document.getElementById('username');
+            const roleNameEl = document.getElementById('activeRoleName');
+            const roleTagEl = document.getElementById('activeRoleTag');
+            const roleIconBox = document.getElementById('activeRoleIcon');
+            const itemAdmin = document.getElementById('roleItemAdmin');
+            const itemView = document.getElementById('roleItemView');
+            const checkAdmin = document.getElementById('checkAdmin');
+            const checkView = document.getElementById('checkView');
+            const pwdRoleHint = document.getElementById('pwdRoleHint');
+            const pwdInput = document.getElementById('password');
+
+            if (usernameInput) usernameInput.value = role;
+
+            if (role === 'View') {
+                if (roleNameEl) roleNameEl.textContent = 'View';
+                if (roleTagEl) roleTagEl.textContent = 'Visitor / View Only (Read-Only Portal)';
+                if (roleIconBox) {
+                    roleIconBox.className = 'role-icon-box view-mode';
+                    roleIconBox.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+                }
+                if (itemAdmin) itemAdmin.classList.remove('active');
+                if (itemView) itemView.classList.add('active');
+                if (checkAdmin) checkAdmin.style.display = 'none';
+                if (checkView) checkView.style.display = 'inline';
+                if (pwdRoleHint) pwdRoleHint.textContent = 'View PIN';
+            } else {
+                // ADMIN
+                if (roleNameEl) roleNameEl.textContent = 'ADMIN';
+                if (roleTagEl) roleTagEl.textContent = 'System Administrator (Full Edit Access)';
+                if (roleIconBox) {
+                    roleIconBox.className = 'role-icon-box';
+                    roleIconBox.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
+                }
+                if (itemAdmin) itemAdmin.classList.add('active');
+                if (itemView) itemView.classList.remove('active');
+                if (checkAdmin) checkAdmin.style.display = 'inline';
+                if (checkView) checkView.style.display = 'none';
+                if (pwdRoleHint) pwdRoleHint.textContent = 'Admin PIN';
+            }
+
+            toggleRoleDropdown(true);
+
+            // Clear password and focus
+            if (pwdInput) {
+                pwdInput.value = '';
+                pwdInput.classList.remove('input-error');
+                setTimeout(() => pwdInput.focus(), 80);
+            }
+
+            const errorBox = document.getElementById('loginError');
+            if (errorBox) errorBox.classList.remove('show');
+        }
+
+        /**
+         * Handle Login Submission
+         */
+        function handleLogin(event) {
+            if (event) event.preventDefault();
+
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const errorBox = document.getElementById('loginError');
+            const errorMsg = document.getElementById('loginErrorMsg');
+            const loginCard = document.querySelector('.auth-split-card') || document.getElementById('loginView');
+
+            const selectedRole = usernameInput ? usernameInput.value.trim() : 'ADMIN';
+            const enteredPass = passwordInput ? passwordInput.value.trim() : '';
+
+            // Password strictly required: no empty logins permitted
+            if (!enteredPass) {
+                if (errorBox) errorBox.classList.add('show');
+                if (errorMsg) errorMsg.textContent = 'Please enter password to login!';
+                if (passwordInput) {
+                    passwordInput.classList.add('input-error');
+                    passwordInput.focus();
+                }
+                if (loginCard) {
+                    loginCard.classList.remove('shake-effect');
+                    void loginCard.offsetWidth;
+                    loginCard.classList.add('shake-effect');
+                }
+                return;
+            }
+
+            let isValid = false;
+            let isViewOnly = false;
+
+            if (selectedRole === 'ADMIN') {
+                if (enteredPass === AUTH_CONFIG.adminPassword || enteredPass === '9642') {
+                    isValid = true;
+                    isViewOnly = false;
+                }
+            } else if (selectedRole === 'View') {
+                if (enteredPass === AUTH_CONFIG.viewPassword || enteredPass === '1234') {
+                    isValid = true;
+                    isViewOnly = true;
+                }
+            } else {
+                // Fallback username check
+                if (enteredPass === '9642') {
+                    isValid = true;
+                    isViewOnly = false;
+                } else if (enteredPass === '1234') {
+                    isValid = true;
+                    isViewOnly = true;
+                }
+            }
+
+            if (isValid) {
+                const role = isViewOnly ? 'VIEW' : 'ADMIN';
+                const sessionSig = btoa(role + ':::MEP_SECURE_PORTAL_2026');
+                sessionStorage.setItem(STORAGE_KEYS.isAuthenticated, "true");
+                sessionStorage.setItem('portal_auth_role', role);
+                sessionStorage.setItem('portal_view_only', isViewOnly ? "true" : "false");
+                sessionStorage.setItem('portal_auth_sig', sessionSig);
+                sessionStorage.setItem(STORAGE_KEYS.lastActivity, Date.now().toString());
+
+                localStorage.setItem(STORAGE_KEYS.isAuthenticated, "true");
+                localStorage.setItem('portal_auth_role', role);
+                localStorage.setItem('portal_view_only', isViewOnly ? "true" : "false");
+                localStorage.setItem('portal_auth_sig', sessionSig);
+                localStorage.setItem(STORAGE_KEYS.lastActivity, Date.now().toString());
+
+                if (errorBox) errorBox.classList.remove('show');
+                if (passwordInput) {
+                    passwordInput.classList.remove('input-error');
+                    passwordInput.value = '';
+                }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('view') === 'hub') {
+                    switchToDepartmentHub();
+                } else if (urlParams.get('view') === 'dashboard') {
+                    switchToDashboardView();
+                } else {
+                    switchToMainInterfaceView();
+                }
+                applyViewOnlyStateUI();
+            } else {
+                // Invalid credentials
+                if (errorBox) errorBox.classList.add('show');
+                if (errorMsg) {
+                    errorMsg.textContent = selectedRole === 'ADMIN' 
+                        ? 'Invalid ADMIN Password! Please try again.' 
+                        : 'Invalid View Password! Please try again.';
+                }
+                if (passwordInput) {
+                    passwordInput.classList.add('input-error');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+
+                if (loginCard) {
+                    loginCard.classList.remove('shake-effect');
+                    void loginCard.offsetWidth;
+                    loginCard.classList.add('shake-effect');
+                }
+            }
+        }
+
+        /**
+         * Handle View-Only Access (Visitor / Guest Mode)
+         */
+        function handleViewOnlyAccess() {
+            selectRole('View');
+            const pwdInput = document.getElementById('password');
+            if (pwdInput) pwdInput.focus();
+        }
+
+        function isCurrentUserViewOnly() {
+            try {
+                const sig = sessionStorage.getItem('portal_auth_sig') || '';
+                if (sig === btoa('VIEW:::MEP_SECURE_PORTAL_2026')) return true;
+                if (sig === btoa('ADMIN:::MEP_SECURE_PORTAL_2026')) return false;
+                const isView = (sessionStorage.getItem('portal_view_only') === 'true');
+                const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
+                const localRole = (localStorage.getItem('portal_auth_role') || '').toUpperCase();
+                return isView || role === 'VIEW' || localRole === 'VIEW';
+            } catch(e) {
+                return false;
+            }
+        }
+
+        function applyViewOnlyStateUI() {
+            const isViewOnly = isCurrentUserViewOnly();
+            document.querySelectorAll('.smart-view-only-badge').forEach(el => {
+                el.style.setProperty('display', isViewOnly ? 'inline-flex' : 'none', 'important');
+            });
+            if (isViewOnly) {
+                document.body.classList.add('portal-view-only');
+                document.documentElement.classList.add('portal-view-only');
+                const rawPerms = localStorage.getItem('portal_view_page_permissions');
+                if (rawPerms) {
+                    try {
+                        const perms = JSON.parse(rawPerms);
+                        document.querySelectorAll('a[href]').forEach(a => {
+                            const href = a.getAttribute('href') || '';
+                            const file = href.split('/').pop().split('?')[0].toLowerCase();
+                            if (file.endsWith('.html') && perms[file] === false) {
+                                a.style.display = 'none';
+                            }
+                        });
+                        document.querySelectorAll('.dept-card-btn, .quick-card-btn, .portal-nav-card').forEach(card => {
+                            const link = (card.getAttribute('onclick') || '').toLowerCase();
+                            ALL_PORTAL_PAGES.forEach(p => {
+                                if (perms[p.file] === false && link.includes(p.file.toLowerCase())) {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        });
+                        document.querySelectorAll('.sub-report-item').forEach(item => {
+                            const onclickStr = (item.getAttribute('onclick') || '').toLowerCase();
+                            const hrefStr = (item.getAttribute('href') || '').toLowerCase();
+                            ALL_PORTAL_PAGES.forEach(p => {
+                                const target = p.file.toLowerCase();
+                                if (perms[p.file] === false && (onclickStr.includes(target) || hrefStr.includes(target))) {
+                                    item.style.display = 'none';
+                                }
+                            });
+                        });
+                    } catch(e) {}
+                }
+            } else {
+                document.body.classList.remove('portal-view-only');
+                document.documentElement.classList.remove('portal-view-only');
+                document.querySelectorAll('a[href], .dept-card-btn, .quick-card-btn, .portal-nav-card, .sub-report-item').forEach(a => {
+                    a.style.display = '';
+                });
+            }
+        }
+
+        /**
+         * Terminate Active Session
+         */
+        function handleLogout() {
+            sessionStorage.removeItem(STORAGE_KEYS.isAuthenticated);
+            sessionStorage.removeItem(STORAGE_KEYS.lastActivity);
+            sessionStorage.removeItem('portal_view_only');
+            sessionStorage.removeItem('portal_auth_role');
+            sessionStorage.removeItem('portal_auth_sig');
+            sessionStorage.removeItem('portal_current_view');
+            sessionStorage.removeItem('portal_hub_module');
+
+            localStorage.removeItem(STORAGE_KEYS.isAuthenticated);
+            localStorage.removeItem(STORAGE_KEYS.lastActivity);
+            localStorage.removeItem('portal_view_only');
+            localStorage.removeItem('portal_auth_role');
+            localStorage.removeItem('portal_auth_sig');
+            localStorage.removeItem('portal_current_view');
+            localStorage.removeItem('portal_hub_module');
+
+            // Ensure any active notification toast is completely hidden
+            const toast = document.getElementById('notification-toast');
+            if (toast) toast.classList.remove('show');
+
+            showLoginView();
+        }
+
+        /**
+         * Reset user inactivity timer on activity
+         */
+        function resetInactivityTimer() {
+            if (sessionStorage.getItem(STORAGE_KEYS.isAuthenticated) === "true") {
+                sessionStorage.setItem(STORAGE_KEYS.lastActivity, Date.now().toString());
+            }
+        }
+
+        /**
+         * Show bottom notification toast message
+         */
+        function showToast(message) {
+            const toast = document.getElementById('notification-toast');
+            const toastMsg = document.getElementById('toast-message');
+            if (!toast || !toastMsg) return;
+
+            toastMsg.innerText = message;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+// Expose globally for portal and hubs
+window.AUTH_CONFIG = AUTH_CONFIG;
+window.STORAGE_KEYS = STORAGE_KEYS;
+window.isPageReload = isPageReload;
+window.browseAllReportsAction = browseAllReportsAction;
+window.REPORT_TITLE_TO_FILE_MAP = REPORT_TITLE_TO_FILE_MAP;
+window.navigateToReportPage = navigateToReportPage;
+window.handleSubReportClick = handleSubReportClick;
+window.openMasterPage = openMasterPage;
+window.initSession = initSession;
+window.showDashboardView = showDashboardView;
+window.showLoginView = showLoginView;
+window.updateNavState = updateNavState;
+window.switchToMainInterfaceView = switchToMainInterfaceView;
+window.switchToDashboardView = switchToDashboardView;
+window.switchToDepartmentHub = switchToDepartmentHub;
+window.initNotificationState = initNotificationState;
+window.toggleNotificationPanel = toggleNotificationPanel;
+window.closeNotificationPanel = closeNotificationPanel;
+window.togglePasswordVisibility = togglePasswordVisibility;
+window.toggleRoleDropdown = toggleRoleDropdown;
+window.selectRole = selectRole;
+window.handleLogin = handleLogin;
+window.handleViewOnlyAccess = handleViewOnlyAccess;
+window.isCurrentUserViewOnly = isCurrentUserViewOnly;
+window.applyViewOnlyStateUI = applyViewOnlyStateUI;
+window.handleLogout = handleLogout;
+window.resetInactivityTimer = resetInactivityTimer;
+window.showToast = showToast;

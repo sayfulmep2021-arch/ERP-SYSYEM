@@ -1,0 +1,63 @@
+{
+  "name": "MEP Production and Inventory Management System",
+  "short_name": "MEP Portal",
+  "description": "Enterprise MRP, Daily Production Plan, Floor Stock and Inventory Management System for MEP Fan Ltd.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0284c7",
+  "lang": "en",
+  "dir": "ltr",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Open Main Production Dashboard",
+      "url": "./index.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Check Floor Stock",
+      "short_name": "Floor Stock",
+      "description": "Check Real-Time Floor Stock and BOM Movement",
+      "url": "./check_floor_stock.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Daily Production Plan",
+      "short_name": "Prod Plan",
+      "description": "Daily Production Target and Plan",
+      "url": "./daily_production_plan.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Assemble Summary",
+      "short_name": "Assemble",
+      "description": "Assemble Production and Bin Closing Summary",
+      "url": "./assemble_summary.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
