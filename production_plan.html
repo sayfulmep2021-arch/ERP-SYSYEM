@@ -1167,9 +1167,11 @@
 
         // --- Custom Editable Column Management ---
         function isUserAdmin() {
-            const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
-            const viewOnly = sessionStorage.getItem('portal_view_only') === 'true';
-            return role === 'ADMIN' && !viewOnly;
+            const isViewOnly = (sessionStorage.getItem('portal_view_only') === 'true') || (localStorage.getItem('portal_view_only') === 'true');
+            if (isViewOnly) return false;
+            const sessionRole = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
+            const localRole = (localStorage.getItem('portal_auth_role') || '').toUpperCase();
+            return (sessionRole === 'ADMIN' || localRole === 'ADMIN' || (!sessionRole && !localRole));
         }
 
         function renderExcelTable() {

@@ -140,16 +140,38 @@
                                 try { cb(cloudVal); } catch (e) { console.error(e); }
                             });
                         }
+
+                        // Seamless real-time cross-tab synchronization for operational lock states
+                        if (key === 'portal_page_lock_states') {
+                            window.dispatchEvent(new CustomEvent('portal_lock_change', { detail: { source: 'cloud' } }));
+                            if (typeof window.renderMISLockUnlockManager === 'function') {
+                                const pane = document.getElementById('paneLockUnlock');
+                                if (pane && pane.style.display !== 'none') {
+                                    const searchInput = document.getElementById('lockPageSearchInput');
+                                    window.renderMISLockUnlockManager(searchInput ? searchInput.value : '');
+                                }
+                            }
+                        }
                     }
                 } else {
                     // Node doesn't exist in cloud yet. If we have local data, seed it to cloud!
                     const localRaw = rawGetItem(key);
                     if (localRaw) {
                         try {
-                            const parsed = JSON.parse(localRaw);
-                            keyRef.set(parsed);
+                            let seedData;
+                            if (key === 'portal_page_lock_states' || key === 'portal_view_page_permissions') {
+                                seedData = localRaw;
+                            } else {
+                                try {
+                                    const parsed = JSON.parse(localRaw);
+                                    seedData = containsInvalidFirebaseKeys(parsed) ? localRaw : parsed;
+                                } catch (e) {
+                                    seedData = localRaw;
+                                }
+                            }
+                            keyRef.set(seedData);
                         } catch (e) {
-                            keyRef.set(localRaw);
+                            try { keyRef.set(localRaw); } catch (err) {}
                         }
                     }
                 }
@@ -185,6 +207,21 @@
         'mep_notification_unread'
     ];
 
+    // Helper to verify whether an object contains keys forbidden by Firebase Realtime DB (. # $ / [ ])
+    function containsInvalidFirebaseKeys(obj) {
+        if (!obj || typeof obj !== 'object') return false;
+        try {
+            const keys = Object.keys(obj);
+            for (let i = 0; i < keys.length; i++) {
+                if (/[\.#\$\[\]\/]/.test(keys[i])) return true;
+                if (obj[keys[i]] && typeof obj[keys[i]] === 'object') {
+                    if (containsInvalidFirebaseKeys(obj[keys[i]])) return true;
+                }
+            }
+        } catch (e) {}
+        return false;
+    }
+
     // Push local change to Firebase (Blocked in View-Only mode)
     function pushToCloud(key, value) {
         if (isApplyingCloudUpdate) return;
@@ -197,9 +234,18 @@
         updateStatusBadge('syncing');
 
         let dataToSave;
-        if (typeof value === 'string') {
+        // Keys that map filenames or contain dots MUST be saved as JSON string primitives to avoid Firebase key restrictions
+        const STRING_ONLY_KEYS = ['portal_page_lock_states', 'portal_view_page_permissions'];
+        if (STRING_ONLY_KEYS.includes(key)) {
+            dataToSave = (typeof value === 'string') ? value : JSON.stringify(value);
+        } else if (typeof value === 'string') {
             try {
-                dataToSave = JSON.parse(value);
+                const parsed = JSON.parse(value);
+                if (containsInvalidFirebaseKeys(parsed)) {
+                    dataToSave = value;
+                } else {
+                    dataToSave = parsed;
+                }
             } catch (e) {
                 dataToSave = value;
             }
@@ -207,13 +253,28 @@
             dataToSave = value;
         }
 
-        const keyRef = db.ref(`${ROOT_NODE}/${key}`);
-        keyRef.set(dataToSave).then(() => {
-            updateStatusBadge('online');
-        }).catch((err) => {
-            console.error(`[SmartCloud] Failed to push ${key}:`, err);
-            updateStatusBadge('offline');
-        });
+        try {
+            const keyRef = db.ref(`${ROOT_NODE}/${key}`);
+            keyRef.set(dataToSave).then(() => {
+                updateStatusBadge('online');
+            }).catch((err) => {
+                console.error(`[SmartCloud] Failed to push ${key}:`, err);
+                updateStatusBadge('offline');
+            });
+        } catch (syncErr) {
+            console.warn(`[SmartCloud] Error during ref.set for ${key}, falling back to string payload:`, syncErr);
+            try {
+                const fallbackRef = db.ref(`${ROOT_NODE}/${key}`);
+                const fallbackStr = (typeof value === 'string') ? value : JSON.stringify(value);
+                fallbackRef.set(fallbackStr).then(() => {
+                    updateStatusBadge('online');
+                }).catch(() => {
+                    updateStatusBadge('offline');
+                });
+            } catch (e2) {
+                console.error(`[SmartCloud] Permanent set failure for ${key}:`, e2);
+            }
+        }
     }
 
     // Delete node from Firebase (Blocked in View-Only mode)
@@ -226,11 +287,15 @@
         if (!db) return;
 
         updateStatusBadge('syncing');
-        db.ref(`${ROOT_NODE}/${key}`).remove().then(() => {
-            updateStatusBadge('online');
-        }).catch((err) => {
-            console.error(`[SmartCloud] Failed to delete ${key}:`, err);
-        });
+        try {
+            db.ref(`${ROOT_NODE}/${key}`).remove().then(() => {
+                updateStatusBadge('online');
+            }).catch((err) => {
+                console.error(`[SmartCloud] Failed to delete ${key}:`, err);
+            });
+        } catch (e) {
+            console.error(`[SmartCloud] Exception in removeFromCloud for ${key}:`, e);
+        }
     }
 
     // Intercept localStorage transparently with View-Only enforcement & Audit Logging
@@ -243,7 +308,11 @@
         }
         rawSetItem(key, value);
         if (TRACKED_KEYS.includes(key) && !isViewOnlyMode()) {
-            pushToCloud(key, value);
+            try {
+                pushToCloud(key, value);
+            } catch (pushErr) {
+                console.warn(`[SmartCloud] Non-fatal pushToCloud error for '${key}':`, pushErr);
+            }
 
             // Dynamically notify system changelog on Admin updates (avoid looping on notification keys)
             if (!isApplyingCloudUpdate && typeof window.logSystemChange === 'function') {

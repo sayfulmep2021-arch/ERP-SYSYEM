@@ -388,16 +388,16 @@ body.dark-theme .smart-page-title {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    gap: 10px !important;
+    gap: 12px !important;
     padding: 0 4px !important;
     margin: 0 !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     line-height: 1 !important;
-    width: 220px !important;
-    min-width: 220px !important;
-    max-width: 220px !important;
+    width: 250px !important;
+    min-width: 250px !important;
+    max-width: 250px !important;
     height: 38px !important;
     min-height: 38px !important;
     max-height: 38px !important;
@@ -459,10 +459,10 @@ body.dark-theme .smart-page-title {
     flex-direction: column !important;
     align-items: flex-end !important;
     justify-content: center !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    gap: 1.5px !important;
+    width: 160px !important;
+    min-width: 160px !important;
+    max-width: 160px !important;
+    gap: 2px !important;
     line-height: 1.15 !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -471,16 +471,17 @@ body.dark-theme .smart-page-title {
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    text-align: right !important;
 }
 
 /* Day, Month, Date */
 .portal-nav .live-day-text,
 .live-day-text {
     font-family: 'Times New Roman', Times, 'Playfair Display', serif !important;
-    font-size: 0.80rem !important;
+    font-size: 0.82rem !important;
     font-weight: 700 !important;
-    color: #334e68 !important; /* Soft Slate-Navy */
-    line-height: 1 !important;
+    color: #0284c7 !important;
+    line-height: 1.2 !important;
     margin: 0 !important;
     padding: 0 !important;
     letter-spacing: 0.1px !important;
@@ -509,21 +510,26 @@ body.dark-theme .smart-page-title {
     padding: 0 !important;
     white-space: nowrap !important;
     text-align: right !important;
-    letter-spacing: 0.2px !important;
+    letter-spacing: 0px !important;
     flex-shrink: 0 !important;
     box-sizing: border-box !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    width: 105px !important;
+    min-width: 105px !important;
+    max-width: 105px !important;
 }
 
 /* Tabular number slot cells for absolute zero-jitter digit rendering */
 .portal-nav .live-time-text .t-digit,
-.live-time-text .t-digit {
+.live-time-text .t-digit,
+.portal-nav .live-time-text .t-num-slot,
+.live-time-text .t-num-slot {
     display: inline-block !important;
-    width: 8.5px !important;
-    min-width: 8.5px !important;
-    max-width: 8.5px !important;
+    width: 10px !important;
+    min-width: 10px !important;
+    max-width: 10px !important;
     text-align: center !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -531,28 +537,44 @@ body.dark-theme .smart-page-title {
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
 }
 
 .portal-nav .live-time-text .t-colon,
 .live-time-text .t-colon {
     display: inline-block !important;
-    width: 4px !important;
-    min-width: 4px !important;
-    max-width: 4px !important;
+    width: 6px !important;
+    min-width: 6px !important;
+    max-width: 6px !important;
     text-align: center !important;
-    margin: 0 1px !important;
+    margin: 0 !important;
     padding: 0 !important;
     line-height: 1 !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    box-sizing: border-box !important;
 }
 
 .portal-nav .live-time-text .t-ampm,
-.live-time-text .t-ampm {
+.live-time-text .t-ampm,
+.portal-nav .live-time-text .t-ampm-slot,
+.live-time-text .t-ampm-slot {
     display: inline-block !important;
-    width: 25px !important;
-    min-width: 25px !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    text-align: left !important;
+    margin-left: 3px !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    box-sizing: border-box !important;
+}
     max-width: 25px !important;
     text-align: left !important;
     margin-left: 3px !important;
@@ -3612,7 +3634,7 @@ body.page-locked .btn-action-export {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    gap: 10px !important;
+    gap: 12px !important;
     padding: 0 4px !important;
     margin: 0 !important;
     background: transparent !important;
@@ -3639,10 +3661,10 @@ body.page-locked .btn-action-export {
     flex-direction: column !important;
     align-items: flex-end !important;
     justify-content: center !important;
-    width: 140px !important;
-    min-width: 140px !important;
-    max-width: 140px !important;
-    gap: 1px !important;
+    width: 160px !important;
+    min-width: 160px !important;
+    max-width: 160px !important;
+    gap: 2px !important;
     line-height: 1.15 !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -3657,10 +3679,10 @@ body.page-locked .btn-action-export {
 .live-day-text,
 .portal-nav .live-day-text {
     font-family: 'Times New Roman', Times, 'Playfair Display', serif !important;
-    font-size: 0.78rem !important;
+    font-size: 0.82rem !important;
     font-weight: 700 !important;
-    color: #334e68 !important;
-    line-height: 1.15 !important;
+    color: #0284c7 !important;
+    line-height: 1.2 !important;
     margin: 0 !important;
     padding: 0 !important;
     letter-spacing: 0.1px !important;
@@ -3680,33 +3702,33 @@ body.page-locked .btn-action-export {
     align-items: center !important;
     justify-content: flex-end !important;
     font-variant-numeric: tabular-nums lining-nums !important;
-    font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1 !important;
+    font-feature-settings: "tnum" 1, "lnum" 1 !important;
     font-family: 'Times New Roman', Times, 'Playfair Display', serif !important;
-    font-size: 0.98rem !important;
+    font-size: 1.05rem !important;
     font-weight: 800 !important;
     color: #0f2942 !important;
-    line-height: 1.15 !important;
+    line-height: 1 !important;
     margin: 0 !important;
     padding: 0 !important;
     white-space: nowrap !important;
     text-align: right !important;
-    letter-spacing: 0.2px !important;
+    letter-spacing: 0px !important;
     flex-shrink: 0 !important;
     box-sizing: border-box !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
-    width: 100px !important;
-    min-width: 100px !important;
-    max-width: 100px !important;
+    width: 105px !important;
+    min-width: 105px !important;
+    max-width: 105px !important;
 }
 
 .live-time-text .t-digit,
 .live-time-text .t-num-slot {
     display: inline-block !important;
-    width: 8.5px !important;
-    min-width: 8.5px !important;
-    max-width: 8.5px !important;
+    width: 10px !important;
+    min-width: 10px !important;
+    max-width: 10px !important;
     text-align: center !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -3714,28 +3736,41 @@ body.page-locked .btn-action-export {
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
 }
 
 .live-time-text .t-colon {
     display: inline-block !important;
-    width: 4px !important;
-    min-width: 4px !important;
-    max-width: 4px !important;
+    width: 6px !important;
+    min-width: 6px !important;
+    max-width: 6px !important;
     text-align: center !important;
-    margin: 0 1px !important;
+    margin: 0 !important;
     padding: 0 !important;
     line-height: 1 !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    box-sizing: border-box !important;
 }
 
 .live-time-text .t-ampm,
 .live-time-text .t-ampm-slot {
     display: inline-block !important;
-    width: 25px !important;
-    min-width: 25px !important;
-    max-width: 25px !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    text-align: left !important;
+    margin-left: 3px !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    box-sizing: border-box !important;
+}
     text-align: left !important;
     margin-left: 3px !important;
     font-size: 0.80rem !important;
@@ -4122,4 +4157,247 @@ body.page-locked .btn-action-link,
 body.page-locked .filter-select,
 body.page-locked .header-logout-btn {
     cursor: pointer !important;
+}
+
+/* ==========================================================================
+   DYNAMIC MODEL NAVIGATION & SIDEBAR SERIAL ALIGNMENT (ENTERPRISE ERP STYLE)
+   ========================================================================== */
+
+/* 1. Aligned Serial Number in Sidebar Accordion Headings */
+.mep-mod-serial {
+    display: inline-block !important;
+    min-width: 22px !important;
+    text-align: right !important;
+    margin-right: 6px !important;
+    font-weight: 700 !important;
+    font-variant-numeric: tabular-nums !important;
+    font-family: inherit !important;
+    color: inherit !important;
+    opacity: 0.85 !important;
+}
+
+/* 2. Frozen Sidebar layout adjustments for pinned bottom card container */
+.mep-frozen-sidebar,
+#dashboardSidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    overflow: hidden !important;
+}
+
+.mep-frozen-sidebar .mep-sidebar-body,
+#dashboardSidebar .mep-sidebar-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+}
+
+/* ==========================================================================
+   3. Gorgeous Luxury Module Switcher (Directly below Item 12 - Master DB)
+   Dual-Module Core ERP Styling - Zero Shake / Zero Layout Shift
+   ========================================================================== */
+.sidebar-module-switcher {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-shrink: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 6px 2px !important;
+    margin-top: 12px !important;
+    margin-bottom: 14px !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    z-index: 5 !important;
+    box-shadow: none !important;
+}
+
+.mod-switcher-header {
+    display: none !important;
+}
+
+.mod-switcher-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+/* Individual Gorgeous Module Card */
+.mod-switcher-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    padding: 7px 10px 7px 8px !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    height: 48px !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* Theme 1: Warehouse Module Card */
+.mod-switcher-card.mod-theme-warehouse {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%) !important;
+    border: 1.2px solid #bfdbfe !important;
+    box-shadow: 0 2px 5px rgba(37, 99, 235, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+}
+
+.mod-switcher-card.mod-theme-warehouse .mod-switcher-icon-wrap {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 6px rgba(37, 99, 235, 0.28) !important;
+}
+
+.mod-switcher-card.mod-theme-warehouse .mod-switcher-sub {
+    color: #2563eb !important;
+}
+
+.mod-switcher-card.mod-theme-warehouse .mod-switcher-arrow-pill {
+    background: #eff6ff !important;
+    border: 1px solid #dbeafe !important;
+    color: #2563eb !important;
+}
+
+.mod-switcher-card.mod-theme-warehouse:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%) !important;
+    border-color: #60a5fa !important;
+    box-shadow: 0 5px 14px rgba(37, 99, 235, 0.16), 0 2px 4px rgba(15, 23, 42, 0.04) !important;
+    transform: none !important;
+}
+
+.mod-switcher-card.mod-theme-warehouse:hover .mod-switcher-arrow-pill {
+    background: #2563eb !important;
+    color: #ffffff !important;
+    border-color: #2563eb !important;
+}
+
+/* Theme 2: HRM Module Card */
+.mod-switcher-card.mod-theme-hrm {
+    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%) !important;
+    border: 1.2px solid #e9d5ff !important;
+    box-shadow: 0 2px 5px rgba(147, 51, 234, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+}
+
+.mod-switcher-card.mod-theme-hrm .mod-switcher-icon-wrap {
+    background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 6px rgba(147, 51, 234, 0.28) !important;
+}
+
+.mod-switcher-card.mod-theme-hrm .mod-switcher-sub {
+    color: #9333ea !important;
+}
+
+.mod-switcher-card.mod-theme-hrm .mod-switcher-arrow-pill {
+    background: #faf5ff !important;
+    border: 1px solid #f3e8ff !important;
+    color: #9333ea !important;
+}
+
+.mod-switcher-card.mod-theme-hrm:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%) !important;
+    border-color: #c084fc !important;
+    box-shadow: 0 5px 14px rgba(147, 51, 234, 0.16), 0 2px 4px rgba(15, 23, 42, 0.04) !important;
+    transform: none !important;
+}
+
+.mod-switcher-card.mod-theme-hrm:hover .mod-switcher-arrow-pill {
+    background: #9333ea !important;
+    color: #ffffff !important;
+    border-color: #9333ea !important;
+}
+
+/* Theme 3: Production Module Card (shown on Warehouse & HRM pages) */
+.mod-switcher-card.mod-theme-production {
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%) !important;
+    border: 1.2px solid #bbf7d0 !important;
+    box-shadow: 0 2px 5px rgba(5, 150, 105, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+}
+
+.mod-switcher-card.mod-theme-production .mod-switcher-icon-wrap {
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 6px rgba(5, 150, 105, 0.28) !important;
+}
+
+.mod-switcher-card.mod-theme-production .mod-switcher-sub {
+    color: #059669 !important;
+}
+
+.mod-switcher-card.mod-theme-production .mod-switcher-arrow-pill {
+    background: #f0fdf4 !important;
+    border: 1px solid #dcfce7 !important;
+    color: #059669 !important;
+}
+
+.mod-switcher-card.mod-theme-production:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #dcfce7 100%) !important;
+    border-color: #4ade80 !important;
+    box-shadow: 0 5px 14px rgba(5, 150, 105, 0.16), 0 2px 4px rgba(15, 23, 42, 0.04) !important;
+    transform: none !important;
+}
+
+.mod-switcher-card.mod-theme-production:hover .mod-switcher-arrow-pill {
+    background: #059669 !important;
+    color: #ffffff !important;
+    border-color: #059669 !important;
+}
+
+/* Common Inner Elements */
+.mod-switcher-icon-wrap {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+}
+
+.mod-switcher-meta {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    line-height: 1.15 !important;
+}
+
+.mod-switcher-title {
+    font-size: 12px !important;
+    font-weight: 750 !important;
+    color: #0f172a !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+}
+
+.mod-switcher-sub {
+    font-size: 8.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.4px !important;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.mod-switcher-arrow-pill {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    transition: all 0.18s ease !important;
+    transform: none !important;
 }

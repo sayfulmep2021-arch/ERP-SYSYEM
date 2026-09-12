@@ -600,59 +600,65 @@ td.td-r, th.th-r {
     align-items: center !important;
     justify-content: flex-end !important;
     font-variant-numeric: tabular-nums lining-nums !important;
-    font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1 !important;
+    font-feature-settings: "tnum" 1, "lnum" 1 !important;
     font-family: 'Times New Roman', Times, serif !important;
-    font-size: 0.98rem !important;
+    font-size: 1.05rem !important;
     font-weight: 800 !important;
     color: #0f2942 !important;
     white-space: nowrap !important;
     text-align: right !important;
-    letter-spacing: 0.2px !important;
+    letter-spacing: 0px !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
-    width: 100px !important;
-    min-width: 100px !important;
-    max-width: 100px !important;
+    width: 105px !important;
+    min-width: 105px !important;
+    max-width: 105px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
 }
 
 .live-time-text .t-digit,
 .live-time-text .t-num-slot {
     display: inline-block !important;
-    width: 8.5px !important;
-    min-width: 8.5px !important;
-    max-width: 8.5px !important;
+    width: 10px !important;
+    min-width: 10px !important;
+    max-width: 10px !important;
     text-align: center !important;
     line-height: 1 !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
 }
 
 .live-time-text .t-colon {
     display: inline-block !important;
-    width: 4px !important;
-    min-width: 4px !important;
-    max-width: 4px !important;
+    width: 6px !important;
+    min-width: 6px !important;
+    max-width: 6px !important;
     text-align: center !important;
-    margin: 0 1px !important;
+    margin: 0 !important;
     line-height: 1 !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
+    box-sizing: border-box !important;
 }
 
 .live-time-text .t-ampm,
 .live-time-text .t-ampm-slot {
     display: inline-block !important;
-    width: 25px !important;
-    min-width: 25px !important;
-    max-width: 25px !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
     text-align: left !important;
     margin-left: 3px !important;
-    font-size: 0.80rem !important;
-    font-weight: 700 !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
     line-height: 1 !important;
+    box-sizing: border-box !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;

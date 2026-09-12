@@ -60,24 +60,8 @@
         }
     }
 
-    // 1. Module Definition with Bespoke Pastel SVG Icons
+        // 1. Module Definition with Bespoke Pastel SVG Icons (Serialized 1 to 12)
     const MEP_NAV_MODULES = [
-        {
-            id: "mep-acc-01",
-            title: "All Report Summary",
-            iconBg: "#e0f2fe",
-            iconColor: "#0284c7",
-            iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`,
-            items: [
-                { name: "Production Plan", url: "production_plan.html" },
-                { name: "Monthly RM Demand Vs Received", url: "monthly_rm_demand_vs_received.html" },
-                { name: "Assemble Summary", url: "assemble_summary.html" },
-                { name: "Armature Summary", url: "armature_summary.html" },
-                { name: "FG Summary", url: "fg_summary.html" },
-                { name: "BOM", url: "bom.html" },
-                { name: "RM Requirement Summary (BOM)", url: "rm_requirement_summary_bom.html" }
-            ]
-        },
         {
             id: "mep-acc-02",
             title: "Daily Check Report",
@@ -106,6 +90,18 @@
             ]
         },
         {
+            id: "mep-acc-11",
+            title: "Individual Check",
+            iconBg: "#ecfeff",
+            iconColor: "#0891b2",
+            iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>`,
+            items: [
+                { name: "Check FG Need Item", url: "check_fg_need_item.html" },
+                { name: "Check RM (Prd. Possible)", url: "check_rm_prd_possible.html" },
+                { name: "BOM With SFG", url: "bom_with_sfg.html" }
+            ]
+        },
+        {
             id: "mep-acc-04",
             title: "Closing (ERP)",
             iconBg: "#fee2e2",
@@ -118,6 +114,22 @@
                 { name: "Finish Good (FG)", url: "closing_finish_good_fg.html", idKey: "closing-fg" },
                 { name: "Closing All SFG", url: "closing_all_sfg.html", idKey: "closing-all-sfg" },
                 { name: "Store Position Report", url: "store_position_report.html", idKey: "store-position" }
+            ]
+        },
+        {
+            id: "mep-acc-01",
+            title: "All Report Summary",
+            iconBg: "#e0f2fe",
+            iconColor: "#0284c7",
+            iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>`,
+            items: [
+                { name: "Production Plan", url: "production_plan.html" },
+                { name: "Monthly RM Demand Vs Received", url: "monthly_rm_demand_vs_received.html" },
+                { name: "Assemble Summary", url: "assemble_summary.html" },
+                { name: "Armature Summary", url: "armature_summary.html" },
+                { name: "FG Summary", url: "fg_summary.html" },
+                { name: "BOM", url: "bom.html" },
+                { name: "RM Requirement Summary (BOM)", url: "rm_requirement_summary_bom.html" }
             ]
         },
         {
@@ -165,18 +177,6 @@
             ]
         },
         {
-            id: "mep-acc-09",
-            title: "Fan Floor Closing Report",
-            iconBg: "#ecfccb",
-            iconColor: "#65a30d",
-            iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
-            items: [
-                { name: "Daily Floor Closing Summary", url: "#" },
-                { name: "Shift Production Reconciliation", url: "#" },
-                { name: "Floor Material Return Report", url: "#" }
-            ]
-        },
-        {
             id: "mep-acc-10",
             title: "Other Reports",
             iconBg: "#f1f5f9",
@@ -189,15 +189,15 @@
             ]
         },
         {
-            id: "mep-acc-11",
-            title: "Individual Check",
-            iconBg: "#ecfeff",
-            iconColor: "#0891b2",
-            iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>`,
+            id: "mep-acc-09",
+            title: "Fan Floor Closing Report",
+            iconBg: "#ecfccb",
+            iconColor: "#65a30d",
+            iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
             items: [
-                { name: "Check FG Need Item", url: "check_fg_need_item.html" },
-                { name: "Check RM (Prd. Possible)", url: "check_rm_prd_possible.html" },
-                { name: "BOM With SFG", url: "bom_with_sfg.html" }
+                { name: "Daily Floor Closing Summary", url: "#" },
+                { name: "Shift Production Reconciliation", url: "#" },
+                { name: "Floor Material Return Report", url: "#" }
             ]
         },
         {
@@ -282,10 +282,11 @@
     // Central Lock State Resolver (Single Source of Truth: localStorage 'portal_page_lock_states')
     function getCentralPageLockState(page) {
         if (isViewOnlyUser) return true; // View-only accounts are strictly locked under all circumstances
-        const p = (page || getCurrentPage() || '').toLowerCase().split('?')[0].split('#')[0];
+        const raw = (page || getCurrentPage() || '').split('?')[0].split('#')[0];
+        const p = decodeURIComponent(raw).toLowerCase().trim();
         try {
-            const raw = localStorage.getItem('portal_page_lock_states');
-            const states = raw ? JSON.parse(raw) : {};
+            const rawStates = localStorage.getItem('portal_page_lock_states');
+            const states = rawStates ? JSON.parse(rawStates) : {};
             // Default rule: Any registered or editable page defaults to LOCKED (true) unless explicitly set to false (Unlocked) by ADMIN in MIS
             return states[p] !== false;
         } catch(e) {
@@ -475,6 +476,12 @@
 
     window.addEventListener('portal_lock_change', function() {
         applyCentralLockState();
+    });
+
+    window.addEventListener('smart_cloud_sync', function(e) {
+        if (e.detail && (e.detail.key === 'portal_page_lock_states' || e.detail.key === 'portal_view_only')) {
+            applyCentralLockState();
+        }
     });
 
     function logPageLockAudit(action, page, pageTitle, timeStr) {
@@ -1054,7 +1061,7 @@
         let accordionHtml = '';
         const viewPerms = isViewOnlyUser ? getViewPagePermissions() : null;
 
-        MEP_NAV_MODULES.forEach(mod => {
+        MEP_NAV_MODULES.forEach((mod, modIdx) => {
             const isThisActiveModule = (mod.id === activeModule.id);
             const isClosing = !!mod.isClosingERP;
 
@@ -1123,7 +1130,7 @@
                                 </svg>
                             </div>
                             <div class="mep-mod-info">
-                                <div class="mep-mod-title">${mod.title}</div>
+                                <div class="mep-mod-title"><span class="mep-mod-serial">${modIdx + 1}.</span> ${mod.title}</div>
                             </div>
                         </div>
                         <div class="mep-mod-chevron">
@@ -1273,8 +1280,15 @@
                 </a>
             </div>
 
-            <div class="mep-sidebar-body" style="padding: 8px 8px 20px;">
+                        <div class="mep-sidebar-body" style="padding: 8px 8px 20px; overflow-y: auto;">
                 ${accordionHtml}
+
+                <!-- Gorgeous Luxury Module Switcher (Directly below Item 12 - Master DB) -->
+                <div class="sidebar-module-switcher" id="sidebarModuleSwitcher">
+                    <div class="mod-switcher-inner" id="sidebarSwitcherLinks">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
             </div>
         `;
 
@@ -1314,6 +1328,62 @@
                     activeModEl.scrollIntoView({ block: 'nearest' });
                 }
             }, 60);
+
+            // Render Dynamic Alternative Modules Switcher (Excluding Current Production Module)
+            if (typeof window.renderSidebarDynamicModels === 'function') {
+                window.renderSidebarDynamicModels('production');
+            } else {
+                renderStandaloneDynamicModels('production');
+            }
+        }
+
+        function renderStandaloneDynamicModels(forcedActiveKey) {
+            const container = document.getElementById('sidebarSwitcherLinks');
+            if (!container) return;
+            const activeKey = forcedActiveKey || 'production';
+            const allModules = [
+                {
+                    key: 'production',
+                    name: 'Production Module',
+                    subtitle: 'Manufacturing Hub',
+                    theme: 'mod-theme-production',
+                    iconSvg: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>',
+                    url: 'index.html?view=main'
+                },
+                {
+                    key: 'warehouse',
+                    name: 'Warehouse Module',
+                    subtitle: 'Inventory & Stock Hub',
+                    theme: 'mod-theme-warehouse',
+                    iconSvg: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
+                    url: 'index.html?view=hub'
+                },
+                {
+                    key: 'hrm',
+                    name: 'HRM Module',
+                    subtitle: 'Human Resource Portal',
+                    theme: 'mod-theme-hrm',
+                    iconSvg: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>',
+                    url: 'index.html?view=hrm'
+                }
+            ];
+            const altModules = allModules.filter(function(m) { return m.key !== activeKey; });
+            let html = '';
+            altModules.forEach(function(m) {
+                html += '<a href="' + m.url + '" class="mod-switcher-card ' + m.theme + '" title="Switch to ' + m.name + '">' +
+                        '  <div class="mod-switcher-icon-wrap">' +
+                        '    ' + m.iconSvg +
+                        '  </div>' +
+                        '  <div class="mod-switcher-meta">' +
+                        '    <span class="mod-switcher-title">' + m.name + '</span>' +
+                        '    <span class="mod-switcher-sub">' + m.subtitle + '</span>' +
+                        '  </div>' +
+                        '  <div class="mod-switcher-arrow-pill">' +
+                        '    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
+                        '  </div>' +
+                        '</a>';
+            });
+            container.innerHTML = html;
         }
 
                 // Dynamic Page Title inside Report Header Box (Matches User Screenshot 4)
@@ -1348,42 +1418,17 @@
             document.querySelectorAll('.live-day-text').forEach(function(el) { el.innerText = dateStr; });
             document.querySelectorAll('.live-time-text').forEach(function(el) { el.innerHTML = slottedTime; });
         }
-        window.runSubReportLiveClock = runSubReportLiveClock;
+        window.runSubReportLiveClock = function() {
+            if (typeof updateUniversalLiveClock === 'function') {
+                updateUniversalLiveClock();
+            }
+        };
         window.updateLiveClock = function() {
             if (typeof updateUniversalLiveClock === 'function') {
                 updateUniversalLiveClock();
-            } else {
-                runSubReportLiveClock();
             }
         };
 
-        // Global slot protection: if any inline script on any page assigns innerText/textContent, wrap it in slots
-        try {
-            document.querySelectorAll('.live-time-text').forEach(function(tEl) {
-                const proto = HTMLElement.prototype;
-                const descText = Object.getOwnPropertyDescriptor(proto, 'innerText') || Object.getOwnPropertyDescriptor(Node.prototype, 'textContent');
-                function slotWrap(val) {
-                    const m = String(val).match(/(\d{2}):(\d{2}):(\d{2})\s*(AM|PM)?/i);
-                    if (m) {
-                        return `<span class="t-num-slot">${m[1][0]}</span><span class="t-num-slot">${m[1][1]}</span>:<span class="t-num-slot">${m[2][0]}</span><span class="t-num-slot">${m[2][1]}</span>:<span class="t-num-slot">${m[3][0]}</span><span class="t-num-slot">${m[3][1]}</span> <span class="t-ampm-slot">${m[4] || ''}</span>`;
-                    }
-                    return val;
-                }
-                Object.defineProperty(tEl, 'innerText', {
-                    get() { return descText && descText.get ? descText.get.call(this) : this.innerHTML; },
-                    set(val) { this.innerHTML = slotWrap(val); },
-                    configurable: true
-                });
-                Object.defineProperty(tEl, 'textContent', {
-                    get() { return descText && descText.get ? descText.get.call(this) : this.innerHTML; },
-                    set(val) { this.innerHTML = slotWrap(val); },
-                    configurable: true
-                });
-            });
-        } catch(e) {}
-
-        runSubReportLiveClock();
-        setInterval(runSubReportLiveClock, 1000);
         updateSidebarClosingStatus();
     }
 
@@ -2343,7 +2388,7 @@
             if (el.textContent !== dateStr) el.textContent = dateStr;
         });
         document.querySelectorAll('#liveTimeText, .live-time-text, #liveClockText, .live-clock-text').forEach(el => {
-            el.innerHTML = slottedTime;
+            if (el.innerHTML !== slottedTime) el.innerHTML = slottedTime;
         });
     }
 
@@ -2372,7 +2417,8 @@
                     enumerable: true,
                     get: function() { return this.textContent; },
                     set: function(val) {
-                        this.innerHTML = formatToSlottedTime(val);
+                        const formatted = formatToSlottedTime(val);
+                        if (this.innerHTML !== formatted) this.innerHTML = formatted;
                     }
                 });
                 Object.defineProperty(el, 'textContent', {
@@ -2380,7 +2426,8 @@
                     enumerable: true,
                     get: function() { return this.innerHTML; },
                     set: function(val) {
-                        this.innerHTML = formatToSlottedTime(val);
+                        const formatted = formatToSlottedTime(val);
+                        if (this.innerHTML !== formatted) this.innerHTML = formatted;
                     }
                 });
             }
@@ -2447,6 +2494,11 @@
         });
         window.addEventListener('portal_lock_change', function() {
             applyCentralLockState();
+        });
+        window.addEventListener('smart_cloud_sync', function(e) {
+            if (e.detail && (e.detail.key === 'portal_page_lock_states' || e.detail.key === 'portal_view_only')) {
+                applyCentralLockState();
+            }
         });
     }
 

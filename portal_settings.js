@@ -97,6 +97,20 @@
             return mappings[clean] || originalFile;
         }
 
+        function isCurrentUserViewOnly() {
+            try {
+                const sig = sessionStorage.getItem('portal_auth_sig') || '';
+                if (sig === btoa('VIEW:::MEP_SECURE_PORTAL_2026')) return true;
+                if (sig === btoa('ADMIN:::MEP_SECURE_PORTAL_2026')) return false;
+                const isView = (sessionStorage.getItem('portal_view_only') === 'true');
+                const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
+                const localRole = (localStorage.getItem('portal_auth_role') || '').toUpperCase();
+                return isView || role === 'VIEW' || localRole === 'VIEW';
+            } catch(e) {
+                return false;
+            }
+        }
+
         function getViewPermissionsMap() {
             const raw = localStorage.getItem('portal_view_page_permissions');
             if (raw) {
@@ -2063,6 +2077,25 @@
         function filterLockPages(val) {
             renderMISLockUnlockManager(val);
         }
+
+        // Live real-time sync for Option 5 modal when locks change across tabs or from cloud sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'portal_page_lock_states') {
+                const pane = document.getElementById('paneLockUnlock');
+                if (pane && pane.style.display !== 'none') {
+                    const searchInput = document.getElementById('lockPageSearchInput');
+                    renderMISLockUnlockManager(searchInput ? searchInput.value : '');
+                }
+            }
+        });
+
+        window.addEventListener('portal_lock_change', function(e) {
+            const pane = document.getElementById('paneLockUnlock');
+            if (pane && pane.style.display !== 'none') {
+                const searchInput = document.getElementById('lockPageSearchInput');
+                renderMISLockUnlockManager(searchInput ? searchInput.value : '');
+            }
+        });
 
         function renderMISOthersPanel() {
             try {

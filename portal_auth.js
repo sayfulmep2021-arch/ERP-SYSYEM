@@ -400,6 +400,10 @@
             document.querySelectorAll('.smart-brand-text').forEach(function(el) {
                 el.textContent = moduleName;
             });
+
+            if (typeof window.renderSidebarDynamicModels === 'function') {
+                window.renderSidebarDynamicModels();
+            }
         }
 
         function switchToMainInterfaceView() {
