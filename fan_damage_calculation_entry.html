@@ -1340,12 +1340,20 @@
                 const rowId = `damage-row-${index}`;
                 const qtyClass = qtyVal > 100 ? 'qty-alert' : 'qty-normal';
 
+                let dispFGName = item.fgName || '-';
+                if (typeof resolveMasterItemExact === 'function' && item.fgCode) {
+                    const exact = resolveMasterItemExact(item.fgCode);
+                    if (exact && exact.exists && exact.name) {
+                        dispFGName = exact.name;
+                    }
+                }
+
                 html += `
                     <tr id="${rowId}">
                         <td class="td-sl">${filteredCount}</td>
                         <td class="td-code">${item.code || '-'}</td>
                         <td><span class="code-pill">${item.fgCode || '-'}</span></td>
-                        <td class="td-name">${item.fgName || '-'}</td>
+                        <td class="td-name">${dispFGName}</td>
                         <td class="td-date">${item.date || '-'}</td>
                         <td class="td-qty">
                             <span class="${qtyClass}" contenteditable="true" onblur="updateDamageQty(${index}, this.innerText)">${item.qty || '0'}</span>
@@ -1475,11 +1483,15 @@
 
         function onFGCodeSelect(fgCode) {
             const nameInput = document.getElementById('newDamageFGName');
-            let name = KNOWN_MODELS[fgCode] || '';
-            
-            // Try lookup in master DB
-            if (!name && typeof getMasterName === 'function') {
-                name = getMasterName(fgCode);
+            const clean = (fgCode || '').trim();
+            let name = '';
+            if (clean && typeof resolveMasterItemExact === 'function') {
+                const item = resolveMasterItemExact(clean);
+                if (item && item.exists && item.name) {
+                    name = item.name;
+                }
+            } else if (clean && typeof getMasterName === 'function') {
+                name = getMasterName(clean);
             }
 
             if (nameInput) nameInput.value = name;
@@ -1516,7 +1528,11 @@
                 return;
             }
             const fgCode = document.getElementById('newDamageFGCode').value.trim();
-            const fgName = document.getElementById('newDamageFGName').value.trim();
+            let fgName = document.getElementById('newDamageFGName').value.trim();
+            if (!fgName && typeof resolveMasterItemExact === 'function' && fgCode) {
+                const exact = resolveMasterItemExact(fgCode);
+                if (exact && exact.exists && exact.name) fgName = exact.name;
+            }
             const dateRaw = document.getElementById('newDamageDate').value;
             const qty = document.getElementById('newDamageQty').value.trim();
             const month = document.getElementById('newDamageMonth').value;
@@ -1600,8 +1616,8 @@
                 if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste records.', 'warn');
                 return;
             }
-            document.getElementById('pasteModal').classList.add('active');
             document.getElementById('pasteInput').value = '';
+            document.getElementById('pasteModal').classList.add('active');
             document.getElementById('pasteInput').focus();
         }
 
@@ -1609,14 +1625,14 @@
             document.getElementById('pasteModal').classList.remove('active');
         }
 
-        function processBulkPaste() {
+        function processPasteData() {
             if (isDamagePageLocked()) {
                 if (window.mepPageLock) window.mepPageLock.showToast('🔒 Page is Locked (Read-Only). Unlock this page from MIS Module > Lock and Unlock Page to paste records.', 'warn');
                 return;
             }
-            const text = document.getElementById('pasteInput').value.trim();
-            if (!text) {
-                alert("Please paste text first!");
+            const text = document.getElementById('pasteInput').value;
+            if (!text.trim()) {
+                alert("Please paste data first!");
                 return;
             }
 
@@ -1630,7 +1646,7 @@
 
                 const code = cols[0].trim();
                 const fgCode = cols[1] ? cols[1].trim() : '';
-                const fgName = cols[2] ? cols[2].trim() : '';
+                let fgName = cols[2] ? cols[2].trim() : '';
                 const date = cols[3] ? cols[3].trim() : '';
                 const qty = cols[4] ? cols[4].trim() : '';
                 const month = cols[5] ? cols[5].trim() : '';
@@ -1638,6 +1654,10 @@
                 const monthYear = cols[7] ? cols[7].trim() : `${month}${year}`;
 
                 if (fgCode && qty) {
+                    if (typeof resolveMasterItemExact === 'function') {
+                        const exact = resolveMasterItemExact(fgCode);
+                        if (exact && exact.exists && exact.name) fgName = exact.name;
+                    }
                     damageRecords.push({
                         code: code,
                         fgCode: fgCode,
@@ -1751,6 +1771,16 @@
                 console.log("⚡ [Realtime Sync] Received live Fan Damage entries from Cloud, re-rendering table...");
                 initDamageData();
             }
+        });
+
+        // Master Central DB Realtime Auto-Sync Handler
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderTable();
         });
     </script>
     <script src="report_sidebar.js"></script>

@@ -866,40 +866,55 @@
         const STORAGE_KEY_PREFIX = 'mep_daily_prod_plan_';
         let currentPlanData = null;
 
-        // Master Central DB Lookup
+        // Strict Exact Master Central DB Auto-Linking
         function lookupMasterCode(val) {
-            if (!val) return;
-            const clean = val.trim();
-            if (typeof getMasterItem === 'function') {
-                const item = getMasterItem(clean);
-                if (item) {
-                    if (item.name) document.getElementById('newItemName').value = item.name;
-                    if (item.unit) {
-                        const unitSel = document.getElementById('newItemUnit');
-                        let found = false;
-                        for (let opt of unitSel.options) {
-                            if (opt.value.toLowerCase() === item.unit.toLowerCase()) {
-                                unitSel.value = opt.value;
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            const newOpt = new Option(item.unit, item.unit);
-                            unitSel.add(newOpt);
-                            unitSel.value = item.unit;
+            const nameInput = document.getElementById('newItemName');
+            const unitSel = document.getElementById('newItemUnit');
+            const catSel = document.getElementById('newItemCategory');
+            const clean = (val || '').trim();
+
+            if (!clean) {
+                if (nameInput) nameInput.value = '';
+                if (unitSel) unitSel.value = '';
+                return;
+            }
+
+            let item = null;
+            if (typeof resolveMasterItemExact === 'function') {
+                const exact = resolveMasterItemExact(clean);
+                if (exact && exact.exists) item = exact;
+            } else if (typeof getMasterItem === 'function') {
+                item = getMasterItem(clean);
+            }
+
+            if (item && item.name) {
+                if (nameInput) nameInput.value = item.name;
+                if (item.unit && unitSel) {
+                    let found = false;
+                    for (let opt of unitSel.options) {
+                        if (opt.value.toLowerCase() === item.unit.toLowerCase()) {
+                            unitSel.value = opt.value;
+                            found = true;
+                            break;
                         }
                     }
-                    if (item.category) {
-                        const catSel = document.getElementById('newItemCategory');
-                        for (let opt of catSel.options) {
-                            if (opt.value.toLowerCase().includes(item.category.toLowerCase()) || item.category.toLowerCase().includes(opt.value.toLowerCase())) {
-                                catSel.value = opt.value;
-                                break;
-                            }
+                    if (!found) {
+                        const newOpt = new Option(item.unit, item.unit);
+                        unitSel.add(newOpt);
+                        unitSel.value = item.unit;
+                    }
+                }
+                if (item.category && catSel) {
+                    for (let opt of catSel.options) {
+                        if (opt.value.toLowerCase().includes(item.category.toLowerCase()) || item.category.toLowerCase().includes(opt.value.toLowerCase())) {
+                            catSel.value = opt.value;
+                            break;
                         }
                     }
                 }
+            } else {
+                if (nameInput) nameInput.value = '';
+                if (unitSel) unitSel.value = '';
             }
         }
 
@@ -1020,12 +1035,15 @@
                         tr.className = `data-row ${rowStyleClass}`;
 
                         const pVal = item.preDay !== undefined && item.preDay !== null ? item.preDay : 0;
+                        const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                        const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.name || '');
+                        const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || 'Pcs');
 
                         tr.innerHTML = `
                             <td><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(item.sl || '')}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'sl', this.value)"></td>
                             <td><input type="text" class="excel-cell-input excel-cell-center" style="font-family:var(--font-mono); font-size:0.80rem;" value="${escapeHTML(item.code || '')}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'code', this.value)"></td>
-                            <td><input type="text" class="excel-cell-text" value="${escapeHTML(item.name || '')}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'name', this.value)"></td>
-                            <td><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(item.unit || 'Pcs')}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'unit', this.value)"></td>
+                            <td><input type="text" class="excel-cell-text" value="${escapeHTML(dispName)}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'name', this.value)"></td>
+                            <td><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(dispUnit)}" onchange="updateItemField(${catIdx}, ${itemIdx}, 'unit', this.value)"></td>
                             <td>
                                 <input type="number" 
                                        class="excel-cell-input" 
@@ -1141,6 +1159,23 @@
             if (isDailyPlanLocked()) return;
             if (currentPlanData && currentPlanData.categories[catIdx]?.items[itemIdx]) {
                 currentPlanData.categories[catIdx].items[itemIdx][field] = val;
+                if (field === 'code') {
+                    const cleanCode = (val || '').trim();
+                    if (!cleanCode) {
+                        currentPlanData.categories[catIdx].items[itemIdx].name = '';
+                        currentPlanData.categories[catIdx].items[itemIdx].unit = '';
+                    } else if (typeof resolveMasterItemExact === 'function') {
+                        const m = resolveMasterItemExact(cleanCode);
+                        if (m && m.exists) {
+                            currentPlanData.categories[catIdx].items[itemIdx].name = m.name;
+                            currentPlanData.categories[catIdx].items[itemIdx].unit = m.unit;
+                        } else {
+                            currentPlanData.categories[catIdx].items[itemIdx].name = '';
+                            currentPlanData.categories[catIdx].items[itemIdx].unit = '';
+                        }
+                    }
+                    renderExcelTable();
+                }
                 saveCurrentPlan(false);
             }
         }
@@ -1248,7 +1283,10 @@
             if (currentPlanData && currentPlanData.categories) {
                 currentPlanData.categories.forEach(cat => {
                     cat.items.forEach(it => {
-                        csv += `"${cat.name}","${it.sl || ''}","${it.code || ''}","${(it.name || '').replace(/"/g, '""')}","${it.unit || 'Pcs'}",${it.preDay || 0}\r\n`;
+                        const disp = (typeof resolveMasterItemExact === 'function' && it.code) ? resolveMasterItemExact(it.code) : null;
+                        const itName = (disp && disp.exists) ? disp.name : (it.name || '');
+                        const itUnit = (disp && disp.exists) ? disp.unit : (it.unit || 'Pcs');
+                        csv += `"${cat.name}","${it.sl || ''}","${it.code || ''}","${itName.replace(/"/g, '""')}","${itUnit}",${it.preDay || 0}\r\n`;
                     });
                 });
             }
@@ -1261,8 +1299,17 @@
             link.click();
             document.body.removeChild(link);
 
-            showToast("?? Exported Daily Production Plan to CSV!");
+            showToast("📥 Exported Daily Production Plan to CSV!");
         }
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderExcelTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderExcelTable();
+        });
 
         function updateLiveClock() {
             const now = new Date();

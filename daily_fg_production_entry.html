@@ -1769,7 +1769,7 @@
                 <div class="modal-body">
                     <div class="form-field">
                         <label for="editItemCode">Item Code *</label>
-                        <input type="text" id="editItemCode" required>
+                        <input type="text" id="editItemCode" oninput="lookupMasterCodeEdit(this.value)" required>
                     </div>
                     <div class="form-field">
                         <label for="editItemName">FG Item Name *</label>
@@ -1830,16 +1830,62 @@
         let pageSize = 50;
         let currentModelMode = 'standard'; // 'standard' | 'custom'
 
-        // Auto-lookup name from Master Database when typing custom code
+        // Strict Exact Master Central DB Auto-Linking
         function lookupMasterCode(val) {
-            if (!val) return;
-            const clean = val.trim();
-            if (typeof getMasterItem === 'function') {
+            const inputName = document.getElementById('customItemName');
+            if (!inputName) return;
+            const clean = (val || '').trim();
+            if (!clean) {
+                inputName.value = '';
+                return;
+            }
+            if (typeof resolveMasterItemExact === 'function') {
+                const item = resolveMasterItemExact(clean);
+                if (item && item.exists && item.name) {
+                    inputName.value = item.name;
+                    showToast(`✨ Auto-matched from Master: ${item.name}`);
+                } else {
+                    inputName.value = '';
+                }
+            } else if (typeof getMasterItem === 'function') {
                 const item = getMasterItem(clean);
                 if (item && item.name) {
-                    document.getElementById('customItemName').value = item.name;
+                    inputName.value = item.name;
                     showToast(`✨ Auto-matched from Master: ${item.name}`);
+                } else {
+                    inputName.value = '';
                 }
+            } else {
+                inputName.value = '';
+            }
+        }
+
+        function lookupMasterCodeEdit(val) {
+            const inputName = document.getElementById('editItemName');
+            if (!inputName) return;
+            const clean = (val || '').trim();
+            if (!clean) {
+                inputName.value = '';
+                return;
+            }
+            if (typeof resolveMasterItemExact === 'function') {
+                const item = resolveMasterItemExact(clean);
+                if (item && item.exists && item.name) {
+                    inputName.value = item.name;
+                    showToast(`✨ Auto-matched from Master: ${item.name}`);
+                } else {
+                    inputName.value = '';
+                }
+            } else if (typeof getMasterItem === 'function') {
+                const item = getMasterItem(clean);
+                if (item && item.name) {
+                    inputName.value = item.name;
+                    showToast(`✨ Auto-matched from Master: ${item.name}`);
+                } else {
+                    inputName.value = '';
+                }
+            } else {
+                inputName.value = '';
             }
         }
 
@@ -2240,11 +2286,20 @@
                 const qtyClass = qtyVal === 0 ? 'qty-badge zero' : 'qty-badge';
                 const safeEntryIndex = JSON.stringify(String(row._entryIndex));
 
+                const codeToLookup = (row.item_code || row.code || '').trim();
+                let resolvedName = row.item_name || '';
+                if (typeof resolveMasterItemExact === 'function' && codeToLookup) {
+                    const exact = resolveMasterItemExact(codeToLookup);
+                    if (exact && exact.exists && exact.name) {
+                        resolvedName = exact.name;
+                    }
+                }
+
                 tr.innerHTML = `
                     <td class="cell-serial">${serial}</td>
                     <td><span class="code-pill">${escapeHTML(row.code || '')}</span></td>
                     <td><span class="item-code-badge">${escapeHTML(row.item_code || '')}</span></td>
-                    <td class="item-name-cell">${escapeHTML(row.item_name || '')}</td>
+                    <td class="item-name-cell">${escapeHTML(resolvedName)}</td>
                     <td><span class="date-badge">${escapeHTML(row.date || '')}</span></td>
                     <td><span class="${qtyClass}">${qtyVal.toLocaleString()}</span></td>
                     <td><span class="month-pill">${escapeHTML(row.month || '')}</span></td>
@@ -3042,6 +3097,16 @@
                 buildMonthFilterOptions();
                 applyFilters();
             }
+        });
+
+        // Master Central DB Realtime Auto-Sync Handler
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderTable();
         });
     </script>
     <script src="report_sidebar.js"></script>

@@ -1754,32 +1754,47 @@
         }
 
         function onModalCodeInput() {
-            const code = (document.getElementById('modalCode').value || '').trim().toUpperCase();
-            if (!code) return;
+            const code = (document.getElementById('modalCode').value || '').trim();
+            const nameEl = document.getElementById('modalName');
+            const unitSel = document.getElementById('modalUnit');
 
-            // 1. Primary: Master Central DB Lookup
-            if (typeof getMasterItem === 'function') {
-                const masterItem = getMasterItem(code);
-                if (masterItem) {
-                    if (masterItem.name) document.getElementById('modalName').value = masterItem.name;
-                    if (masterItem.unit) {
-                        const unitSel = document.getElementById('modalUnit');
-                        let found = false;
-                        for (let opt of unitSel.options) {
-                            if (opt.value.toLowerCase() === masterItem.unit.toLowerCase()) {
-                                unitSel.value = opt.value;
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            const newOpt = new Option(masterItem.unit, masterItem.unit);
-                            unitSel.add(newOpt);
-                            unitSel.value = masterItem.unit;
+            if (!code) {
+                if (nameEl) nameEl.value = '';
+                if (unitSel) unitSel.value = 'Pcs';
+                return;
+            }
+
+            // 1. Primary: Master Central DB Lookup (Strict Exact)
+            let masterItem = null;
+            if (typeof resolveMasterItemExact === 'function') {
+                const exact = resolveMasterItemExact(code);
+                if (exact && exact.exists) masterItem = exact;
+            } else if (typeof getMasterItem === 'function') {
+                masterItem = getMasterItem(code);
+            }
+
+            if (masterItem && masterItem.name) {
+                if (nameEl) nameEl.value = masterItem.name;
+                if (masterItem.unit && unitSel) {
+                    let found = false;
+                    for (let opt of unitSel.options) {
+                        if (opt.value.toLowerCase() === masterItem.unit.toLowerCase()) {
+                            unitSel.value = opt.value;
+                            found = true;
+                            break;
                         }
                     }
+                    if (!found) {
+                        const newOpt = new Option(masterItem.unit, masterItem.unit);
+                        unitSel.add(newOpt);
+                        unitSel.value = masterItem.unit;
+                    }
                 }
+            } else {
+                if (nameEl) nameEl.value = '';
+                if (unitSel) unitSel.value = 'Pcs';
             }
+        }
 
             // 2. Secondary: Auto-fill closing/prod numbers from Closing FG or Closing All SFG
             const codeClean = code.trim().toUpperCase();
@@ -1946,15 +1961,19 @@
                     const tr = document.createElement('tr');
                     if (tintClass) tr.className = tintClass;
 
+                    const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                    const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.itemName || '');
+                    const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || 'Pcs');
+
                     tr.innerHTML = `
                         <td class="sticky-col-1 td-center" style="font-weight: 700; color: #64748b;">${item.sl || globalSL}</td>
                         <td class="sticky-col-2 td-left">
                             <span class="code-pill" title="${item.isLinked ? 'Linked with Closing All SFG Code: ' + escapeHTML(item.linkedCode || item.code) : 'Item Code'}">${escapeHTML(item.code || '--')}${item.isLinked ? ' <span style="color:#10b981; font-size:0.65rem;" title="Code Matched with Closing All SFG">🔗</span>' : ''}</span>
                         </td>
-                        <td class="sticky-col-3 td-left" style="font-weight: 700; color: #0f2942;" title="${escapeHTML(item.itemName || '')}">
-                            <div style="width: 100%; max-width: 325px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(item.itemName || '')}</div>
+                        <td class="sticky-col-3 td-left" style="font-weight: 700; color: #0f2942;" title="${escapeHTML(dispName)}">
+                            <div style="width: 100%; max-width: 325px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(dispName)}</div>
                         </td>
-                        <td class="sticky-col-4 td-center"><span class="unit-badge">${escapeHTML(item.unit || 'Pcs')}</span></td>
+                        <td class="sticky-col-4 td-center"><span class="unit-badge">${escapeHTML(dispUnit)}</span></td>
                         <td class="${item.opening > 0 ? 'val-positive' : 'val-zero'}" title="${item.isLinked ? 'Opening: Linked from Closing All SFG' : ''}">${formatNum(item.opening)}</td>
                         <td class="${item.production > 0 ? 'val-positive' : 'val-zero'}" title="${item.isLinked ? 'Production Receive: Linked from Closing All SFG' : ''}">${formatNum(item.production)}</td>
                         <td class="${item.delivery > 0 ? 'val-positive' : 'val-zero'}" title="${item.isLinked ? 'Delivery: Linked from Closing All SFG (WIP Issue)' : ''}">${formatNum(item.delivery)}</td>
@@ -2496,8 +2515,11 @@
                 const sl = idx + 1;
                 const sec = `"${(item.section || '').replace(/"/g, '""')}"`;
                 const code = `"${(item.code || '').replace(/"/g, '""')}"`;
-                const name = `"${(item.itemName || '').replace(/"/g, '""')}"`;
-                const unit = `"${(item.unit || 'Pcs').replace(/"/g, '""')}"`;
+                const disp = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                const dName = (disp && disp.exists) ? disp.name : (item.itemName || '');
+                const dUnit = (disp && disp.exists) ? disp.unit : (item.unit || 'Pcs');
+                const name = `"${dName.replace(/"/g, '""')}"`;
+                const unit = `"${dUnit.replace(/"/g, '""')}"`;
                 csv += `${sl},${sec},${code},${name},${unit},${item.opening || 0},${item.production || 0},${item.delivery || 0},${item.closing || 0}\r\n`;
             });
 
@@ -2556,6 +2578,16 @@
         function escapeHTML(str) {
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderTable();
+        });
     </script>
     <script src="report_sidebar.js"></script>
 </body>

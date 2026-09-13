@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ============================================================================
  * MEP FAN LTD. - Central Master Database & Lookup Engine
  * Master is the Single Source of Truth for all Products, Raw Materials & Spares
@@ -38,29 +38,71 @@ function getMasterItems() {
 }
 
 /**
- * Get single Master item by Code (Case-Insensitive)
+ * /**
+ * Get single Master item by Code (Strict Exact Match, Case-Insensitive)
+ * Supports direct exact code and exact components of slash compound codes
  */
 function getMasterItem(code) {
     if (!code) return null;
     const cleanCode = code.toString().trim().toUpperCase();
+    if (!cleanCode) return null;
     const all = getMasterItems();
-    return all.find(item => item.code.toUpperCase() === cleanCode) || null;
+
+    // 1. Direct exact match
+    const direct = all.find(item => (item.code || '').toString().trim().toUpperCase() === cleanCode);
+    if (direct) return direct;
+
+    // 2. Exact match against slash-separated compound code components
+    for (let i = 0; i < all.length; i++) {
+        const itemCode = (all[i].code || '').toString().trim().toUpperCase();
+        if (itemCode.includes('/')) {
+            const parts = itemCode.split('/').map(p => p.trim());
+            if (parts.includes(cleanCode)) {
+                return all[i];
+            }
+        }
+    }
+    return null;
 }
 
 /**
- * Lookup Item Name by Code
+ * Single Source of Truth Exact Resolver for Production Module
+ * Returns exact Name and Unit if matched; returns blanks if code is empty or not in Master Central DB.
+ */
+function resolveMasterItemExact(code) {
+    if (!code || !code.toString().trim()) {
+        return { code: '', name: '', unit: '', category: '', exists: false };
+    }
+    const clean = code.toString().trim().toUpperCase();
+    const item = getMasterItem(clean);
+    if (item) {
+        return {
+            code: item.code || clean,
+            name: item.name || '',
+            unit: item.unit || '',
+            category: item.category || '',
+            exists: true
+        };
+    }
+    return { code: clean, name: '', unit: '', category: '', exists: false };
+}
+
+/**
+ * Lookup Item Name by Code (returns exact master name or blank if not found)
  */
 function getMasterName(code, defaultName = '') {
+    if (!code || !code.toString().trim()) return '';
     const item = getMasterItem(code);
-    return item ? item.name : (defaultName || code);
+    return item ? (item.name || '') : (defaultName || '');
 }
 
 /**
- * Lookup Unit by Code
+ * Lookup Unit by Code (returns exact master unit or blank if not found)
  */
-function getMasterUnit(code, defaultUnit = 'Pcs') {
+function getMasterUnit(code, defaultUnit = '') {
+    if (!code || !code.toString().trim()) return '';
     const item = getMasterItem(code);
-    return item ? item.unit : defaultUnit;
+    return item ? (item.unit || '') : (defaultUnit || '');
 }
 
 /**
@@ -93,6 +135,12 @@ function saveMasterItem(newItem) {
     }
 
     localStorage.setItem(MASTER_STORAGE_KEY, JSON.stringify(customItems));
+    localStorage.setItem('mep_master_last_updated', Date.now().toString());
+
+    try {
+        window.dispatchEvent(new CustomEvent('masterDatabaseUpdated', { detail: { code: cleanCode, item: record } }));
+    } catch(e) {}
+
     return true;
 }
 
@@ -126,5 +174,22 @@ function deleteMasterItem(code) {
     }
 
     localStorage.setItem(MASTER_STORAGE_KEY, JSON.stringify(customItems));
+    localStorage.setItem('mep_master_last_updated', Date.now().toString());
+
+    try {
+        window.dispatchEvent(new CustomEvent('masterDatabaseUpdated', { detail: { code: cleanCode, deleted: true } }));
+    } catch(e) {}
+
     return true;
+}
+
+// Global Exports
+if (typeof window !== 'undefined') {
+    window.getMasterItems = getMasterItems;
+    window.getMasterItem = getMasterItem;
+    window.getMasterName = getMasterName;
+    window.getMasterUnit = getMasterUnit;
+    window.resolveMasterItemExact = resolveMasterItemExact;
+    window.saveMasterItem = saveMasterItem;
+    window.deleteMasterItem = deleteMasterItem;
 }

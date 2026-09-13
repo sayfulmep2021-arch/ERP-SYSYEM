@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
     <script src="portal_guard.js"></script>
+    <script src="master_database.js"></script>
     <link rel="stylesheet" href="corporate_design_system.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -1032,11 +1033,14 @@
             const dayTotals = Array(daysInfo.length).fill(0);
 
             itemList.forEach(item => {
+                const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.name || '');
+
                 tbodyHtml += `<tr>`;
                 tbodyHtml += `<td class="col-sl">${item.sl}</td>`;
                 tbodyHtml += `<td class="col-code" title="${escapeHTML(item.code || '')}">${escapeHTML(item.code || '')}</td>`;
-                tbodyHtml += `<td class="col-name" title="${escapeHTML(item.name || '')}">
-                    <div style="width: 100%; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(item.name || '')}</div>
+                tbodyHtml += `<td class="col-name" title="${escapeHTML(dispName)}">
+                    <div style="width: 100%; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(dispName)}</div>
                 </td>`;
 
                 for (let d = 0; d < daysInfo.length; d++) {
@@ -1144,6 +1148,16 @@
             if (dayEl) dayEl.innerText = dateStr;
             if (timeEl) timeEl.innerText = timeStr;
         }
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                loadAndRenderSummary();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            loadAndRenderSummary();
+        });
     </script>
     <script src="report_sidebar.js"></script>
 </body>

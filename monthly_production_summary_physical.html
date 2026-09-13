@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
     <script src="portal_guard.js"></script>
+    <script src="master_database.js"></script>
     <link rel="stylesheet" href="corporate_design_system.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -1113,11 +1114,14 @@
                 });
                 grandProduction += rowSum;
 
+                const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.name || '');
+
                 let rowHTML = `
                     <td class="freeze-col-1">${idx + 1}</td>
                     <td class="freeze-col-2" title="${escapeHTML(item.code || '')}">${escapeHTML(item.code || '')}</td>
-                    <td class="freeze-col-3" title="${escapeHTML(item.name || '')}">
-                        <div style="width: 100%; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(item.name || '')}</div>
+                    <td class="freeze-col-3" title="${escapeHTML(dispName)}">
+                        <div style="width: 100%; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(dispName)}</div>
                     </td>
                 `;
 
@@ -1238,6 +1242,16 @@
         function escapeHTML(str) {
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                loadAndRenderSummary();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            loadAndRenderSummary();
+        });
     </script>
     <script src="report_sidebar.js"></script>
 </body>

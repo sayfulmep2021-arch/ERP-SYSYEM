@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1569,11 +1569,15 @@
                     if (closingVal === 0) stockClass += ' stock-zero';
                     else if (closingVal > 5000) stockClass += ' stock-high';
 
+                    const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                    const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.name || '');
+                    const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || 'Pcs');
+
                     tr.innerHTML = `
                         <td class="cell-serial sticky-col-1">${item.sl || (idx + 1)}</td>
                         <td class="cell-left sticky-col-2"><span class="code-pill" title="${item.isLinked ? '🔗 Auto-linked from Closing ERP ➔ Fan Armature' : escapeHTML(item.code || '')}">${escapeHTML(item.code || '')}</span></td>
-                        <td class="cell-left item-name-cell sticky-col-3" title="${escapeHTML(item.name || '')}">${escapeHTML(item.name || '')}</td>
-                        <td class="cell-center sticky-col-4"><span class="unit-badge">${escapeHTML(item.unit || 'Pcs')}</span></td>
+                        <td class="cell-left item-name-cell sticky-col-3" title="${escapeHTML(dispName)}">${escapeHTML(dispName)}</td>
+                        <td class="cell-center sticky-col-4"><span class="unit-badge">${escapeHTML(dispUnit)}</span></td>
                         <td>${formatNum(item.opening)}</td>
                         <td>${formatNum(item.storeRec)}</td>
                         <td>${formatNum(item.sectionRec)}</td>
@@ -1789,8 +1793,11 @@
                 const cat = `"${(i.category || '').replace(/"/g, '""')}"`;
                 const sl = idx + 1;
                 const code = `"${(i.code || '').replace(/"/g, '""')}"`;
-                const name = `"${(i.name || '').replace(/"/g, '""')}"`;
-                const unit = `"${(i.unit || '').replace(/"/g, '""')}"`;
+                const disp = (typeof resolveMasterItemExact === 'function' && i.code) ? resolveMasterItemExact(i.code) : null;
+                const dName = (disp && disp.exists) ? disp.name : (i.name || '');
+                const dUnit = (disp && disp.exists) ? disp.unit : (i.unit || 'Pcs');
+                const name = `"${dName.replace(/"/g, '""')}"`;
+                const unit = `"${dUnit.replace(/"/g, '""')}"`;
                 csv += `${cat},${sl},${code},${name},${unit},${i.opening},${i.storeRec},${i.sectionRec},${i.productionRec},${i.damage},${i.othersRec},${i.delivery},${i.closing}\r\n`;
             });
 
@@ -1856,6 +1863,16 @@
         function escapeHTML(str) {
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderTable();
+        });
     </script>
     <script src="report_sidebar.js"></script>
 </body>

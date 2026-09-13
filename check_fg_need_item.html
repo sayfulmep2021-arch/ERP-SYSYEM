@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1308,19 +1308,22 @@
          * Automatic Lookup for Item Name upon SFG Code Selection
          */
         function handleSfgCodeSelect(codeVal) {
-            const cleanCode = (codeVal || '').trim().toUpperCase();
+            const cleanCode = (codeVal || '').trim();
             activeSfgCode = cleanCode;
 
             const nameInput = document.getElementById('inputItemName');
-            const found = PRIMARY_SFG_LIST.find(s => s.code.toUpperCase() === cleanCode);
-
-            if (found) {
-                nameInput.value = found.name;
-            } else if (cleanCode) {
-                nameInput.value = cleanCode + " Complete Body / Assembly";
-            } else {
-                nameInput.value = "";
+            let resolvedName = '';
+            if (cleanCode && typeof resolveMasterItemExact === 'function') {
+                const item = resolveMasterItemExact(cleanCode);
+                if (item && item.exists && item.name) {
+                    resolvedName = item.name;
+                }
+            } else if (cleanCode && typeof getMasterItem === 'function') {
+                const item = getMasterItem(cleanCode);
+                if (item && item.name) resolvedName = item.name;
             }
+
+            if (nameInput) nameInput.value = resolvedName;
 
             // Real-time calculation on selecting model without needing an update button
             const qtyInput = document.getElementById('inputQuantity');
@@ -1426,12 +1429,22 @@
                     warningClass = "td-warning-ok";
                 }
 
+                let resolvedItemName = item.name;
+                let resolvedItemUnit = item.unit || "Pcs";
+                if (typeof resolveMasterItemExact === 'function' && item.code) {
+                    const exact = resolveMasterItemExact(item.code);
+                    if (exact && exact.exists) {
+                        resolvedItemName = exact.name || resolvedItemName;
+                        resolvedItemUnit = exact.unit || resolvedItemUnit;
+                    }
+                }
+
                 return {
                     sl: idx + 1,
                     category: item.category || "Ceiling Raw",
                     code: item.code,
-                    name: item.name,
-                    unit: item.unit || "Pcs",
+                    name: resolvedItemName,
+                    unit: resolvedItemUnit,
                     ratio: bomRatio,
                     prodQty: prodQty,
                     floorStock: floorStock,
@@ -1676,6 +1689,18 @@
             applyViewOnlyModeIfNeeded();
             updateClock();
             setInterval(updateClock, 1000);
+        });
+
+        // Master Central DB Realtime Auto-Sync Handler
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                populateSfgDropdown();
+                handleUpdateClick();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            populateSfgDropdown();
+            handleUpdateClick();
         });
     </script>
     <script src="report_sidebar.js"></script>

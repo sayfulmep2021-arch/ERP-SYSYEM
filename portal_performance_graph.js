@@ -411,22 +411,36 @@ function renderYearlyTargetVsAchievementChart(fiscalYearStr) {
     let svg = `
     <svg width="100%" height="100%" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="none" style="overflow: visible;">
         <defs>
-            <!-- Drop Shadow for Target Curve (Deep Yellow) -->
-            <filter id="shadowTarget" x="-10%" y="-10%" width="120%" height="130%">
-                <feDropShadow dx="0" dy="2.5" stdDeviation="2.5" flood-color="#b45309" flood-opacity="0.22" />
+            <!-- Premium Curve Multi-Stop Gradients -->
+            <linearGradient id="curveTargetGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f59e0b" />
+                <stop offset="50%" stop-color="#d97706" />
+                <stop offset="100%" stop-color="#b45309" />
+            </linearGradient>
+            <linearGradient id="curveAchieveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#34d399" />
+                <stop offset="50%" stop-color="#10b981" />
+                <stop offset="100%" stop-color="#047857" />
+            </linearGradient>
+
+            <!-- Soft Ambient Drop Shadows for Curves -->
+            <filter id="shadowTarget" x="-10%" y="-20%" width="120%" height="150%">
+                <feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#d97706" flood-opacity="0.30" />
             </filter>
-            <!-- Drop Shadow for Achievement Curve (Deep Green) -->
-            <filter id="shadowAchieve" x="-10%" y="-10%" width="120%" height="130%">
-                <feDropShadow dx="0" dy="2.5" stdDeviation="2.5" flood-color="#15803d" flood-opacity="0.22" />
+            <filter id="shadowAchieve" x="-10%" y="-20%" width="120%" height="150%">
+                <feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#10b981" flood-opacity="0.30" />
             </filter>
-            <!-- Area Gradients for Subtle ERP Fill -->
+
+            <!-- Premium Multi-Stop Area Gradients for Subtle ERP Glow -->
             <linearGradient id="areaTargetGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#d97706" stop-opacity="0.08" />
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.16" />
+                <stop offset="60%" stop-color="#d97706" stop-opacity="0.03" />
                 <stop offset="100%" stop-color="#d97706" stop-opacity="0.0" />
             </linearGradient>
             <linearGradient id="areaAchieveGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#15803d" stop-opacity="0.10" />
-                <stop offset="100%" stop-color="#15803d" stop-opacity="0.0" />
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.20" />
+                <stop offset="60%" stop-color="#059669" stop-opacity="0.04" />
+                <stop offset="100%" stop-color="#059669" stop-opacity="0.0" />
             </linearGradient>
         </defs>
 
@@ -436,12 +450,12 @@ function renderYearlyTargetVsAchievementChart(fiscalYearStr) {
     Y_INTERVALS.forEach((val) => {
         const y = getY(val);
         const isBase = val === 0;
-        const lineStyle = isBase ? 'stroke="#cbd5e1" stroke-width="1.2"' : 'stroke="#e2e8f0" stroke-width="0.9" stroke-dasharray="3 3"';
+        const lineStyle = isBase ? 'stroke="#cbd5e1" stroke-width="1.3"' : 'stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="3 3"';
         const labelText = val.toLocaleString();
 
         svg += `
             <line x1="${padLeft}" y1="${y.toFixed(1)}" x2="${(padLeft + plotWidth).toFixed(1)}" y2="${y.toFixed(1)}" ${lineStyle} />
-            <text x="${(padLeft - 8).toFixed(1)}" y="${(y + 3.5).toFixed(1)}" text-anchor="end" font-size="10.5px" fill="#94a3b8" font-weight="700" font-family="inherit">${labelText}</text>
+            <text x="${(padLeft - 10).toFixed(1)}" y="${(y + 3.5).toFixed(1)}" text-anchor="end" font-size="10.5px" fill="#64748b" font-weight="700" font-family="'Times New Roman', serif, sans-serif">${labelText}</text>
         `;
     });
 
@@ -455,28 +469,28 @@ function renderYearlyTargetVsAchievementChart(fiscalYearStr) {
         <path d="${achieveAreaD}" fill="url(#areaAchieveGrad)" pointer-events="none" />
     `;
 
-    // 1. Target Curve: Deep Yellow (#d97706)
+    // 1. Target Curve: Radiant Amber-Gold Gradient
     svg += `
-        <path d="${targetPath}" fill="none" stroke="#d97706" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadowTarget)" />
+        <path d="${targetPath}" fill="none" stroke="url(#curveTargetGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadowTarget)" />
     `;
 
-    // 2. Achievement Curve: Deep Green (#15803d)
+    // 2. Achievement Curve: Radiant Emerald-Teal Gradient
     svg += `
-        <path d="${achievePath}" fill="none" stroke="#15803d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadowAchieve)" />
+        <path d="${achievePath}" fill="none" stroke="url(#curveAchieveGrad)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadowAchieve)" />
     `;
 
-    // 3. Data Points: Small Deep Red Dots (#b91c1c)
-    // Production Target Dots
+    // 3. Data Points: Matching Glowing Markers with White Rings
+    // Production Target Dots (Rich Amber)
     targetPoints.forEach((pt, idx) => {
         svg += `
-            <circle class="chart-dot target-dot" id="targetDot_${idx}" cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="3.8" fill="#b91c1c" stroke="#ffffff" stroke-width="1.6" />
+            <circle class="chart-dot target-dot" id="targetDot_${idx}" cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="4.2" fill="#f59e0b" stroke="#ffffff" stroke-width="2" style="filter: drop-shadow(0 1px 3px rgba(217,119,6,0.45));" />
         `;
     });
 
-    // Achievement Dots
+    // Achievement Dots (Vibrant Emerald)
     achievePoints.forEach((pt, idx) => {
         svg += `
-            <circle class="chart-dot achieve-dot" id="achieveDot_${idx}" cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="3.8" fill="#b91c1c" stroke="#ffffff" stroke-width="1.6" />
+            <circle class="chart-dot achieve-dot" id="achieveDot_${idx}" cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="4.2" fill="#10b981" stroke="#ffffff" stroke-width="2" style="filter: drop-shadow(0 1px 3px rgba(16,185,129,0.45));" />
         `;
     });
 
@@ -485,7 +499,7 @@ function renderYearlyTargetVsAchievementChart(fiscalYearStr) {
         const x = getX(idx);
         const y = padTop + plotHeight + 20;
         svg += `
-            <text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-size="11px" font-weight="750" fill="#64748b" font-family="inherit">${m}</text>
+            <text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-size="11.5px" font-weight="750" fill="#475569" font-family="'Times New Roman', serif, sans-serif">${m}</text>
         `;
     });
 
@@ -497,7 +511,7 @@ function renderYearlyTargetVsAchievementChart(fiscalYearStr) {
         const mFull = FISCAL_MONTH_FULL[idx];
 
         svg += `
-            <line class="chart-hover-line" id="hoverLine_${idx}" x1="${x.toFixed(1)}" y1="${padTop}" x2="${x.toFixed(1)}" y2="${(padTop + plotHeight).toFixed(1)}" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="2 2" opacity="0" pointer-events="none" />
+            <line class="chart-hover-line" id="hoverLine_${idx}" x1="${x.toFixed(1)}" y1="${padTop}" x2="${x.toFixed(1)}" y2="${(padTop + plotHeight).toFixed(1)}" stroke="#0284c7" stroke-width="1.6" stroke-dasharray="3 3" opacity="0" pointer-events="none" style="filter: drop-shadow(0 0 4px rgba(2, 132, 199, 0.4));" />
             <rect class="chart-hover-col" x="${(x - 24).toFixed(1)}" y="${padTop}" width="48" height="${plotHeight}" fill="transparent" cursor="pointer"
                 onmouseenter="handleChartHoverEnter(${idx}, '${mFull}', ${tVal}, ${aVal}, event)"
                 onmousemove="handleChartHoverMove(event)"
@@ -512,17 +526,17 @@ function renderYearlyTargetVsAchievementChart(fiscalYearStr) {
         <div class="yearly-chart-tooltip" id="yearlyChartTooltip" style="display:none; position:absolute; pointer-events:none; z-index:100;">
             <div class="tt-header" id="ttMonthHeader">September 2026</div>
             <div class="tt-row">
-                <span class="tt-indicator" style="background:#d97706;"></span>
+                <span class="tt-indicator" style="background:#f59e0b; box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);"></span>
                 <span class="tt-label">Target:</span>
                 <strong class="tt-val" id="ttTargetVal">40,000 PCS</strong>
             </div>
             <div class="tt-row">
-                <span class="tt-indicator" style="background:#15803d;"></span>
+                <span class="tt-indicator" style="background:#10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);"></span>
                 <span class="tt-label">Achievement:</span>
                 <strong class="tt-val" id="ttAchieveVal">7,613 PCS</strong>
             </div>
             <div class="tt-row tt-gap-row" id="ttGapRow">
-                <span class="tt-indicator" style="background:#ef4444;"></span>
+                <span class="tt-indicator" id="ttGapIndicator" style="background:#ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);"></span>
                 <span class="tt-label">Variance:</span>
                 <strong class="tt-val" id="ttGapVal">-32,387 PCS</strong>
             </div>
@@ -538,16 +552,25 @@ window.handleChartHoverEnter = function(idx, monthFull, targetVal, achieveVal, e
     if (line) line.setAttribute('opacity', '1');
 
     const tDot = document.getElementById(`targetDot_${idx}`);
-    if (tDot) { tDot.setAttribute('r', '5.5'); tDot.setAttribute('stroke-width', '2'); }
+    if (tDot) {
+        tDot.setAttribute('r', '6.5');
+        tDot.setAttribute('stroke-width', '2.5');
+        tDot.style.filter = 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.8))';
+    }
 
     const aDot = document.getElementById(`achieveDot_${idx}`);
-    if (aDot) { aDot.setAttribute('r', '5.5'); aDot.setAttribute('stroke-width', '2'); }
+    if (aDot) {
+        aDot.setAttribute('r', '6.5');
+        aDot.setAttribute('stroke-width', '2.5');
+        aDot.style.filter = 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.8))';
+    }
 
     const tt = document.getElementById('yearlyChartTooltip');
     const ttHead = document.getElementById('ttMonthHeader');
     const ttT = document.getElementById('ttTargetVal');
     const ttA = document.getElementById('ttAchieveVal');
     const ttG = document.getElementById('ttGapVal');
+    const ttGapInd = document.getElementById('ttGapIndicator');
 
     if (tt && ttHead && ttT && ttA && ttG) {
         const fy = window.currentSelectedFiscalYear || '2026-2027';
@@ -563,7 +586,11 @@ window.handleChartHoverEnter = function(idx, monthFull, targetVal, achieveVal, e
         const diff = achieveVal - targetVal;
         const diffStr = diff >= 0 ? `+${diff.toLocaleString()} PCS` : `-${Math.abs(diff).toLocaleString()} PCS`;
         ttG.innerText = diffStr;
-        ttG.style.color = diff >= 0 ? '#10b981' : '#ef4444';
+        ttG.style.color = diff >= 0 ? '#34d399' : '#f87171';
+        if (ttGapInd) {
+            ttGapInd.style.background = diff >= 0 ? '#10b981' : '#ef4444';
+            ttGapInd.style.boxShadow = diff >= 0 ? '0 0 6px rgba(16, 185, 129, 0.7)' : '0 0 6px rgba(239, 68, 68, 0.7)';
+        }
 
         tt.style.display = 'block';
         updateTooltipPosition(evt);
@@ -579,10 +606,18 @@ window.handleChartHoverLeave = function(idx) {
     if (line) line.setAttribute('opacity', '0');
 
     const tDot = document.getElementById(`targetDot_${idx}`);
-    if (tDot) { tDot.setAttribute('r', '3.8'); tDot.setAttribute('stroke-width', '1.6'); }
+    if (tDot) {
+        tDot.setAttribute('r', '4.2');
+        tDot.setAttribute('stroke-width', '2');
+        tDot.style.filter = 'drop-shadow(0 1px 3px rgba(217,119,6,0.45))';
+    }
 
     const aDot = document.getElementById(`achieveDot_${idx}`);
-    if (aDot) { aDot.setAttribute('r', '3.8'); aDot.setAttribute('stroke-width', '1.6'); }
+    if (aDot) {
+        aDot.setAttribute('r', '4.2');
+        aDot.setAttribute('stroke-width', '2');
+        aDot.style.filter = 'drop-shadow(0 1px 3px rgba(16,185,129,0.45))';
+    }
 
     const tt = document.getElementById('yearlyChartTooltip');
     if (tt) tt.style.display = 'none';

@@ -5808,11 +5808,12 @@
 .card-account .kpi-circle-icon { background: #f3e8ff !important; color: #9333ea !important; }
 
 .kpi-card-title {
-    font-size: 0.82rem !important;
-    font-weight: 500 !important;
+    font-size: 0.84rem !important;
+    font-weight: 800 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    transition: color 0.15s ease, font-weight 0.15s ease !important;
+    letter-spacing: 0.6px !important;
+    font-family: 'Times New Roman', serif !important;
+    transition: color 0.18s ease, font-weight 0.18s ease !important;
 }
 
 .card-sales .kpi-card-title { color: #15803d !important; }
@@ -6007,16 +6008,18 @@
 }
 
 .chart-title-text {
-    font-size: 0.98rem !important;
-    font-weight: 500 !important;
+    font-size: 1.04rem !important;
+    font-weight: 800 !important;
+    font-family: 'Times New Roman', serif !important;
     color: #0f2942 !important;
-    transition: color 0.15s ease, font-weight 0.15s ease !important;
+    transition: color 0.18s ease, font-weight 0.18s ease !important;
 }
 
 .chart-subtitle-text {
-    font-size: 0.74rem !important;
+    font-size: 0.76rem !important;
     color: #64748b !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
+    font-family: 'Times New Roman', serif, sans-serif !important;
 }
 
 /* Donut Chart Container */
@@ -9035,30 +9038,42 @@
 }
 
 .yearly-chart-legend .legend-line {
-    width: 14px !important;
-    height: 3px !important;
+    width: 16px !important;
+    height: 3.5px !important;
     border-radius: 2px !important;
     display: inline-block !important;
 }
 
 .yearly-chart-legend .line-target {
-    background: #d97706 !important;
+    background: linear-gradient(90deg, #f59e0b, #d97706) !important;
+    box-shadow: 0 1px 4px rgba(217, 119, 6, 0.35) !important;
 }
 
 .yearly-chart-legend .line-achieve {
-    background: #15803d !important;
+    background: linear-gradient(90deg, #10b981, #059669) !important;
+    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.35) !important;
 }
 
 .yearly-chart-legend .legend-dot {
-    width: 6px !important;
-    height: 6px !important;
+    width: 8px !important;
+    height: 8px !important;
     border-radius: 50% !important;
     display: inline-block !important;
 }
 
+.yearly-chart-legend .dot-target {
+    background: #f59e0b !important;
+    box-shadow: 0 0 0 1.5px #ffffff, 0 0 6px rgba(245, 158, 11, 0.55) !important;
+}
+
+.yearly-chart-legend .dot-achieve {
+    background: #10b981 !important;
+    box-shadow: 0 0 0 1.5px #ffffff, 0 0 6px rgba(16, 185, 129, 0.55) !important;
+}
+
 .yearly-chart-legend .dot-red {
-    background: #b91c1c !important;
-    box-shadow: 0 0 0 1px #ffffff !important;
+    background: #f59e0b !important;
+    box-shadow: 0 0 0 1.5px #ffffff, 0 0 6px rgba(245, 158, 11, 0.55) !important;
 }
 
 /* Yearly Chart SVG Wrapper & Dots */
@@ -9067,18 +9082,24 @@
 }
 
 .yearly-chart-wrapper .chart-dot {
-    transition: r 0.15s ease, stroke-width 0.15s ease !important;
+    transition: r 0.2s cubic-bezier(0.16, 1, 0.3, 1), stroke-width 0.2s ease, filter 0.2s ease !important;
+    cursor: pointer !important;
 }
 
-/* Floating Interactive Tooltip */
+.yearly-chart-wrapper .chart-dot:hover {
+    filter: drop-shadow(0 0 6px currentColor) !important;
+}
+
+/* Floating Interactive Tooltip - Executive Glassmorphic */
 .yearly-chart-tooltip {
-    background: rgba(15, 23, 42, 0.94) !important;
-    backdrop-filter: blur(8px) !important;
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
     color: #ffffff !important;
-    border-radius: 8px !important;
-    padding: 8px 12px !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25) !important;
-    font-size: 0.78rem !important;
+    border-radius: 10px !important;
+    padding: 10px 14px !important;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.30), 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
+    font-size: 0.80rem !important;
     line-height: 1.4 !important;
     min-width: 170px !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -9346,55 +9367,56 @@
    ITEM 2: Four KPI Cards Independent Floating Hover
    ----------------------------------------------------------------------------- */
 .dash-kpi-card {
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease !important;
     will-change: transform, box-shadow !important;
 }
 
 .dash-kpi-card:hover,
 .dash-kpi-card.is-hovered {
-    transform: none !important;
-    z-index: 3 !important;
+    transform: translateY(-6px) scale(1.025) !important;
+    -webkit-transform: translateY(-6px) scale(1.025) !important;
+    z-index: 20 !important;
 }
 
 .dash-kpi-card:hover .kpi-card-title {
-    font-weight: 700 !important;
+    font-weight: 900 !important;
 }
 
-/* Card 1: Production Target - Soft Pastel Emerald Hover */
+/* Card 1: Production Target - Emerald Theme Premium Hover */
 .dash-kpi-card.card-sales:hover,
 .dash-kpi-card.card-sales.is-hovered {
-    border-color: #86efac !important;
-    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.12) !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 16px 32px -4px rgba(16, 185, 129, 0.22), 0 6px 16px rgba(15, 23, 42, 0.08) !important;
 }
 .dash-kpi-card.card-sales:hover .kpi-card-title {
     color: #059669 !important;
 }
 
-/* Card 2: Achievement - Soft Pastel Blue Hover */
+/* Card 2: Achievement - Royal Blue Theme Premium Hover */
 .dash-kpi-card.card-purchase:hover,
 .dash-kpi-card.card-purchase.is-hovered {
-    border-color: #93c5fd !important;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12) !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 16px 32px -4px rgba(37, 99, 235, 0.22), 0 6px 16px rgba(15, 23, 42, 0.08) !important;
 }
 .dash-kpi-card.card-purchase:hover .kpi-card-title {
-    color: #2563eb !important;
+    color: #1d4ed8 !important;
 }
 
-/* Card 3: Pending - Soft Pastel Amber Hover */
+/* Card 3: Pending - Amber Gold Theme Premium Hover */
 .dash-kpi-card.card-cashflow:hover,
 .dash-kpi-card.card-cashflow.is-hovered {
-    border-color: #fcd34d !important;
-    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.12) !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 16px 32px -4px rgba(245, 158, 11, 0.24), 0 6px 16px rgba(15, 23, 42, 0.08) !important;
 }
 .dash-kpi-card.card-cashflow:hover .kpi-card-title {
     color: #d97706 !important;
 }
 
-/* Card 4: Day Wise Target - Soft Pastel Purple Hover */
+/* Card 4: Day Wise Target - Purple Theme Premium Hover */
 .dash-kpi-card.card-account:hover,
 .dash-kpi-card.card-account.is-hovered {
-    border-color: #d8b4fe !important;
-    box-shadow: 0 4px 14px rgba(147, 51, 234, 0.12) !important;
+    border-color: #8b5cf6 !important;
+    box-shadow: 0 16px 32px -4px rgba(139, 92, 246, 0.22), 0 6px 16px rgba(15, 23, 42, 0.08) !important;
 }
 .dash-kpi-card.card-account:hover .kpi-card-title {
     color: #7c3aed !important;

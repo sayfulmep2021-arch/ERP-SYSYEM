@@ -3,6 +3,7 @@
 <head>
     <!-- Global Permanent Authentication Guard -->
     <script src="portal_guard.js"></script>
+    <script src="master_database.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Daily Production Received Assemble (All) | MEP FAN LTD.</title>
@@ -1474,13 +1475,17 @@
                     let opClass = 'freeze-col-4';
                     if (item.opening < 0) opClass += ' val-neg-cell';
 
+                    const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                    const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.name || '');
+                    const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || 'Pcs');
+
                     tr.innerHTML = `
                         <td class="freeze-col-0" style="color:#64748b; font-weight:700;">${item.sl || (itemIdx + 1)}</td>
                         <td class="freeze-col-1"><span class="code-pill">${escapeHTML(item.code || '')}</span></td>
-                        <td class="freeze-col-2" style="font-weight:700; color:#0f2942;" title="${escapeHTML(item.name || '')}">
-                            <div style="width: 100%; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(item.name || '')}</div>
+                        <td class="freeze-col-2" style="font-weight:700; color:#0f2942;" title="${escapeHTML(dispName)}">
+                            <div style="width: 100%; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(dispName)}</div>
                         </td>
-                        <td class="freeze-col-3"><span class="unit-badge">${escapeHTML(item.unit || 'Pcs')}</span></td>
+                        <td class="freeze-col-3"><span class="unit-badge">${escapeHTML(dispUnit)}</span></td>
                         <td class="${opClass}">
                             <input type="number" step="any" class="cell-input" value="${item.opening === 0 ? '0' : item.opening}" 
                                    oninput="handleOpeningEdit(${catIdx}, ${realItemIdx}, this.value)">
@@ -1797,6 +1802,16 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderSheet();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderSheet();
+        });
     </script>
     <script src="report_sidebar.js"></script>
 </body>

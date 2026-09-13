@@ -48,7 +48,9 @@
         'portal_view_page_permissions',
         'portal_page_lock_states',
         'mep_daily_prod_assemble_manual_month',
-        'mep_daily_prod_assemble_manual_year'
+        'mep_daily_prod_assemble_manual_year',
+        'mep_master_custom_items',
+        'mep_master_last_updated'
     ];
 
     let db = null;

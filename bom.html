@@ -972,19 +972,32 @@
         }
 
         function onBOMItemCodeInput(code) {
-            const clean = code.trim();
-            if (!clean) return;
-            let masterItem = null;
-            if (typeof getMasterItem === 'function') {
-                masterItem = getMasterItem(clean);
-            }
+            const clean = (code || '').trim();
             const nameInput = document.getElementById('newItemName');
             const unitInput = document.getElementById('newItemUnit');
             const typeInput = document.getElementById('newItemType');
             const catSelect = document.getElementById('newItemCategory');
             const hint = document.getElementById('bomAutoFillHint');
 
-            if (masterItem) {
+            if (!clean) {
+                if (nameInput) nameInput.value = '';
+                if (unitInput) unitInput.value = '';
+                if (hint) {
+                    hint.innerText = "ℹ️ Type Code to auto-load Name & Unit from Master DB";
+                    hint.style.color = "#0284c7";
+                }
+                return;
+            }
+
+            let masterItem = null;
+            if (typeof resolveMasterItemExact === 'function') {
+                const exact = resolveMasterItemExact(clean);
+                if (exact && exact.exists) masterItem = exact;
+            } else if (typeof getMasterItem === 'function') {
+                masterItem = getMasterItem(clean);
+            }
+
+            if (masterItem && masterItem.name) {
                 if (nameInput) nameInput.value = masterItem.name;
                 if (unitInput) unitInput.value = masterItem.unit || 'Pcs';
                 if (masterItem.category) {
@@ -996,6 +1009,13 @@
                 if (hint) {
                     hint.innerText = `✓ Found in Master: "${masterItem.name}" (${masterItem.unit || 'Pcs'})`;
                     hint.style.color = "#16a34a";
+                }
+            } else {
+                if (nameInput) nameInput.value = '';
+                if (unitInput) unitInput.value = '';
+                if (hint) {
+                    hint.innerText = "⚠️ Code not found in Master Central DB";
+                    hint.style.color = "#ef4444";
                 }
             }
         }
@@ -1096,11 +1116,21 @@
 
                 const isArmature = item.category === 'Armature';
 
+                let dispName = item.name;
+                let dispUnit = item.unit;
+                if (typeof resolveMasterItemExact === 'function' && item.code) {
+                    const exact = resolveMasterItemExact(item.code);
+                    if (exact && exact.exists) {
+                        dispName = exact.name || dispName;
+                        dispUnit = exact.unit || dispUnit;
+                    }
+                }
+
                 html += `<tr data-index="${index}" data-cat="${item.category}">`;
                 html += `<td class="td-sl sticky-col-1">${item.sl}</td>`;
                 html += `<td class="td-code sticky-col-2" contenteditable="true" onblur="updateCell(${index}, 'code', this.innerText)">${item.code}</td>`;
-                html += `<td class="td-name sticky-col-3" contenteditable="true" onblur="updateCell(${index}, 'name', this.innerText)">${item.name}</td>`;
-                html += `<td class="td-unit sticky-col-4" contenteditable="true" onblur="updateCell(${index}, 'unit', this.innerText)">${item.unit}</td>`;
+                html += `<td class="td-name sticky-col-3" contenteditable="true" onblur="updateCell(${index}, 'name', this.innerText)">${dispName}</td>`;
+                html += `<td class="td-unit sticky-col-4" contenteditable="true" onblur="updateCell(${index}, 'unit', this.innerText)">${dispUnit}</td>`;
                 html += `<td class="td-type" contenteditable="true" onblur="updateCell(${index}, 'type', this.innerText)">${item.type}</td>`;
 
                 // SFG Columns
@@ -1167,7 +1197,24 @@
                 return;
             }
             if (!currentData[index]) return;
-            currentData[index][field] = value.trim();
+            const trimmed = value.trim();
+            currentData[index][field] = trimmed;
+            if (field === 'code') {
+                if (typeof resolveMasterItemExact === 'function') {
+                    const item = resolveMasterItemExact(trimmed);
+                    if (item && item.exists) {
+                        currentData[index].name = item.name || '';
+                        currentData[index].unit = item.unit || '';
+                    } else if (!trimmed) {
+                        currentData[index].name = '';
+                        currentData[index].unit = '';
+                    }
+                }
+                saveBOMData();
+                renderTable();
+                showToast(`Updated code & resolved Master DB data`);
+                return;
+            }
             showToast(`Updated ${currentData[index].name} (${field})`);
         }
 
@@ -1457,6 +1504,18 @@
             initBOMData();
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
+        });
+
+        // Master Central DB Realtime Auto-Sync Handler
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                populateBOMMasterDatalist();
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            populateBOMMasterDatalist();
+            renderTable();
         });
     </script>
     <script src="report_sidebar.js"></script>

@@ -971,31 +971,43 @@
         const STORAGE_KEY = 'mep_bom_with_sfg_data';
         let bomItems = [];
 
-        // Master Central DB Lookup
+        // Strict Exact Master Central DB Auto-Linking
         function lookupMasterCode(val) {
-            if (!val) return;
-            const clean = val.trim();
-            if (typeof getMasterItem === 'function') {
-                const item = getMasterItem(clean);
-                if (item) {
-                    if (item.name) document.getElementById('formName').value = item.name;
-                    if (item.unit) {
-                        const unitSel = document.getElementById('formUnit');
-                        let found = false;
-                        for (let opt of unitSel.options) {
-                            if (opt.value.toLowerCase() === item.unit.toLowerCase()) {
-                                unitSel.value = opt.value;
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            const newOpt = new Option(item.unit, item.unit);
-                            unitSel.add(newOpt);
-                            unitSel.value = item.unit;
+            const formName = document.getElementById('formName');
+            const unitSel = document.getElementById('formUnit');
+            const clean = (val || '').trim();
+            if (!clean) {
+                if (formName) formName.value = '';
+                if (unitSel) unitSel.value = '';
+                return;
+            }
+            let item = null;
+            if (typeof resolveMasterItemExact === 'function') {
+                const exact = resolveMasterItemExact(clean);
+                if (exact && exact.exists) item = exact;
+            } else if (typeof getMasterItem === 'function') {
+                item = getMasterItem(clean);
+            }
+            if (item && item.name) {
+                if (formName) formName.value = item.name;
+                if (item.unit && unitSel) {
+                    let found = false;
+                    for (let opt of unitSel.options) {
+                        if (opt.value.toLowerCase() === item.unit.toLowerCase()) {
+                            unitSel.value = opt.value;
+                            found = true;
+                            break;
                         }
                     }
+                    if (!found) {
+                        const newOpt = new Option(item.unit, item.unit);
+                        unitSel.add(newOpt);
+                        unitSel.value = item.unit;
+                    }
                 }
+            } else {
+                if (formName) formName.value = '';
+                if (unitSel) unitSel.value = '';
             }
         }
 
@@ -1069,13 +1081,23 @@
                 else if (item.category === 'FAN SFG') catClass = 'cat-sfg';
                 else if (item.category === 'Exhaust Raw') catClass = 'cat-exhaust';
 
+                let dispName = item.name;
+                let dispUnit = item.unit;
+                if (typeof resolveMasterItemExact === 'function' && item.code) {
+                    const exact = resolveMasterItemExact(item.code);
+                    if (exact && exact.exists) {
+                        dispName = exact.name || dispName;
+                        dispUnit = exact.unit || dispUnit;
+                    }
+                }
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="sticky-col-1" style="font-weight:700; color:#64748b;">${idx + 1}</td>
                     <td class="sticky-col-2"><span class="cat-tag ${catClass}">${item.category}</span></td>
                     <td class="sticky-col-3"><span class="code-tag">${item.code}</span></td>
-                    <td class="sticky-col-4" style="font-weight:600;" title="${item.name}">${item.name}</td>
-                    <td class="sticky-col-5"><span class="unit-tag">${item.unit}</span></td>
+                    <td class="sticky-col-4" style="font-weight:600;" title="${dispName}">${dispName}</td>
+                    <td class="sticky-col-5"><span class="unit-tag">${dispUnit}</span></td>
                     <td style="text-align:right; font-weight:800; font-family:'Times New Roman', Times, serif; color:#0f2942;">
                         ${Number(item.quantity).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 5 })}
                     </td>
@@ -1291,6 +1313,16 @@
                     openAddItemModal();
                 }
             } catch(e) {}
+        });
+
+        // Master Central DB Realtime Auto-Sync Handler
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderTable();
         });
     </script>
 </body>

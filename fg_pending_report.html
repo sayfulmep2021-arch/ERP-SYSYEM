@@ -1329,6 +1329,9 @@
             let totalDue = 0;
 
             CEILING_FAN_MODELS.forEach(model => {
+                const dispItem = (typeof resolveMasterItemExact === 'function' && model.code) ? resolveMasterItemExact(model.code) : null;
+                const dispName = (dispItem && dispItem.exists) ? dispItem.name : model.name;
+
                 const erpVal = erpData[model.code] || 0;
                 const physVal = physicalData[model.code] || 0;
                 const dueVal = erpVal - physVal;
@@ -1351,7 +1354,7 @@
                 assembleRowsHtml += `
                     <tr>
                         <td><span class="code-pill">${escapeHTML(model.code)}</span></td>
-                        <td class="cell-name">${escapeHTML(model.name)}</td>
+                        <td class="cell-name">${escapeHTML(dispName)}</td>
                         <td class="cell-num">${formatNum(erpVal)}</td>
                         <td class="cell-num">${formatNum(physVal)}</td>
                         <td class="cell-due">${dueHtml}</td>
@@ -1383,6 +1386,10 @@
             let totalClosing = 0;
 
             CEILING_FAN_MODELS.forEach(model => {
+                const dispItem = (typeof resolveMasterItemExact === 'function' && model.code) ? resolveMasterItemExact(model.code) : null;
+                const dispName = (dispItem && dispItem.exists) ? dispItem.name : model.name;
+                const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (model.unit || 'Pcs');
+
                 const qty = closingData[model.code] || 0;
                 totalClosing += qty;
 
@@ -1393,8 +1400,8 @@
                 closingRowsHtml += `
                     <tr>
                         <td><span class="code-pill">${escapeHTML(model.code)}</span></td>
-                        <td class="cell-name">${escapeHTML(model.name)}</td>
-                        <td style="text-align:center;"><span class="unit-pill">${escapeHTML(model.unit)}</span></td>
+                        <td class="cell-name">${escapeHTML(dispName)}</td>
+                        <td style="text-align:center;"><span class="unit-pill">${escapeHTML(dispUnit)}</span></td>
                         <td class="cell-num">${qtyHtml}</td>
                     </tr>
                 `;
@@ -1563,7 +1570,8 @@
                 if (e.key === 'mep_fan_assemble_erp_data' || e.key === 'mep_fan_assemble_erp_data_updated' ||
                     e.key === 'mep_assemble_custom_data' || e.key === 'mep_assemble_summary_updated' ||
                     e.key === 'mep_fg_summary_data' || e.key === 'mep_fg_summary_last_updated' ||
-                    e.key === 'custom_fg_production_entries' || e.key === 'deleted_fg_production_entry_ids') {
+                    e.key === 'custom_fg_production_entries' || e.key === 'deleted_fg_production_entry_ids' ||
+                    e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
                     renderAllReports();
                 }
             });
@@ -1577,6 +1585,7 @@
             window.addEventListener('mep_fan_assemble_erp_data_updated', () => renderAllReports());
             window.addEventListener('mep_assemble_summary_updated', () => renderAllReports());
             window.addEventListener('mep_fg_summary_last_updated', () => renderAllReports());
+            window.addEventListener('masterDatabaseUpdated', () => renderAllReports());
         });
     </script>
 </body>

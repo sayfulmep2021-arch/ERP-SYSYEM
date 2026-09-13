@@ -3,6 +3,7 @@
 <head>
     <!-- Global Permanent Authentication Guard -->
     <script src="portal_guard.js"></script>
+    <script src="master_database.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FG Summary Report - Smart Solution</title>
@@ -1619,15 +1620,19 @@
                     const tr = document.createElement('tr');
                     if (item.subTint) tr.className = item.subTint;
 
+                    const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                    const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.itemName || '');
+                    const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || 'Pcs');
+
                     tr.innerHTML = `
                         <td class="sticky-col-1 td-center" style="font-weight: 700; color: #64748b;">${item.sl !== undefined ? item.sl : (itemIdx + 1)}</td>
                         <td class="sticky-col-2 td-left">
                             <span class="code-pill" title="${item.isLinked ? 'Code-to-Code Matched with Finish Good FG' : 'Item Code'}">${escapeHTML(item.code || '--')}${item.isLinked ? ' <span style="color:#10b981; font-size:0.65rem;" title="100% Code Matched with Finish Good FG">🔗</span>' : ''}</span>
                         </td>
-                        <td class="sticky-col-3 td-left" style="font-weight: 700; color: #0f2942;" title="${escapeHTML(item.itemName || '')}">
-                            <div style="width: 100%; max-width: 325px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(item.itemName || '')}</div>
+                        <td class="sticky-col-3 td-left" style="font-weight: 700; color: #0f2942;" title="${escapeHTML(dispName)}">
+                            <div style="width: 100%; max-width: 325px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(dispName)}</div>
                         </td>
-                        <td class="sticky-col-4 td-center"><span class="unit-badge">${escapeHTML(item.unit || 'Pcs')}</span></td>
+                        <td class="sticky-col-4 td-center"><span class="unit-badge">${escapeHTML(dispUnit)}</span></td>
                         <td class="td-locked ${item.opening > 0 ? 'val-positive' : 'val-zero'}" style="text-align: right;" title="🔒 Read Only: Linked with Finish Good FG">${item.opening ? formatNum(item.opening) : '0'}</td>
                         <td class="td-locked ${item.production > 0 ? 'val-positive' : 'val-zero'}" style="text-align: right;" title="🔒 Read Only: Linked with Finish Good FG (Receive Other)">${item.production ? formatNum(item.production) : '0'}</td>
                         <td class="td-locked ${item.delivery > 0 ? 'val-positive' : 'val-zero'}" style="text-align: right;" title="🔒 Read Only: Linked with Finish Good FG (Issue Transfer)">${item.delivery ? formatNum(item.delivery) : '0'}</td>
@@ -1765,12 +1770,15 @@
         function exportToCSV() {
             let csv = "\uFEFFSL,Section,Item Code,Item Name,Unit,Opening,Production Received,Delivery,Closing\n";
             itemsList.forEach((item, idx) => {
+                const disp = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                const dName = (disp && disp.exists) ? disp.name : (item.itemName || '');
+                const dUnit = (disp && disp.exists) ? disp.unit : (item.unit || '');
                 const row = [
                     item.sl || (idx + 1),
                     `"${(item.section || '').replace(/"/g, '""')}"`,
                     `"${(item.code || '').replace(/"/g, '""')}"`,
-                    `"${(item.itemName || '').replace(/"/g, '""')}"`,
-                    `"${(item.unit || '').replace(/"/g, '""')}"`,
+                    `"${dName.replace(/"/g, '""')}"`,
+                    `"${dUnit.replace(/"/g, '""')}"`,
                     item.opening || 0,
                     item.production || 0,
                     item.delivery || 0,
@@ -1865,6 +1873,16 @@
                 setTimeout(() => t.classList.remove('show'), 3000);
             }
         }
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderTable();
+        });
     </script>
 </body>
 </html>

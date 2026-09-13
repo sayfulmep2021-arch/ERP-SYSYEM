@@ -2583,9 +2583,20 @@
                         <button type="button" class="btn-hide-row" onclick="hideSerial('${escapeAttr(itemKey)}', event)" title="Hide SL ${item.sl}">✕</button>
                     </div>
                 </td>`;
+
+                let dispName = item.name;
+                let dispUnit = item.unit;
+                if (typeof resolveMasterItemExact === 'function' && item.code) {
+                    const exact = resolveMasterItemExact(item.code);
+                    if (exact && exact.exists) {
+                        dispName = exact.name || dispName;
+                        dispUnit = exact.unit || dispUnit;
+                    }
+                }
+
                 html += `<td class="td-code col-freeze-2">${item.code}</td>`;
-                html += `<td class="td-name col-freeze-3">${item.name}</td>`;
-                html += `<td class="td-unit col-freeze-4">${item.unit}</td>`;
+                html += `<td class="td-name col-freeze-3">${dispName}</td>`;
+                html += `<td class="td-unit col-freeze-4">${dispUnit}</td>`;
                 html += `<td class="td-type col-freeze-5">${item.type}</td>`;
 
                 // SFG Columns Group Rendering
@@ -2805,23 +2816,34 @@
             document.getElementById('newItemSL').value = maxSL + 1;
         }
 
-        // Automatic Master DB Lookup when typing Code
+        // Strict Exact Master Central DB Auto-Linking
         function onItemCodeInput(code) {
-            const clean = code.trim();
-            if (!clean) return;
-
-            let masterItem = null;
-            if (typeof getMasterItem === 'function') {
-                masterItem = getMasterItem(clean);
-            }
-
             const nameInput = document.getElementById('newItemName');
             const unitInput = document.getElementById('newItemUnit');
             const typeInput = document.getElementById('newItemType');
             const catSelect = document.getElementById('newItemCategory');
             const hint = document.getElementById('autoFillHint');
 
-            if (masterItem) {
+            const clean = (code || '').trim();
+            if (!clean) {
+                if (nameInput) nameInput.value = '';
+                if (unitInput) unitInput.value = '';
+                if (hint) {
+                    hint.innerText = "💡 Type Item Code to automatically load Name & Unit from Master DB";
+                    hint.style.color = "#64748b";
+                }
+                return;
+            }
+
+            let masterItem = null;
+            if (typeof resolveMasterItemExact === 'function') {
+                const exact = resolveMasterItemExact(clean);
+                if (exact && exact.exists) masterItem = exact;
+            } else if (typeof getMasterItem === 'function') {
+                masterItem = getMasterItem(clean);
+            }
+
+            if (masterItem && masterItem.name) {
                 if (nameInput) nameInput.value = masterItem.name;
                 if (unitInput) unitInput.value = masterItem.unit || 'Pcs';
                 
@@ -2839,9 +2861,11 @@
                     hint.style.color = "#16a34a";
                 }
             } else {
+                if (nameInput) nameInput.value = '';
+                if (unitInput) unitInput.value = '';
                 if (hint) {
-                    hint.innerText = "💡 Code not yet in Master - You can type custom Name and Unit manually";
-                    hint.style.color = "#64748b";
+                    hint.innerText = "⚠️ Code not found in Master Central DB";
+                    hint.style.color = "#ef4444";
                 }
             }
         }
@@ -3126,6 +3150,18 @@
             } else if (urlParams.get('openSerialManager') === '1') {
                 toggleSerialVisibilityDropdown();
             }
+        });
+
+        // Master Central DB Realtime Auto-Sync Handler
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                populateMasterDatalist();
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            populateMasterDatalist();
+            renderTable();
         });
     </script>
     <script src="report_sidebar.js"></script>

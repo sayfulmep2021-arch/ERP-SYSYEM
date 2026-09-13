@@ -2279,20 +2279,30 @@
                                 <style>
                                     .slice-solid-3d {
                                         cursor: pointer;
-                                        transition: transform 0.35s cubic-bezier(0.2, 1.3, 0.45, 1), filter 0.3s ease;
+                                        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease;
                                         outline: none;
+                                        will-change: transform, filter;
                                     }
                                     .slice-solid-3d:hover {
-                                        filter: drop-shadow(0 22px 28px rgba(15, 41, 66, 0.38)) brightness(1.08) !important;
+                                        filter: drop-shadow(0 14px 22px rgba(15, 41, 66, 0.30)) brightness(1.08) !important;
+                                    }
+                                    #sliceTarget {
+                                        transform-origin: 300px 95px;
                                     }
                                     #sliceTarget:hover {
-                                        transform: translate(10px, -20px) scale(1.04);
+                                        transform: scale(1.045);
+                                    }
+                                    #slicePending {
+                                        transform-origin: 150px 95px;
                                     }
                                     #slicePending:hover {
-                                        transform: translate(-12px, -18px) scale(1.04);
+                                        transform: scale(1.045);
+                                    }
+                                    #sliceAchieve {
+                                        transform-origin: 225px 145px;
                                     }
                                     #sliceAchieve:hover {
-                                        transform: translate(0px, -22px) scale(1.05);
+                                        transform: scale(1.045);
                                     }
                                 </style>
                                 <svg width="450" height="245" viewBox="0 0 450 245" style="overflow: visible; display:block; margin:0 auto; max-width: 100%; height: auto;" id="svg3dMaster" aria-label="Solid 3D Production Target vs Achievement vs Pending Pie Chart">
@@ -2431,23 +2441,15 @@
                                 </svg>
 
                                 <script>
-                                    // Interactive Layer Z-Stack Lifter for 3D Pie Chart
+                                    // Smooth 3D Pie Chart Hover Interaction: scales in place on hover, immediately resets on mouseleave
                                     document.addEventListener('DOMContentLoaded', function() {
                                         const svg = document.getElementById('svg3dMaster');
                                         if (!svg) return;
-                                        const sliceElements = svg.querySelectorAll('.slice-solid-3d');
-                                        sliceElements.forEach(elem => {
-                                            elem.addEventListener('mouseenter', () => {
-                                                svg.appendChild(elem); // Elevate to top visual SVG layer
-                                            });
-                                            elem.addEventListener('mouseleave', () => {
-                                                // Restore standard depth sorting: Target in back, Pending middle, Achieve in front
-                                                const t = document.getElementById('sliceTarget');
-                                                const p = document.getElementById('slicePending');
-                                                const a = document.getElementById('sliceAchieve');
-                                                if (t) svg.appendChild(t);
-                                                if (p) svg.appendChild(p);
-                                                if (a) svg.appendChild(a);
+                                        const slices = svg.querySelectorAll('.slice-solid-3d');
+                                        slices.forEach(slice => {
+                                            slice.addEventListener('mouseleave', function() {
+                                                this.style.transform = '';
+                                                this.style.filter = '';
                                             });
                                         });
                                     });
@@ -2485,23 +2487,23 @@
                         <div>
                             <div class="chart-card-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
                                 <div class="chart-header-left">
-                                    <div class="chart-badge-icon" style="background:#fef3c7; color:#d97706;">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                    <div class="chart-badge-icon" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0284c7; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                     </div>
                                     <div>
-                                        <div class="chart-title-text">Yearly Target vs Achievement</div>
+                                        <div class="chart-title-text" style="font-weight:800; font-family:'Times New Roman', serif;">Yearly Target vs Achievement</div>
                                         <div class="chart-subtitle-text" id="yearlyChartSubtitle">Fiscal Year: July 2026 → June 2027 (Ceiling Fan)</div>
                                     </div>
                                 </div>
                                 <div class="yearly-chart-legend">
                                     <div class="legend-item target-legend">
                                         <span class="legend-line line-target"></span>
-                                        <span class="legend-dot dot-red"></span>
+                                        <span class="legend-dot dot-target"></span>
                                         <span>Production Target</span>
                                     </div>
                                     <div class="legend-item achieve-legend">
                                         <span class="legend-line line-achieve"></span>
-                                        <span class="legend-dot dot-red"></span>
+                                        <span class="legend-dot dot-achieve"></span>
                                         <span>Achievement (Ceiling Fan)</span>
                                     </div>
                                 </div>

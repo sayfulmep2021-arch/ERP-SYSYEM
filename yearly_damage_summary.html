@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1524,12 +1524,16 @@
                     return `<td class="td-qty-num ${isZero ? 'td-qty-zero' : ''}">${v.toLocaleString('en-US')}</td>`;
                 }).join('');
 
+                const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.name || '');
+                const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || 'Pcs');
+
                 tbodyHtml += `
                     <tr>
                         <td class="col-freeze-sl">${itemIdx + 1}</td>
                         <td class="col-freeze-code" title="${item.code}">${item.code}</td>
-                        <td class="col-freeze-name" title="${item.name}">${item.name}</td>
-                        <td class="col-freeze-unit">${item.unit}</td>
+                        <td class="col-freeze-name" title="${escapeHTML(dispName)}">${escapeHTML(dispName)}</td>
+                        <td class="col-freeze-unit">${escapeHTML(dispUnit)}</td>
                         <td class="col-freeze-total">${itemTotal.toLocaleString('en-US')}</td>
                         ${monthTds}
                     </tr>
@@ -1634,6 +1638,16 @@
             renderTable();
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
+        });
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderTable();
         });
     </script>
     <script src="report_sidebar.js"></script>

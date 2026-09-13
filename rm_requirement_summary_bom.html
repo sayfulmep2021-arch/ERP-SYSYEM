@@ -986,7 +986,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Item Code *</label>
-                            <input type="text" class="form-input" id="addCode" required placeholder="e.g. 3101010999">
+                            <input type="text" class="form-input" id="addCode" required placeholder="e.g. 3101010999" oninput="lookupBOMMasterCode('add', this.value)">
                         </div>
                         <div class="form-group form-group-full">
                             <label class="form-label">Item Name *</label>
@@ -1041,7 +1041,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Item Code *</label>
-                            <input type="text" class="form-input" id="editCode" required>
+                            <input type="text" class="form-input" id="editCode" required oninput="lookupBOMMasterCode('edit', this.value)">
                         </div>
                         <div class="form-group form-group-full">
                             <label class="form-label">Item Name *</label>
@@ -1097,7 +1097,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">New Item Code *</label>
-                            <input type="text" class="form-input" id="replaceNewCode" required placeholder="e.g. 3101010888">
+                            <input type="text" class="form-input" id="replaceNewCode" required placeholder="e.g. 3101010888" oninput="lookupBOMMasterCode('replace', this.value)">
                         </div>
                         <div class="form-group">
                             <label class="form-label">New Unit *</label>
@@ -1338,11 +1338,65 @@
             }
         }
 
+        function lookupBOMMasterCode(mode, val) {
+            const clean = (val || '').trim();
+            let nameInput, unitInput;
+            if (mode === 'add') {
+                nameInput = document.getElementById('addName');
+                unitInput = document.getElementById('addUnit');
+            } else if (mode === 'edit') {
+                nameInput = document.getElementById('editName');
+                unitInput = document.getElementById('editUnit');
+            } else if (mode === 'replace') {
+                nameInput = document.getElementById('replaceNewName');
+                unitInput = document.getElementById('replaceNewUnit');
+            }
+            if (!nameInput || !unitInput) return;
+
+            if (!clean) {
+                nameInput.value = '';
+                unitInput.value = '';
+                return;
+            }
+
+            let item = null;
+            if (typeof resolveMasterItemExact === 'function') {
+                const exact = resolveMasterItemExact(clean);
+                if (exact && exact.exists) item = exact;
+            } else if (typeof getMasterItem === 'function') {
+                item = getMasterItem(clean);
+            }
+
+            if (item && item.name) {
+                nameInput.value = item.name;
+                unitInput.value = item.unit || 'Pcs';
+            } else {
+                nameInput.value = '';
+                unitInput.value = '';
+            }
+        }
+
         function onItemFieldBlur(origIdx, field, cellEl) {
             if (isViewOnly) return;
             const rawText = cellEl.innerText.trim();
             if (bomItems[origIdx]) {
                 bomItems[origIdx][field] = rawText;
+                if (field === 'code') {
+                    if (!rawText) {
+                        bomItems[origIdx].name = '';
+                        bomItems[origIdx].unit = '';
+                    } else if (typeof resolveMasterItemExact === 'function') {
+                        const m = resolveMasterItemExact(rawText);
+                        if (m && m.exists) {
+                            bomItems[origIdx].name = m.name;
+                            bomItems[origIdx].unit = m.unit;
+                        } else {
+                            bomItems[origIdx].name = '';
+                            bomItems[origIdx].unit = '';
+                        }
+                    }
+                    renderTable();
+                }
                 autoSaveBOMData();
             }
         }
@@ -1501,6 +1555,10 @@
                         </td>
                     `;
 
+                    const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                    const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.name || '');
+                    const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || '');
+
                     const editableCode = !isViewOnly ? `contenteditable="true" spellcheck="false" class="sticky-col-2 cell-editable" onblur="onItemFieldBlur(${originalIndex}, 'code', this)" onkeydown="handleCellKeyDown(event, this)"` : `class="sticky-col-2 cell-readonly"`;
                     const editableName = !isViewOnly ? `contenteditable="true" spellcheck="false" class="sticky-col-3 cell-editable" onblur="onItemFieldBlur(${originalIndex}, 'name', this)" onkeydown="handleCellKeyDown(event, this)"` : `class="sticky-col-3 cell-readonly"`;
                     const editableUnit = !isViewOnly ? `contenteditable="true" spellcheck="false" class="sticky-col-4 cell-editable" onblur="onItemFieldBlur(${originalIndex}, 'unit', this)" onkeydown="handleCellKeyDown(event, this)"` : `class="sticky-col-4 cell-readonly"`;
@@ -1510,8 +1568,8 @@
                         <tr>
                             <td class="sticky-col-1">${item.sl || (itemIdx + 1)}</td>
                             <td ${editableCode}>${item.code || ''}</td>
-                            <td ${editableName}>${item.name || ''}</td>
-                            <td ${editableUnit}>${item.unit || ''}</td>
+                            <td ${editableName}>${dispName}</td>
+                            <td ${editableUnit}>${dispUnit}</td>
                             <td ${editableType} style="width: 75px;">${item.type || ''}</td>
                             ${rowCells}
                             <td class="td-total-req">${totalDisplay}</td>
@@ -1872,8 +1930,11 @@
                     return activeMode === 'REQUIREMENT' ? req : ratio;
                 });
 
-                const cleanName = (it.name || '').replace(/"/g, '""');
-                csv += `"${it.category}",${it.sl},"${it.code}","${cleanName}","${it.unit}","${it.type}",${modelVals.join(',')},${rowReqTotal}\n`;
+                const disp = (typeof resolveMasterItemExact === 'function' && it.code) ? resolveMasterItemExact(it.code) : null;
+                const itName = (disp && disp.exists) ? disp.name : (it.name || '');
+                const itUnit = (disp && disp.exists) ? disp.unit : (it.unit || '');
+                const cleanName = itName.replace(/"/g, '""');
+                csv += `"${it.category}",${it.sl},"${it.code}","${cleanName}","${itUnit}","${it.type}",${modelVals.join(',')},${rowReqTotal}\n`;
             });
 
             const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
@@ -1909,6 +1970,16 @@
         }
         window.addEventListener('DOMContentLoaded', forceScrollReset);
         window.addEventListener('load', forceScrollReset);
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderTable();
+        });
     </script>
 </body>
 </html>

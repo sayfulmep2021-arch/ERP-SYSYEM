@@ -1014,23 +1014,39 @@
 
         // Master Central DB Lookup
         function lookupMasterCode(val) {
-            if (!val) return;
-            const clean = val.trim();
-            if (typeof getMasterItem === 'function') {
-                const item = getMasterItem(clean);
-                if (item) {
-                    if (item.name) document.getElementById('newItemName').value = item.name;
-                    if (item.unit) document.getElementById('newItemUnit').value = item.unit;
-                    if (item.category) {
-                        const catSel = document.getElementById('newItemCategory');
-                        for (let opt of catSel.options) {
-                            if (opt.value.toLowerCase().includes(item.category.toLowerCase()) || item.category.toLowerCase().includes(opt.value.toLowerCase())) {
-                                catSel.value = opt.value;
-                                break;
-                            }
+            const nameInput = document.getElementById('newItemName');
+            const unitInput = document.getElementById('newItemUnit');
+            const catSel = document.getElementById('newItemCategory');
+            const clean = (val || '').trim();
+
+            if (!clean) {
+                if (nameInput) nameInput.value = '';
+                if (unitInput) unitInput.value = '';
+                return;
+            }
+
+            let item = null;
+            if (typeof resolveMasterItemExact === 'function') {
+                const exact = resolveMasterItemExact(clean);
+                if (exact && exact.exists) item = exact;
+            } else if (typeof getMasterItem === 'function') {
+                item = getMasterItem(clean);
+            }
+
+            if (item && item.name) {
+                if (nameInput) nameInput.value = item.name;
+                if (unitInput) unitInput.value = item.unit || 'Pcs';
+                if (item.category && catSel) {
+                    for (let opt of catSel.options) {
+                        if (opt.value.toLowerCase().includes(item.category.toLowerCase()) || item.category.toLowerCase().includes(opt.value.toLowerCase())) {
+                            catSel.value = opt.value;
+                            break;
                         }
                     }
                 }
+            } else {
+                if (nameInput) nameInput.value = '';
+                if (unitInput) unitInput.value = '';
             }
         }
 
@@ -1255,12 +1271,15 @@
                         tr.className = 'data-row';
 
                         const rowSum = item.months.reduce((acc, v) => acc + (parseFloat(v) || 0), 0);
+                        const dispItem = (typeof resolveMasterItemExact === 'function' && item.code) ? resolveMasterItemExact(item.code) : null;
+                        const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.name || '');
+                        const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || 'Pcs');
 
                         let rowHTML = `
                             <td class="sticky-col-1"><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(item.sl || '')}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'sl', this.value)" ${isAdmin ? '' : 'readonly'}></td>
                             <td class="sticky-col-2"><input type="text" class="excel-cell-text" value="${escapeHTML(item.code || '')}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'code', this.value)" ${isAdmin ? '' : 'readonly'}></td>
-                            <td class="sticky-col-3"><input type="text" class="excel-cell-text" value="${escapeHTML(item.name || '')}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'name', this.value)" ${isAdmin ? '' : 'readonly'}></td>
-                            <td class="sticky-col-4"><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(item.unit || 'Pcs')}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'unit', this.value)" ${isAdmin ? '' : 'readonly'}></td>
+                            <td class="sticky-col-3"><input type="text" class="excel-cell-text" value="${escapeHTML(dispName)}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'name', this.value)" ${isAdmin ? '' : 'readonly'}></td>
+                            <td class="sticky-col-4"><input type="text" class="excel-cell-input excel-cell-center" value="${escapeHTML(dispUnit)}" onchange="updateItemMeta(${catIdx}, ${itemIdx}, 'unit', this.value)" ${isAdmin ? '' : 'readonly'}></td>
                         `;
 
                         for (let mIdx = 0; mIdx < 12; mIdx++) {
@@ -1364,6 +1383,23 @@
             if (isPlanLocked()) return;
             if (currentPlanData && currentPlanData.categories[catIdx]?.items[itemIdx]) {
                 currentPlanData.categories[catIdx].items[itemIdx][field] = val;
+                if (field === 'code') {
+                    const cleanCode = (val || '').trim();
+                    if (!cleanCode) {
+                        currentPlanData.categories[catIdx].items[itemIdx].name = '';
+                        currentPlanData.categories[catIdx].items[itemIdx].unit = '';
+                    } else if (typeof resolveMasterItemExact === 'function') {
+                        const m = resolveMasterItemExact(cleanCode);
+                        if (m && m.exists) {
+                            currentPlanData.categories[catIdx].items[itemIdx].name = m.name;
+                            currentPlanData.categories[catIdx].items[itemIdx].unit = m.unit;
+                        } else {
+                            currentPlanData.categories[catIdx].items[itemIdx].name = '';
+                            currentPlanData.categories[catIdx].items[itemIdx].unit = '';
+                        }
+                    }
+                    renderExcelTable();
+                }
                 saveCurrentPlan(false);
             }
         }
@@ -1490,7 +1526,10 @@
                 currentPlanData.categories.forEach(cat => {
                     cat.items.forEach(it => {
                         const rowSum = it.months.reduce((acc, v) => acc + (parseFloat(v) || 0), 0);
-                        csv += `"${cat.name}","${it.sl || ''}","${it.code || ''}","${(it.name || '').replace(/"/g, '""')}","${it.unit || 'Pcs'}",`;
+                        const disp = (typeof resolveMasterItemExact === 'function' && it.code) ? resolveMasterItemExact(it.code) : null;
+                        const itName = (disp && disp.exists) ? disp.name : (it.name || '');
+                        const itUnit = (disp && disp.exists) ? disp.unit : (it.unit || 'Pcs');
+                        csv += `"${cat.name}","${it.sl || ''}","${it.code || ''}","${itName.replace(/"/g, '""')}","${itUnit}",`;
                         it.months.forEach(v => { csv += `${v || 0},`; });
                         csv += `${rowSum}\r\n`;
                     });
@@ -1543,6 +1582,16 @@
         function escapeHTML(str) {
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderExcelTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderExcelTable();
+        });
 
         // Realtime Firebase Live Sync Handler
         window.addEventListener('smart_cloud_sync', function(e) {

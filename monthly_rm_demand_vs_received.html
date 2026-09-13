@@ -3711,9 +3711,13 @@
                                 </button>
                             </div>
                         </td>`;
+                    const dispItem = (typeof resolveMasterItemExact === 'function' && item.rmCode) ? resolveMasterItemExact(item.rmCode) : null;
+                    const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.itemName || '');
+                    const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || '-');
+
                     tbodyHtml += `<td class="col-code">${escapeHTML(item.rmCode || '-')}</td>`;
-                    tbodyHtml += `<td class="col-name" title="${escapeAttr(item.itemName)}">${escapeHTML(item.itemName)}</td>`;
-                    tbodyHtml += `<td class="col-unit">${escapeHTML(item.unit || '-')}</td>`;
+                    tbodyHtml += `<td class="col-name" title="${escapeAttr(dispName)}">${escapeHTML(dispName)}</td>`;
+                    tbodyHtml += `<td class="col-unit">${escapeHTML(dispUnit || '-')}</td>`;
 
                     monthsToRender.forEach(m => {
                         const md = item.months[m] || { requir: '', received: '', pct: '', need: '' };
@@ -3978,24 +3982,29 @@
         }
 
         function onRMCodeInput(codeVal) {
-            const cleanCode = codeVal.trim();
-            if (!cleanCode) return;
-
-            // Lookup in Master Database
-            if (typeof getMasterItem === 'function') {
-                const found = getMasterItem(cleanCode);
-                if (found) {
-                    document.getElementById('newRMName').value = found.name || '';
-                    document.getElementById('newRMUnit').value = found.unit || '';
-                    return;
-                }
+            const cleanCode = (codeVal || '').trim();
+            const nameEl = document.getElementById('newRMName');
+            const unitEl = document.getElementById('newRMUnit');
+            if (!cleanCode) {
+                if (nameEl) nameEl.value = '';
+                if (unitEl) unitEl.value = '';
+                return;
             }
 
-            // Lookup in baseline demand items
-            const match = demandItems.find(it => it.rmCode === cleanCode);
-            if (match) {
-                document.getElementById('newRMName').value = match.itemName || '';
-                document.getElementById('newRMUnit').value = match.unit || '';
+            let found = null;
+            if (typeof resolveMasterItemExact === 'function') {
+                const exact = resolveMasterItemExact(cleanCode);
+                if (exact && exact.exists) found = exact;
+            } else if (typeof getMasterItem === 'function') {
+                found = getMasterItem(cleanCode);
+            }
+
+            if (found && found.name) {
+                if (nameEl) nameEl.value = found.name;
+                if (unitEl) unitEl.value = found.unit || 'Pcs';
+            } else {
+                if (nameEl) nameEl.value = '';
+                if (unitEl) unitEl.value = '';
             }
         }
 
@@ -4116,11 +4125,14 @@
             csv.push(h1.map(h => `"${h}"`).join(','));
 
             demandItems.forEach(item => {
+                const dispItem = (typeof resolveMasterItemExact === 'function' && item.rmCode) ? resolveMasterItemExact(item.rmCode) : null;
+                const dispName = (dispItem && dispItem.exists) ? dispItem.name : (item.itemName || '');
+                const dispUnit = (dispItem && dispItem.exists) ? dispItem.unit : (item.unit || '');
                 let row = [
                     item.sl || '',
                     item.rmCode || '',
-                    item.itemName || '',
-                    item.unit || ''
+                    dispName,
+                    dispUnit
                 ];
                 ALL_MONTHS.forEach(m => {
                     const md = item.months[m] || {};
@@ -4413,6 +4425,16 @@
             if (dayEl) dayEl.innerText = dateStr;
             if (timeEl) timeEl.innerHTML = slottedTime;
         }
+
+        // Master Central DB Real-Time Sync
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                renderDemandTable();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            renderDemandTable();
+        });
     </script>
     <script src="report_sidebar.js"></script>
 </body>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -867,10 +867,20 @@
                         const curStock = stockEntry.closing;
                         const possibleForThisRM = bomQty > 0 ? (curStock / bomQty) : 0;
 
+                        let compName = item.name || stockEntry.name || rCode;
+                        let compUnit = item.unit || stockEntry.unit || 'Pcs';
+                        if (typeof resolveMasterItemExact === 'function' && rCode) {
+                            const exact = resolveMasterItemExact(rCode);
+                            if (exact && exact.exists) {
+                                compName = exact.name || compName;
+                                compUnit = exact.unit || compUnit;
+                            }
+                        }
+
                         return {
                             code: rCode,
-                            name: item.name || stockEntry.name || rCode,
-                            unit: item.unit || stockEntry.unit || 'Pcs',
+                            name: compName,
+                            unit: compUnit,
                             bomQty: bomQty,
                             currentStock: curStock,
                             possibleFG: possibleForThisRM
@@ -905,10 +915,18 @@
                 if (finalTotal > 0) readyCount++;
                 else zeroCount++;
 
+                let modelName = model.name;
+                if (typeof resolveMasterItemExact === 'function' && model.code) {
+                    const exact = resolveMasterItemExact(model.code);
+                    if (exact && exact.exists && exact.name) {
+                        modelName = exact.name;
+                    }
+                }
+
                 return {
                     sl: idx + 1,
                     code: model.code,
-                    name: model.name,
+                    name: modelName,
                     bomCount: bomList.length,
                     totalPossible: finalTotal,
                     limitingComponents: limitingItems
@@ -1116,6 +1134,16 @@
             initPage();
         }
         setInterval(updateClock, 1000);
+
+        // Master Central DB Realtime Auto-Sync Handler
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mep_master_custom_items' || e.key === 'mep_master_last_updated') {
+                calculateFanModelPossibilities();
+            }
+        });
+        window.addEventListener('masterDatabaseUpdated', function() {
+            calculateFanModelPossibilities();
+        });
     </script>
     <script src="report_sidebar.js"></script>
 </body>
