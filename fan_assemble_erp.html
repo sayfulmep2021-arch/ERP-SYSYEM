@@ -475,13 +475,135 @@
         }
 
         .table-responsive::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 12px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 6px;
         }
 
         .table-responsive::-webkit-scrollbar-thumb {
             background: #cbd5e1;
-            border-radius: 4px;
+            border-radius: 6px;
+            border: 2px solid #f1f5f9;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* ==========================================================================
+           PINNED HORIZONTAL SLIDE CONTROLLER BAR (সাইডে টানার স্লাইড বাটন)
+           Directly positioned at the bottom of the visible screen/table
+           ========================================================================== */
+        .erp-bottom-slidebar {
+            background: #ffffff;
+            border-top: 2px solid #0284c7;
+            padding: 5px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 -4px 16px rgba(15, 41, 66, 0.12);
+            z-index: 70;
+            box-sizing: border-box;
+            user-select: none;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .erp-bottom-slidebar.is-floating {
+            position: fixed;
+            bottom: 0;
+            box-shadow: 0 -6px 22px rgba(15, 41, 66, 0.24);
+            border-top: 2.5px solid #0284c7;
+            border-bottom: 1.5px solid #cbd5e1;
+        }
+
+        .slidebar-track-wrap {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            height: 20px;
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .slidebar-track-wrap::-webkit-scrollbar {
+            height: 16px;
+        }
+
+        .slidebar-track-wrap::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .slidebar-track-wrap::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            border-radius: 8px;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(2, 132, 199, 0.4);
+            cursor: grab;
+            transition: background 0.15s ease;
+        }
+
+        .slidebar-track-wrap::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+        }
+
+        .slidebar-track-wrap::-webkit-scrollbar-thumb:active {
+            cursor: grabbing;
+        }
+
+        .slidebar-dummy-content {
+            height: 1px;
+            min-height: 1px;
+        }
+
+        .btn-slide-nav {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 4px 11px;
+            background: #f0f9ff;
+            color: #0284c7;
+            border: 1.5px solid #0284c7;
+            border-radius: 7px;
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .btn-slide-nav:hover {
+            background: #0284c7;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-slide-nav:active {
+            transform: translateY(0);
+        }
+
+        .slidebar-hint-tag {
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: #475569;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* ==========================================================================
@@ -1173,6 +1295,23 @@
                     </tfoot>
                 </table>
             </div>
+            <!-- Pinned Horizontal Slide Controller Bar (সাইডে টানার স্লাইড বাটন) -->
+            <div class="erp-bottom-slidebar" id="erpBottomSlidebar">
+                <button type="button" class="btn-slide-nav" id="btnSlideLeft" title="Slide Left (বায়ে সরান)">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <span>LEFT</span>
+                </button>
+                <div class="slidebar-track-wrap" id="slidebarTrackWrap" title="সাইডে টানার স্লাইড বাটন (Drag slider to scroll horizontally)">
+                    <div class="slidebar-dummy-content" id="slidebarDummyContent"></div>
+                </div>
+                <button type="button" class="btn-slide-nav" id="btnSlideRight" title="Slide Right (ডানে সরান)">
+                    <span>RIGHT</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <div class="slidebar-hint-tag">
+                    <span>📌 Cols 1-7 Frozen</span>
+                </div>
+            </div>
         </div>
 
     </main>
@@ -1261,6 +1400,7 @@
             loadDateInterval();
             buildCategoryFilter();
             applyMovementFilters();
+            initBottomSlideController();
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
         });
@@ -1526,6 +1666,101 @@
             });
             tfootHtml += `</tr>`;
             tfoot.innerHTML = tfootHtml;
+
+            if (typeof window.updateSlidebarTrack === 'function') {
+                window.updateSlidebarTrack();
+            }
+        }
+
+        /* Initialize Bottom Horizontal Slide Controller (সাইডে টানার স্লাইড বাটন) */
+        function initBottomSlideController() {
+            const tableResp = document.querySelector('.table-responsive');
+            const table = document.getElementById('movementTable');
+            const slideBar = document.getElementById('erpBottomSlidebar');
+            const trackWrap = document.getElementById('slidebarTrackWrap');
+            const dummyContent = document.getElementById('slidebarDummyContent');
+            const btnLeft = document.getElementById('btnSlideLeft');
+            const btnRight = document.getElementById('btnSlideRight');
+
+            if (!tableResp || !table || !slideBar || !trackWrap || !dummyContent) return;
+
+            let isSyncingFromTable = false;
+            let isSyncingFromTrack = false;
+
+            function updateTrackWidth() {
+                const scrollW = table.scrollWidth || tableResp.scrollWidth;
+                dummyContent.style.width = scrollW + 'px';
+                trackWrap.scrollLeft = tableResp.scrollLeft;
+                repositionFloatingBar();
+            }
+
+            function repositionFloatingBar() {
+                const tableRect = tableResp.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+
+                // Check if table is in view vertically and has horizontal overflow
+                const isTableInView = tableRect.top < viewportHeight && tableRect.bottom > 80;
+                const hasHorizontalOverflow = tableResp.scrollWidth > (tableResp.clientWidth + 5);
+
+                if (!isTableInView || !hasHorizontalOverflow) {
+                    slideBar.style.display = 'none';
+                    return;
+                }
+
+                slideBar.style.display = 'flex';
+
+                // If table bottom is below the viewport, float pinned at bottom of viewport
+                if (tableRect.bottom > viewportHeight) {
+                    slideBar.classList.add('is-floating');
+                    slideBar.style.left = tableRect.left + 'px';
+                    slideBar.style.width = tableRect.width + 'px';
+                } else {
+                    slideBar.classList.remove('is-floating');
+                    slideBar.style.left = '';
+                    slideBar.style.width = '100%';
+                }
+            }
+
+            // 2-Way Scroll Synchronization
+            tableResp.addEventListener('scroll', () => {
+                if (isSyncingFromTrack) return;
+                isSyncingFromTable = true;
+                trackWrap.scrollLeft = tableResp.scrollLeft;
+                requestAnimationFrame(() => { isSyncingFromTable = false; });
+            }, { passive: true });
+
+            trackWrap.addEventListener('scroll', () => {
+                if (isSyncingFromTable) return;
+                isSyncingFromTrack = true;
+                tableResp.scrollLeft = trackWrap.scrollLeft;
+                requestAnimationFrame(() => { isSyncingFromTrack = false; });
+            }, { passive: true });
+
+            // Button controls (smooth horizontal step scrolling)
+            if (btnLeft) {
+                btnLeft.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    tableResp.scrollBy({ left: -260, behavior: 'smooth' });
+                });
+            }
+
+            if (btnRight) {
+                btnRight.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    tableResp.scrollBy({ left: 260, behavior: 'smooth' });
+                });
+            }
+
+            window.addEventListener('scroll', repositionFloatingBar, { passive: true });
+            window.addEventListener('resize', () => {
+                updateTrackWidth();
+                repositionFloatingBar();
+            }, { passive: true });
+
+            window.updateSlidebarTrack = updateTrackWidth;
+            updateTrackWidth();
+            setTimeout(updateTrackWidth, 150);
+            setTimeout(updateTrackWidth, 600);
         }
 
         function isFanAssembleLocked() {

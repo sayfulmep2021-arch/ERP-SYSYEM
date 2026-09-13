@@ -36,7 +36,7 @@
                 if (typeof window.openModuleWarehouseAction === 'function') {
                     window.openModuleWarehouseAction(e);
                 } else {
-                    window.location.href = 'index.html?view=hub';
+                    window.location.href = 'index.html?view=warehouse';
                 }
             }
         },
@@ -69,11 +69,11 @@
             const curView = (sessionStorage.getItem('portal_current_view') || '').toLowerCase();
 
             if (viewParam === 'hrm' || curView === 'hrm') return 'hrm';
-            if (viewParam === 'hub' || curView === 'hub' || curView === 'warehouse') return 'warehouse';
+            if (viewParam === 'hub' || curView === 'hub' || curView === 'warehouse' || viewParam === 'warehouse') return 'warehouse';
             
             // Standalone report pages check
             const path = window.location.pathname.toLowerCase();
-            if (path.includes('warehouse') || path.includes('stock')) return 'warehouse';
+            if (path.includes('warehouse') || path.includes('stock') || path.includes('intersales') || path.includes('received') || path.includes('spare')) return 'warehouse';
 
             // Default: Production Module
             return 'production';

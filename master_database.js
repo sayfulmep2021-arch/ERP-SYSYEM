@@ -62,6 +62,17 @@ function getMasterItem(code) {
             }
         }
     }
+
+    // 3. Bidirectional exact match: If query code contains slash, check if master item code matches any query component
+    if (cleanCode.includes('/')) {
+        const queryParts = cleanCode.split('/').map(p => p.trim());
+        for (let i = 0; i < all.length; i++) {
+            const itemCode = (all[i].code || '').toString().trim().toUpperCase();
+            if (queryParts.includes(itemCode)) {
+                return all[i];
+            }
+        }
+    }
     return null;
 }
 

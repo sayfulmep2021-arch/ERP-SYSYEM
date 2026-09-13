@@ -1148,6 +1148,23 @@
             `;
         });
 
+        // Global accordion collapse handler
+        window.collapseAllSidebarModules = function() {
+            try {
+                document.querySelectorAll('.mep-module-accordion').forEach(grp => {
+                    grp.classList.remove('is-open');
+                    const h = grp.querySelector('.mep-module-heading');
+                    if (h) h.classList.remove('is-active-module');
+                });
+                document.querySelectorAll('.sub-report-item').forEach(el => {
+                    el.classList.remove('active-page');
+                    el.classList.remove('item-highlight-entry');
+                });
+            } catch(e) {
+                console.warn('Error collapsing sidebar modules:', e);
+            }
+        };
+
         // Global accordion toggle handler
         window.toggleSidebarModule = function(modId) {
             const targetGroup = document.getElementById(`mep-acc-group-${modId}`);
@@ -1156,11 +1173,7 @@
             const wasOpen = targetGroup.classList.contains('is-open');
 
             // Collapse all modules
-            document.querySelectorAll('.mep-module-accordion').forEach(grp => {
-                grp.classList.remove('is-open');
-                const h = grp.querySelector('.mep-module-heading');
-                if (h) h.classList.remove('is-active-module');
-            });
+            window.collapseAllSidebarModules();
 
             // Open clicked module if it was previously closed
             if (!wasOpen) {

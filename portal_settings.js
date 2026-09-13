@@ -1683,10 +1683,10 @@
             { file: 'rm_requirement_summary_bom.html', title: 'RM Requirement Summary (BOM)', module: 'Production Module', moduleId: 'PRODUCTION', category: 'All Report Summary', icon: '🧮' },
             { file: 'master.html', title: 'Central Item Master Database', module: 'Production Module', moduleId: 'PRODUCTION', category: 'Master Central DB', icon: '💾' },
 
-            // 2. Warehouse Module (3 Editable Pages)
-            { file: 'store_position_report.html', title: 'Store Position & Stock Adjustment', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Stock Maintenance', icon: '🏪' },
-            { file: 'check_floor_stock.html', title: 'Floor Stock & Physical Count', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Stock Maintenance', icon: '🔍' },
-            { file: 'daily_production_received_assemble.html', title: 'Production Received to Warehouse', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Purchase Receive & Chalan', icon: '📥' },
+            // 2. Warehouse Module (3 Dedicated Pages)
+            { file: 'intersales_requisition.html', title: 'Intersales Requisition', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Warehouse Logistics', icon: '📋' },
+            { file: 'per_day_received.html', title: 'Per Day Received', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Receiving & GRN', icon: '📥' },
+            { file: 'spare_parts.html', title: 'Spare Parts', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Maintenance & Spares', icon: '⚙️' },
 
             // 3. HRM Module (1 Editable Database Page)
             { file: 'hrm_database_new_entry', title: 'Employee Database > New Entry', module: 'HRM Module', moduleId: 'HRM', category: 'Employee Management', icon: '👤' },

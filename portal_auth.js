@@ -240,6 +240,9 @@
                     sessionStorage.setItem('portal_current_view', 'hrm');
                     const sub = urlParams.get('sub') || (urlParams.get('page') === 'new_entry' ? 'new_entry' : 'dashboard');
                     switchToHRMModuleView(sub);
+                } else if (viewParam === 'warehouse') {
+                    sessionStorage.setItem('portal_current_view', 'warehouse');
+                    switchToWarehouseModuleView();
                 } else if (viewParam === 'user') {
                     sessionStorage.setItem('portal_current_view', 'user');
                     const tab = urlParams.get('tab') || 'profile';
@@ -248,6 +251,8 @@
                     switchToMainInterfaceView();
                 } else if (currentView === 'hub') {
                     switchToDepartmentHub(targetMod);
+                } else if (currentView === 'warehouse') {
+                    switchToWarehouseModuleView();
                 } else if (currentView === 'modules') {
                     switchToModuleSelectionView();
                 } else if (currentView === 'mis') {
@@ -296,8 +301,10 @@
             var moduleView = document.getElementById('moduleSelectionView');
             var hrmView = document.getElementById('hrmModuleView');
             var misView = document.getElementById('misSelectionView');
+            var warehouseView = document.getElementById('warehouseModuleView');
             if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
 
             if (loginView) loginView.style.setProperty('display', 'none', 'important');
             if (hubView) hubView.style.setProperty('display', 'none', 'important');
@@ -313,8 +320,10 @@
             var moduleView = document.getElementById('moduleSelectionView');
             var hrmView = document.getElementById('hrmModuleView');
             var misView = document.getElementById('misSelectionView');
+            var warehouseView = document.getElementById('warehouseModuleView');
             if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
             var loginView = document.getElementById('loginView');
 
             if (dashView) dashView.style.setProperty('display', 'none', 'important');
@@ -406,6 +415,35 @@
             }
         }
 
+        /**
+         * System-Wide Helper: Collapse all sidebar module accordions and sub-item highlights.
+         * Ensures entering or re-entering Production Module always shows ONLY main headings.
+         */
+        function collapseAllSidebarModules() {
+            try {
+                var accordions = document.querySelectorAll('.mep-module-accordion');
+                accordions.forEach(function(grp) {
+                    grp.classList.remove('is-open');
+                    var h = grp.querySelector('.mep-module-heading');
+                    if (h) h.classList.remove('is-active-module');
+                });
+                var subItems = document.querySelectorAll('.sub-report-item');
+                subItems.forEach(function(el) {
+                    el.classList.remove('active-page');
+                    el.classList.remove('item-highlight-entry');
+                });
+                var drawerCards = document.querySelectorAll('#reportsContainer .accordion-card');
+                drawerCards.forEach(function(c) {
+                    c.classList.remove('expanded');
+                    var h = c.querySelector('.accordion-header');
+                    if (h) h.setAttribute('aria-expanded', 'false');
+                });
+            } catch(e) {
+                console.warn('Error collapsing sidebar modules:', e);
+            }
+        }
+        window.collapseAllSidebarModules = collapseAllSidebarModules;
+
         function switchToMainInterfaceView() {
             resetInactivityTimer();
             sessionStorage.setItem('portal_current_view', 'main');
@@ -419,9 +457,11 @@
             var hrmView = document.getElementById('hrmModuleView');
             var misView = document.getElementById('misSelectionView');
             var userView = document.getElementById('userModuleView');
+            var warehouseView = document.getElementById('warehouseModuleView');
             if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'none', 'important');
             if (userView) userView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
 
             if (loginView) loginView.style.setProperty('display', 'none', 'important');
             if (hubView) hubView.style.setProperty('display', 'none', 'important');
@@ -430,6 +470,9 @@
             if (moduleView) moduleView.style.setProperty('display', 'none', 'important');
 
             updateNavState('main');
+
+            // Collapse all sidebar modules so headings start closed when entering Production Module
+            collapseAllSidebarModules();
 
             if (typeof renderProductionPerformanceDashboard === 'function') {
                 renderProductionPerformanceDashboard();
@@ -452,6 +495,7 @@
 
         function switchToDepartmentHub(targetModuleId) {
             resetInactivityTimer();
+            collapseAllSidebarModules();
             sessionStorage.setItem('portal_current_view', 'hub');
             updateDynamicModuleHeader('Warehouse Module');
             var loginView = document.getElementById('loginView');
@@ -462,9 +506,11 @@
             var misView = document.getElementById('misSelectionView');
             var hrmView = document.getElementById('hrmModuleView');
             var userView = document.getElementById('userModuleView');
+            var warehouseView = document.getElementById('warehouseModuleView');
             if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'none', 'important');
             if (userView) userView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
 
             if (loginView) loginView.style.setProperty('display', 'none', 'important');
             if (dashView) dashView.style.setProperty('display', 'none', 'important');
@@ -503,6 +549,7 @@
          */
         function switchToModuleSelectionView() {
             resetInactivityTimer();
+            collapseAllSidebarModules();
             sessionStorage.setItem('portal_current_view', 'modules');
             sessionStorage.removeItem('portal_hub_module');
             sessionStorage.removeItem('mis_pin_verified');
@@ -515,9 +562,11 @@
             var hrmView = document.getElementById('hrmModuleView');
             var misView = document.getElementById('misSelectionView');
             var userView = document.getElementById('userModuleView');
+            var warehouseView = document.getElementById('warehouseModuleView');
             if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'none', 'important');
             if (userView) userView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
 
             if (loginView) loginView.style.setProperty('display', 'none', 'important');
             if (hubView) hubView.style.setProperty('display', 'none', 'important');
@@ -549,6 +598,7 @@
                 return;
             }
             resetInactivityTimer();
+            collapseAllSidebarModules();
             sessionStorage.setItem('portal_current_view', 'mis');
             sessionStorage.removeItem('portal_hub_module');
             updateDynamicModuleHeader('MIS Module');
@@ -561,6 +611,7 @@
             var hrmView = document.getElementById('hrmModuleView');
             var misView = document.getElementById('misSelectionView');
             var userView = document.getElementById('userModuleView');
+            var warehouseView = document.getElementById('warehouseModuleView');
 
             if (loginView) loginView.style.setProperty('display', 'none', 'important');
             if (hubView) hubView.style.setProperty('display', 'none', 'important');
@@ -569,6 +620,7 @@
             if (moduleView) moduleView.style.setProperty('display', 'none', 'important');
             if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
             if (userView) userView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'flex', 'important');
 
             updateNavState('mis');
@@ -591,6 +643,7 @@
             if (event) {
                 try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
             }
+            collapseAllSidebarModules();
             switchToMainInterfaceView();
         }
 
@@ -602,11 +655,59 @@
             if (event) {
                 try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
             }
-            switchToDepartmentHub('mod-01');
+            switchToWarehouseModuleView();
+        }
+
+        function switchToWarehouseModuleView(subPage) {
+            resetInactivityTimer();
+            collapseAllSidebarModules();
+            sessionStorage.setItem('portal_current_view', 'warehouse');
+            sessionStorage.setItem('portal_active_erp_module', 'warehouse');
+            sessionStorage.removeItem('portal_hub_module');
+            updateDynamicModuleHeader('Warehouse Module');
+            var loginView = document.getElementById('loginView');
+            var hubView = document.getElementById('departmentHubView');
+            var dashView = document.getElementById('dashboardView');
+            var mainView = document.getElementById('mainInterfaceView');
+            var moduleView = document.getElementById('moduleSelectionView');
+            var hrmView = document.getElementById('hrmModuleView');
+            var misView = document.getElementById('misSelectionView');
+            var userView = document.getElementById('userModuleView');
+            var warehouseView = document.getElementById('warehouseModuleView');
+
+            if (loginView) loginView.style.setProperty('display', 'none', 'important');
+            if (hubView) hubView.style.setProperty('display', 'none', 'important');
+            if (dashView) dashView.style.setProperty('display', 'none', 'important');
+            if (mainView) mainView.style.setProperty('display', 'none', 'important');
+            if (moduleView) moduleView.style.setProperty('display', 'none', 'important');
+            if (misView) misView.style.setProperty('display', 'none', 'important');
+            if (userView) userView.style.setProperty('display', 'none', 'important');
+            if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'flex', 'important');
+
+            updateNavState('warehouse');
+            applyViewOnlyStateUI();
+
+            if (typeof window.renderSidebarDynamicModels === 'function') {
+                window.renderSidebarDynamicModels('warehouse');
+            }
+
+            if (window.WAREHOUSE_ENGINE && typeof window.WAREHOUSE_ENGINE.init === 'function') {
+                window.WAREHOUSE_ENGINE.init();
+            }
+
+            if (window.location.search && !window.location.search.includes('view=warehouse')) {
+                try {
+                    window.history.replaceState(null, '', window.location.pathname + '?view=warehouse');
+                } catch(e) {}
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function switchToHRMModuleView(subPage) {
             resetInactivityTimer();
+            collapseAllSidebarModules();
             sessionStorage.setItem('portal_current_view', 'hrm');
             sessionStorage.removeItem('portal_hub_module');
             updateDynamicModuleHeader('HRM Module');
@@ -618,6 +719,7 @@
             var hrmView = document.getElementById('hrmModuleView');
             var misView = document.getElementById('misSelectionView');
             var userView = document.getElementById('userModuleView');
+            var warehouseView = document.getElementById('warehouseModuleView');
 
             if (loginView) loginView.style.setProperty('display', 'none', 'important');
             if (hubView) hubView.style.setProperty('display', 'none', 'important');
@@ -626,6 +728,7 @@
             if (moduleView) moduleView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'none', 'important');
             if (userView) userView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
             if (hrmView) hrmView.style.setProperty('display', 'flex', 'important');
 
             updateNavState('hrm');
@@ -650,6 +753,7 @@
          */
         function switchToUserModuleView(defaultTab) {
             resetInactivityTimer();
+            collapseAllSidebarModules();
             sessionStorage.setItem('portal_current_view', 'user');
             sessionStorage.removeItem('portal_hub_module');
             updateDynamicModuleHeader('User Module');
@@ -662,6 +766,7 @@
             var hrmView = document.getElementById('hrmModuleView');
             var misView = document.getElementById('misSelectionView');
             var userView = document.getElementById('userModuleView');
+            var warehouseView = document.getElementById('warehouseModuleView');
 
             if (loginView) loginView.style.setProperty('display', 'none', 'important');
             if (hubView) hubView.style.setProperty('display', 'none', 'important');
@@ -670,6 +775,7 @@
             if (moduleView) moduleView.style.setProperty('display', 'none', 'important');
             if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'none', 'important');
+            if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
             if (userView) userView.style.setProperty('display', 'flex', 'important');
 
             updateNavState('user');
@@ -2015,6 +2121,7 @@
          * Terminate Active Session
          */
         function handleLogout() {
+            collapseAllSidebarModules();
             sessionStorage.removeItem(STORAGE_KEYS.isAuthenticated);
             sessionStorage.removeItem(STORAGE_KEYS.lastActivity);
             sessionStorage.removeItem('portal_view_only');
@@ -2151,9 +2258,11 @@ window.applyViewOnlyStateUI = applyViewOnlyStateUI;
 window.handleLogout = handleLogout;
 window.resetInactivityTimer = resetInactivityTimer;
 window.showToast = showToast;
+window.collapseAllSidebarModules = collapseAllSidebarModules;
 window.switchToModuleSelectionView = switchToModuleSelectionView;
 window.switchToProductionModule = switchToProductionModule;
 window.openModuleWarehouseAction = openModuleWarehouseAction;
+window.switchToWarehouseModuleView = switchToWarehouseModuleView;
 window.openModuleHRMAction = openModuleHRMAction;
 window.switchToHRMModuleView = switchToHRMModuleView;
 window.toggleModuleProfileDropdown = toggleModuleProfileDropdown;

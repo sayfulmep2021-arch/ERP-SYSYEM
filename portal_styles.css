@@ -1,4 +1,4 @@
-        /* ==========================================================================
+﻿        /* ==========================================================================
            1. Global Design System & CSS Variables
            ========================================================================== */
         * {
@@ -2143,30 +2143,30 @@
         }
 
         .sub-item-status-tag {
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: auto;
-            margin-right: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.2px;
-            display: inline-block;
+            font-size: 0.65rem !important;
+            font-weight: 800 !important;
+            padding: 2px 6px !important;
+            border-radius: 4px !important;
+            margin-left: auto !important;
+            margin-right: 4px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.2px !important;
+            display: inline-block !important;
         }
 
         .sub-item-status-tag.tag-outdated {
-            background: #fee2e2;
-            color: #ef4444;
-            border: 1px solid #fecaca;
+            background: #fee2e2 !important;
+            color: #ef4444 !important;
+            border: 1px solid #fecaca !important;
         }
 
         .sub-item-status-tag.tag-updated {
-            background: #d1fae5;
-            color: #059669;
-            border: 1px solid #a7f3d0;
+            background: #d1fae5 !important;
+            color: #059669 !important;
+            border: 1px solid #a7f3d0 !important;
         }
 
-        /* Chevron indicator (▼ / ▲) */
+        /* Chevron indicator (â–¼ / â–²) */
         .accordion-chevron {
             display: flex;
             align-items: center;
@@ -9221,7 +9221,7 @@
     min-width: 0 !important;
 }
 
-/* 2. Uniform Small Deep Premium Blue Star (★) (Mark 1) */
+/* 2. Uniform Small Deep Premium Blue Star (â˜…) (Mark 1) */
 #dashboardSidebar .mep-mod-star,
 #dashboardSidebar .mep-mod-icon {
     width: 18px !important;
@@ -9363,18 +9363,322 @@
     box-shadow: 0 4px 14px rgba(2, 132, 199, 0.15) !important;
 }
 
+/* ==========================================================================
+   DASHBOARD SIDEBAR: Per-Module Distinct Vibrant Gradients when OPEN
+   Matches report_sidebar.css 100% (User Directive: Screenshot 2 fidelity)
+   ========================================================================== */
+
+/* 1. All Report Summary - Royal Sapphire Blue Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-01,
+#dashboardSidebar .mep-heading-mep-acc-01.is-active-module {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #1d4ed8 !important;
+    box-shadow: 0 2px 8px rgba(29, 78, 216, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-01 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-01.is-active-module .mep-mod-title { color: #1e3a8a !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-01 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-01 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-01.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-01.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #1d4ed8 !important;
+    border: 1.2px solid #93c5fd !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-01 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-01.is-active-module .mep-mod-chevron { color: #1e40af !important; }
+
+/* 2. Daily Check Report - Radiant Amber Gold Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-02,
+#dashboardSidebar .mep-heading-mep-acc-02.is-active-module {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #b45309 !important;
+    box-shadow: 0 2px 8px rgba(180, 83, 9, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-02 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-02.is-active-module .mep-mod-title { color: #78350f !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-02 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-02 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-02.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-02.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #b45309 !important;
+    border: 1.2px solid #fde68a !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-02 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-02.is-active-module .mep-mod-chevron { color: #78350f !important; }
+
+/* 3. Report All Branch Fan - Electric Persian Mint Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-03,
+#dashboardSidebar .mep-heading-mep-acc-03.is-active-module {
+    background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 50%, #5eead4 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #0d9488 !important;
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-03 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-03.is-active-module .mep-mod-title { color: #0f766e !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-03 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-03 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-03.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-03.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #0d9488 !important;
+    border: 1.2px solid #99f6e4 !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-03 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-03.is-active-module .mep-mod-chevron { color: #0f766e !important; }
+
+/* 4. Closing (ERP) - Ruby Crimson Scarlet Gradient (Screenshot 2 Match) */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-04,
+#dashboardSidebar .mep-heading-mep-acc-04.is-active-module {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 50%, #fca5a5 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #dc2626 !important;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-04 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-04.is-active-module .mep-mod-title { color: #991b1b !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-04 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-04 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-04.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-04.is-active-module .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-04.is-active-module .mep-mod-star svg {
+    background: #ffffff !important;
+    color: #dc2626 !important;
+    border: 1.2px solid #fca5a5 !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-04 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-04.is-active-module .mep-mod-chevron { color: #991b1b !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-04:hover,
+#dashboardSidebar .mep-heading-mep-acc-04.is-active-module:hover {
+    background: linear-gradient(135deg, #fecaca 0%, #fca5a5 50%, #f87171 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #dc2626 !important;
+}
+
+/* 5. All Monthly Report - Imperial Amethyst Violet Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-05,
+#dashboardSidebar .mep-heading-mep-acc-05.is-active-module {
+    background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 50%, #c4b5fd 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #7c3aed !important;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-05 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-05.is-active-module .mep-mod-title { color: #5b21b6 !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-05 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-05 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-05.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-05.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #7c3aed !important;
+    border: 1.2px solid #ddd6fe !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-05 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-05.is-active-module .mep-mod-chevron { color: #5b21b6 !important; }
+
+/* 6. All Yearly Report - Electric Indigo Ocean Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-06,
+#dashboardSidebar .mep-heading-mep-acc-06.is-active-module {
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 50%, #a5b4fc 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #4f46e5 !important;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-06 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-06.is-active-module .mep-mod-title { color: #3730a3 !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-06 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-06 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-06.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-06.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #4f46e5 !important;
+    border: 1.2px solid #c7d2fe !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-06 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-06.is-active-module .mep-mod-chevron { color: #3730a3 !important; }
+
+/* 7. Reject Report - Sunset Fiery Orange Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-07,
+#dashboardSidebar .mep-heading-mep-acc-07.is-active-module {
+    background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 50%, #fdba74 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #ea580c !important;
+    box-shadow: 0 2px 8px rgba(234, 88, 12, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-07 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-07.is-active-module .mep-mod-title { color: #9a3412 !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-07 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-07 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-07.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-07.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #ea580c !important;
+    border: 1.2px solid #fed7aa !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-07 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-07.is-active-module .mep-mod-chevron { color: #9a3412 !important; }
+
+/* 8. Complete vs Pending - Cobalt Tech Blue Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-08,
+#dashboardSidebar .mep-heading-mep-acc-08.is-active-module {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #0284c7 !important;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-08 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-08.is-active-module .mep-mod-title { color: #0369a1 !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-08 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-08 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-08.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-08.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #0284c7 !important;
+    border: 1.2px solid #bae6fd !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-08 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-08.is-active-module .mep-mod-chevron { color: #0369a1 !important; }
+
+/* 9. Fan Floor Closing Report - Botanical Forest Emerald Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-09,
+#dashboardSidebar .mep-heading-mep-acc-09.is-active-module {
+    background: linear-gradient(135deg, #ecfccb 0%, #d9f99d 50%, #bef264 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #65a30d !important;
+    box-shadow: 0 2px 8px rgba(101, 163, 13, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-09 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-09.is-active-module .mep-mod-title { color: #3f6212 !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-09 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-09 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-09.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-09.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #65a30d !important;
+    border: 1.2px solid #d9f99d !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-09 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-09.is-active-module .mep-mod-chevron { color: #3f6212 !important; }
+
+/* 10. Other Reports - Titanium Metallic Slate Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-10,
+#dashboardSidebar .mep-heading-mep-acc-10.is-active-module {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #475569 !important;
+    box-shadow: 0 2px 8px rgba(71, 85, 105, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-10 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-10.is-active-module .mep-mod-title { color: #1e293b !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-10 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-10 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-10.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-10.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #475569 !important;
+    border: 1.2px solid #cbd5e1 !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-10 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-10.is-active-module .mep-mod-chevron { color: #1e293b !important; }
+
+/* 11. Individual Check - Cyan Azure Neon Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-11,
+#dashboardSidebar .mep-heading-mep-acc-11.is-active-module {
+    background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 50%, #67e8f9 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #0891b2 !important;
+    box-shadow: 0 2px 8px rgba(8, 145, 178, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-11 .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-11.is-active-module .mep-mod-title { color: #155e75 !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-11 .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-11 .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-11.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-11.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #0891b2 !important;
+    border: 1.2px solid #a5f3fc !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-11 .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-11.is-active-module .mep-mod-chevron { color: #155e75 !important; }
+
+/* 12. MASTER Central DB - Slate Sky Tech Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-master,
+#dashboardSidebar .mep-heading-mep-acc-master.is-active-module {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #0284c7 !important;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-master .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-master.is-active-module .mep-mod-title { color: #0369a1 !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-master .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-master .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-master.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-master.is-active-module .mep-mod-star {
+    background: #0f172a !important;
+    color: #38bdf8 !important;
+    border: 1.2px solid #38bdf8 !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-master .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-master.is-active-module .mep-mod-chevron { color: #0369a1 !important; }
+
+/* Dashboard Sidebar Sub-Report Items Hover & Active states */
+#dashboardSidebar .sub-report-item {
+    text-decoration: none !important;
+}
+#dashboardSidebar .sub-report-item:hover {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+    border-color: #38bdf8 !important;
+    color: #0284c7 !important;
+}
+#dashboardSidebar .sub-report-item.active-page,
+#dashboardSidebar .sub-report-item:active {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 50%, #fca5a5 100%) !important;
+    border: 1.5px solid #f87171 !important;
+    border-left: 4.5px solid #dc2626 !important;
+    color: #991b1b !important;
+}
+
 /* -----------------------------------------------------------------------------
-   ITEM 2: Four KPI Cards Independent Floating Hover
+   ITEM 2: Four KPI Cards Independent Floating Hover (Zero-Jitter Anti-Flicker Architecture)
    ----------------------------------------------------------------------------- */
 .dash-kpi-card {
-    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease !important;
+    position: relative !important;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease !important;
     will-change: transform, box-shadow !important;
+}
+
+.dash-kpi-card > * {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Stable hit buffer: prevents jitter/flicker when cursor rests on bottom edge or corners */
+.dash-kpi-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    pointer-events: none;
+    border-radius: 14px;
+    z-index: 1;
+}
+
+.dash-kpi-card:hover::after,
+.dash-kpi-card.is-hovered::after {
+    inset: -6px -6px -14px -6px !important;
+    pointer-events: auto !important;
 }
 
 .dash-kpi-card:hover,
 .dash-kpi-card.is-hovered {
-    transform: translateY(-6px) scale(1.025) !important;
-    -webkit-transform: translateY(-6px) scale(1.025) !important;
+    transform: translateY(-3px) !important;
+    -webkit-transform: translateY(-3px) !important;
     z-index: 20 !important;
 }
 
@@ -11091,7 +11395,7 @@
 }
 
 /* ==========================================================================
-   MIS MODULE — 5-Digit Enterprise Security PIN Verification Screen
+   MIS MODULE â€” 5-Digit Enterprise Security PIN Verification Screen
    ========================================================================== */
 
 .mis-pin-modal-backdrop {
@@ -12366,3 +12670,4 @@
     transition: all 0.18s ease !important;
     transform: none !important;
 }
+
