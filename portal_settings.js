@@ -49,7 +49,12 @@
             { id: "yearly_dmg", file: "yearly_damage_summary.html", title: "Yearly Damage Summary", module: "All Yearly Report" },
 
             // Master Database
-            { id: "master_db", file: "master.html", title: "Master Database (System Master)", module: "Master Database" }
+            { id: "master_db", file: "master.html", title: "Master Database (System Master)", module: "Master Database" },
+
+            // Section Summary (HRM Module)
+            { id: "hrm_sec_assemble", file: "hrm_section_assemble_line.html", title: "Assemble Line (Section Summary)", module: "Section Summary" },
+            { id: "hrm_sec_dimmer", file: "hrm_section_dimmer_blade.html", title: "Dimmer & Blade (Section Summary)", module: "Section Summary" },
+            { id: "hrm_sec_armature", file: "hrm_section_armature_winding.html", title: "Armature & Winding (Section Summary)", module: "Section Summary" }
         ];
 
         // ==========================================================================

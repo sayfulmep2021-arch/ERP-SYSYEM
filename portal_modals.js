@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ============================================================================
  * ERP SYSTEM - PORTAL MODALS ENGINE (portal_modals.js)
  * ============================================================================
@@ -931,11 +931,11 @@
                             <h4 class="sec-card-title">MIS Module Security PIN</h4>
                             <p class="sec-card-desc">5-digit numeric PIN verified on-the-fly to unlock the MIS Module and executive controls.</p>
                             <div class="sec-masked-display">
-                                <span class="masked-dots">•••••</span>
+                                <span class="masked-dots">â€¢â€¢â€¢â€¢â€¢</span>
                                 <span class="masked-tag">Auto-Verifying</span>
                             </div>
                             <button type="button" class="btn-sec-action btn-sec-pin" onclick="openChangeCredentialModal('mis_pin')">
-                                <span>🔢 Change 5-Digit PIN</span>
+                                <span>ðŸ”¢ Change 5-Digit PIN</span>
                             </button>
                         </div>
                     </div>
@@ -954,7 +954,7 @@
                 <h3 class="hrm-modal-title">
                     <span style="color:#0284c7;">+</span> Add New Employee
                 </h3>
-                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmAddModal()">✕</button>
+                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmAddModal()">âœ•</button>
             </div>
             <form id="hrmAddEmployeeForm" onsubmit="submitHrmAddEmployee(event)">
                 <div class="hrm-modal-body">
@@ -1000,6 +1000,15 @@
                             </select>
                         </div>
                     </div>
+                    <div class="hrm-form-row">
+                        <div class="hrm-form-group">
+                            <label>Status *</label>
+                            <select class="hrm-form-control" id="hrmAddStatus" required>
+                                <option value="Active" selected>Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="hrm-modal-footer">
                     <button type="button" class="btn-hrm-secondary" onclick="closeHrmAddModal()">Cancel</button>
@@ -1014,9 +1023,9 @@
         <div class="hrm-modal-card">
             <div class="hrm-modal-header">
                 <h3 class="hrm-modal-title">
-                    <span style="color:#0284c7;">✏️</span> Edit Employee Details
+                    <span style="color:#0284c7;">âœï¸</span> Edit Employee Details
                 </h3>
-                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmEditModal()">✕</button>
+                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmEditModal()">âœ•</button>
             </div>
             <form id="hrmEditEmployeeForm" onsubmit="submitHrmEditEmployee(event)">
                 <input type="hidden" id="hrmEditSl">
@@ -1057,6 +1066,15 @@
                             </select>
                         </div>
                     </div>
+                    <div class="hrm-form-row">
+                        <div class="hrm-form-group">
+                            <label>Status *</label>
+                            <select class="hrm-form-control" id="hrmEditStatus" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="hrm-modal-footer">
                     <button type="button" class="btn-hrm-secondary" onclick="closeHrmEditModal()">Cancel</button>
@@ -1071,9 +1089,9 @@
         <div class="hrm-modal-card" style="max-width: 560px;">
             <div class="hrm-modal-header">
                 <h3 class="hrm-modal-title">
-                    <span style="color:#d97706;">🔁</span> Position Replacement (রিপ্লেস)
+                    <span style="color:#d97706;">ðŸ”„</span> Position Replacement (à¦ªà¦¦à¦¬à§€ à¦ªà§à¦°à¦¤à¦¿à¦¸à§à¦¥à¦¾à¦ªà¦¨)
                 </h3>
-                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmReplaceModal()">✕</button>
+                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmReplaceModal()">âœ•</button>
             </div>
             <form id="hrmReplaceEmployeeForm" onsubmit="submitHrmReplaceEmployee(event)">
                 <div class="hrm-modal-body">
@@ -1081,7 +1099,7 @@
                     <div class="hrm-replace-banner">
                         <div class="hrm-replace-banner-title">Current Outgoing Employee:</div>
                         <div class="hrm-replace-banner-details">
-                            SL <span id="hrmReplaceOutSl"></span> | ID: <span id="hrmReplaceOutId"></span> — <strong id="hrmReplaceOutName"></strong> (<span id="hrmReplaceOutDesig"></span>, <span id="hrmReplaceOutSection"></span>)
+                            SL <span id="hrmReplaceOutSl"></span> | ID: <span id="hrmReplaceOutId"></span> â€” <strong id="hrmReplaceOutName"></strong> (<span id="hrmReplaceOutDesig"></span>, <span id="hrmReplaceOutSection"></span>)
                         </div>
                     </div>
 

@@ -12708,3 +12708,157 @@
     transform: none !important;
 }
 
+
+
+/* ==========================================================================
+   HRM MODULE SECTION SUMMARY & SIDEBAR FOOTER REVAMP
+   ========================================================================== */
+.hrm-sidebar-footer-nav {
+    margin-top: auto !important;
+    padding: 14px 10px 12px 10px !important;
+    border-top: 1.5px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+.hrm-footer-nav-label {
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    color: #64748b !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    padding: 0 4px 2px 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.hrm-footer-nav-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 9px 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-align: left !important;
+    width: 100% !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+}
+
+.hrm-footer-nav-btn:hover {
+    border-color: #0284c7 !important;
+    background: #f0f9ff !important;
+    color: #0369a1 !important;
+    transform: translateX(2px) !important;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.12) !important;
+}
+
+.hrm-footer-nav-btn .footer-nav-icon {
+    font-size: 1.15rem !important;
+    line-height: 1 !important;
+}
+
+.hrm-footer-nav-btn .footer-nav-text {
+    flex: 1 !important;
+}
+
+.hrm-footer-nav-btn svg {
+    color: #94a3b8 !important;
+    transition: transform 0.2s ease !important;
+}
+
+.hrm-footer-nav-btn:hover svg {
+    color: #0284c7 !important;
+    transform: translateX(2px) !important;
+}
+
+/* Section Status Control Badge & Switch */
+.hrm-sec-control-wrap {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    padding: 4px 10px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
+}
+
+.hrm-sec-control-label {
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    color: #475569 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.hrm-sec-status-select {
+    padding: 4px 8px !important;
+    border-radius: 6px !important;
+    border: 1px solid #94a3b8 !important;
+    background: #f8fafc !important;
+    font-size: 0.80rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    cursor: pointer !important;
+    outline: none !important;
+}
+
+.hrm-sec-status-select:focus {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15) !important;
+}
+
+/* Inactive Section Banner */
+.hrm-section-inactive-notice {
+    text-align: center !important;
+    padding: 45px 24px !important;
+    background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%) !important;
+    border: 1.5px dashed #f59e0b !important;
+    border-radius: 12px !important;
+    margin: 20px 0 !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08) !important;
+}
+
+.hrm-section-inactive-notice .notice-icon {
+    font-size: 2.5rem !important;
+    display: block !important;
+    margin-bottom: 10px !important;
+}
+
+.hrm-section-inactive-notice .notice-title {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    color: #92400e !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.hrm-section-inactive-notice .notice-desc {
+    font-size: 0.88rem !important;
+    color: #b45309 !important;
+    max-width: 560px !important;
+    margin: 0 auto 16px auto !important;
+    line-height: 1.5 !important;
+}
+
+/* Complete Service Duration Badge */
+.tenure-badge-complete {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #0369a1 !important;
+    background: #f0f9ff !important;
+    border: 1.2px solid #bae6fd !important;
+    padding: 4px 10px !important;
+    border-radius: 12px !important;
+    display: inline-block !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.2px !important;
+}

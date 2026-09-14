@@ -113,7 +113,12 @@
             'Check RM Prd Possible': 'check_rm_prd_possible.html',
             'Master Database': 'master.html',
             'Master': 'master.html',
-            'Central Item Master Database': 'master.html'
+            'Central Item Master Database': 'master.html',
+            'Assemble Line': 'hrm_section_assemble_line.html',
+            'Assemble Line (Section Summary)': 'hrm_section_assemble_line.html',
+            'Dimmer & Blade': 'hrm_section_dimmer_blade.html',
+            'Dimmer & Blade (Section Summary)': 'hrm_section_dimmer_blade.html',
+            'Armature & Winding (Section Summary)': 'hrm_section_armature_winding.html'
         };
 
         window.navigateToReportPage = function(targetUrl, event) {
@@ -238,7 +243,13 @@
                     }
                 } else if (viewParam === 'hrm') {
                     sessionStorage.setItem('portal_current_view', 'hrm');
-                    const sub = urlParams.get('sub') || (urlParams.get('page') === 'new_entry' ? 'new_entry' : 'dashboard');
+                    let sub = urlParams.get('sub') || urlParams.get('sec') || urlParams.get('section') || (urlParams.get('page') === 'new_entry' ? 'new_entry' : 'dashboard');
+                    if (sub) {
+                        const s = sub.toLowerCase();
+                        if (s.includes('assemble')) sub = 'section_assemble';
+                        else if (s.includes('dimm') || s.includes('blade')) sub = 'section_dimmer';
+                        else if (s.includes('armature') || s.includes('winding')) sub = 'section_armature';
+                    }
                     switchToHRMModuleView(sub);
                 } else if (viewParam === 'warehouse') {
                     sessionStorage.setItem('portal_current_view', 'warehouse');

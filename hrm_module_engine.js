@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HRM Module Engine
  * Controls HRM Dashboard & Data Base -> New Entry View
  */
@@ -8,7 +8,43 @@
     let currentFilterSection = 'ALL';
     let currentFilterDesignation = 'ALL';
     let currentSearchTerm = '';
-    let currentActiveSubPage = 'dashboard'; // 'dashboard' or 'new_entry'
+    let currentActiveSubPage = 'dashboard'; // 'dashboard', 'new_entry', 'section_assemble', 'section_dimmer', 'section_armature'
+    let currentActiveSectionKey = 'section_assemble';
+    let currentSectionSearchTerm = '';
+    let currentSectionFilterDesig = 'ALL';
+    let currentSectionFilterGender = 'ALL';
+
+    const SECTION_CONFIGS = {
+        'section_assemble': {
+            name: 'Assemble Line',
+            title: 'Assemble Line — Section Summary',
+            subtitle: 'Live Sectional Workforce Overview • Sourced directly from Employee Master Database (New Entry)',
+            navId: 'hrmNavSectionAssemble',
+            matcher: function(sec) {
+                return String(sec || '').toLowerCase().includes('assemble');
+            }
+        },
+        'section_dimmer': {
+            name: 'Dimmer & Blade',
+            title: 'Dimmer & Blade — Section Summary',
+            subtitle: 'Live Sectional Workforce Overview • Sourced directly from Employee Master Database (New Entry)',
+            navId: 'hrmNavSectionDimmer',
+            matcher: function(sec) {
+                const s = String(sec || '').toLowerCase();
+                return s.includes('dimm') || s.includes('blade');
+            }
+        },
+        'section_armature': {
+            name: 'Armature & Winding',
+            title: 'Armature & Winding — Section Summary',
+            subtitle: 'Live Sectional Workforce Overview • Sourced directly from Employee Master Database (New Entry)',
+            navId: 'hrmNavSectionArmature',
+            matcher: function(sec) {
+                const s = String(sec || '').toLowerCase();
+                return s.includes('armature') || s.includes('winding');
+            }
+        }
+    };
 
     /**
      * Check if HRM Database New Entry page is locked via MIS Module Option 5
@@ -72,16 +108,138 @@
     }
 
     /**
+     * Complete Service Duration calculation dynamically from DOJ to live system date
+     * Output format: "X Years Y Months Z Days" (e.g. "10 Years 9 Months 13 Days")
+     */
+    function calculateCompleteServiceDuration(dojStr) {
+        if (!dojStr) return 'â€”';
+        try {
+            const parts = String(dojStr).trim().split(/[-/ ]/);
+            let day, month, year;
+            const monthsMap = {
+                'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5,
+                'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
+            };
+            if (parts.length === 3) {
+                day = parseInt(parts[0], 10);
+                const monKey = parts[1].toLowerCase().slice(0, 3);
+                month = monthsMap[monKey];
+                if (month === undefined) {
+                    month = parseInt(parts[1], 10) - 1;
+                }
+                year = parseInt(parts[2], 10);
+                if (year < 100) {
+                    year += (year > 50 ? 1900 : 2000);
+                }
+            }
+            if (isNaN(day) || month === undefined || isNaN(month) || isNaN(year)) {
+                const d = new Date(dojStr);
+                if (!isNaN(d.getTime())) {
+                    day = d.getDate();
+                    month = d.getMonth();
+                    year = d.getFullYear();
+                } else {
+                    return 'â€”';
+                }
+            }
+
+            const joinDate = new Date(year, month, day);
+            const now = new Date();
+            if (joinDate > now) return '0 Days';
+
+            let curYear = now.getFullYear();
+            let curMonth = now.getMonth();
+            let curDay = now.getDate();
+
+            let joinYear = joinDate.getFullYear();
+            let joinMonth = joinDate.getMonth();
+            let joinDay = joinDate.getDate();
+
+            let days = curDay - joinDay;
+            let months = curMonth - joinMonth;
+            let years = curYear - joinYear;
+
+            if (days < 0) {
+                const prevMonthDays = new Date(curYear, curMonth, 0).getDate();
+                days += prevMonthDays;
+                months--;
+            }
+
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            if (years < 0) return '0 Days';
+
+            const partsOut = [];
+            if (years > 0) partsOut.push(`${years} ${years === 1 ? 'Year' : 'Years'}`);
+            if (months > 0) partsOut.push(`${months} ${months === 1 ? 'Month' : 'Months'}`);
+            if (days > 0 || partsOut.length === 0) partsOut.push(`${days} ${days === 1 ? 'Day' : 'Days'}`);
+
+            return partsOut.join(' ');
+        } catch (e) {
+            return 'â€”';
+        }
+    }
+
+    function calculateTenure(dojStr) {
+        return calculateCompleteServiceDuration(dojStr);
+    }
+
+    /**
+     * Section Active / Inactive Visibility Control
+     */
+    function getSectionActiveStatus(secKey) {
+        try {
+            const key = secKey || currentActiveSectionKey;
+            const stored = localStorage.getItem('mep_hrm_sec_status_' + key);
+            if (stored === 'Inactive') return 'Inactive';
+        } catch(e) {}
+        return 'Active';
+    }
+
+    function setSectionActiveStatus(secKey, status) {
+        try {
+            const key = secKey || currentActiveSectionKey;
+            localStorage.setItem('mep_hrm_sec_status_' + key, status);
+        } catch(e) {}
+    }
+
+    function toggleCurrentSectionActiveStatus(newStatus) {
+        setSectionActiveStatus(currentActiveSectionKey, newStatus);
+        renderHrmSectionSummaryView();
+        showHrmToast(`Section status set to "${newStatus}"`, newStatus === 'Active' ? 'success' : 'info');
+    }
+
+    /**
      * Initialize HRM Module Engine
      */
     function initHrmModule() {
         try {
             const urlParams = new URLSearchParams(window.location.search);
+            const subParam = urlParams.get('sub') || urlParams.get('tab');
             const secParam = urlParams.get('sec') || urlParams.get('section');
+            if (subParam && ['section_assemble', 'section_dimmer', 'section_armature', 'new_entry', 'dashboard'].includes(subParam)) {
+                switchHrmSubPage(subParam);
+                return;
+            }
             if (secParam) {
-                currentFilterSection = secParam;
-                const select = document.getElementById('hrmSectionSelectFilter');
-                if (select) select.value = currentFilterSection;
+                const s = secParam.toLowerCase();
+                if (s.includes('assemble')) {
+                    switchHrmSubPage('section_assemble');
+                    return;
+                } else if (s.includes('dimm') || s.includes('blade')) {
+                    switchHrmSubPage('section_dimmer');
+                    return;
+                } else if (s.includes('armature') || s.includes('winding')) {
+                    switchHrmSubPage('section_armature');
+                    return;
+                } else {
+                    currentFilterSection = secParam;
+                    const select = document.getElementById('hrmSectionSelectFilter');
+                    if (select) select.value = currentFilterSection;
+                }
             }
         } catch (e) {}
         renderHrmDashboard();
@@ -90,31 +248,74 @@
     }
 
     /**
-     * Switch sub-page between Dashboard and Data Base -> New Entry
+     * Switch sub-page between Dashboard, Data Base -> New Entry, and Section Summaries
      */
     function switchHrmSubPage(pageKey) {
         currentActiveSubPage = pageKey;
         const dashPane = document.getElementById('hrmDashboardPane');
         const entryPane = document.getElementById('hrmDatabaseNewEntryPane');
+        const sectionPane = document.getElementById('hrmSectionSummaryPane');
+
         const btnDash = document.getElementById('hrmNavBtnDash');
         const navNewEntry = document.getElementById('hrmNavNewEntry');
         const parentDb = document.getElementById('hrmNavDatabaseParent');
+
+        const parentSec = document.getElementById('hrmNavSectionSummaryParent');
+        const navSecAssemble = document.getElementById('hrmNavSectionAssemble');
+        const navSecDimmer = document.getElementById('hrmNavSectionDimmer');
+        const navSecArmature = document.getElementById('hrmNavSectionArmature');
+
         const breadcrumbPage = document.getElementById('hrmBreadcrumbPage');
 
-        if (pageKey === 'new_entry') {
+        // Reset all active states on navigation subitems
+        [navNewEntry, navSecAssemble, navSecDimmer, navSecArmature].forEach(el => {
+            if (el) el.classList.remove('active');
+        });
+
+        if (pageKey === 'section_assemble' || pageKey === 'section_dimmer' || pageKey === 'section_armature') {
+            currentActiveSectionKey = pageKey;
+            currentSectionSearchTerm = '';
+            currentSectionFilterDesig = 'ALL';
+            currentSectionFilterGender = 'ALL';
+
+            const searchInp = document.getElementById('hrmSectionSearchInput');
+            if (searchInp) searchInp.value = '';
+            const genderSel = document.getElementById('hrmSectionGenderFilter');
+            if (genderSel) genderSel.value = 'ALL';
+
+            if (dashPane) dashPane.style.setProperty('display', 'none', 'important');
+            if (entryPane) entryPane.style.setProperty('display', 'none', 'important');
+            if (sectionPane) sectionPane.style.setProperty('display', 'block', 'important');
+
+            if (btnDash) btnDash.classList.remove('active');
+            if (parentSec) parentSec.classList.add('is-open');
+            if (parentDb) parentDb.classList.remove('is-open');
+
+            const cfg = SECTION_CONFIGS[pageKey];
+            const activeNav = document.getElementById(cfg.navId);
+            if (activeNav) activeNav.classList.add('active');
+
+            if (breadcrumbPage) breadcrumbPage.textContent = `Section Summary > ${cfg.name}`;
+
+            renderHrmSectionSummaryView();
+        } else if (pageKey === 'new_entry') {
             if (dashPane) dashPane.style.setProperty('display', 'none', 'important');
             if (entryPane) entryPane.style.setProperty('display', 'block', 'important');
+            if (sectionPane) sectionPane.style.setProperty('display', 'none', 'important');
+
             if (btnDash) btnDash.classList.remove('active');
             if (navNewEntry) navNewEntry.classList.add('active');
             if (parentDb) parentDb.classList.add('is-open');
+            if (parentSec) parentSec.classList.remove('is-open');
             if (breadcrumbPage) breadcrumbPage.textContent = 'Data Base > New Entry';
             renderHrmNewEntryTable();
             updateHrmLockUI();
         } else {
             if (dashPane) dashPane.style.setProperty('display', 'block', 'important');
             if (entryPane) entryPane.style.setProperty('display', 'none', 'important');
+            if (sectionPane) sectionPane.style.setProperty('display', 'none', 'important');
+
             if (btnDash) btnDash.classList.add('active');
-            if (navNewEntry) navNewEntry.classList.remove('active');
             if (breadcrumbPage) breadcrumbPage.textContent = 'HRM Dashboard';
             renderHrmDashboard();
         }
@@ -415,6 +616,17 @@
         if (modal) modal.classList.remove('show');
     }
 
+    /**
+     * Refresh all active HRM views to maintain real-time reactive sync
+     */
+    function refreshAllHrmViews() {
+        renderHrmNewEntryTable();
+        renderHrmDashboard();
+        if (['section_assemble', 'section_dimmer', 'section_armature'].includes(currentActiveSubPage)) {
+            renderHrmSectionSummaryView();
+        }
+    }
+
     function submitHrmAddEmployee(event) {
         if (event) event.preventDefault();
         if (isHrmEntryLocked()) {
@@ -433,18 +645,21 @@
             return;
         }
 
+        const statusEl = document.getElementById('hrmAddStatus');
+        const empStatus = statusEl ? statusEl.value : 'Active';
+
         window.HRM_DATABASE.addEmployee({
             id: id,
             name: name,
             designation: designation,
             doj: doj,
             section: section,
-            gender: gender
+            gender: gender,
+            status: empStatus
         });
 
         closeHrmAddModal();
-        renderHrmNewEntryTable();
-        renderHrmDashboard();
+        refreshAllHrmViews();
         showHrmToast(`Employee "${name}" added successfully!`, 'success');
     }
 
@@ -467,6 +682,8 @@
         document.getElementById('hrmEditDoj').value = emp.doj;
         document.getElementById('hrmEditSection').value = emp.section;
         document.getElementById('hrmEditGender').value = emp.gender || 'Male';
+        const editStatusSel = document.getElementById('hrmEditStatus');
+        if (editStatusSel) editStatusSel.value = emp.status || 'Active';
 
         const modal = document.getElementById('hrmEditEmployeeModal');
         if (modal) modal.classList.add('show');
@@ -496,18 +713,21 @@
             return;
         }
 
+        const editStatusEl = document.getElementById('hrmEditStatus');
+        const empStatus = editStatusEl ? editStatusEl.value : 'Active';
+
         window.HRM_DATABASE.updateEmployee(sl, {
             id: id,
             name: name,
             designation: designation,
             doj: doj,
             section: section,
-            gender: gender
+            gender: gender,
+            status: empStatus
         });
 
         closeHrmEditModal();
-        renderHrmNewEntryTable();
-        renderHrmDashboard();
+        refreshAllHrmViews();
         showHrmToast(`Employee #${id} updated successfully!`, 'success');
     }
 
@@ -579,8 +799,7 @@
         }, reason);
 
         closeHrmReplaceModal();
-        renderHrmNewEntryTable();
-        renderHrmDashboard();
+        refreshAllHrmViews();
         showHrmToast(`Position successfully replaced with "${newName}" (ID: ${newId})!`, 'success');
     }
 
@@ -619,8 +838,7 @@
         if (!deletingSl) return;
         window.HRM_DATABASE.deleteEmployee(deletingSl);
         closeHrmDeleteModal();
-        renderHrmNewEntryTable();
-        renderHrmDashboard();
+        refreshAllHrmViews();
         showHrmToast('Employee record deleted and list re-indexed.', 'info');
     }
 
@@ -634,8 +852,7 @@
         }
         if (confirm('Are you sure you want to reset the Employee Database to the initial 107 records?')) {
             window.HRM_DATABASE.resetToDefaultEmployees();
-            renderHrmNewEntryTable();
-            renderHrmDashboard();
+            refreshAllHrmViews();
             showHrmToast('Employee Database reset to default 107 records.', 'info');
         }
     }
@@ -669,13 +886,301 @@
     }
 
     /**
-     * Sidebar accordion toggle for Data Base parent
+     * Sidebar accordion toggle for Data Base parent (auto-collapses Section Summary)
      */
     function toggleHrmDatabaseMenu() {
-        const parent = document.getElementById('hrmNavDatabaseParent');
-        if (parent) {
-            parent.classList.toggle('is-open');
+        const parentDb = document.getElementById('hrmNavDatabaseParent');
+        const parentSec = document.getElementById('hrmNavSectionSummaryParent');
+        if (parentDb) {
+            const willOpen = !parentDb.classList.contains('is-open');
+            if (willOpen) {
+                parentDb.classList.add('is-open');
+                if (parentSec) parentSec.classList.remove('is-open');
+            } else {
+                parentDb.classList.remove('is-open');
+            }
         }
+    }
+
+    /**
+     * Sidebar accordion toggle for Section Summary parent (auto-collapses Data Base)
+     */
+    function toggleHrmSectionSummaryMenu() {
+        const parentDb = document.getElementById('hrmNavDatabaseParent');
+        const parentSec = document.getElementById('hrmNavSectionSummaryParent');
+        if (parentSec) {
+            const willOpen = !parentSec.classList.contains('is-open');
+            if (willOpen) {
+                parentSec.classList.add('is-open');
+                if (parentDb) parentDb.classList.remove('is-open');
+            } else {
+                parentSec.classList.remove('is-open');
+            }
+        }
+    }
+
+    /**
+     * Render the Section Summary View (Assemble Line, Dimmer & Blade, Armature & Winding)
+     */
+    function renderHrmSectionSummaryView(targetKey) {
+        if (!window.HRM_DATABASE) return;
+        if (targetKey && SECTION_CONFIGS[targetKey]) {
+            currentActiveSectionKey = targetKey;
+        }
+        const cfg = SECTION_CONFIGS[currentActiveSectionKey] || SECTION_CONFIGS['section_assemble'];
+        const allEmployees = window.HRM_DATABASE.getStoredEmployees();
+
+        // 1. Update Title & Subtitle
+        const titleEl = document.getElementById('hrmSectionSummaryTitle');
+        const subTitleEl = document.getElementById('hrmSectionSummarySubtitle');
+        if (titleEl) titleEl.textContent = cfg.title;
+        if (subTitleEl) subTitleEl.textContent = cfg.subtitle;
+
+        // 2. Filter employees matching this section
+        const sectionEmployees = allEmployees.filter(emp => cfg.matcher(emp.section));
+        const totalCount = sectionEmployees.length;
+        const maleCount = sectionEmployees.filter(emp => String(emp.gender || '').toLowerCase() !== 'female').length;
+        const femaleCount = sectionEmployees.filter(emp => String(emp.gender || '').toLowerCase() === 'female').length;
+
+        // 3. Check Section Active / Inactive Status
+        const secStatus = getSectionActiveStatus(currentActiveSectionKey);
+        const statusSelect = document.getElementById('hrmCurrentSectionStatusSelect');
+        if (statusSelect) statusSelect.value = secStatus;
+
+        const kpiTotal = document.getElementById('hrmSecKpiTotal');
+        const kpiMale = document.getElementById('hrmSecKpiMale');
+        const kpiFemale = document.getElementById('hrmSecKpiFemale');
+        const kpiStatus = document.getElementById('hrmSecKpiStatus');
+
+        if (secStatus === 'Inactive') {
+            if (kpiTotal) kpiTotal.textContent = '0 (Inactive)';
+            if (kpiMale) kpiMale.textContent = '0';
+            if (kpiFemale) kpiFemale.textContent = '0';
+            if (kpiStatus) {
+                kpiStatus.textContent = 'Inactive (Hold)';
+                kpiStatus.style.color = '#b45309';
+            }
+
+            const badge = document.getElementById('hrmSectionFilteredCountBadge');
+            if (badge) {
+                badge.textContent = `0 of ${totalCount} Employees (Section Inactive)`;
+            }
+
+            const tbody = document.getElementById('hrmSectionTableBody');
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="padding:0; border:none;">
+                            <div class="hrm-section-inactive-notice">
+                                <span class="notice-icon">ðŸ”’</span>
+                                <h3 class="notice-title">This Section is currently Inactive by Admin</h3>
+                                <p class="notice-desc">
+                                    Summary data for <strong>${escapeHtml(cfg.name)}</strong> is temporarily hidden under administrative control.<br>
+                                    All <strong>${totalCount}</strong> employee records remain 100% safe and intact in <strong>Database &rarr; New Entry</strong>.
+                                </p>
+                                <button type="button" onclick="toggleCurrentSectionActiveStatus('Active')" style="padding:8px 20px; font-size:13px; font-weight:700; background:#0284c7; color:#fff; border:none; border-radius:6px; cursor:pointer;">
+                                    Reactivate Section View
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            return;
+        }
+
+        // Section is Active: Compute KPIs & Operational State
+        if (kpiTotal) kpiTotal.textContent = totalCount;
+        if (kpiMale) {
+            const pct = totalCount > 0 ? ((maleCount / totalCount) * 100).toFixed(1) : '0';
+            kpiMale.textContent = `${maleCount} (${pct}%)`;
+        }
+        if (kpiFemale) {
+            const pct = totalCount > 0 ? ((femaleCount / totalCount) * 100).toFixed(1) : '0';
+            kpiFemale.textContent = `${femaleCount} (${pct}%)`;
+        }
+        if (kpiStatus) {
+            kpiStatus.textContent = '100% Active';
+            kpiStatus.style.color = '#854d0e';
+        }
+
+        // 4. Update Designation Dropdown options
+        const desigSelect = document.getElementById('hrmSectionDesigFilter');
+        if (desigSelect) {
+            const desigCounts = {};
+            sectionEmployees.forEach(emp => {
+                const d = emp.designation || 'Unassigned';
+                desigCounts[d] = (desigCounts[d] || 0) + 1;
+            });
+            const sortedDesigs = Object.keys(desigCounts).sort();
+            const prevVal = currentSectionFilterDesig;
+
+            let optHtml = `<option value="ALL">All Designations (${totalCount})</option>`;
+            sortedDesigs.forEach(d => {
+                const sel = d === prevVal ? 'selected' : '';
+                optHtml += `<option value="${escapeHtml(d)}" ${sel}>${escapeHtml(d)} (${desigCounts[d]})</option>`;
+            });
+            desigSelect.innerHTML = optHtml;
+            if (sortedDesigs.includes(prevVal)) {
+                desigSelect.value = prevVal;
+            } else {
+                currentSectionFilterDesig = 'ALL';
+                desigSelect.value = 'ALL';
+            }
+        }
+
+        // 5. Apply filters: designation, gender, search query
+        const filtered = sectionEmployees.filter(emp => {
+            const matchDesig = currentSectionFilterDesig === 'ALL' || emp.designation === currentSectionFilterDesig;
+
+            const isFemale = String(emp.gender || '').toLowerCase() === 'female';
+            let matchGender = true;
+            if (currentSectionFilterGender === 'Male') matchGender = !isFemale;
+            else if (currentSectionFilterGender === 'Female') matchGender = isFemale;
+
+            const q = currentSectionSearchTerm.toLowerCase().trim();
+            const matchSearch = !q ||
+                String(emp.id).toLowerCase().includes(q) ||
+                String(emp.name).toLowerCase().includes(q) ||
+                String(emp.designation).toLowerCase().includes(q) ||
+                String(emp.doj).toLowerCase().includes(q) ||
+                String(emp.section).toLowerCase().includes(q);
+
+            return matchDesig && matchGender && matchSearch;
+        });
+
+        // 6. Update counter badge
+        const badge = document.getElementById('hrmSectionFilteredCountBadge');
+        if (badge) {
+            badge.textContent = `Showing ${filtered.length} of ${totalCount} Employees`;
+        }
+
+        // 7. Render Table Rows (without Master SL, with Complete Service Duration)
+        const tbody = document.getElementById('hrmSectionTableBody');
+        if (!tbody) return;
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="9" class="hrm-empty-row" style="text-align:center; padding:40px 20px;">
+                        <div class="hrm-empty-state">
+                            <span class="empty-icon" style="font-size:2rem; display:block; margin-bottom:8px;">ðŸ”</span>
+                            <div class="empty-title" style="font-weight:700; color:#334155;">No matching employees in ${escapeHtml(cfg.name)}</div>
+                            <div class="empty-desc" style="font-size:12px; color:#64748b; margin-top:4px;">Try changing search keyword or filter settings</div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        let html = '';
+        filtered.forEach((emp, index) => {
+            const secClass = getSectionBadgeClass(emp.section);
+            const isReplaced = emp.replaced_from ? true : false;
+            const replaceTag = isReplaced
+                ? `<span class="replaced-badge" title="Replaced: ${escapeHtml(emp.replaced_from.name)} on ${escapeHtml(emp.replaced_from.date)}">ðŸ” Replaced</span>`
+                : '';
+
+            const isFemale = String(emp.gender || '').toLowerCase() === 'female';
+            const genderBadge = isFemale
+                ? `<span class="gender-badge gen-female">ðŸ‘© Female</span>`
+                : `<span class="gender-badge gen-male">ðŸ‘¨ Male</span>`;
+
+            const statusBadge = emp.status === 'Inactive'
+                ? `<span style="display:inline-block; font-size:11px; font-weight:700; color:#64748b; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:10px; padding:2px 8px;">Inactive</span>`
+                : `<span style="display:inline-block; font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; border:1px solid #86efac; border-radius:10px; padding:2px 8px;">Active</span>`;
+
+            html += `
+                <tr class="hrm-emp-row" data-sl="${emp.sl}" data-id="${emp.id}">
+                    <td class="col-sl" style="text-align:center;">
+                        <span class="sl-number">${index + 1}</span>
+                    </td>
+                    <td class="col-id" style="text-align:center;">
+                        <span class="id-badge">${escapeHtml(emp.id)}</span>
+                    </td>
+                    <td class="col-name">
+                        <div class="name-cell-wrap">
+                            <span class="emp-name-text" style="font-weight:600; color:#0f172a;">${escapeHtml(emp.name)}</span>
+                            ${replaceTag}
+                        </div>
+                    </td>
+                    <td class="col-desig">
+                        <span class="desig-text">${escapeHtml(emp.designation)}</span>
+                    </td>
+                    <td class="col-doj" style="text-align:center;">
+                        <span class="doj-text">${escapeHtml(emp.doj)}</span>
+                    </td>
+                    <td class="col-tenure" style="text-align:center;">
+                        <span class="tenure-badge-complete">
+                            ${calculateCompleteServiceDuration(emp.doj)}
+                        </span>
+                    </td>
+                    <td class="col-section" style="text-align:center;">
+                        <span class="section-badge ${secClass}">${escapeHtml(emp.section)}</span>
+                    </td>
+                    <td class="col-gender" style="text-align:center;">
+                        ${genderBadge}
+                    </td>
+                    <td class="col-status" style="text-align:center;">
+                        ${statusBadge}
+                    </td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = html;
+    }
+
+    /**
+     * Section Summary Filter Handlers
+     */
+    function handleHrmSectionSearch(val) {
+        currentSectionSearchTerm = val || '';
+        renderHrmSectionSummaryView();
+    }
+
+    function handleHrmSectionDesigFilter(val) {
+        currentSectionFilterDesig = val || 'ALL';
+        renderHrmSectionSummaryView();
+    }
+
+    function handleHrmSectionGenderFilter(val) {
+        currentSectionFilterGender = val || 'ALL';
+        renderHrmSectionSummaryView();
+    }
+
+    /**
+     * Export Section Employees to CSV (Without Master SL, With Service Duration)
+     */
+    function exportHrmSectionCSV() {
+        if (!window.HRM_DATABASE) return;
+        const cfg = SECTION_CONFIGS[currentActiveSectionKey] || SECTION_CONFIGS['section_assemble'];
+        const allEmployees = window.HRM_DATABASE.getStoredEmployees();
+        const sectionEmployees = allEmployees.filter(emp => cfg.matcher(emp.section));
+
+        let csv = 'SL,ID,Name,Designation,DOJ,Service_Duration,Section,Gender,Status\n';
+        sectionEmployees.forEach((it, idx) => {
+            csv += `"${idx + 1}","${it.id}","${it.name.replace(/"/g, '""')}","${it.designation}","${it.doj}","${calculateCompleteServiceDuration(it.doj)}","${it.section}","${it.gender || 'Male'}","${it.status || 'Active'}"\n`;
+        });
+
+        const safeSecName = cfg.name.replace(/[^a-zA-Z0-9]/g, '_');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `HRM_${safeSecName}_Workforce_${new Date().toISOString().slice(0, 10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showHrmToast(`${cfg.name} exported to CSV successfully!`, 'success');
+    }
+
+    /**
+     * Print Section Summary Table
+     */
+    function printHrmSectionTable() {
+        window.print();
     }
 
     /**
@@ -743,6 +1248,18 @@
         exportCSV: exportHrmDatabaseCSV,
         print: printHrmDatabase,
         toggleDatabaseMenu: toggleHrmDatabaseMenu,
+        toggleSectionSummaryMenu: toggleHrmSectionSummaryMenu,
+        renderSectionSummary: renderHrmSectionSummaryView,
+        handleSectionSearch: handleHrmSectionSearch,
+        handleSectionDesigFilter: handleHrmSectionDesigFilter,
+        handleSectionGenderFilter: handleHrmSectionGenderFilter,
+        exportSectionCSV: exportHrmSectionCSV,
+        printSectionTable: printHrmSectionTable,
+        calculateTenure: calculateTenure,
+        calculateCompleteServiceDuration: calculateCompleteServiceDuration,
+        getSectionActiveStatus: getSectionActiveStatus,
+        setSectionActiveStatus: setSectionActiveStatus,
+        toggleCurrentSectionActiveStatus: toggleCurrentSectionActiveStatus,
         filterBySection: filterHrmBySection,
         updateLockUI: updateHrmLockUI,
         isLocked: isHrmEntryLocked
@@ -752,12 +1269,18 @@
     window.addEventListener('portal_lock_change', function(e) {
         if (!e.detail || e.detail.file === 'hrm_database_new_entry') {
             renderHrmNewEntryTable();
+            if (['section_assemble', 'section_dimmer', 'section_armature'].includes(currentActiveSubPage)) {
+                renderHrmSectionSummaryView();
+            }
         }
     });
 
     window.addEventListener('storage', function(e) {
         if (e.key === 'portal_page_lock_states') {
             renderHrmNewEntryTable();
+            if (['section_assemble', 'section_dimmer', 'section_armature'].includes(currentActiveSubPage)) {
+                renderHrmSectionSummaryView();
+            }
         }
     });
 
@@ -787,7 +1310,17 @@ window.resetHrmDatabaseToDefault = function() { window.HRM_ENGINE.resetDatabase(
 window.exportHrmDatabaseCSV = function() { window.HRM_ENGINE.exportCSV(); };
 window.printHrmDatabase = function() { window.HRM_ENGINE.print(); };
 window.toggleHrmDatabaseMenu = function() { window.HRM_ENGINE.toggleDatabaseMenu(); };
+window.toggleHrmSectionSummaryMenu = function() { window.HRM_ENGINE.toggleSectionSummaryMenu(); };
+window.renderHrmSectionSummaryView = function(k) { window.HRM_ENGINE.renderSectionSummary(k); };
 window.handleHrmSearch = function(v) { window.HRM_ENGINE.handleSearch(v); };
+window.handleHrmSectionSearch = function(v) { window.HRM_ENGINE.handleSectionSearch(v); };
+window.handleHrmSectionDesigFilter = function(v) { window.HRM_ENGINE.handleSectionDesigFilter(v); };
+window.handleHrmSectionGenderFilter = function(v) { window.HRM_ENGINE.handleSectionGenderFilter(v); };
+window.exportHrmSectionCSV = function() { window.HRM_ENGINE.exportSectionCSV(); };
+window.printHrmSectionTable = function() { window.HRM_ENGINE.printSectionTable(); };
 window.handleHrmSectionFilter = function(v) { window.HRM_ENGINE.handleSectionFilter(v); };
 window.handleHrmDesignationFilter = function(v) { window.HRM_ENGINE.handleDesignationFilter(v); };
 window.filterHrmBySection = function(v) { window.HRM_ENGINE.filterBySection(v); };
+
+window.toggleCurrentSectionActiveStatus = function(s) { window.HRM_ENGINE.toggleCurrentSectionActiveStatus(s); };
+window.calculateCompleteServiceDuration = function(d) { return window.HRM_ENGINE.calculateCompleteServiceDuration(d); };
