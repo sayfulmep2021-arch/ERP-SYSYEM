@@ -26,7 +26,7 @@
         }
 
         const AUTH_CONFIG = {
-            adminUsername: "ADMIN",
+            adminUsername: "sayful.prd.fan@mepgroupbd.com",
             get adminPassword() { return getAdminPassword(); },
             set adminPassword(val) { setAdminPassword(val); },
             viewUsername: "View",
@@ -337,7 +337,7 @@
                 selectRole('ADMIN');
             } else {
                 const usernameInput = document.getElementById('username');
-                if (usernameInput) usernameInput.value = 'ADMIN';
+                if (usernameInput) usernameInput.value = 'sayful.prd.fan@mepgroupbd.com';
             }
 
             const passwordInput = document.getElementById('password');
@@ -1890,11 +1890,19 @@
             const pwdRoleHint = document.getElementById('pwdRoleHint');
             const pwdInput = document.getElementById('password');
 
-            if (usernameInput) usernameInput.value = role;
+            // Fixed username: sayful.prd.fan@mepgroupbd.com
+            if (usernameInput) {
+                usernameInput.value = 'sayful.prd.fan@mepgroupbd.com';
+                usernameInput.setAttribute('data-role', role === 'View' ? 'View' : 'ADMIN');
+            }
+
+            // Always display the official email in the username display - never show "ADMIN"
+            if (roleNameEl) {
+                roleNameEl.textContent = 'sayful.prd.fan@mepgroupbd.com';
+            }
 
             if (role === 'View') {
-                if (roleNameEl) roleNameEl.textContent = 'View';
-                if (roleTagEl) roleTagEl.textContent = 'Visitor / View Only (Read-Only Portal)';
+                if (roleTagEl) roleTagEl.textContent = '';
                 if (roleIconBox) {
                     roleIconBox.className = 'role-icon-box view-mode';
                     roleIconBox.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
@@ -1903,11 +1911,10 @@
                 if (itemView) itemView.classList.add('active');
                 if (checkAdmin) checkAdmin.style.display = 'none';
                 if (checkView) checkView.style.display = 'inline';
-                if (pwdRoleHint) pwdRoleHint.textContent = 'View PIN';
+                if (pwdRoleHint) pwdRoleHint.textContent = '';
             } else {
-                // ADMIN
-                if (roleNameEl) roleNameEl.textContent = 'ADMIN';
-                if (roleTagEl) roleTagEl.textContent = 'System Administrator (Full Edit Access)';
+                // ADMIN mode
+                if (roleTagEl) roleTagEl.textContent = '';
                 if (roleIconBox) {
                     roleIconBox.className = 'role-icon-box';
                     roleIconBox.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
@@ -1916,7 +1923,7 @@
                 if (itemView) itemView.classList.remove('active');
                 if (checkAdmin) checkAdmin.style.display = 'inline';
                 if (checkView) checkView.style.display = 'none';
-                if (pwdRoleHint) pwdRoleHint.textContent = 'Admin PIN';
+                if (pwdRoleHint) pwdRoleHint.textContent = '';
             }
 
             toggleRoleDropdown(true);
@@ -1944,7 +1951,9 @@
             const errorMsg = document.getElementById('loginErrorMsg');
             const loginCard = document.querySelector('.auth-split-card') || document.getElementById('loginView');
 
-            const selectedRole = usernameInput ? usernameInput.value.trim() : 'ADMIN';
+            const selectedRole = (usernameInput && usernameInput.getAttribute('data-role'))
+                ? usernameInput.getAttribute('data-role')
+                : ((usernameInput && usernameInput.value.trim() === 'View') ? 'View' : 'ADMIN');
             const enteredPass = passwordInput ? passwordInput.value.trim() : '';
 
             // Password strictly required: no empty logins permitted
@@ -1969,18 +1978,16 @@
             const currentAdminPass = AUTH_CONFIG.adminPassword;
             const currentViewPass = AUTH_CONFIG.viewPassword;
 
-            if (selectedRole === 'ADMIN') {
-                if (enteredPass === currentAdminPass) {
-                    isValid = true;
-                    isViewOnly = false;
-                }
-            } else if (selectedRole === 'View') {
+            if (selectedRole === 'View') {
                 if (enteredPass === currentViewPass) {
                     isValid = true;
                     isViewOnly = true;
+                } else if (enteredPass === currentAdminPass) {
+                    isValid = true;
+                    isViewOnly = false;
                 }
             } else {
-                // Fallback username check
+                // Admin mode
                 if (enteredPass === currentAdminPass) {
                     isValid = true;
                     isViewOnly = false;
@@ -2028,9 +2035,7 @@
                 // Invalid credentials
                 if (errorBox) errorBox.classList.add('show');
                 if (errorMsg) {
-                    errorMsg.textContent = selectedRole === 'ADMIN' 
-                        ? 'Invalid ADMIN Password! Please try again.' 
-                        : 'Invalid View Password! Please try again.';
+                    errorMsg.textContent = 'Invalid Password! Please try again.';
                 }
                 if (passwordInput) {
                     passwordInput.classList.add('input-error');
@@ -2053,6 +2058,173 @@
             selectRole('View');
             const pwdInput = document.getElementById('password');
             if (pwdInput) pwdInput.focus();
+        }
+
+        /**
+         * Corporate Forgot Password & Credential Recovery Handlers
+         */
+        function handleForgotPassword(event) {
+            if (event) event.preventDefault();
+            openForgotPasswordModal();
+        }
+
+        function openForgotPasswordModal() {
+            if (typeof mountPortalModals === 'function') {
+                mountPortalModals();
+            }
+            const modal = document.getElementById('forgotPasswordModal');
+            if (!modal) return;
+
+            const targetSelect = document.getElementById('forgotTargetAccount');
+            const pinInput = document.getElementById('forgotMasterPin');
+            const newPassInput = document.getElementById('forgotNewPassword');
+            const confirmPassInput = document.getElementById('forgotConfirmPassword');
+            const alertBox = document.getElementById('forgotModalAlert');
+
+            // Default target selection based on currently active login mode
+            const usernameInput = document.getElementById('username');
+            const currentMode = (usernameInput && usernameInput.getAttribute('data-role')) || 'ADMIN';
+            if (targetSelect) {
+                targetSelect.value = (currentMode === 'View') ? 'view' : 'admin';
+            }
+
+            if (pinInput) pinInput.value = '';
+            if (newPassInput) newPassInput.value = '';
+            if (confirmPassInput) confirmPassInput.value = '';
+
+            if (alertBox) {
+                alertBox.textContent = '';
+                alertBox.style.display = 'none';
+            }
+
+            modal.style.display = 'flex';
+            if (pinInput) setTimeout(() => pinInput.focus(), 100);
+        }
+
+        function closeForgotPasswordModal() {
+            const modal = document.getElementById('forgotPasswordModal');
+            if (modal) modal.style.display = 'none';
+            const loginPass = document.getElementById('password');
+            if (loginPass) setTimeout(() => loginPass.focus(), 80);
+        }
+
+        function submitForgotPasswordReset(event) {
+            if (event) event.preventDefault();
+
+            const targetSelect = document.getElementById('forgotTargetAccount');
+            const pinInput = document.getElementById('forgotMasterPin');
+            const newPassInput = document.getElementById('forgotNewPassword');
+            const confirmPassInput = document.getElementById('forgotConfirmPassword');
+            const alertBox = document.getElementById('forgotModalAlert');
+
+            function showModalError(msg) {
+                if (alertBox) {
+                    alertBox.textContent = msg;
+                    alertBox.style.display = 'block';
+                }
+            }
+
+            const targetRole = targetSelect ? targetSelect.value : 'admin';
+            const enteredPin = pinInput ? pinInput.value.trim() : '';
+            const newPass = newPassInput ? newPassInput.value.trim() : '';
+            const confirmPass = confirmPassInput ? confirmPassInput.value.trim() : '';
+
+            const masterPin = getMISSecurityPin();
+
+            if (!enteredPin) {
+                showModalError("Master Security PIN is required to authorize password reset.");
+                if (pinInput) pinInput.focus();
+                return;
+            }
+
+            if (enteredPin !== masterPin) {
+                showModalError("Incorrect Master Security PIN! Please enter the valid 5-digit authorization PIN.");
+                if (pinInput) {
+                    pinInput.value = '';
+                    pinInput.focus();
+                }
+                return;
+            }
+
+            if (!newPass) {
+                showModalError("New Password cannot be empty.");
+                if (newPassInput) newPassInput.focus();
+                return;
+            }
+
+            if (newPass.length < 3) {
+                showModalError("New Password must be at least 3 characters in length.");
+                if (newPassInput) newPassInput.focus();
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                showModalError("New Password and Confirm Password do not match.");
+                if (confirmPassInput) confirmPassInput.focus();
+                return;
+            }
+
+            if (targetRole === 'admin') {
+                setAdminPassword(newPass);
+                showToast("Password saved successfully! Please login with your new password.", "success");
+            } else {
+                setViewPassword(newPass);
+                showToast("View User password saved successfully! Please login with your new password.", "success");
+            }
+
+            closeForgotPasswordModal();
+
+            const loginPass = document.getElementById('password');
+            if (loginPass) {
+                loginPass.value = '';
+                loginPass.focus();
+            }
+        }
+
+        // Close Forgot Password modal on Escape key press
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                const forgotModal = document.getElementById('forgotPasswordModal');
+                if (forgotModal && forgotModal.style.display === 'flex') {
+                    closeForgotPasswordModal();
+                }
+            }
+        });
+
+        function restoreDefaultCredentials(event) {
+            if (event) event.preventDefault();
+
+            const pinInput = document.getElementById('forgotMasterPin');
+            let pinVal = pinInput ? pinInput.value.trim() : '';
+
+            if (!pinVal) {
+                pinVal = prompt("Enter Master Security PIN to confirm factory reset (Default: 96420):", "");
+                if (!pinVal) return;
+                pinVal = pinVal.trim();
+            }
+
+            const masterPin = getMISSecurityPin();
+            if (pinVal !== masterPin) {
+                alert("Incorrect Master Security PIN. Factory credential restore cancelled.");
+                return;
+            }
+
+            if (!confirm("Are you sure you want to restore factory default credentials?\n- Admin Password: 9642\n- View Password: 1234\n- Master PIN: 96420")) {
+                return;
+            }
+
+            setAdminPassword("9642");
+            setViewPassword("1234");
+            setMISSecurityPin("96420");
+
+            closeForgotPasswordModal();
+            showToast("Factory credentials restored! (Admin: 9642, View: 1234)", "success");
+
+            const loginPass = document.getElementById('password');
+            if (loginPass) {
+                loginPass.value = '';
+                loginPass.focus();
+            }
         }
 
         function isCurrentUserViewOnly() {
@@ -2253,6 +2425,11 @@ window.toggleRoleDropdown = toggleRoleDropdown;
 window.selectRole = selectRole;
 window.handleLogin = handleLogin;
 window.handleViewOnlyAccess = handleViewOnlyAccess;
+window.handleForgotPassword = handleForgotPassword;
+window.openForgotPasswordModal = openForgotPasswordModal;
+window.closeForgotPasswordModal = closeForgotPasswordModal;
+window.submitForgotPasswordReset = submitForgotPasswordReset;
+window.restoreDefaultCredentials = restoreDefaultCredentials;
 window.isCurrentUserViewOnly = isCurrentUserViewOnly;
 window.applyViewOnlyStateUI = applyViewOnlyStateUI;
 window.handleLogout = handleLogout;

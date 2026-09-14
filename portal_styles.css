@@ -1,4 +1,4 @@
-﻿        /* ==========================================================================
+        /* ==========================================================================
            1. Global Design System & CSS Variables
            ========================================================================== */
         * {
@@ -332,22 +332,23 @@
         .role-text-wrap {
             flex: 1;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             overflow: hidden;
         }
 
         .role-name-display {
-            font-size: 0.92rem;
-            font-weight: 800;
+            font-size: 0.88rem;
+            font-weight: 700;
             color: #0f2942;
-            letter-spacing: 0.3px;
-            line-height: 1.2;
+            letter-spacing: 0.1px;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .role-tag-display {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #64748b;
+            display: none !important;
         }
 
         .role-chevron {
@@ -575,6 +576,42 @@
 
         .btn-signin:hover svg {
             transform: translateX(3px);
+        }
+
+        /* ----- Professional Forgot Password Link ----- */
+        .auth-forgot-wrap {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .auth-forgot-link {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #64748b;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: transparent;
+            user-select: none;
+        }
+
+        .auth-forgot-link:hover {
+            color: #0284c7;
+            text-decoration: underline;
+            background: #f0f9ff;
+        }
+
+        .auth-forgot-link:focus-visible {
+            outline: 2px solid #0284c7;
+            outline-offset: 2px;
         }
 
         .auth-card-footer {

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ============================================================================
  * ERP SYSTEM - PORTAL MODALS ENGINE (portal_modals.js)
  * ============================================================================
@@ -13,6 +13,7 @@
  *   8. HRM Replace Employee Modal (#hrmReplaceEmployeeModal)
  *   9. HRM Delete Employee Modal (#hrmDeleteEmployeeModal)
  *  10. Change Credential Modal (#changeCredentialModal)
+ *  11. Forgot Password Modal (#forgotPasswordModal)
  *
  * Automatically injects modal templates synchronously into #portalModalsContainer.
  */
@@ -1223,6 +1224,77 @@
                     <button type="button" class="btn-user-secondary" onclick="closeChangeCredentialModal()">Cancel</button>
                     <button type="submit" class="btn-user-primary" id="btnConfirmSaveCred">
                         <span>Save &amp; Apply Immediately</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         Corporate Forgot Password & Credential Recovery Modal (#forgotPasswordModal)
+         ========================================================================== -->
+    <div class="cred-modal-backdrop" id="forgotPasswordModal" style="display:none;" onclick="if(event.target===this) closeForgotPasswordModal()">
+        <div class="cred-modal-card" role="dialog" aria-modal="true" aria-labelledby="forgotModalTitle">
+            <div class="cred-modal-header">
+                <div class="cred-modal-title-wrap">
+                    <div class="cred-modal-icon-badge">🔑</div>
+                    <div>
+                        <h3 class="cred-modal-title" id="forgotModalTitle">Password Recovery &amp; Reset</h3>
+                        <p class="cred-modal-subtitle">Authorize with Master Security PIN to reset or restore access credentials</p>
+                    </div>
+                </div>
+                <button type="button" class="cred-modal-close" onclick="closeForgotPasswordModal()" aria-label="Close">✕</button>
+            </div>
+
+            <form id="forgotPasswordForm" onsubmit="submitForgotPasswordReset(event)">
+                <div class="cred-modal-body">
+                    <div class="cred-alert-box" id="forgotModalAlert" style="display:none;"></div>
+
+                    <!-- Target Account / Role Selection -->
+                    <div class="user-form-group" style="margin-bottom:14px;">
+                        <label class="user-field-label" for="forgotTargetAccount">Target Account / Role *</label>
+                        <select id="forgotTargetAccount" class="user-field-input" style="width:100%; height:40px; border:1.5px solid #cbd5e1; border-radius:8px; padding:0 12px; font-weight:600; font-size:0.88rem; color:#0f2942; background:#f8fafc;">
+                            <option value="admin">Administrator (sayful.prd.fan@mepgroupbd.com)</option>
+                            <option value="view">View User (Viewer / Read-Only)</option>
+                        </select>
+                    </div>
+
+                    <!-- Master Security PIN Authorization -->
+                    <div class="user-form-group" style="margin-bottom:14px;">
+                        <label class="user-field-label" for="forgotMasterPin">Master Security PIN *</label>
+                        <div class="cred-input-wrap">
+                            <input type="password" id="forgotMasterPin" required maxlength="10" placeholder="Enter 5-digit Master Security PIN" autocomplete="off">
+                            <button type="button" class="cred-eye-toggle" onclick="toggleCredentialInputVisibility('forgotMasterPin', this)" aria-label="Toggle PIN visibility">👁️</button>
+                        </div>
+                    </div>
+
+                    <!-- New Password -->
+                    <div class="user-form-group" style="margin-bottom:14px;">
+                        <label class="user-field-label" for="forgotNewPassword">New Password *</label>
+                        <div class="cred-input-wrap">
+                            <input type="password" id="forgotNewPassword" required autocomplete="new-password" placeholder="Enter new password (min 3 chars)">
+                            <button type="button" class="cred-eye-toggle" onclick="toggleCredentialInputVisibility('forgotNewPassword', this)" aria-label="Toggle password visibility">👁️</button>
+                        </div>
+                    </div>
+
+                    <!-- Confirm New Password -->
+                    <div class="user-form-group" style="margin-bottom:14px;">
+                        <label class="user-field-label" for="forgotConfirmPassword">Confirm New Password *</label>
+                        <div class="cred-input-wrap">
+                            <input type="password" id="forgotConfirmPassword" required autocomplete="new-password" placeholder="Confirm new password">
+                            <button type="button" class="cred-eye-toggle" onclick="toggleCredentialInputVisibility('forgotConfirmPassword', this)" aria-label="Toggle password visibility">👁️</button>
+                        </div>
+                    </div>
+
+                    <div class="cred-notice-box">
+                        <strong>🛡️ Security Verification Notice:</strong>
+                        <span>Resetting access credentials requires authorization with the 5-digit Master Security PIN.</span>
+                    </div>
+                </div>
+
+                <div class="cred-modal-footer">
+                    <button type="submit" class="btn-user-primary" id="btnForgotSubmit" style="min-width:110px; font-weight:700; letter-spacing:0.3px;">
+                        <span>Save</span>
                     </button>
                 </div>
             </form>

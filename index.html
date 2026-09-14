@@ -131,7 +131,7 @@
                 <!-- Login Form -->
                 <form id="loginForm" class="auth-form-body" onsubmit="handleLogin(event)" autocomplete="off">
                     <!-- Hidden input holding current role name for form submission / script reads -->
-                    <input type="hidden" id="username" value="ADMIN">
+                    <input type="hidden" id="username" value="sayful.prd.fan@mepgroupbd.com">
 
                     <!-- Interactive Username Selector -->
                     <div class="form-group">
@@ -144,8 +144,7 @@
                                     </svg>
                                 </span>
                                 <div class="role-text-wrap">
-                                    <span class="role-name-display" id="activeRoleName">ADMIN</span>
-                                    <span class="role-tag-display" id="activeRoleTag">System Administrator (Full Edit Access)</span>
+                                    <span class="role-name-display" id="activeRoleName">sayful.prd.fan@mepgroupbd.com</span>
                                 </div>
                                 <svg class="role-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
                                     <polyline points="6 9 12 15 18 9"></polyline>
@@ -160,7 +159,7 @@
                                         </svg>
                                     </div>
                                     <div class="role-item-info">
-                                        <div class="role-item-title">ADMIN</div>
+                                        <div class="role-item-title">sayful.prd.fan@mepgroupbd.com</div>
                                         <div class="role-item-desc">Full edit, entry &amp; cloud sync permissions</div>
                                     </div>
                                     <span class="role-item-check" id="checkAdmin">✓</span>
@@ -174,7 +173,7 @@
                                         </svg>
                                     </div>
                                     <div class="role-item-info">
-                                        <div class="role-item-title">View</div>
+                                        <div class="role-item-title">View User (Viewer)</div>
                                         <div class="role-item-desc">Read-Only access to dashboards, hubs &amp; reports</div>
                                     </div>
                                     <span class="role-item-check" id="checkView" style="display:none;">✓</span>
@@ -187,7 +186,6 @@
                     <div class="form-group">
                         <div class="form-label-row">
                             <label class="form-label" for="password">Password</label>
-                            <span class="pwd-role-hint" id="pwdRoleHint">Security PIN</span>
                         </div>
                         <div class="input-wrapper">
                             <input type="password" 
@@ -223,6 +221,11 @@
                         <span>Login</span>
                         <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </button>
+
+                    <!-- Professional Subtle Forgot Password Link -->
+                    <div class="auth-forgot-wrap">
+                        <a href="javascript:void(0)" class="auth-forgot-link" id="forgotPasswordBtn" onclick="handleForgotPassword(event)" role="button" tabindex="0">Forgot Password?</a>
+                    </div>
                 </form>
             </div>
 
