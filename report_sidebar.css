@@ -1869,7 +1869,21 @@ body.dark-mode .smart-cloud-status-badge .cloud-pulse-dot {
 }
 .mep-module-accordion.is-open .mep-heading-mep-acc-11 .mep-mod-chevron { color: #155e75 !important; }
 
-/* 12. MASTER Central DB - Slate Sky Tech Gradient */
+/* Data Backup - Soft Pastel Emerald / Mint Gradient */
+.mep-module-accordion.is-open .mep-heading-mep-acc-backup {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #059669 !important;
+}
+.mep-module-accordion.is-open .mep-heading-mep-acc-backup .mep-mod-title { color: #065f46 !important; }
+.mep-module-accordion.is-open .mep-heading-mep-acc-backup .mep-mod-icon {
+    background: #ffffff !important;
+    color: #059669 !important;
+    border: 1.2px solid #a7f3d0 !important;
+}
+.mep-module-accordion.is-open .mep-heading-mep-acc-backup .mep-mod-chevron { color: #065f46 !important; }
+
+/* MASTER Central DB - Slate Sky Tech Gradient */
 .mep-module-accordion.is-open .mep-heading-mep-acc-master {
     background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%) !important;
     border: none !important;
@@ -4163,17 +4177,9 @@ body.page-locked .header-logout-btn {
    DYNAMIC MODEL NAVIGATION & SIDEBAR SERIAL ALIGNMENT (ENTERPRISE ERP STYLE)
    ========================================================================== */
 
-/* 1. Aligned Serial Number in Sidebar Accordion Headings */
+/* 1. Aligned Serial Number in Sidebar Accordion Headings (Permanently Hidden per Clean UI Requirement) */
 .mep-mod-serial {
-    display: inline-block !important;
-    min-width: 22px !important;
-    text-align: right !important;
-    margin-right: 6px !important;
-    font-weight: 700 !important;
-    font-variant-numeric: tabular-nums !important;
-    font-family: inherit !important;
-    color: inherit !important;
-    opacity: 0.85 !important;
+    display: none !important;
 }
 
 /* 2. Frozen Sidebar layout adjustments for pinned bottom card container */

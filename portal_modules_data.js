@@ -154,6 +154,17 @@
                 { title: 'BOM With SFG', url: 'bom_with_sfg.html', highlight: true }
             ]
         },
+        'mod-backup': {
+            name: 'Data Backup',
+            badge: 'Backup & Restore',
+            iconBg: '#ecfdf5',
+            iconColor: '#059669',
+            iconSvg: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline>',
+            reports: [
+                { title: 'Download Full Backup (JSON)', url: 'javascript:window.exportSystemDataBackup()', highlight: true, pill: 'BACKUP' },
+                { title: 'Data Backup & Recovery Hub', url: 'javascript:window.openDataBackupModal()', highlight: false }
+            ]
+        },
         'mod-master': {
             name: 'MASTER Central DB',
             badge: 'VIP DB',
@@ -166,35 +177,31 @@
         }
     };
 
-    // Sidebar Accordion Order matching original index.html exactly
+    // Sidebar Accordion Order without serial numbers and with Data Backup above MASTER Central DB
     const SIDEBAR_MODULE_ORDER = [
-        { key: 'mod-02', id: 'mep-acc-02', serial: '1', title: 'Daily Check Report' },
-        { key: 'mod-03', id: 'mep-acc-03', serial: '2', title: 'Report All Branch Fan' },
-        { key: 'mod-11', id: 'mep-acc-11', serial: '3', title: 'Individual Check' },
-        { key: 'mod-04', id: 'mep-acc-04', serial: '4', title: 'Closing (ERP)', isClosing: true },
-        { key: 'mod-01', id: 'mep-acc-01', serial: '5', title: 'All Report Summary' },
-        { key: 'mod-05', id: 'mep-acc-05', serial: '6', title: 'All Monthly Report' },
-        { key: 'mod-06', id: 'mep-acc-06', serial: '7', title: 'All Yearly Report' },
-        { key: 'mod-07', id: 'mep-acc-07', serial: '8', title: 'Reject Report' },
-        { key: 'mod-08', id: 'mep-acc-08', serial: '9', title: 'Complete vs Pending' },
-        { key: 'mod-10', id: 'mep-acc-10', serial: '10', title: 'Other Reports' },
-        { key: 'mod-09', id: 'mep-acc-09', serial: '11', title: 'Fan Floor Closing Report' },
-        { key: 'mod-master', id: 'mep-acc-master', serial: '12', title: 'MASTER Central DB' }
+        { key: 'mod-02', id: 'mep-acc-02', title: 'Daily Check Report' },
+        { key: 'mod-03', id: 'mep-acc-03', title: 'Report All Branch Fan' },
+        { key: 'mod-11', id: 'mep-acc-11', title: 'Individual Check' },
+        { key: 'mod-04', id: 'mep-acc-04', title: 'Closing (ERP)', isClosing: true },
+        { key: 'mod-01', id: 'mep-acc-01', title: 'All Report Summary' },
+        { key: 'mod-05', id: 'mep-acc-05', title: 'All Monthly Report' },
+        { key: 'mod-06', id: 'mep-acc-06', title: 'All Yearly Report' },
+        { key: 'mod-07', id: 'mep-acc-07', title: 'Reject Report' },
+        { key: 'mod-backup', id: 'mep-acc-backup', title: 'Data Backup' },
+        { key: 'mod-master', id: 'mep-acc-master', title: 'MASTER Central DB' }
     ];
 
-    // Drawer Accordion Order matching original index.html exactly
+    // Drawer Accordion Order matching cleaned sidebar
     const DRAWER_MODULE_ORDER = [
-        { key: 'mod-01', suffix: '01' },
         { key: 'mod-02', suffix: '02' },
         { key: 'mod-03', suffix: '03' },
+        { key: 'mod-11', suffix: '11' },
         { key: 'mod-04', suffix: '04' },
+        { key: 'mod-01', suffix: '01' },
         { key: 'mod-05', suffix: '05' },
         { key: 'mod-06', suffix: '06' },
         { key: 'mod-07', suffix: '07' },
-        { key: 'mod-08', suffix: '08' },
-        { key: 'mod-09', suffix: '09' },
-        { key: 'mod-10', suffix: '10' },
-        { key: 'mod-11', suffix: '11' },
+        { key: 'mod-backup', suffix: 'backup' },
         { key: 'mod-master', suffix: 'master' }
     ];
 
@@ -290,7 +297,7 @@
                                 </svg>
                             </div>
                             <div class="mep-mod-info">
-                                <div class="mep-mod-title"><span class="mep-mod-serial">${mod.serial}.</span> ${mod.title}</div>
+                                <div class="mep-mod-title">${mod.title}</div>
                             </div>
                         </div>
                         <div class="mep-mod-chevron">

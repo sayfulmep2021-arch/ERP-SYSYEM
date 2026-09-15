@@ -422,19 +422,15 @@
 
             <!-- Header with Sleek Icon & Dismiss Button -->
             <div class="mis-pin-header">
-                <div class="mis-pin-icon-wrap">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                    </svg>
+                <div class="mis-pin-icon-wrap" title="MIS Module">
+                    <img src="module_mis.png" alt="MIS Module" class="mis-pin-logo-img">
                 </div>
                 <button type="button" class="mis-pin-close-btn" onclick="closeMISPinSecurityModal()" aria-label="Close Security Gate" title="Cancel">✕</button>
             </div>
 
             <!-- Title & Subtitle -->
             <div class="mis-pin-meta">
-                <h3 class="mis-pin-title" id="misPinTitle">MIS Security Gate</h3>
-                <p class="mis-pin-subtitle">Enter 5-digit security PIN to unlock MIS Module</p>
+                <h3 class="mis-pin-title" id="misPinTitle">MIS Module</h3>
             </div>
 
             <!-- 5-Digit Digital Input Container -->
@@ -454,7 +450,7 @@
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
-                <span>Authorized Personnel Only &bull; Auto-Verifying</span>
+                <span>Authorized Personnel Only &bull; <strong class="mis-pin-person-highlight">Sayful Islam</strong></span>
             </div>
         </div>
     </div>

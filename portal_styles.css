@@ -1,4 +1,4 @@
-        /* ==========================================================================
+﻿        /* ==========================================================================
            1. Global Design System & CSS Variables
            ========================================================================== */
         * {
@@ -9654,6 +9654,27 @@
 #dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-11 .mep-mod-chevron,
 #dashboardSidebar .mep-heading-mep-acc-11.is-active-module .mep-mod-chevron { color: #155e75 !important; }
 
+/* Data Backup - Soft Pastel Emerald / Mint Gradient */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-backup,
+#dashboardSidebar .mep-heading-mep-acc-backup.is-active-module {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%) !important;
+    border: none !important;
+    border-left: 3.5px solid #059669 !important;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.14) !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-backup .mep-mod-title,
+#dashboardSidebar .mep-heading-mep-acc-backup.is-active-module .mep-mod-title { color: #065f46 !important; }
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-backup .mep-mod-icon,
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-backup .mep-mod-star,
+#dashboardSidebar .mep-heading-mep-acc-backup.is-active-module .mep-mod-icon,
+#dashboardSidebar .mep-heading-mep-acc-backup.is-active-module .mep-mod-star {
+    background: #ffffff !important;
+    color: #059669 !important;
+    border: 1.2px solid #a7f3d0 !important;
+}
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-backup .mep-mod-chevron,
+#dashboardSidebar .mep-heading-mep-acc-backup.is-active-module .mep-mod-chevron { color: #065f46 !important; }
+
 /* 12. MASTER Central DB - Slate Sky Tech Gradient */
 #dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-master,
 #dashboardSidebar .mep-heading-mep-acc-master.is-active-module {
@@ -11464,16 +11485,18 @@
 
 .mis-pin-modal-card {
     width: 100% !important;
-    max-width: 410px !important;
-    background: linear-gradient(165deg, #0f172a 0%, #0b1325 50%, #080d1a 100%) !important;
-    border: 1.5px solid rgba(56, 189, 248, 0.22) !important;
-    border-radius: 24px !important;
-    box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.75), 0 0 50px rgba(14, 165, 233, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-    padding: 28px 24px 22px 24px !important;
+    max-width: 420px !important;
+    background: linear-gradient(165deg, rgba(15, 23, 42, 0.96) 0%, rgba(11, 19, 37, 0.98) 50%, rgba(8, 13, 26, 0.99) 100%) !important;
+    border: 1.5px solid rgba(56, 189, 248, 0.28) !important;
+    border-radius: 26px !important;
+    box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85), 0 0 60px rgba(14, 165, 233, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+    padding: 30px 28px 24px 28px !important;
     position: relative !important;
     overflow: hidden !important;
     text-align: center !important;
-    animation: pinModalAppear 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    animation: pinModalAppear 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
 }
 
 @keyframes pinModalAppear {
@@ -11506,16 +11529,31 @@
 }
 
 .mis-pin-icon-wrap {
-    width: 54px !important;
-    height: 54px !important;
-    border-radius: 18px !important;
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.16) 0%, rgba(99, 102, 241, 0.22) 100%) !important;
-    border: 1.5px solid rgba(56, 189, 248, 0.32) !important;
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle at 35% 35%, #1e293b 0%, #0f172a 100%) !important;
+    border: 2.2px solid #38bdf8 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    color: #38bdf8 !important;
-    box-shadow: 0 8px 24px -4px rgba(14, 165, 233, 0.3) !important;
+    overflow: hidden !important;
+    padding: 2px !important;
+    box-shadow: 0 0 28px rgba(56, 189, 248, 0.38), 0 8px 24px rgba(0, 0, 0, 0.6), inset 0 0 16px rgba(56, 189, 248, 0.2) !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
+}
+
+.mis-pin-icon-wrap:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 0 38px rgba(56, 189, 248, 0.5), 0 10px 28px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(56, 189, 248, 0.3) !important;
+}
+
+.mis-pin-logo-img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    display: block !important;
 }
 
 .mis-pin-close-btn {
@@ -11549,18 +11587,17 @@
 }
 
 .mis-pin-title {
-    font-size: 1.25rem !important;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 1.35rem !important;
     font-weight: 800 !important;
-    color: #f8fafc !important;
-    letter-spacing: -0.2px !important;
-    margin: 0 0 6px 0 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.01em !important;
+    margin: 0 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
 }
 
 .mis-pin-subtitle {
-    font-size: 0.82rem !important;
-    color: #94a3b8 !important;
-    font-weight: 500 !important;
-    margin: 0 !important;
+    display: none !important;
 }
 
 .mis-pin-inputs-container {
@@ -11572,18 +11609,19 @@
 }
 
 .mis-pin-digit {
-    width: 52px !important;
-    height: 58px !important;
+    font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
+    width: 54px !important;
+    height: 60px !important;
     border-radius: 14px !important;
-    background: rgba(15, 23, 42, 0.85) !important;
-    border: 1.8px solid rgba(148, 163, 184, 0.25) !important;
+    background: rgba(15, 23, 42, 0.9) !important;
+    border: 1.8px solid rgba(56, 189, 248, 0.3) !important;
     color: #38bdf8 !important;
-    font-size: 1.8rem !important;
+    font-size: 1.85rem !important;
     font-weight: 800 !important;
     text-align: center !important;
     outline: none !important;
-    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5) !important;
     caret-color: #38bdf8 !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -11592,14 +11630,15 @@
 
 .mis-pin-digit:focus {
     border-color: #38bdf8 !important;
-    background: rgba(15, 23, 42, 0.95) !important;
-    box-shadow: 0 0 0 3.5px rgba(56, 189, 248, 0.28), inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    background: rgba(15, 23, 42, 0.98) !important;
+    box-shadow: 0 0 0 3.5px rgba(56, 189, 248, 0.32), 0 0 20px rgba(56, 189, 248, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
     transform: translateY(-2px) !important;
 }
 
 .mis-pin-digit.is-filled {
-    border-color: rgba(56, 189, 248, 0.55) !important;
-    background: rgba(14, 165, 233, 0.09) !important;
+    border-color: rgba(56, 189, 248, 0.65) !important;
+    background: rgba(14, 165, 233, 0.14) !important;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
 .mis-pin-digit.is-error {
@@ -11647,18 +11686,26 @@
 .mis-pin-footer-shield {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 7px !important;
-    font-size: 0.72rem !important;
+    gap: 8px !important;
+    font-size: 0.76rem !important;
     font-weight: 600 !important;
-    color: #64748b !important;
-    padding: 6px 14px !important;
-    background: rgba(255, 255, 255, 0.03) !important;
-    border-radius: 20px !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    color: #94a3b8 !important;
+    padding: 7px 18px !important;
+    background: rgba(56, 189, 248, 0.06) !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(56, 189, 248, 0.18) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+    letter-spacing: 0.2px !important;
 }
 
 .mis-pin-footer-shield svg {
     color: #38bdf8 !important;
+}
+
+.mis-pin-footer-shield strong,
+.mis-pin-footer-shield .mis-pin-person-highlight {
+    color: #38bdf8 !important;
+    font-weight: 700 !important;
 }
 
 /* ==========================================================================
@@ -12480,17 +12527,9 @@
    DYNAMIC MODEL NAVIGATION & SIDEBAR SERIAL ALIGNMENT (ENTERPRISE ERP STYLE)
    ========================================================================== */
 
-/* 1. Aligned Serial Number in Sidebar Accordion Headings */
+/* 1. Aligned Serial Number in Sidebar Accordion Headings (Permanently Hidden per Clean UI Requirement) */
 .mep-mod-serial {
-    display: inline-block !important;
-    min-width: 22px !important;
-    text-align: right !important;
-    margin-right: 6px !important;
-    font-weight: 700 !important;
-    font-variant-numeric: tabular-nums !important;
-    font-family: inherit !important;
-    color: inherit !important;
-    opacity: 0.85 !important;
+    display: none !important;
 }
 
 /* 2. Frozen Sidebar layout adjustments for pinned bottom card container */

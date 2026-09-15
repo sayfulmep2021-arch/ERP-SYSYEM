@@ -1581,6 +1581,17 @@
                 grandTotals.delivery += subTotals.delivery;
                 grandTotals.closing += subTotals.closing;
 
+                // Check if this category is Ceiling Fan Series (Direct Source for Dashboard Achievement)
+                const isCeilingFanSeries = (catName === '1. CEILING FAN SERIES') || (catName.toLowerCase().includes('ceiling') && catName.toLowerCase().includes('fan'));
+                if (isCeilingFanSeries) {
+                    const cfsProdRecVal = Number(subTotals.productionRec) || 0;
+                    try {
+                        localStorage.setItem('mep_assemble_cfs_production_receipt', String(cfsProdRecVal));
+                        localStorage.setItem('mep_assemble_cfs_production_receipt_formatted', formatNum(cfsProdRecVal));
+                        localStorage.setItem('mep_assemble_cfs_prod_rec_updated', Date.now().toString());
+                    } catch(e) {}
+                }
+
                 // 1. Render Category Subtotal Header Bar (Golden/Yellow Header Bar)
                 const catRow = document.createElement('tr');
                 catRow.className = 'category-subtotal-row';
@@ -1591,7 +1602,7 @@
                     <td>${formatNum(subTotals.opening)}</td>
                     <td>${formatNum(subTotals.storeRec)}</td>
                     <td>${formatNum(subTotals.sectionRec)}</td>
-                    <td>${formatNum(subTotals.productionRec)}</td>
+                    <td ${isCeilingFanSeries ? 'id="cfs_marked_production_receive_cell" data-source-cfs="true"' : ''}>${formatNum(subTotals.productionRec)}</td>
                     <td>${formatNum(subTotals.damage)}</td>
                     <td>${formatNum(subTotals.othersRec)}</td>
                     <td>${formatNum(subTotals.delivery)}</td>
