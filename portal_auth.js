@@ -1600,19 +1600,23 @@
 
                 sessionStorage.setItem('mis_pin_verified', 'true');
 
-                if (typeof window.logSystemAudit === 'function') {
-                    try {
-                        window.logSystemAudit({
-                            pageName: 'MIS Module Selection Screen',
-                            actionType: 'Security Gate Passed',
-                            targetItem: 'MIS Module Access Gate',
-                            fieldName: '5-Digit Security PIN',
-                            previousValue: 'Protected Gate',
-                            newValue: 'Access Granted',
-                            description: '5-Digit Security PIN (•••••) successfully verified. MIS Interface unlocked.'
-                        });
-                    } catch(err) {}
-                }
+                // Do NOT generate audit notification on MIS PIN unlock as per user requirement
+                try {
+                    const raw = localStorage.getItem('mep_notification_history');
+                    if (raw) {
+                        let hist = JSON.parse(raw);
+                        if (Array.isArray(hist)) {
+                            hist = hist.filter(item => !(item.description && item.description.includes('5-Digit Security PIN')));
+                            localStorage.setItem('mep_notification_history', JSON.stringify(hist));
+                            if (typeof window.renderNotificationContent === 'function') {
+                                window.renderNotificationContent();
+                            }
+                            if (typeof window.updateAllDots === 'function') {
+                                window.updateAllDots();
+                            }
+                        }
+                    }
+                } catch(e) {}
 
                 setTimeout(function() {
                     closeMISPinSecurityModal();
@@ -2345,6 +2349,7 @@
         /**
          * Show bottom notification toast message
          */
+        let toastTimeout = null;
         function showToast(message) {
             const toast = document.getElementById('notification-toast');
             const toastMsg = document.getElementById('toast-message');
@@ -2353,7 +2358,7 @@
             toastMsg.innerText = message;
             toast.classList.add('show');
 
-            clearTimeout(toastTimeout);
+            if (toastTimeout) clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
                 toast.classList.remove('show');
             }, 2500);

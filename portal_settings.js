@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MEP Portal - System Settings, Themes & View Access Control Manager
  * Handles Light/Dark themes, View-User access restrictions, and Settings Modal
  * Auto-extracted from index.html during Phase 3 modularization
@@ -438,11 +438,20 @@
         }
 
         function openMISOption(optKey) {
-            if (typeof isMISPinVerified === 'function' && !isMISPinVerified()) {
-                if (typeof openMISPinSecurityModal === 'function') {
+            const pinFn = typeof window.isMISPinVerified === 'function' ? window.isMISPinVerified : (typeof isMISPinVerified === 'function' ? isMISPinVerified : null);
+            if (pinFn && !pinFn()) {
+                if (typeof window.openMISPinSecurityModal === 'function') {
+                    window.openMISPinSecurityModal();
+                } else if (typeof openMISPinSecurityModal === 'function') {
                     openMISPinSecurityModal();
                 }
                 return;
+            }
+            if (optKey === 'notebook') {
+                if (typeof window.openMISNotebookModal === 'function') {
+                    window.openMISNotebookModal();
+                    return;
+                }
             }
             if (typeof openSettingsModal === 'function') {
                 openSettingsModal(optKey || 'theme');
@@ -2161,6 +2170,7 @@
         }
 
         function setAppTheme(theme) {
+            const prevTheme = localStorage.getItem('mep_portal_theme') || 'light';
             if (theme !== 'dark' && theme !== 'light') theme = 'light';
             localStorage.setItem('mep_portal_theme', theme);
             document.documentElement.setAttribute('data-theme', theme);
@@ -2171,6 +2181,19 @@
                 document.body.classList.remove('dark-theme');
             }
             updateThemeUI(theme);
+
+            if (prevTheme !== theme && typeof window.logSystemAudit === 'function') {
+                window.logSystemAudit({
+                    page: "Theme Performance",
+                    module: "Settings & Security",
+                    action: "Theme Changed",
+                    item: "Executive Display Preferences",
+                    field: "Interface Theme",
+                    prevVal: prevTheme.toUpperCase(),
+                    newVal: theme.toUpperCase(),
+                    description: "System visual engine theme switched from $prevTheme to $theme mode."
+                });
+            }
         }
 
         function updateThemeUI(theme) {

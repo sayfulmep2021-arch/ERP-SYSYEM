@@ -95,12 +95,51 @@
         }
     ];
 
+    function isSensitiveAction(obj) {
+        if (!obj) return false;
+        const combined = (
+            (obj.page || '') + ' ' +
+            (obj.pageName || '') + ' ' +
+            (obj.action || '') + ' ' +
+            (obj.actionType || '') + ' ' +
+            (obj.type || '') + ' ' +
+            (obj.title || '') + ' ' +
+            (obj.description || '') + ' ' +
+            (obj.details || '')
+        ).toLowerCase();
+        
+        // Suppress any PIN unlock or password unlock logs per strict security requirement
+        if (combined.includes('5-digit security pin') || 
+            combined.includes('mis interface unlocked') || 
+            combined.includes('pin unlock') || 
+            (combined.includes('mis') && combined.includes('unlock') && combined.includes('pin'))) {
+            return true;
+        }
+        return false;
+    }
+
+    function sanitizeCredentialValue(field, val) {
+        if (val === null || val === undefined) return null;
+        const f = String(field || '').toLowerCase();
+        if (f.includes('password') || f.includes('pin') || f.includes('secret') || f.includes('token') || f.includes('credential')) {
+            return '••••••••';
+        }
+        return String(val);
+    }
+
     function getHistory() {
         const raw = localStorage.getItem(NOTIF_STORAGE_KEY);
         if (raw) {
             try {
                 const parsed = JSON.parse(raw);
-                if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    // Strictly purge any sensitive pin/password unlock records from history
+                    const filtered = parsed.filter(item => !isSensitiveAction(item));
+                    if (filtered.length !== parsed.length) {
+                        saveHistory(filtered);
+                    }
+                    return filtered;
+                }
             } catch (e) {
                 console.error("Error reading notification history:", e);
             }
@@ -152,6 +191,13 @@
     }
 
     window.logSystemAudit = function(changeObj) {
+        if (!changeObj || typeof changeObj !== 'object') return;
+
+        // Strict security constraint: NEVER log or display PIN / password unlock
+        if (isSensitiveAction(changeObj)) {
+            return;
+        }
+
         const list = getHistory();
         const now = new Date();
         const formattedTime = changeObj.timestamp || (
@@ -160,28 +206,63 @@
             now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
         );
 
+        const page = changeObj.page || changeObj.pageName || "Portal System";
+        const action = changeObj.action || changeObj.actionType || changeObj.type || "Update";
+        const type = changeObj.type || changeObj.actionType || changeObj.action || "Data Modified";
+        const module = changeObj.module || "System Control";
+        const item = changeObj.item || changeObj.targetItem || null;
+        const field = changeObj.field || changeObj.fieldName || null;
+        const rawPrev = changeObj.prevVal !== undefined ? changeObj.prevVal : changeObj.previousValue;
+        const rawNew = changeObj.newVal !== undefined ? changeObj.newVal : changeObj.newValue;
+        const prevVal = (rawPrev !== undefined && rawPrev !== null) ? sanitizeCredentialValue(field, rawPrev) : null;
+        const newVal = (rawNew !== undefined && rawNew !== null) ? sanitizeCredentialValue(field, rawNew) : null;
+        const desc = changeObj.description || changeObj.details || "";
+
+        // Smart color & bg styling based on action type
+        let badgeColor = changeObj.badgeColor;
+        let badgeBg = changeObj.badgeBg;
+        if (!badgeColor || !badgeBg) {
+            const actLower = (action + ' ' + type).toLowerCase();
+            if (actLower.includes('add') || actLower.includes('create') || actLower.includes('new') || actLower.includes('incoming')) {
+                badgeColor = '#059669'; badgeBg = '#d1fae5'; // Emerald Green
+            } else if (actLower.includes('delete') || actLower.includes('remove') || actLower.includes('purge')) {
+                badgeColor = '#dc2626'; badgeBg = '#fee2e2'; // Red
+            } else if (actLower.includes('lock')) {
+                badgeColor = actLower.includes('unlock') ? '#16a34a' : '#dc2626';
+                badgeBg = actLower.includes('unlock') ? '#dcfce7' : '#fee2e2';
+            } else if (actLower.includes('formula') || actLower.includes('link') || actLower.includes('flow')) {
+                badgeColor = '#7c3aed'; badgeBg = '#f3e8ff'; // Purple
+            } else if (actLower.includes('access') || actLower.includes('permission') || actLower.includes('role')) {
+                badgeColor = '#4f46e5'; badgeBg = '#e0e7ff'; // Indigo
+            } else if (actLower.includes('status') || actLower.includes('toggle') || actLower.includes('active') || actLower.includes('inactive')) {
+                badgeColor = '#d97706'; badgeBg = '#fef3c7'; // Amber
+            } else {
+                badgeColor = '#0284c7'; badgeBg = '#e0f2fe'; // Sky Blue
+            }
+        }
+
         const newEntry = {
             id: 'notif_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-            page: changeObj.page || "Portal System",
-            module: changeObj.module || "System Control",
-            type: changeObj.type || changeObj.action || "Data Modified",
-            action: changeObj.action || changeObj.type || "Update",
-            badgeColor: changeObj.badgeColor || "#0284c7",
-            badgeBg: changeObj.badgeBg || "#e0f2fe",
-            title: changeObj.title || `${changeObj.page || 'Page'}: ${changeObj.action || 'Updated'}`,
+            page: page,
+            module: module,
+            type: type,
+            action: action,
+            badgeColor: badgeColor,
+            badgeBg: badgeBg,
+            title: changeObj.title || `${page}: ${action}`,
             user: changeObj.user || "Sayful Islam (Senior Supervisor)",
-            item: changeObj.item || null,
-            field: changeObj.field || null,
-            prevVal: (changeObj.prevVal !== undefined && changeObj.prevVal !== null) ? String(changeObj.prevVal) : null,
-            newVal: (changeObj.newVal !== undefined && changeObj.newVal !== null) ? String(changeObj.newVal) : null,
+            item: item,
+            field: field,
+            prevVal: prevVal,
+            newVal: newVal,
             linkDetails: changeObj.linkDetails || null,
-            description: changeObj.description || "",
+            description: desc,
             timestamp: formattedTime,
             isUnread: true
         };
 
         list.unshift(newEntry);
-        if (list.length > 100) list.length = 100;
+        if (list.length > 150) list.length = 150;
         saveHistory(list);
         setUnreadState(true);
         renderNotificationContent();
@@ -225,7 +306,7 @@
         if (unreadItems.length > 0) {
             html += `
                 <div class="notif-section-header notif-unread-header">
-                    <span class="notif-section-dot">??</span>
+                    <span class="notif-section-dot">●</span>
                     <span class="notif-section-title">UNREAD (${unreadItems.length})</span>
                 </div>
             `;
@@ -237,7 +318,7 @@
         if (readItems.length > 0) {
             html += `
                 <div class="notif-section-header notif-history-header">
-                    <span class="notif-section-dot">??</span>
+                    <span class="notif-section-dot">●</span>
                     <span class="notif-section-title">PREVIOUS HISTORY</span>
                 </div>
             `;
@@ -339,9 +420,151 @@
                 ${item.description ? `<div class="notif-card-desc">${escapeHtml(item.description)}</div>` : ''}
                 ${diffBoxHtml}
                 ${linkBoxHtml}
+
+                <div class="notif-card-footer-row" style="display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding-top:8px; border-top:1px solid #f1f5f9;">
+                    <span style="font-size:0.70rem; color:#94a3b8; font-family:Consolas, monospace;">ID: #${escapeHtml(item.id.replace('notif_', ''))}</span>
+                    <button type="button" 
+                            class="notif-view-details-btn" 
+                            onclick="event.stopPropagation(); window.openNotifActivityDetailsModal('${escapeHtml(item.id)}')" 
+                            title="Click to view full step-by-step activity details">
+                        <span>View Details</span>
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
             </div>
         `;
     }
+
+    /**
+     * Open Full Step-by-Step Activity Details Modal
+     */
+    window.openNotifActivityDetailsModal = function(id) {
+        const list = getHistory();
+        const item = list.find(it => it.id === id);
+        if (!item) return;
+
+        let modal = document.getElementById('notifActivityDetailsModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'notifActivityDetailsModal';
+            modal.className = 'notif-details-modal-backdrop';
+            document.body.appendChild(modal);
+        }
+
+        let diffHtml = '';
+        if (item.prevVal !== null || item.newVal !== null) {
+            diffHtml = `
+                <div class="notif-modal-section">
+                    <div class="notif-modal-section-title">🔄 Step-by-Step Value Change</div>
+                    <div class="notif-modal-diff-box">
+                        <div class="notif-modal-diff-side notif-modal-diff-prev">
+                            <span class="diff-val-badge">PREVIOUS VALUE</span>
+                            <div class="diff-val-text">${escapeHtml(item.prevVal !== null ? item.prevVal : '—')}</div>
+                        </div>
+                        <div class="notif-modal-diff-arrow">➔</div>
+                        <div class="notif-modal-diff-side notif-modal-diff-new">
+                            <span class="diff-val-badge">NEW VALUE</span>
+                            <div class="diff-val-text">${escapeHtml(item.newVal !== null ? item.newVal : '—')}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        let linkBoxHtml = '';
+        if (item.linkDetails) {
+            const ld = item.linkDetails;
+            linkBoxHtml = `
+                <div class="notif-modal-section">
+                    <div class="notif-modal-section-title">🔗 Link &amp; Formula Dependencies</div>
+                    <table class="notif-modal-table">
+                        <tr><th>Target Page</th><td>${escapeHtml(ld.currentPage)}</td></tr>
+                        <tr><th>Target Column</th><td><strong>${escapeHtml(ld.currentColumn)}</strong></td></tr>
+                        <tr><th>Linked From</th><td>${escapeHtml(ld.linkedFrom)}</td></tr>
+                        <tr><th>Source Page</th><td>${escapeHtml(ld.sourcePage)}</td></tr>
+                        <tr><th>Source Column</th><td>${escapeHtml(ld.sourceColumn)}</td></tr>
+                        <tr><th>Key Matching</th><td><code>${escapeHtml(ld.matching)}</code></td></tr>
+                    </table>
+                </div>
+            `;
+        }
+
+        modal.innerHTML = `
+            <div class="notif-details-modal-container" role="dialog" aria-modal="true">
+                <div class="notif-details-modal-header">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="notif-modal-icon-badge" style="background:${item.badgeBg || '#e0f2fe'}; color:${item.badgeColor || '#0284c7'};">
+                            ✓
+                        </div>
+                        <div>
+                            <h3 class="notif-modal-title">Activity Log Details</h3>
+                            <p class="notif-modal-subtitle">Log Reference: #${escapeHtml(item.id.replace('notif_', ''))}</p>
+                        </div>
+                    </div>
+                    <button type="button" class="notif-modal-close-btn" onclick="window.closeNotifActivityDetailsModal()" title="Close details modal">✕</button>
+                </div>
+
+                <div class="notif-details-modal-body">
+                    <div class="notif-modal-info-grid">
+                        <div class="notif-modal-info-item">
+                            <span class="notif-modal-info-label">Action Performed</span>
+                            <span class="notif-change-type-pill" style="background:${item.badgeBg || '#e0f2fe'}; color:${item.badgeColor || '#0284c7'};">
+                                <span>✓</span> ${escapeHtml(item.action || item.type || 'Update')}
+                            </span>
+                        </div>
+                        <div class="notif-modal-info-item">
+                            <span class="notif-modal-info-label">Module / Department</span>
+                            <span class="notif-modal-info-val"><strong>${escapeHtml(item.module || 'ERP System')}</strong></span>
+                        </div>
+                        <div class="notif-modal-info-item">
+                            <span class="notif-modal-info-label">Page / Screen</span>
+                            <span class="notif-modal-info-val">${escapeHtml(item.page)}</span>
+                        </div>
+                        <div class="notif-modal-info-item">
+                            <span class="notif-modal-info-label">Timestamp</span>
+                            <span class="notif-modal-info-val font-mono">${escapeHtml(item.timestamp)}</span>
+                        </div>
+                        <div class="notif-modal-info-item">
+                            <span class="notif-modal-info-label">Responsible Operator</span>
+                            <span class="notif-modal-info-val">👤 ${escapeHtml(item.user || 'Sayful Islam (Senior Supervisor)')}</span>
+                        </div>
+                        <div class="notif-modal-info-item">
+                            <span class="notif-modal-info-label">Target Item / Section</span>
+                            <span class="notif-modal-info-val">${escapeHtml(item.item || 'General')}</span>
+                        </div>
+                        <div class="notif-modal-info-item" style="grid-column: span 2;">
+                            <span class="notif-modal-info-label">Field / Property</span>
+                            <span class="notif-modal-info-val">${escapeHtml(item.field || 'General Configuration')}</span>
+                        </div>
+                    </div>
+
+                    ${diffHtml}
+
+                    <div class="notif-modal-section">
+                        <div class="notif-modal-section-title">📝 Operational Details &amp; Summary</div>
+                        <div class="notif-modal-desc-box">${escapeHtml(item.description || 'No additional activity notes provided.')}</div>
+                    </div>
+
+                    ${linkBoxHtml}
+                </div>
+
+                <div class="notif-details-modal-footer">
+                    <button type="button" class="btn-notif-modal-close" onclick="window.closeNotifActivityDetailsModal()">Close Details</button>
+                </div>
+            </div>
+        `;
+
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+    };
+
+    window.closeNotifActivityDetailsModal = function() {
+        const modal = document.getElementById('notifActivityDetailsModal');
+        if (modal) {
+            modal.classList.remove('active');
+            modal.style.display = 'none';
+        }
+    };
 
     window.toggleSmartNotificationPanel = function() {
         const panel = document.getElementById('smartNotificationDrawer');
@@ -351,12 +574,15 @@
             panel.classList.remove('active');
         } else {
             panel.classList.add('active');
+            // 1. Render content (shows unread cards)
             renderNotificationContent();
-            // User opened notifications: mark unread as read and clear red dot
+
+            // 2. Mark all items as read in memory and localStorage so red dot disappears immediately
             const list = getHistory();
             list.forEach(i => i.isUnread = false);
             saveHistory(list);
             setUnreadState(false);
+            updateAllDots();
         }
     };
 
@@ -377,6 +603,11 @@
             updateAllDots();
         }
     };
+
+    // Global exports for inter-module communication
+    window.renderNotificationContent = renderNotificationContent;
+    window.updateAllDots = updateAllDots;
+    window.getHistory = getHistory;
 
     // Inject Drawer Markup into DOM if not present
     function ensureNotificationDrawer() {

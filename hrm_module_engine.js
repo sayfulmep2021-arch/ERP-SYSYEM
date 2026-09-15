@@ -78,7 +78,7 @@
                 banner.className = 'smart-locked-page-banner';
                 banner.style.cssText = 'background:#fff1f2; border:1px solid #fecdd3; border-left:5px solid #e11d48; padding:10px 16px; border-radius:8px; margin-bottom:14px; display:flex; align-items:center; gap:10px; color:#9f1239; font-family:"Times New Roman", serif;';
                 banner.innerHTML = `
-                    <span style="font-size:1.3rem;">🔒</span>
+                    <span style="display:flex; align-items:center;"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#9f1239" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
                     <div>
                         <strong style="font-size:14px; letter-spacing:0.5px;">PAGE ACCESS LOCKED (READ-ONLY)</strong>
                         <div style="font-size:12px; color:#881337; margin-top:2px;">Employee Database is in read-only mode. Adding, editing, replacing, or deleting records is prohibited until unlocked from <strong>MIS Module > Option 5</strong>. Searching, filtering, export, and print remain active.</div>
@@ -112,7 +112,7 @@
      * Output format: "X Years Y Months Z Days" (e.g. "10 Years 9 Months 13 Days")
      */
     function calculateCompleteServiceDuration(dojStr) {
-        if (!dojStr) return 'â€”';
+        if (!dojStr) return '-';
         try {
             const parts = String(dojStr).trim().split(/[-/ ]/);
             let day, month, year;
@@ -139,7 +139,7 @@
                     month = d.getMonth();
                     year = d.getFullYear();
                 } else {
-                    return 'â€”';
+                    return '-';
                 }
             }
 
@@ -179,7 +179,7 @@
 
             return partsOut.join(' ');
         } catch (e) {
-            return 'â€”';
+            return '-';
         }
     }
 
@@ -207,9 +207,23 @@
     }
 
     function toggleCurrentSectionActiveStatus(newStatus) {
+        const prevStatus = getSectionActiveStatus(currentActiveSectionKey);
         setSectionActiveStatus(currentActiveSectionKey, newStatus);
         renderHrmSectionSummaryView();
         showHrmToast(`Section status set to "${newStatus}"`, newStatus === 'Active' ? 'success' : 'info');
+
+        if (typeof window.logSystemAudit === 'function') {
+            window.logSystemAudit({
+                page: `HRM (${currentActiveSectionKey})`,
+                module: 'HRM Module',
+                action: 'Section Status Modified',
+                item: currentActiveSectionKey,
+                field: 'Operating Status',
+                prevVal: prevStatus,
+                newVal: newStatus,
+                description: `Section '${currentActiveSectionKey}' operational status switched from '${prevStatus}' to '${newStatus}'.`
+            });
+        }
     }
 
     /**
@@ -436,8 +450,8 @@
 
             const isFemale = String(emp.gender || '').toLowerCase() === 'female';
             const genderBadge = isFemale 
-                ? `<span class="gender-badge gen-female">👩 Female</span>` 
-                : `<span class="gender-badge gen-male">👨 Male</span>`;
+                ? `<span class="gender-badge gen-female">Female</span>` 
+                : `<span class="gender-badge gen-male">Male</span>`;
 
             html += `
                 <tr class="hrm-emp-row" data-sl="${emp.sl}" data-id="${emp.id}">
@@ -658,6 +672,19 @@
             status: empStatus
         });
 
+        if (typeof window.logSystemAudit === 'function') {
+            window.logSystemAudit({
+                page: `HRM (${section})`,
+                module: 'HRM Module',
+                action: 'Employee Added',
+                item: `${name} (ID: ${id})`,
+                field: 'Employee Roster',
+                prevVal: null,
+                newVal: `${designation} [${gender}] - ${empStatus}`,
+                description: `New employee "${name}" (${designation}) enrolled in section "${section}".`
+            });
+        }
+
         closeHrmAddModal();
         refreshAllHrmViews();
         showHrmToast(`Employee "${name}" added successfully!`, 'success');
@@ -726,9 +753,22 @@
             status: empStatus
         });
 
+        if (typeof window.logSystemAudit === 'function') {
+            window.logSystemAudit({
+                page: "HRM ($section)",
+                module: 'HRM Module',
+                action: 'Employee Updated',
+                item: "$name (ID: $id)",
+                field: 'Employee Record',
+                prevVal: "SL #$sl",
+                newVal: "$designation [$gender] - $empStatus",
+                description: "Updated employee record for \"$name\" (ID: $id) in section \"$section\"."
+            });
+        }
+
         closeHrmEditModal();
         refreshAllHrmViews();
-        showHrmToast(`Employee #${id} updated successfully!`, 'success');
+        showHrmToast("Employee #$id updated successfully!", 'success');
     }
 
     /**
@@ -836,7 +876,26 @@
             return;
         }
         if (!deletingSl) return;
+        const list = window.HRM_DATABASE.getStoredEmployees();
+        const emp = list.find(it => Number(it.sl) === Number(deletingSl));
+        const empName = emp ? "$emp.name (ID: $emp.id)" : "Employee #$deletingSl";
+        const empSec = emp ? emp.section : 'HRM';
+
         window.HRM_DATABASE.deleteEmployee(deletingSl);
+
+        if (typeof window.logSystemAudit === 'function') {
+            window.logSystemAudit({
+                page: "HRM ($empSec)",
+                module: 'HRM Module',
+                action: 'Employee Deleted',
+                item: empName,
+                field: 'Employee Roster',
+                prevVal: emp ? "$emp.designation ($empSec)" : "SL #$deletingSl",
+                newVal: 'Deleted',
+                description: "Deleted employee record \"$empName\" from section \"$empSec\"."
+            });
+        }
+
         closeHrmDeleteModal();
         refreshAllHrmViews();
         showHrmToast('Employee record deleted and list re-indexed.', 'info');
@@ -972,7 +1031,7 @@
                     <tr>
                         <td colspan="9" style="padding:0; border:none;">
                             <div class="hrm-section-inactive-notice">
-                                <span class="notice-icon">ðŸ”’</span>
+                                <span class="notice-icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#991b1b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
                                 <h3 class="notice-title">This Section is currently Inactive by Admin</h3>
                                 <p class="notice-desc">
                                     Summary data for <strong>${escapeHtml(cfg.name)}</strong> is temporarily hidden under administrative control.<br>
@@ -1064,7 +1123,9 @@
                 <tr>
                     <td colspan="9" class="hrm-empty-row" style="text-align:center; padding:40px 20px;">
                         <div class="hrm-empty-state">
-                            <span class="empty-icon" style="font-size:2rem; display:block; margin-bottom:8px;">ðŸ”</span>
+                            <div class="empty-icon" style="display:flex; justify-content:center; margin-bottom:8px;">
+                                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            </div>
                             <div class="empty-title" style="font-weight:700; color:#334155;">No matching employees in ${escapeHtml(cfg.name)}</div>
                             <div class="empty-desc" style="font-size:12px; color:#64748b; margin-top:4px;">Try changing search keyword or filter settings</div>
                         </div>
@@ -1079,13 +1140,13 @@
             const secClass = getSectionBadgeClass(emp.section);
             const isReplaced = emp.replaced_from ? true : false;
             const replaceTag = isReplaced
-                ? `<span class="replaced-badge" title="Replaced: ${escapeHtml(emp.replaced_from.name)} on ${escapeHtml(emp.replaced_from.date)}">ðŸ” Replaced</span>`
+                ? `<span class="replaced-badge" title="Replaced: ${escapeHtml(emp.replaced_from.name)} on ${escapeHtml(emp.replaced_from.date)}">Replaced</span>`
                 : '';
 
             const isFemale = String(emp.gender || '').toLowerCase() === 'female';
             const genderBadge = isFemale
-                ? `<span class="gender-badge gen-female">ðŸ‘© Female</span>`
-                : `<span class="gender-badge gen-male">ðŸ‘¨ Male</span>`;
+                ? `<span class="gender-badge gen-female">Female</span>`
+                : `<span class="gender-badge gen-male">Male</span>`;
 
             const statusBadge = emp.status === 'Inactive'
                 ? `<span style="display:inline-block; font-size:11px; font-weight:700; color:#64748b; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:10px; padding:2px 8px;">Inactive</span>`

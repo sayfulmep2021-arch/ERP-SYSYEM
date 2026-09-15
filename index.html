@@ -760,6 +760,25 @@
                     </div>
                 </div>
 
+                <!-- 8. Notebook (Executive Daily Task Manager & Operational Diary) -->
+                <div class="module-card-item" id="misNotebookCard" onclick="openMISOption('notebook')" role="button" tabindex="0" title="Notebook">
+                    <div class="module-card-icon-wrap" style="background:#fffbeb; border-color:#fef3c7;">
+                        <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="module-card-img" style="padding:4px;">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            <line x1="8" y1="6" x2="16" y2="6"></line>
+                            <line x1="8" y1="10" x2="16" y2="10"></line>
+                            <line x1="8" y1="14" x2="13" y2="14"></line>
+                            <circle cx="16" cy="14" r="1" fill="#d97706"></circle>
+                        </svg>
+                    </div>
+                    <div class="module-card-content">
+                        <h2 class="module-card-title">Notebook</h2>
+                        <p class="module-card-desc">Executive daily task board, quick memo notes &amp; reminders</p>
+                        <span class="nb-card-pending-badge" id="misNotebookPendingBadge" style="display:none;"></span>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
@@ -1519,28 +1538,36 @@
                         <!-- Section KPI Overview Cards -->
                         <div class="hrm-section-kpi-row" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-top:14px;">
                             <div class="hrm-stat-card" style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:12px 14px; display:flex; align-items:center; gap:12px;">
-                                <div style="width:38px; height:38px; border-radius:8px; background:#0284c7; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">👥</div>
+                                <div style="width:38px; height:38px; border-radius:8px; background:#0284c7; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                </div>
                                 <div>
                                     <span style="font-size:0.75rem; font-weight:700; color:#0369a1; text-transform:uppercase; letter-spacing:0.5px; display:block;">Total Workforce</span>
                                     <strong style="font-size:1.35rem; color:#0f2942; font-weight:800;" id="hrmSecKpiTotal">0</strong>
                                 </div>
                             </div>
                             <div class="hrm-stat-card" style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:10px; padding:12px 14px; display:flex; align-items:center; gap:12px;">
-                                <div style="width:38px; height:38px; border-radius:8px; background:#059669; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">👨</div>
+                                <div style="width:38px; height:38px; border-radius:8px; background:#059669; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
                                 <div>
                                     <span style="font-size:0.75rem; font-weight:700; color:#047857; text-transform:uppercase; letter-spacing:0.5px; display:block;">Male Staff</span>
                                     <strong style="font-size:1.35rem; color:#065f46; font-weight:800;" id="hrmSecKpiMale">0</strong>
                                 </div>
                             </div>
                             <div class="hrm-stat-card" style="background:#fdf2f8; border:1px solid #fbcfe8; border-radius:10px; padding:12px 14px; display:flex; align-items:center; gap:12px;">
-                                <div style="width:38px; height:38px; border-radius:8px; background:#db2777; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">👩</div>
+                                <div style="width:38px; height:38px; border-radius:8px; background:#db2777; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm-5 12c-1.1 0-2 .9-2 2v6h14v-6c0-1.1-.9-2-2-2H7z"></path></svg>
+                                </div>
                                 <div>
                                     <span style="font-size:0.75rem; font-weight:700; color:#be185d; text-transform:uppercase; letter-spacing:0.5px; display:block;">Female Staff</span>
                                     <strong style="font-size:1.35rem; color:#9d174d; font-weight:800;" id="hrmSecKpiFemale">0</strong>
                                 </div>
                             </div>
                             <div class="hrm-stat-card" style="background:#fefce8; border:1px solid #fde047; border-radius:10px; padding:12px 14px; display:flex; align-items:center; gap:12px;">
-                                <div style="width:38px; height:38px; border-radius:8px; background:#ca8a04; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">⚡</div>
+                                <div style="width:38px; height:38px; border-radius:8px; background:#ca8a04; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                </div>
                                 <div>
                                     <span style="font-size:0.75rem; font-weight:700; color:#a16207; text-transform:uppercase; letter-spacing:0.5px; display:block;">Operational State</span>
                                     <strong style="font-size:1.05rem; color:#854d0e; font-weight:800;" id="hrmSecKpiStatus">100% Active</strong>
@@ -1561,8 +1588,8 @@
                             </select>
                             <select class="hrm-filter-select" id="hrmSectionGenderFilter" onchange="handleHrmSectionGenderFilter(this.value)">
                                 <option value="ALL">All Genders</option>
-                                <option value="Male">Male Staff</option>
-                                <option value="Female">Female Staff</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
                             </select>
                             <span class="hrm-summary-pill" id="hrmSectionFilteredCountBadge" style="background:#ffffff; font-weight:700;">Loading records...</span>
                         </div>
@@ -2785,6 +2812,7 @@
     <script src="hrm_module_engine.js"></script>
     <script src="warehouse_module_engine.js?v=20260913_fix2"></script>
 <script src="portal_auth.js"></script>
+    <script src="notebook_engine.js"></script>
     <script src="portal_dashboard_runtime.js"></script>
 
 

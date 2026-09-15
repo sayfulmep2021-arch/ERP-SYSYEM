@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ============================================================================
  * ERP SYSTEM - PORTAL MODALS ENGINE (portal_modals.js)
  * ============================================================================
@@ -952,9 +952,10 @@
         <div class="hrm-modal-card">
             <div class="hrm-modal-header">
                 <h3 class="hrm-modal-title">
-                    <span style="color:#0284c7;">+</span> Add New Employee
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>Add New Employee</span>
                 </h3>
-                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmAddModal()">âœ•</button>
+                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmAddModal()" aria-label="Close">&times;</button>
             </div>
             <form id="hrmAddEmployeeForm" onsubmit="submitHrmAddEmployee(event)">
                 <div class="hrm-modal-body">
@@ -1023,9 +1024,10 @@
         <div class="hrm-modal-card">
             <div class="hrm-modal-header">
                 <h3 class="hrm-modal-title">
-                    <span style="color:#0284c7;">âœï¸</span> Edit Employee Details
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    <span>Edit Employee Details</span>
                 </h3>
-                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmEditModal()">âœ•</button>
+                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmEditModal()" aria-label="Close">&times;</button>
             </div>
             <form id="hrmEditEmployeeForm" onsubmit="submitHrmEditEmployee(event)">
                 <input type="hidden" id="hrmEditSl">
@@ -1089,9 +1091,10 @@
         <div class="hrm-modal-card" style="max-width: 560px;">
             <div class="hrm-modal-header">
                 <h3 class="hrm-modal-title">
-                    <span style="color:#d97706;">ðŸ”„</span> Position Replacement (à¦ªà¦¦à¦¬à§€ à¦ªà§à¦°à¦¤à¦¿à¦¸à§à¦¥à¦¾à¦ªà¦¨)
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    <span>Position Replacement</span>
                 </h3>
-                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmReplaceModal()">âœ•</button>
+                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmReplaceModal()" aria-label="Close">&times;</button>
             </div>
             <form id="hrmReplaceEmployeeForm" onsubmit="submitHrmReplaceEmployee(event)">
                 <div class="hrm-modal-body">
@@ -1099,7 +1102,7 @@
                     <div class="hrm-replace-banner">
                         <div class="hrm-replace-banner-title">Current Outgoing Employee:</div>
                         <div class="hrm-replace-banner-details">
-                            SL <span id="hrmReplaceOutSl"></span> | ID: <span id="hrmReplaceOutId"></span> â€” <strong id="hrmReplaceOutName"></strong> (<span id="hrmReplaceOutDesig"></span>, <span id="hrmReplaceOutSection"></span>)
+                            SL <span id="hrmReplaceOutSl"></span> | ID: <span id="hrmReplaceOutId"></span> &mdash; <strong id="hrmReplaceOutName"></strong> (<span id="hrmReplaceOutDesig"></span>, <span id="hrmReplaceOutSection"></span>)
                         </div>
                     </div>
 
@@ -1161,9 +1164,10 @@
         <div class="hrm-modal-card" style="max-width: 440px;">
             <div class="hrm-modal-header" style="background:#fee2e2;">
                 <h3 class="hrm-modal-title" style="color:#b91c1c;">
-                    <span>🗑️</span> Confirm Delete Employee
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#b91c1c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    <span>Confirm Delete Employee</span>
                 </h3>
-                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmDeleteModal()">✕</button>
+                <button type="button" class="hrm-modal-close-btn" onclick="closeHrmDeleteModal()" aria-label="Close">&times;</button>
             </div>
             <div class="hrm-modal-body" style="text-align:center; padding:24px 20px;">
                 <p style="font-size:0.92rem; color:#334155; margin:0 0 10px 0;">
@@ -1319,6 +1323,176 @@
         </div>
     </div>
 
+    <!-- ==========================================================================
+         Executive Notebook & Daily Task Manager Modal (#misNotebookModal)
+         ========================================================================== -->
+    <div class="notebook-modal-backdrop" id="misNotebookModal" onclick="if(event.target===this) closeMISNotebookModal()">
+        <div class="notebook-modal-container">
+            <!-- Modal Header -->
+            <div class="notebook-modal-header">
+                <div class="notebook-header-brand">
+                    <div class="notebook-header-icon">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            <line x1="8" y1="6" x2="16" y2="6"></line>
+                            <line x1="8" y1="10" x2="16" y2="10"></line>
+                            <line x1="8" y1="14" x2="13" y2="14"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="notebook-header-title">Notebook &amp; Daily Task Manager</h2>
+                        <span class="notebook-header-subtitle">Executive Daily Operational Diary • Task Checklist • Auto-Saved</span>
+                    </div>
+                </div>
+
+                <!-- KPI Statistics -->
+                <div class="notebook-kpi-bar">
+                    <div class="notebook-kpi-pill kpi-total" title="Total Notes">
+                        <span class="kpi-label">TOTAL</span>
+                        <span class="kpi-val" id="notebookKpiTotal">0</span>
+                    </div>
+                    <div class="notebook-kpi-pill kpi-pending" title="Pending Tasks">
+                        <span class="kpi-label">PENDING</span>
+                        <span class="kpi-val" id="notebookKpiPending">0</span>
+                    </div>
+                    <div class="notebook-kpi-pill kpi-completed" title="Completed Tasks">
+                        <span class="kpi-label">COMPLETED</span>
+                        <span class="kpi-val" id="notebookKpiCompleted">0</span>
+                    </div>
+                    <div class="notebook-kpi-pill kpi-rate" title="Completion Rate">
+                        <span class="kpi-label">RATE</span>
+                        <span class="kpi-val" id="notebookKpiRate">0%</span>
+                    </div>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="notebook-header-actions">
+                    <button type="button" class="nb-btn-header" onclick="exportNotebookCSV()" title="Export notes to CSV spreadsheet">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Export CSV</span>
+                    </button>
+                    <button type="button" class="nb-btn-header" onclick="printNotebookView()" title="Print Notebook">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        <span>Print</span>
+                    </button>
+                    <button type="button" class="nb-btn-close" onclick="closeMISNotebookModal()" title="Close Notebook (Esc)">✕</button>
+                </div>
+            </div>
+
+            <!-- Modal Body Split: Writing Desk (Left) + Task Board (Right) -->
+            <div class="notebook-modal-body">
+                <!-- Left: Writing Desk / New Page -->
+                <div class="notebook-desk-pane" id="notebookWritingDesk">
+                    <div class="notebook-page-card">
+                        <div class="nb-page-header">
+                            <div class="nb-page-tag">
+                                <span class="nb-page-dot"></span>
+                                <span id="notebookPageTitleLabel">Writing Desk</span>
+                            </div>
+                            <span class="nb-page-counter" id="notebookPageCounter">Page #1</span>
+                        </div>
+
+                        <div class="nb-page-form">
+                            <!-- Hidden ID for edit mode -->
+                            <input type="hidden" id="notebookEditTaskId" value="">
+
+                            <!-- Title / Subject -->
+                            <div class="nb-form-group">
+                                <label class="nb-label" for="notebookTaskTitle">Subject / Title</label>
+                                <input type="text" id="notebookTaskTitle" class="nb-input" placeholder="e.g., Morning Shift Fan Line Inspection..." maxlength="120" autocomplete="off">
+                            </div>
+
+                            <!-- Meta Row -->
+                            <div class="nb-form-row">
+                                <div class="nb-form-group flex-1">
+                                    <label class="nb-label" for="notebookTaskCategory">Category</label>
+                                    <select id="notebookTaskCategory" class="nb-select">
+                                        <option value="Production Floor">🏭 Production Floor</option>
+                                        <option value="Store &amp; Inventory">📦 Store &amp; Inventory</option>
+                                        <option value="Machine Maintenance">⚙️ Machine Maintenance</option>
+                                        <option value="Staff &amp; Attendance">👥 Staff &amp; Attendance</option>
+                                        <option value="General Reminder">📋 General Reminder</option>
+                                    </select>
+                                </div>
+
+                                <div class="nb-form-group flex-1">
+                                    <label class="nb-label" for="notebookTaskPriority">Priority</label>
+                                    <select id="notebookTaskPriority" class="nb-select">
+                                        <option value="urgent">🔴 Urgent / High</option>
+                                        <option value="normal" selected>🟡 Normal</option>
+                                        <option value="low">🟢 Low / Routine</option>
+                                    </select>
+                                </div>
+
+                                <div class="nb-form-group flex-1">
+                                    <label class="nb-label" for="notebookTaskDueDate">Target Date</label>
+                                    <input type="date" id="notebookTaskDueDate" class="nb-input">
+                                </div>
+                            </div>
+
+                            <!-- Note Details -->
+                            <div class="nb-form-group">
+                                <label class="nb-label" for="notebookTaskBody">Note Details / Checklist</label>
+                                <textarea id="notebookTaskBody" class="nb-textarea" rows="4" placeholder="Write any instructions, key numbers, pending decisions, or checklist items here... (Press Ctrl+Enter to save)"></textarea>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="nb-page-actions">
+                                <button type="button" class="nb-btn-primary" id="btnSaveNotebookTask" onclick="saveNotebookTask()" title="Save note and reset to clean page (Ctrl+Enter)">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                                    <span id="btnSaveNotebookText">Save Note &amp; New Page</span>
+                                </button>
+                                <button type="button" class="nb-btn-secondary" onclick="clearNotebookForm()" title="Clear writing desk for fresh page">
+                                    <span>Clear Page</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Task Cards Grid -->
+                <div class="notebook-board-pane">
+                    <!-- Board Toolbar -->
+                    <div class="notebook-board-toolbar">
+                        <div class="nb-filter-tabs">
+                            <button type="button" class="nb-tab active" data-filter="all" onclick="filterNotebookTasks('all')">All (<span id="tabCountAll">0</span>)</button>
+                            <button type="button" class="nb-tab" data-filter="pending" onclick="filterNotebookTasks('pending')">Pending (<span id="tabCountPending">0</span>)</button>
+                            <button type="button" class="nb-tab" data-filter="completed" onclick="filterNotebookTasks('completed')">Completed (<span id="tabCountCompleted">0</span>)</button>
+                            <button type="button" class="nb-tab" data-filter="urgent" onclick="filterNotebookTasks('urgent')">Urgent (<span id="tabCountUrgent">0</span>)</button>
+                            <button type="button" class="nb-tab" data-filter="today" onclick="filterNotebookTasks('today')">Today (<span id="tabCountToday">0</span>)</button>
+                        </div>
+
+                        <div class="nb-search-wrap">
+                            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" class="nb-search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="notebookSearchInput" class="nb-search-input" placeholder="Search notes..." oninput="searchNotebookTasks(this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Cards Container -->
+                    <div class="notebook-cards-scroll" id="notebookCardsScroll">
+                        <div class="notebook-cards-grid" id="notebookCardsGrid">
+                            <!-- Dynamic task card boxes will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="notebook-modal-footer">
+                <div class="notebook-footer-info">
+                    <span class="nb-status-dot"></span>
+                    <span id="notebookFooterStatus">All notes auto-saved to local browser storage &amp; executive session.</span>
+                </div>
+                <div class="notebook-footer-actions">
+                    <button type="button" class="nb-btn-outline-danger" onclick="clearCompletedNotebookTasks()" title="Delete all completed tasks">
+                        <span>Clear Completed Tasks</span>
+                    </button>
+                    <button type="button" class="nb-btn-close-footer" onclick="closeMISNotebookModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 `;
 
     function mountPortalModals() {
