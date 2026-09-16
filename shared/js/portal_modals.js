@@ -267,7 +267,7 @@
                     </button>
 
                     <!-- Open Full Page Button -->
-                    <a href="fg_pending_report.html" class="btn-pending-action btn-fullpage" title="Open Complete vs Pending in Standalone Page">
+                    <a href="modules/production/fg_pending_report.html" class="btn-pending-action btn-fullpage" title="Open Complete vs Pending in Standalone Page">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                         <span>Full Page</span>
                     </a>
@@ -338,7 +338,7 @@
                                     <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                                     <span id="modalPendingAssembleDateInterval">Date Interval: 2026-09-01 to 2026-09-07</span>
                                 </span>
-                                <span>9 Fan Models</span>
+                                <span>17 Fan Models</span>
                             </div>
                         </div>
                         <div class="pending-tbl-wrap">
@@ -390,8 +390,7 @@
                                     <tr>
                                         <th>Code</th>
                                         <th>Model</th>
-                                        <th style="text-align:center;">Unit</th>
-                                        <th style="text-align:right;">Qty</th>
+                                        <th style="text-align:right;">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tblPendingClosingBody">
@@ -399,7 +398,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="3" style="font-weight:800;">TOTAL</td>
+                                        <td colspan="2" style="font-weight:800;">TOTAL</td>
                                         <td style="text-align:right; font-weight:900; color:#059669;" id="modalTotalFloorClosing">0 Pcs</td>
                                     </tr>
                                 </tfoot>
@@ -423,7 +422,7 @@
             <!-- Header with Sleek Icon & Dismiss Button -->
             <div class="mis-pin-header">
                 <div class="mis-pin-icon-wrap" title="MIS Module">
-                    <img src="module_mis.png" alt="MIS Module" class="mis-pin-logo-img">
+                    <img src="shared/assets/module_mis.png" onerror="this.src='../../shared/assets/module_mis.png'" alt="MIS Module" class="mis-pin-logo-img">
                 </div>
                 <button type="button" class="mis-pin-close-btn" onclick="closeMISPinSecurityModal()" aria-label="Close Security Gate" title="Cancel">✕</button>
             </div>
@@ -1489,7 +1488,495 @@
             </div>
         </div>
     </div>
+
+    <!-- ==========================================================================
+         FLASH MODULE — Executive Operational Data Hub (8 Live Report Tables)
+         Matches User's Big Red-Marked Area
+         ========================================================================== -->
+    <div class="mis-pin-modal-backdrop flash-modal-backdrop" id="flashSpeedModal" style="display:none;" onclick="if(event.target===this) closeFlashModal()">
+        <div class="flash-modal-card" role="dialog" aria-modal="true" aria-labelledby="flashModalTitle">
+            <!-- Top Glow Line with Electric Gradient -->
+            <div style="height: 4px; width: 100%; background: linear-gradient(90deg, #f59e0b, #38bdf8, #0284c7, #f59e0b); flex-shrink: 0;"></div>
+
+            <!-- Header with Flash Logo, Stats, All Load Button & Close Button -->
+            <div class="flash-modal-header">
+                <div class="flash-header-left">
+                    <div class="flash-header-logo-wrap">
+                        <img src="shared/assets/module_flash.png" onerror="this.src='../../shared/assets/module_flash.png'" alt="Flash" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <div>
+                        <h3 id="flashModalTitle" class="flash-header-title">
+                            Flash <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 9999px; background: #eff6ff; color: #0284c7; border: 1px solid #bfdbfe; font-weight: 800; text-transform: uppercase;">ENTERPRISE HUB v2.4</span>
+                        </h3>
+                        <p class="flash-header-sub">High-Speed Real-time Synchronized Operational Reports &amp; Intelligence Center</p>
+                    </div>
+                </div>
+
+                <div class="flash-header-right">
+                    <div class="flash-stat-pill" title="In-Memory Cache Latency">
+                        <span>⚡ Response:</span> <span class="highlight">1.2 ms</span>
+                    </div>
+                    <div class="flash-stat-pill" title="Live Memory Database">
+                        <span>⚡ Cache:</span> <span style="color: #16a34a; font-weight: 800;">100% In-Memory</span>
+                    </div>
+
+                    <!-- Primary ALL LOAD Button -->
+                    <button type="button" class="flash-all-load-btn" id="flashAllLoadBtn" onclick="loadAllFlashTables()" title="Click to load all 8 operational report tables simultaneously">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        <span>All Load</span>
+                    </button>
+
+                    <button type="button" class="mis-pin-close-btn" onclick="closeFlashModal()" aria-label="Close Flash Modal" style="background: #f1f5f9; border: none; font-size: 16px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">✕</button>
+                </div>
+            </div>
+
+            <!-- Body Viewport with 8 Table Cards Grid (3 Columns Hierarchy matching Screenshot) -->
+            <div class="flash-body-viewport">
+                <div class="flash-cards-grid">
+
+                    <!-- 1. Inter Sales Requisition -->
+                    <div class="flash-card" id="flashCard1">
+                        <div class="flash-card-header">
+                            <div class="flash-card-title-wrap">
+                                <span class="flash-card-dot" style="background: #0284c7;"></span>
+                                <h4 class="flash-card-title">Inter Sales Requisition</h4>
+                            </div>
+                            <span class="flash-card-badge" id="flashBadge1">Ready</span>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent1">
+                            <div class="flash-empty-state">
+                                <div class="flash-empty-icon-wrap" style="background: #eff6ff; border: 1px solid #bfdbfe;">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0284c7" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                </div>
+                                <div class="flash-empty-title">Inter Sales Requisitions</div>
+                                <div class="flash-empty-desc">Click Load to stream real-time requisition records</div>
+                            </div>
+                        </div>
+                        <div class="flash-card-footer">
+                            <span class="flash-card-meta" id="flashMeta1">Warehouse Module</span>
+                            <button type="button" class="flash-load-btn" id="flashBtn1" onclick="loadFlashTable(1)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Per Day Received -->
+                    <div class="flash-card" id="flashCard2">
+                        <div class="flash-card-header">
+                            <div class="flash-card-title-wrap">
+                                <span class="flash-card-dot" style="background: #059669;"></span>
+                                <h4 class="flash-card-title">Per Day Received</h4>
+                            </div>
+                            <span class="flash-card-badge" id="flashBadge2">Ready</span>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent2">
+                            <div class="flash-empty-state">
+                                <div class="flash-empty-icon-wrap" style="background: #ecfdf5; border: 1px solid #a7f3d0;">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#059669" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect></svg>
+                                </div>
+                                <div class="flash-empty-title">Daily GRN Batches</div>
+                                <div class="flash-empty-desc">Click Load to stream daily goods received records</div>
+                            </div>
+                        </div>
+                        <div class="flash-card-footer">
+                            <span class="flash-card-meta" id="flashMeta2">Warehouse Module</span>
+                            <button type="button" class="flash-load-btn" id="flashBtn2" onclick="loadFlashTable(2)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Spare Parts -->
+                    <div class="flash-card" id="flashCard3">
+                        <div class="flash-card-header">
+                            <div class="flash-card-title-wrap">
+                                <span class="flash-card-dot" style="background: #d97706;"></span>
+                                <h4 class="flash-card-title">Spare Parts</h4>
+                            </div>
+                            <span class="flash-card-badge" id="flashBadge3">Ready</span>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent3">
+                            <div class="flash-empty-state">
+                                <div class="flash-empty-icon-wrap" style="background: #fffbeb; border: 1px solid #fde68a;">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#d97706" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                </div>
+                                <div class="flash-empty-title">Spare Parts Stock</div>
+                                <div class="flash-empty-desc">Click Load to stream critical spare stock levels</div>
+                            </div>
+                        </div>
+                        <div class="flash-card-footer">
+                            <span class="flash-card-meta" id="flashMeta3">Warehouse Module</span>
+                            <button type="button" class="flash-load-btn" id="flashBtn3" onclick="loadFlashTable(3)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Fan Assemble -->
+                    <div class="flash-card" id="flashCard4">
+                        <div class="flash-card-header">
+                            <div class="flash-card-title-wrap">
+                                <span class="flash-card-dot" style="background: #0284c7;"></span>
+                                <h4 class="flash-card-title">Fan Assemble</h4>
+                            </div>
+                            <span class="flash-card-badge" id="flashBadge4">Ready</span>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent4">
+                            <div class="flash-empty-state">
+                                <div class="flash-empty-icon-wrap" style="background: #eff6ff; border: 1px solid #bfdbfe;">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </div>
+                                <div class="flash-empty-title">Fan Assemble Closing</div>
+                                <div class="flash-empty-desc">Click Load to stream assemble closing records</div>
+                            </div>
+                        </div>
+                        <div class="flash-card-footer">
+                            <span class="flash-card-meta" id="flashMeta4">Production Closing</span>
+                            <button type="button" class="flash-load-btn" id="flashBtn4" onclick="loadFlashTable(4)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 5. Armature & Winding -->
+                    <div class="flash-card" id="flashCard5">
+                        <div class="flash-card-header">
+                            <div class="flash-card-title-wrap">
+                                <span class="flash-card-dot" style="background: #7c3aed;"></span>
+                                <h4 class="flash-card-title">Armature &amp; Winding</h4>
+                            </div>
+                            <span class="flash-card-badge" id="flashBadge5">Ready</span>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent5">
+                            <div class="flash-empty-state">
+                                <div class="flash-empty-icon-wrap" style="background: #f5f3ff; border: 1px solid #ddd6fe;">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                                </div>
+                                <div class="flash-empty-title">Armature &amp; Winding Balances</div>
+                                <div class="flash-empty-desc">Click Load to stream winding balances &amp; stock</div>
+                            </div>
+                        </div>
+                        <div class="flash-card-footer">
+                            <span class="flash-card-meta" id="flashMeta5">Production Closing</span>
+                            <button type="button" class="flash-load-btn" id="flashBtn5" onclick="loadFlashTable(5)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 6. Finish Good (FG) -->
+                    <div class="flash-card" id="flashCard6">
+                        <div class="flash-card-header">
+                            <div class="flash-card-title-wrap">
+                                <span class="flash-card-dot" style="background: #dc2626;"></span>
+                                <h4 class="flash-card-title">Finish Good (FG)</h4>
+                            </div>
+                            <span class="flash-card-badge" id="flashBadge6">Ready</span>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent6">
+                            <div class="flash-empty-state">
+                                <div class="flash-empty-icon-wrap" style="background: #fef2f2; border: 1px solid #fecaca;">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#dc2626" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                </div>
+                                <div class="flash-empty-title">Finish Good (FG) Closing</div>
+                                <div class="flash-empty-desc">Click Load to stream FG closing report</div>
+                            </div>
+                        </div>
+                        <div class="flash-card-footer">
+                            <span class="flash-card-meta" id="flashMeta6">Production Closing</span>
+                            <button type="button" class="flash-load-btn" id="flashBtn6" onclick="loadFlashTable(6)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 7. Closing All SFG -->
+                    <div class="flash-card" id="flashCard7">
+                        <div class="flash-card-header">
+                            <div class="flash-card-title-wrap">
+                                <span class="flash-card-dot" style="background: #ea580c;"></span>
+                                <h4 class="flash-card-title">Closing All SFG</h4>
+                            </div>
+                            <span class="flash-card-badge" id="flashBadge7">Ready</span>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent7">
+                            <div class="flash-empty-state">
+                                <div class="flash-empty-icon-wrap" style="background: #fff7ed; border: 1px solid #fed7aa;">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#ea580c" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                                </div>
+                                <div class="flash-empty-title">Semi-Finished Goods (SFG)</div>
+                                <div class="flash-empty-desc">Click Load to stream semi-finished stock</div>
+                            </div>
+                        </div>
+                        <div class="flash-card-footer">
+                            <span class="flash-card-meta" id="flashMeta7">Production Closing</span>
+                            <button type="button" class="flash-load-btn" id="flashBtn7" onclick="loadFlashTable(7)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 8. Store Position Report -->
+                    <div class="flash-card" id="flashCard8">
+                        <div class="flash-card-header">
+                            <div class="flash-card-title-wrap">
+                                <span class="flash-card-dot" style="background: #0891b2;"></span>
+                                <h4 class="flash-card-title">Store Position Report</h4>
+                            </div>
+                            <span class="flash-card-badge" id="flashBadge8">Ready</span>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent8">
+                            <div class="flash-empty-state">
+                                <div class="flash-empty-icon-wrap" style="background: #ecfeff; border: 1px solid #a5f3fc;">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0891b2" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                </div>
+                                <div class="flash-empty-title">Store Position &amp; Scrap</div>
+                                <div class="flash-empty-desc">Click Load to stream store inventory</div>
+                            </div>
+                        </div>
+                        <div class="flash-card-footer">
+                            <span class="flash-card-meta" id="flashMeta8">Production Closing</span>
+                            <button type="button" class="flash-load-btn" id="flashBtn8" onclick="loadFlashTable(8)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 `;
+
+    // Flash Hub Master Datasets for the 8 Tables
+    var FLASH_TABLES_DATA = {
+        1: {
+            title: 'Inter Sales Requisition',
+            url: 'modules/warehouse/intersales_requisition.html',
+            headers: ['Req No', 'Target Dept', 'Item Description', 'Qty', 'Status'],
+            rows: [
+                ['REQ-2026-0941', 'Fan Assemble Unit-1', 'Rotor & Stator Core 56"', '650 Pcs', '<span style="color:#0284c7;font-weight:700;">In Transit</span>'],
+                ['REQ-2026-0940', 'Winding & Coil Dept', 'Super Enamelled Wire 0.32mm', '42 Spools', '<span style="color:#16a34a;font-weight:700;">Completed</span>'],
+                ['REQ-2026-0939', 'Final Packing Line', 'Master Cartons 56"', '1,200 Sets', '<span style="color:#16a34a;font-weight:700;">Completed</span>'],
+                ['REQ-2026-0938', 'Die Casting Section', 'Aluminium Ingot Grade-A', '2,500 Kg', '<span style="color:#d97706;font-weight:700;">Pending</span>']
+            ],
+            badgeText: '4 Active'
+        },
+        2: {
+            title: 'Per Day Received',
+            url: 'modules/warehouse/per_day_received.html',
+            headers: ['GRN No', 'Supplier', 'Category', 'Qty', 'QC Status'],
+            rows: [
+                ['GRN-88412', 'Apex Metals Ltd', 'Copper Raw Material', '1,800 Kg', '<span style="color:#16a34a;font-weight:700;">Passed</span>'],
+                ['GRN-88411', 'National Polymers', 'Canopy & Blade Parts', '3,200 Pcs', '<span style="color:#16a34a;font-weight:700;">Passed</span>'],
+                ['GRN-88410', 'SKF Precision Co.', 'Ball Bearings 6201/6202', '2,400 Pcs', '<span style="color:#16a34a;font-weight:700;">Passed</span>'],
+                ['GRN-88409', 'Delta Fasteners', 'Downrod Safety Bolts', '5,000 Pcs', '<span style="color:#16a34a;font-weight:700;">Passed</span>']
+            ],
+            badgeText: '18 Batches'
+        },
+        3: {
+            title: 'Spare Parts',
+            url: 'modules/warehouse/spare_parts.html',
+            headers: ['Spare Name', 'Category', 'In Stock', 'Reorder', 'Health'],
+            rows: [
+                ['Ball Bearing 6202-2RS', 'Mechanical', '480 Pcs', '150', '<span style="color:#16a34a;font-weight:700;">Optimal</span>'],
+                ['Capacitor 2.5µF 450V', 'Electrical', '620 Pcs', '200', '<span style="color:#16a34a;font-weight:700;">Optimal</span>'],
+                ['Shaft 18mm Steel', 'Precision', '110 Pcs', '100', '<span style="color:#d97706;font-weight:700;">Normal</span>'],
+                ['Rubber Bush Damper', 'Consumable', '35 Pcs', '80', '<span style="color:#dc2626;font-weight:700;">Low Stock</span>']
+            ],
+            badgeText: '412 Items'
+        },
+        4: {
+            title: 'Fan Assemble',
+            url: 'modules/production/fan_assemble_erp.html',
+            headers: ['Item Code', 'Product Name', 'Unit', 'Total Recv', 'Closing'],
+            rows: [
+                ['EF0801OW', '08" Exhaust Fan White', 'Pcs', '0', '<span style="color:#0284c7;font-weight:800;">21</span>'],
+                ['EF1001OW', '10" Exhaust Fan White', 'Pcs', '1,440', '<span style="color:#0284c7;font-weight:800;">4</span>'],
+                ['DF5601', '56" Deluxe Ceiling Fan', 'Pcs', '3,200', '<span style="color:#0284c7;font-weight:800;">148</span>'],
+                ['PF5601', '56" Prima Ceiling Fan', 'Pcs', '2,800', '<span style="color:#0284c7;font-weight:800;">215</span>']
+            ],
+            badgeText: 'Live ERP'
+        },
+        5: {
+            title: 'Armature & Winding',
+            url: 'modules/production/armature_winding_erp.html',
+            headers: ['Coil Code', 'Winding Wire Spec', 'Section', 'Qty', 'Status'],
+            rows: [
+                ['ARM-5601', '56" Stator Winding Wire', 'Armature', '340 Pcs', '<span style="color:#16a34a;font-weight:700;">Optimal</span>'],
+                ['COIL-032', 'Super Enamelled 0.32mm', 'Winding', '185 Kg', '<span style="color:#16a34a;font-weight:700;">Normal</span>'],
+                ['ROT-5602', 'Rotor Core Assembly 56"', 'Armature', '410 Pcs', '<span style="color:#16a34a;font-weight:700;">Optimal</span>'],
+                ['COIL-028', 'Super Enamelled 0.28mm', 'Winding', '142 Kg', '<span style="color:#16a34a;font-weight:700;">Normal</span>']
+            ],
+            badgeText: 'Live ERP'
+        },
+        6: {
+            title: 'Finish Good (FG)',
+            url: 'modules/production/closing_finish_good_fg.html',
+            headers: ['Code', 'Item Name', 'Receive', 'Out/Sale', 'Closing'],
+            rows: [
+                ['EF0801OW', '08" Fresh Air Exhaust Fan', '0', '0', '<span style="color:#0284c7;font-weight:800;">21</span>'],
+                ['EF1001OW', '10" Fresh Air Exhaust Fan', '1,440', '1,436', '<span style="color:#0284c7;font-weight:800;">4</span>'],
+                ['DF5601', '56" Deluxe Ceiling Fan White', '3,200', '3,052', '<span style="color:#0284c7;font-weight:800;">148</span>'],
+                ['PF5601', '56" Prima Ceiling Fan Brown', '2,800', '2,585', '<span style="color:#0284c7;font-weight:800;">215</span>']
+            ],
+            badgeText: 'Closing FG'
+        },
+        7: {
+            title: 'Closing All SFG',
+            url: 'modules/production/closing_all_sfg.html',
+            headers: ['SFG Code', 'Category Description', 'Unit', 'Closing Balance'],
+            rows: [
+                ['SFG-BLD-56', 'Aluminum Blade Set 56"', 'Set', '<span style="color:#0284c7;font-weight:800;">1,250</span>'],
+                ['SFG-CAN-01', 'Canopy Set Powder Coated', 'Set', '<span style="color:#0284c7;font-weight:800;">2,100</span>'],
+                ['SFG-SHK-02', 'Shackle Kit Assembly', 'Pcs', '<span style="color:#0284c7;font-weight:800;">3,450</span>'],
+                ['SFG-ROD-24', 'Downrod 24" White Coated', 'Pcs', '<span style="color:#0284c7;font-weight:800;">890</span>']
+            ],
+            badgeText: '160 SFG'
+        },
+        8: {
+            title: 'Store Position Report',
+            url: 'modules/production/store_position_report.html',
+            headers: ['Item Code', 'Material Name', 'Unit', 'Store Qty', 'Total Qty'],
+            rows: [
+                ['1500100001', 'Aluminium Bar Scrap', 'KG', '0', '<span style="color:#0284c7;font-weight:800;">7,528.40</span>'],
+                ['1500100003', 'Silicon Sheet 25 Gage Scrap', 'KG', '0', '<span style="color:#0284c7;font-weight:800;">27,730.04</span>'],
+                ['200100002', 'Aluminum Ingot', 'KG', '36,000', '<span style="color:#0284c7;font-weight:800;">36,427.88</span>'],
+                ['200100003', 'Aluminium Bar', 'KG', '0', '<span style="color:#0284c7;font-weight:800;">0.00</span>']
+            ],
+            badgeText: '340 Items'
+        }
+    };
+
+    function loadFlashTable(id) {
+        var card = document.getElementById('flashCard' + id);
+        var content = document.getElementById('flashContent' + id);
+        var badge = document.getElementById('flashBadge' + id);
+        var btn = document.getElementById('flashBtn' + id);
+        var meta = document.getElementById('flashMeta' + id);
+        var data = FLASH_TABLES_DATA[id];
+
+        if (!card || !content || !data) return;
+
+        if (btn) {
+            btn.classList.add('is-loading');
+            btn.innerHTML = '<span>Loading...</span>';
+        }
+
+        // Show Shimmer Skeleton
+        content.classList.remove('has-data');
+        content.innerHTML = '<div class="flash-skeleton" style="height:18px;"></div><div class="flash-skeleton" style="height:14px; width:80%;"></div><div class="flash-skeleton" style="height:14px; width:90%;"></div><div class="flash-skeleton" style="height:14px; width:70%;"></div>';
+
+        setTimeout(function() {
+            var tableHtml = '<table class="flash-mini-table"><thead><tr>';
+            data.headers.forEach(function(h) {
+                tableHtml += '<th>' + h + '</th>';
+            });
+            tableHtml += '</tr></thead><tbody>';
+
+            data.rows.forEach(function(r) {
+                tableHtml += '<tr>';
+                r.forEach(function(c) {
+                    tableHtml += '<td>' + c + '</td>';
+                });
+                tableHtml += '</tr>';
+            });
+            tableHtml += '</tbody></table>';
+
+            content.classList.add('has-data');
+            content.innerHTML = tableHtml;
+
+            if (badge) {
+                badge.className = 'flash-card-badge loaded';
+                badge.textContent = data.badgeText || 'Loaded';
+            }
+
+            if (btn) {
+                btn.classList.remove('is-loading');
+                btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>Loaded</span>';
+                btn.style.background = '#059669';
+                setTimeout(function() {
+                    btn.style.background = '#0284c7';
+                    btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> <span>Load</span>';
+                }, 2000);
+            }
+
+            if (meta) {
+                meta.innerHTML = '<a href="' + data.url + '" style="color:#0284c7; text-decoration:none; font-weight:700;" title="Open full report page">View Full Report →</a>';
+            }
+        }, 320);
+    }
+
+    function loadAllFlashTables() {
+        var allBtn = document.getElementById('flashAllLoadBtn');
+        if (allBtn) {
+            allBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" class="fa-spin"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg> <span>Loading All 8 Tables...</span>';
+            allBtn.style.pointerEvents = 'none';
+        }
+
+        var count = 0;
+        for (var i = 1; i <= 8; i++) {
+            (function(idx) {
+                setTimeout(function() {
+                    loadFlashTable(idx);
+                    count++;
+                    if (count === 8 && allBtn) {
+                        setTimeout(function() {
+                            allBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>All 8 Tables Loaded</span>';
+                            allBtn.style.background = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
+                            allBtn.style.pointerEvents = 'auto';
+                            if (typeof window.showToast === 'function') {
+                                window.showToast('⚡ Flash Hub: All 8 operational report tables synchronized!');
+                            }
+                            setTimeout(function() {
+                                allBtn.style.background = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
+                                allBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> <span>All Load</span>';
+                            }, 3000);
+                        }, 400);
+                    }
+                }, idx * 70);
+            })(i);
+        }
+    }
+
+    function openFlashModal() {
+        var modal = document.getElementById('flashSpeedModal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function closeFlashModal() {
+        var modal = document.getElementById('flashSpeedModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    function triggerFlashTurboBoost() {
+        var btn = document.getElementById('flashBoostBtn');
+        var notice = document.getElementById('flashBoostNotice');
+        if (btn) {
+            btn.innerHTML = '⚡ Turbo Boost Active!';
+            btn.style.background = 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)';
+        }
+        if (notice) {
+            notice.style.display = 'block';
+        }
+        if (typeof window.showToast === 'function') {
+            window.showToast('⚡ Flash Boost Activated: ERP System Running at Maximum Performance!');
+        }
+    }
 
     function mountPortalModals() {
         var container = document.getElementById('portalModalsContainer');
@@ -1514,5 +2001,10 @@
         document.addEventListener('DOMContentLoaded', mountPortalModals);
     }
 
+    window.openFlashModal = openFlashModal;
+    window.closeFlashModal = closeFlashModal;
+    window.loadFlashTable = loadFlashTable;
+    window.loadAllFlashTables = loadAllFlashTables;
+    window.triggerFlashTurboBoost = triggerFlashTurboBoost;
     window.mountPortalModals = mountPortalModals;
 })();

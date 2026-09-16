@@ -70,11 +70,11 @@
         })();
     </script>
 
-    <link rel="stylesheet" href="corporate_design_system.css?v=20260905">
-    <link rel="stylesheet" href="report_sidebar.css?v=20260905">
-    <link rel="stylesheet" href="warehouse_module.css?v=20260913_fix2">
-    <script src="notification_system.js?v=20260905"></script>
-    <script src="smart_firebase_sync.js?v=20260905"></script>
+    <link rel="stylesheet" href="shared/css/corporate_design_system.css?v=20260905">
+    <link rel="stylesheet" href="shared/css/report_sidebar.css?v=20260905">
+    <link rel="stylesheet" href="modules/warehouse/warehouse_module.css?v=20260913_fix2">
+    <script src="shared/js/notification_system.js?v=20260905"></script>
+    <script src="shared/js/smart_firebase_sync.js?v=20260905"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Sayful Islam (Fan) | Report Management Portal</title>
@@ -86,18 +86,18 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MEP Portal">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/x-icon" href="shared/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="shared/assets/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="shared/assets/icon-512.png">
+    <link rel="apple-touch-icon" href="shared/assets/icon-192.png">
     
     <!-- Google Fonts for Modern Corporate Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
-    <script src="portal_guard.js"></script>
-    <link rel="stylesheet" href="portal_styles.css">
+    <script src="shared/js/portal_guard.js"></script>
+    <link rel="stylesheet" href="shared/css/portal_styles.css">
 </head>
 <body class="corp-themed">
 
@@ -118,7 +118,7 @@
             <div class="auth-form-side">
                 <div class="auth-brand-area">
                     <div class="auth-logo-badge">
-                        <img src="sayful_logo.png" alt="Sayful Fan" class="auth-brand-logo-img">
+                        <img src="shared/assets/sayful_logo.png" alt="Sayful Fan" class="auth-brand-logo-img">
                     </div>
                 </div>
 
@@ -352,7 +352,7 @@
                 <!-- Left: Circular Brand Logo with Title (Perfect Circle, Clean Padding, No Square Background) -->
                 <div class="module-brand-brandmark">
                     <div class="module-logo-circle" title="Fan Assemble (ERP)">
-                        <img src="sayful_logo.png" alt="Fan Assemble" class="module-logo-img">
+                        <img src="shared/assets/sayful_logo.png" alt="Fan Assemble" class="module-logo-img">
                     </div>
                     <div class="module-brand-meta">
                         <span class="module-brand-name">Fan Assemble (ERP)</span>
@@ -385,7 +385,7 @@
                              aria-expanded="false" 
                              title="Click to view Profile Details">
                             <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                                <img src="profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='sayful_logo.png'">
+                                <img src="shared/assets/profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='shared/assets/sayful_logo.png'">
                             </div>
                             <div class="user-brand-meta">
                                 <span class="user-brand-name" id="moduleProfileName">Sayful Islam</span>
@@ -404,7 +404,7 @@
                             </button>
 
                             <div class="profile-photo-container">
-                                <img src="profile.jpg" alt="Sayful Islam" class="profile-photo" onerror="this.src='sayful_logo.png'">
+                                <img src="shared/assets/profile.jpg" alt="Sayful Islam" class="profile-photo" onerror="this.src='shared/assets/sayful_logo.png'">
                             </div>
 
                             <h2 class="profile-name" id="moduleProfileDropdownTitle">Sayful Islam</h2>
@@ -464,7 +464,7 @@
                 <!-- 1. Warehouse Module -->
                 <div class="module-card-item" onclick="openModuleWarehouseAction(event)" role="button" tabindex="0" title="Warehouse Module">
                     <div class="module-card-icon-wrap">
-                        <img src="module_warehouse.png" alt="Warehouse Module" class="module-card-img">
+                        <img src="shared/assets/module_warehouse.png" alt="Warehouse Module" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">Warehouse Module</h2>
@@ -475,7 +475,7 @@
                 <!-- 2. Production Module (PRIMARY: Opens Dashboard) -->
                 <div class="module-card-item" onclick="switchToProductionModule(event)" role="button" tabindex="0" title="Production Module - Click to Open Dashboard">
                     <div class="module-card-icon-wrap">
-                        <img src="module_production.png" alt="Production Module" class="module-card-img">
+                        <img src="shared/assets/module_production.png" alt="Production Module" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">Production Module</h2>
@@ -486,7 +486,7 @@
                 <!-- 3. HRM Module -->
                 <div class="module-card-item" onclick="openModuleHRMAction(event)" role="button" tabindex="0" title="HRM Module">
                     <div class="module-card-icon-wrap">
-                        <img src="module_hrm.png" alt="HRM Module" class="module-card-img">
+                        <img src="shared/assets/module_hrm.png" alt="HRM Module" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">HRM Module</h2>
@@ -497,7 +497,7 @@
                 <!-- 4. User Module -->
                 <div class="module-card-item" onclick="openModuleUserAction(event)" role="button" tabindex="0" title="User Module">
                     <div class="module-card-icon-wrap">
-                        <img src="module_user.png" alt="User Module" class="module-card-img">
+                        <img src="shared/assets/module_user.png" alt="User Module" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">User Module</h2>
@@ -508,11 +508,22 @@
                 <!-- 5. MIS Module -->
                 <div class="module-card-item module-card-mis" onclick="openModuleMISAction(event)" role="button" tabindex="0" title="MIS Module">
                     <div class="module-card-icon-wrap">
-                        <img src="module_mis.png" alt="MIS Module" class="module-card-img">
+                        <img src="shared/assets/module_mis.png" alt="MIS Module" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">MIS Module</h2>
                         <p class="module-card-desc">System Performance &amp; Access Control</p>
+                    </div>
+                </div>
+
+                <!-- 6. Flash Module -->
+                <div class="module-card-item module-card-flash" onclick="openModuleFlashAction(event)" role="button" tabindex="0" title="Flash">
+                    <div class="module-card-icon-wrap">
+                        <img src="shared/assets/module_flash.png" alt="Flash" class="module-card-img">
+                    </div>
+                    <div class="module-card-content">
+                        <h2 class="module-card-title">Flash</h2>
+                        <p class="module-card-desc">High-Speed Real-time Intelligence &amp; Performance Boost</p>
                     </div>
                 </div>
 
@@ -532,7 +543,7 @@
                 <!-- Left: Circular Brand Logo with Title (Navigation Frozen per User Requirement #2) -->
                 <div class="module-brand-brandmark" style="cursor:default;" title="Fan Assemble (ERP) | MIS Module">
                     <div class="module-logo-circle" title="Fan Assemble (ERP)">
-                        <img src="sayful_logo.png" alt="Fan Assemble" class="module-logo-img">
+                        <img src="shared/assets/sayful_logo.png" alt="Fan Assemble" class="module-logo-img">
                     </div>
                     <div class="module-brand-meta">
                         <span class="module-brand-name">Fan Assemble (ERP)</span>
@@ -565,7 +576,7 @@
                              aria-expanded="false" 
                              title="Click to view Profile Details">
                             <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                                <img src="profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='sayful_logo.png'">
+                                <img src="shared/assets/profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='shared/assets/sayful_logo.png'">
                             </div>
                             <div class="user-brand-meta">
                                 <span class="user-brand-name" id="misProfileName">Sayful Islam</span>
@@ -584,7 +595,7 @@
                             </button>
 
                             <div class="profile-photo-container">
-                                <img src="profile.jpg" alt="Sayful Islam" class="profile-photo" onerror="this.src='sayful_logo.png'">
+                                <img src="shared/assets/profile.jpg" alt="Sayful Islam" class="profile-photo" onerror="this.src='shared/assets/sayful_logo.png'">
                             </div>
 
                             <h2 class="profile-name" id="misProfileDropdownTitle">Sayful Islam</h2>
@@ -679,7 +690,7 @@
                 <!-- 1. Theme Performance -->
                 <div class="module-card-item" onclick="openMISOption('theme')" role="button" tabindex="0" title="Theme Performance">
                     <div class="module-card-icon-wrap">
-                        <img src="mis_opt_theme.svg" alt="Theme Performance" class="module-card-img">
+                        <img src="modules/mis/mis_opt_theme.svg" alt="Theme Performance" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">Theme Performance</h2>
@@ -690,7 +701,7 @@
                 <!-- 2. View Access Control -->
                 <div class="module-card-item" onclick="openMISOption('access')" role="button" tabindex="0" title="View Access Control">
                     <div class="module-card-icon-wrap">
-                        <img src="mis_opt_access.svg" alt="View Access Control" class="module-card-img">
+                        <img src="modules/mis/mis_opt_access.svg" alt="View Access Control" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">View Access Control</h2>
@@ -701,7 +712,7 @@
                 <!-- 3. Show & Edit Link -->
                 <div class="module-card-item" onclick="openMISOption('links')" role="button" tabindex="0" title="Show &amp; Edit Link">
                     <div class="module-card-icon-wrap">
-                        <img src="mis_opt_links.svg" alt="Show &amp; Edit Link" class="module-card-img">
+                        <img src="modules/mis/mis_opt_links.svg" alt="Show &amp; Edit Link" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">Show &amp; Edit Link</h2>
@@ -712,7 +723,7 @@
                 <!-- 4. Edit Page -->
                 <div class="module-card-item" onclick="openMISOption('edit')" role="button" tabindex="0" title="Edit Page">
                     <div class="module-card-icon-wrap">
-                        <img src="mis_opt_edit.svg" alt="Edit Page" class="module-card-img">
+                        <img src="modules/mis/mis_opt_edit.svg" alt="Edit Page" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">Edit Page</h2>
@@ -737,7 +748,7 @@
                 <!-- 6. Others -->
                 <div class="module-card-item" onclick="openMISOption('others')" role="button" tabindex="0" title="Others">
                     <div class="module-card-icon-wrap">
-                        <img src="mis_opt_others.svg" alt="Others" class="module-card-img">
+                        <img src="modules/mis/mis_opt_others.svg" alt="Others" class="module-card-img">
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">Others</h2>
@@ -793,7 +804,7 @@
                 <!-- Left: Circular Brand Logo -->
                 <div class="module-brand-brandmark" style="cursor:pointer;" onclick="switchToModuleSelectionView()" title="Fan Assemble (ERP) | User Module">
                     <div class="module-logo-circle" title="Fan Assemble (ERP)">
-                        <img src="sayful_logo.png" alt="Fan Assemble" class="module-logo-img">
+                        <img src="shared/assets/sayful_logo.png" alt="Fan Assemble" class="module-logo-img">
                     </div>
                     <div class="module-brand-meta">
                         <span class="module-brand-name">Fan Assemble (ERP)</span>
@@ -817,7 +828,7 @@
                     <!-- Profile Component with Nameplate Sync -->
                     <div class="user-brand-card" style="cursor:default;">
                         <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                            <img src="profile.jpg" alt="Sayful Islam" class="dynamic-profile-img" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='sayful_logo.png'">
+                            <img src="shared/assets/profile.jpg" alt="Sayful Islam" class="dynamic-profile-img" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='shared/assets/sayful_logo.png'">
                         </div>
                         <div class="user-brand-meta">
                             <span class="user-brand-name dynamic-profile-name">Sayful Islam</span>
@@ -865,7 +876,7 @@
                     <!-- Left: Identity Overview Card -->
                     <div class="user-identity-card">
                         <div class="user-avatar-upload-frame">
-                            <img src="profile.jpg" alt="Sayful Islam" id="userProfilePhotoPreview" class="dynamic-profile-img" onerror="this.src='sayful_logo.png'">
+                            <img src="shared/assets/profile.jpg" alt="Sayful Islam" id="userProfilePhotoPreview" class="dynamic-profile-img" onerror="this.src='shared/assets/sayful_logo.png'">
                             <button type="button" class="btn-avatar-camera" onclick="document.getElementById('userProfilePhotoInput').click()" title="Change Profile Photo" id="btnChangeAvatarPhoto">
                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
                             </button>
@@ -1015,7 +1026,7 @@
                     <div class="profile-dropdown-wrapper">
                         <div class="user-brand-card" onclick="toggleProfileDropdown(event)" role="button" tabindex="0" title="Profile Details">
                             <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                                <img src="profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='sayful_logo.png'">
+                                <img src="shared/assets/profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='shared/assets/sayful_logo.png'">
                             </div>
                             <div class="user-brand-meta">
                                 <span class="user-brand-name">Sayful Islam</span>
@@ -1669,7 +1680,7 @@
                             
                             <!-- Circular Avatar Photo with Clean Cyan-Blue Border -->
                             <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                                <img src="profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <img src="shared/assets/profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div class="user-avatar-fallback" style="display:none; width:100%; height:100%; background:#0284c7; color:#ffffff; align-items:center; justify-content:center; font-weight:800; font-size:14px;">S</div>
                             </div>
 
@@ -1693,7 +1704,7 @@
 
                             <!-- Circular Profile Photo in Dropdown -->
                             <div class="profile-photo-container">
-                                <img src="profile.jpg" alt="Sayful Islam" class="profile-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <img src="shared/assets/profile.jpg" alt="Sayful Islam" class="profile-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div class="profile-avatar-fallback" style="display: none;">S</div>
                             </div>
 
@@ -1842,14 +1853,14 @@
 
                 <!-- Accordion Navigation Body (All 10 Modules in Sequence) -->
                 <div class="mep-sidebar-body" style="padding: 8px 8px 24px; overflow-y: auto;">
-                    <!-- Dynamic Left Sidebar Modules Container (Populated by portal_modules_data.js) -->
+                    <!-- Dynamic Left Sidebar Modules Container (Populated by shared/js/portal_modules_data.js) -->
                     <div id="dashboardSidebarModulesContainer" style="display: contents;"></div>
                     <!-- ==========================================================
                          Gorgeous Luxury Module Switcher (Directly below Item 12)
                          ========================================================== -->
                     <div class="sidebar-module-switcher" id="sidebarModuleSwitcher">
                         <div class="mod-switcher-inner" id="sidebarSwitcherLinks">
-                            <!-- Dynamically populated by sidebar_dynamic_models.js -->
+                            <!-- Dynamically populated by shared/js/sidebar_dynamic_models.js -->
                         </div>
                     </div>
 
@@ -2300,7 +2311,7 @@
 
                             <!-- Dynamic Yearly Target vs Achievement SVG Chart (Ceiling: 50,000 PCS) -->
                             <div class="trend-chart-container yearly-chart-wrapper" id="yearlyChartContainer" style="position: relative; width: 100%; height: 235px; margin-top: 12px;">
-                                <!-- Dynamic SVG line chart generated by portal_performance_graph.js -->
+                                <!-- Dynamic SVG line chart generated by shared/js/portal_performance_graph.js -->
                             </div>
                         </div>
                     </div>
@@ -2346,7 +2357,7 @@
                     <div class="profile-dropdown-wrapper">
                         <div class="user-brand-card" onclick="toggleProfileDropdown(event)" role="button" tabindex="0" title="Profile Details">
                             <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                                <img src="profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='sayful_logo.png'">
+                                <img src="shared/assets/profile.jpg" alt="Sayful Islam" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='shared/assets/sayful_logo.png'">
                             </div>
                             <div class="user-brand-meta">
                                 <span class="user-brand-name">Sayful Islam</span>
@@ -2471,7 +2482,7 @@
                     <div class="wh-nav-section-title">Warehouse Pages</div>
 
                     <!-- Page 1: Intersales Requisition -->
-                    <a href="intersales_requisition.html" class="wh-nav-item" id="whMenuIntersales" title="Open Intersales Requisition">
+                    <a href="modules/warehouse/intersales_requisition.html" class="wh-nav-item" id="whMenuIntersales" title="Open Intersales Requisition">
                         <div class="wh-nav-icon-box" style="background:#eff6ff; color:#0284c7;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -2486,7 +2497,7 @@
                     </a>
 
                     <!-- Page 2: Per Day Received -->
-                    <a href="per_day_received.html" class="wh-nav-item" id="whMenuReceived" title="Open Per Day Received">
+                    <a href="modules/warehouse/per_day_received.html" class="wh-nav-item" id="whMenuReceived" title="Open Per Day Received">
                         <div class="wh-nav-icon-box" style="background:#ecfdf5; color:#059669;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="21 8 21 21 3 21 3 8"></polyline>
@@ -2499,7 +2510,7 @@
                     </a>
 
                     <!-- Page 3: Spare Parts -->
-                    <a href="spare_parts.html" class="wh-nav-item" id="whMenuSpareParts" title="Open Spare Parts">
+                    <a href="modules/warehouse/spare_parts.html" class="wh-nav-item" id="whMenuSpareParts" title="Open Spare Parts">
                         <div class="wh-nav-icon-box" style="background:#fefce8; color:#d97706;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="3"></circle>
@@ -2658,7 +2669,7 @@
                                 <span style="font-size:1.15rem;">📋</span>
                                 <h2 class="wh-panel-title">Intersales Requisition Flow</h2>
                             </div>
-                            <a href="intersales_requisition.html" class="wh-panel-action-btn" title="Open Intersales Requisition Page">
+                            <a href="modules/warehouse/intersales_requisition.html" class="wh-panel-action-btn" title="Open Intersales Requisition Page">
                                 <span>Open Intersales Requisition</span>
                                 <span>→</span>
                             </a>
@@ -2675,7 +2686,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="whIntersalesTableBody">
-                                    <!-- Populated by warehouse_module_engine.js -->
+                                    <!-- Populated by modules/warehouse/warehouse_module_engine.js -->
                                 </tbody>
                             </table>
                         </div>
@@ -2688,7 +2699,7 @@
                                 <span style="font-size:1.15rem;">📥</span>
                                 <h2 class="wh-panel-title">Per Day Receiving Summary</h2>
                             </div>
-                            <a href="per_day_received.html" class="wh-panel-action-btn" title="Open Per Day Received Page">
+                            <a href="modules/warehouse/per_day_received.html" class="wh-panel-action-btn" title="Open Per Day Received Page">
                                 <span>Open Per Day Received</span>
                                 <span>→</span>
                             </a>
@@ -2705,7 +2716,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="whReceivingTableBody">
-                                    <!-- Populated by warehouse_module_engine.js -->
+                                    <!-- Populated by modules/warehouse/warehouse_module_engine.js -->
                                 </tbody>
                             </table>
                         </div>
@@ -2721,13 +2732,13 @@
                                 <span style="font-size:1.15rem;">⚙️</span>
                                 <h2 class="wh-panel-title">Spare Parts &amp; Critical Spares Overview</h2>
                             </div>
-                            <a href="spare_parts.html" class="wh-panel-action-btn" title="Open Spare Parts Page">
+                            <a href="modules/warehouse/spare_parts.html" class="wh-panel-action-btn" title="Open Spare Parts Page">
                                 <span>Open Spare Parts</span>
                                 <span>→</span>
                             </a>
                         </div>
                         <div id="whSparesGaugeContainer">
-                            <!-- Populated by warehouse_module_engine.js -->
+                            <!-- Populated by modules/warehouse/warehouse_module_engine.js -->
                         </div>
                     </div>
 
@@ -2741,7 +2752,7 @@
                             <span style="font-size:11px; font-weight:700; color:#10b981; background:#ecfdf5; padding:2px 8px; border-radius:12px; border:1px solid #a7f3d0;">Live Sync</span>
                         </div>
                         <div class="wh-activity-list" id="whActivityStreamContainer">
-                            <!-- Populated by warehouse_module_engine.js -->
+                            <!-- Populated by modules/warehouse/warehouse_module_engine.js -->
                         </div>
                     </div>
                 </div>
@@ -2778,7 +2789,7 @@
 
         <!-- Drawer Body: 10 Accordion Report Navigation Cards -->
         <div class="drawer-body" id="reportsContainer">
-            <!-- Populated dynamically by portal_modules_data.js -->
+            <!-- Populated dynamically by shared/js/portal_modules_data.js -->
         </div>
     </aside>
 
@@ -2793,39 +2804,39 @@
     </div>
     <!-- Dynamic Modals Mount Target -->
     <div id="portalModalsContainer" style="display: contents;"></div>
-    <script src="portal_modals.js"></script>
+    <script src="shared/js/portal_modals.js"></script>
 
     <!-- ==========================================================================
          JavaScript: Authentication, UI Toggles & Routing Logic
          ========================================================================== -->
     <!-- Master Database Central Engine & Dynamic Production Data Engines -->
-    <script src="daily_fg_production_data.js"></script>
-    <script src="monthly_production_summary_data.js"></script>
-    <script src="daily_production_received_assemble_data.js"></script>
-    <script src="physical_production_report_engine.js"></script>
-    <script src="xlsx.full.min.js"></script>
-    <script src="fg_pending_modal_engine.js"></script>
-    <script src="sidebar_dynamic_models.js"></script>
+    <script src="modules/production/daily_fg_production_data.js"></script>
+    <script src="modules/production/monthly_production_summary_data.js"></script>
+    <script src="modules/production/daily_production_received_assemble_data.js"></script>
+    <script src="modules/production/physical_production_report_engine.js"></script>
+    <script src="shared/js/xlsx.full.min.js"></script>
+    <script src="modules/production/fg_pending_modal_engine.js"></script>
+    <script src="shared/js/sidebar_dynamic_models.js"></script>
 
-    <script src="master_database.js"></script>
-    <script src="assemble_summary_data.js"></script>
-    <script src="fg_summary_data.js"></script>
-    <script src="closing_fg_data.js"></script>
-    <script src="fan_assemble_erp_data.js"></script>
-    <script src="erp_engine.js"></script>
-    <script src="production_plan_data.js"></script>
-    <script src="yearly_production_summary_erp_data.js"></script>
-    <script src="monthly_production_archive_engine.js"></script>
-    <script src="portal_modules_data.js"></script>
-    <script src="portal_performance_graph.js?v=20260915_cfs22778"></script>
-    <script src="portal_settings.js"></script>
-        <script src="hrm_database_data.js"></script>
-    <script src="hrm_module_engine.js"></script>
-    <script src="warehouse_module_engine.js?v=20260913_fix2"></script>
-<script src="portal_auth.js"></script>
-    <script src="notebook_engine.js"></script>
-    <script src="portal_dashboard_runtime.js?v=20260915_cfs22778"></script>
-    <script src="data_backup_engine.js"></script>
+    <script src="shared/js/master_database.js"></script>
+    <script src="modules/production/assemble_summary_data.js"></script>
+    <script src="modules/production/fg_summary_data.js"></script>
+    <script src="modules/production/closing_fg_data.js"></script>
+    <script src="modules/production/fan_assemble_erp_data.js"></script>
+    <script src="modules/production/erp_engine.js"></script>
+    <script src="modules/production/production_plan_data.js"></script>
+    <script src="modules/production/yearly_production_summary_erp_data.js"></script>
+    <script src="modules/production/monthly_production_archive_engine.js"></script>
+    <script src="shared/js/portal_modules_data.js"></script>
+    <script src="shared/js/portal_performance_graph.js?v=20260915_cfs22778"></script>
+    <script src="shared/js/portal_settings.js"></script>
+    <script src="modules/hrm/hrm_database_data.js"></script>
+    <script src="modules/hrm/hrm_module_engine.js"></script>
+    <script src="modules/warehouse/warehouse_module_engine.js?v=20260913_fix2"></script>
+    <script src="shared/js/portal_auth.js"></script>
+    <script src="shared/js/notebook_engine.js"></script>
+    <script src="shared/js/portal_dashboard_runtime.js?v=20260915_cfs22778"></script>
+    <script src="shared/js/data_backup_engine.js"></script>
 
     <!-- Strict Direct Link: All Report Summary ➔ Assemble Summary ➔ Ceiling Fan Series ➔ Production Receive (Marked Cell) ➔ Dashboard Achievement -->
     <script>

@@ -5,17 +5,25 @@
 (function(window) {
     'use strict';
 
-    // 1. Standard Ceiling Fan Model Catalog (9 Finished Goods Models)
+    // 1. Standard Ceiling Fan Model Catalog (17 Finished Goods Models)
     const CEILING_FAN_MODELS = [
-        { code: 'CF5601IV', erpCode: 'CF5601/CF5601IV', name: 'Premium -Ivory', fullName: '56 Inch Premium Ceiling Fan - Ivory', unit: 'Pcs' },
-        { code: 'CF5601WH', erpCode: 'CF5601WH/CF5601WH', name: 'Premium -White', fullName: '56 Inch Premium Ceiling Fan - White', unit: 'Pcs' },
-        { code: 'CF5602IV', erpCode: 'CF5602/CF5602IV', name: 'Speed King', fullName: '56 Inch Speed King Ceiling Fan - Ivory', unit: 'Pcs' },
-        { code: 'CF5603IV', erpCode: 'CF5603/CF5603IV', name: 'Premium Gold', fullName: '56 Inch Premium Gold Ceiling Fan - Ivory', unit: 'Pcs' },
-        { code: 'CF5606IV', erpCode: 'CF5606/CF5606IV', name: 'Premium Plus', fullName: '56 Inch Premium Plus Ceiling Fan - Ivory', unit: 'Pcs' },
-        { code: 'CF5607IV', erpCode: 'CF5607/CF5607IV', name: 'Crown-Ivory', fullName: '56 Inch Crown Ceiling Fan - Ivory', unit: 'Pcs' },
-        { code: 'CF4801IV', erpCode: 'CF4801/CF4801IV', name: 'Popular', fullName: '48 Inch Popular Ceiling Fan - Ivory', unit: 'Pcs' },
-        { code: 'CF3601IV', erpCode: 'CF3601/CF3601IV', name: 'Hero', fullName: '36 Inch Hero Ceiling Fan - Ivory', unit: 'Pcs' },
-        { code: 'CF2401IV', erpCode: 'CF2401/CF2401IV', name: 'Super', fullName: '24 Inch Super Ceiling Fan - Ivory', unit: 'Pcs' }
+        { id: 'CF5601IV', code: 'CF5601/CF5601IV', shortCode: 'CF5601IV', name: '56 Inch Premium Ceiling Fan - Ivory', unit: 'Pcs', series: 'standard' },
+        { id: 'CF5601WH', code: 'CF5601WH/CF5601WH', shortCode: 'CF5601WH', name: '56 Inch Premium Ceiling Fan - White', unit: 'Pcs', series: 'standard' },
+        { id: 'CF5602IV', code: 'CF5602/CF5602IV', shortCode: 'CF5602IV', name: '56 Inch Speed King Ceiling Fan - Ivory', unit: 'Pcs', series: 'standard' },
+        { id: 'CF5603IV', code: 'CF5603/CF5603IV', shortCode: 'CF5603IV', name: '56 Inch Premium Gold Ceiling Fan - Ivory', unit: 'Pcs', series: 'standard' },
+        { id: 'CF5606IV', code: 'CF5606/CF5606IV', shortCode: 'CF5606IV', name: '56 Inch Premium Plus Ceiling Fan - Ivory', unit: 'Pcs', series: 'standard' },
+        { id: 'CF5607IV', code: 'CF5607/CF5607IV', shortCode: 'CF5607IV', name: '56 Inch Crown Ceiling Fan - Ivory', unit: 'Pcs', series: 'standard' },
+        { id: 'CF4801IV', code: 'CF4801/CF4801IV', shortCode: 'CF4801IV', name: '48 Inch Popular Ceiling Fan - Ivory', unit: 'Pcs', series: 'standard' },
+        { id: 'CF3601IV', code: 'CF3601/CF3601IV', shortCode: 'CF3601IV', name: '36 Inch Hero Ceiling Fan - Ivory', unit: 'Pcs', series: 'standard' },
+        { id: 'CF2401IV', code: 'CF2401/CF2401IV', shortCode: 'CF2401IV', name: '24 Inch Super Ceiling Fan - Ivory', unit: 'Pcs', series: 'standard' },
+        { id: 'CR5601IV', code: 'CR5601IV', shortCode: 'CR5601IV', name: '56 Inch Premium Ceiling Fan- Ivory (Without Regulator)', unit: 'Pcs', series: 'special' },
+        { id: 'CR5601WH', code: 'CR5601WH', shortCode: 'CR5601WH', name: '56 Inch Premium Ceiling Fan- White (Without Regulator)', unit: 'Pcs', series: 'special' },
+        { id: 'CG5601IV', code: 'CG5601/CG5601IV', shortCode: 'CG5601IV', name: '56 Inch Premium Ceiling Fan With Gang Regulator - Ivory', unit: 'Pcs', series: 'special' },
+        { id: 'CR5603IV', code: 'CR5603IV', shortCode: 'CR5603IV', name: '56 Inch Premium Gold Ceiling Fan- Ivory (Without Regulator)', unit: 'Pcs', series: 'special' },
+        { id: 'CR5606IV', code: 'CR5606IV', shortCode: 'CR5606IV', name: '56 Inch Premium Plus Ceiling Fan- Ivory (Without Regulator)', unit: 'Pcs', series: 'special' },
+        { id: 'CG5606IV', code: 'CG5606/CG5606IV', shortCode: 'CG5606IV', name: '56 Inch Premium Plus Ceiling Fan With Gang Regulator - Ivory', unit: 'Pcs', series: 'special' },
+        { id: 'CR4801IV', code: 'CR4801IV', shortCode: 'CR4801IV', name: '48 Inch Popular Ceiling Fan- Ivory (Without Regulator)', unit: 'Pcs', series: 'special' },
+        { id: 'CR3601IV', code: 'CR3601IV', shortCode: 'CR3601IV', name: '36 Inch Hero Ceiling Fan- Ivory (Without Regulator)', unit: 'Pcs', series: 'special' }
     ];
 
     // 2. Month Definitions & Default Intervals
@@ -76,18 +84,26 @@
         }
     };
 
-    // 3. Verified Baseline Datasets
+    // 3. Verified Baseline Datasets (Screenshot 2: 22,778 Live Production Received)
     const BASELINE_ERP_MONTHS = {
         '2026_September': {
-            'CF5601IV': 4880,
+            'CF5601IV': 7080,
             'CF5601WH': 33,
-            'CF5602IV': 0,
-            'CF5603IV': 0,
+            'CF5602IV': 4500,
+            'CF5603IV': 1062,
             'CF5606IV': 0,
             'CF5607IV': 0,
-            'CF4801IV': 0,
-            'CF3601IV': 1100,
-            'CF2401IV': 1600
+            'CF4801IV': 2193,
+            'CF3601IV': 5546,
+            'CF2401IV': 2188,
+            'CR5601IV': 0,
+            'CR5601WH': 0,
+            'CG5601IV': 0,
+            'CR5603IV': 0,
+            'CR5606IV': 0,
+            'CG5606IV': 0,
+            'CR4801IV': 0,
+            'CR3601IV': 0
         },
         '2026_August': {
             'CF5601IV': 30849,
@@ -98,21 +114,37 @@
             'CF5607IV': 335,
             'CF4801IV': 1100,
             'CF3601IV': 5107,
-            'CF2401IV': 1091
+            'CF2401IV': 1091,
+            'CR5601IV': 0,
+            'CR5601WH': 0,
+            'CG5601IV': 0,
+            'CR5603IV': 0,
+            'CR5606IV': 0,
+            'CG5606IV': 0,
+            'CR4801IV': 0,
+            'CR3601IV': 0
         }
     };
 
     const BASELINE_PHYSICAL_MONTHS = {
         '2026_September': {
-            'CF5601IV': 2300,
+            'CF5601IV': 8659,
             'CF5601WH': 0,
-            'CF5602IV': 277,
-            'CF5603IV': 411,
+            'CF5602IV': 5838,
+            'CF5603IV': 1473,
             'CF5606IV': 0,
             'CF5607IV': 0,
-            'CF4801IV': 1357,
-            'CF3601IV': 2045,
-            'CF2401IV': 2150
+            'CF4801IV': 3630,
+            'CF3601IV': 8610,
+            'CF2401IV': 4300,
+            'CR5601IV': 8136,
+            'CR5601WH': 250,
+            'CG5601IV': 0,
+            'CR5603IV': 0,
+            'CR5606IV': 0,
+            'CG5606IV': 0,
+            'CR4801IV': 0,
+            'CR3601IV': 0
         },
         '2026_August': {
             'CF5601IV': 34525,
@@ -123,21 +155,37 @@
             'CF5607IV': 340,
             'CF4801IV': 2717,
             'CF3601IV': 9426,
-            'CF2401IV': 3191
+            'CF2401IV': 3191,
+            'CR5601IV': 0,
+            'CR5601WH': 0,
+            'CG5601IV': 0,
+            'CR5603IV': 0,
+            'CR5606IV': 0,
+            'CG5606IV': 0,
+            'CR4801IV': 0,
+            'CR3601IV': 0
         }
     };
 
     const BASELINE_CLOSING_MONTHS = {
         '2026_September': {
             'CF5601IV': 0,
-            'CF5601WH': 23,
-            'CF5602IV': 0,
-            'CF5603IV': 8,
+            'CF5601WH': 0,
+            'CF5602IV': 500,
+            'CF5603IV': 62,
             'CF5606IV': 8,
             'CF5607IV': 0,
             'CF4801IV': 0,
             'CF3601IV': 0,
-            'CF2401IV': 0
+            'CF2401IV': 0,
+            'CR5601IV': 0,
+            'CR5601WH': 0,
+            'CG5601IV': 0,
+            'CR5603IV': 0,
+            'CR5606IV': 2,
+            'CG5606IV': 0,
+            'CR4801IV': 0,
+            'CR3601IV': 0
         },
         '2026_August': {
             'CF5601IV': 0,
@@ -148,7 +196,15 @@
             'CF5607IV': 336,
             'CF4801IV': 0,
             'CF3601IV': 15,
-            'CF2401IV': 0
+            'CF2401IV': 0,
+            'CR5601IV': 0,
+            'CR5601WH': 0,
+            'CG5601IV': 0,
+            'CR5603IV': 0,
+            'CR5606IV': 0,
+            'CG5606IV': 0,
+            'CR4801IV': 0,
+            'CR3601IV': 0
         }
     };
 
@@ -160,27 +216,30 @@
     function matchesFanModel(model, candidateCode) {
         if (!candidateCode) return false;
         const cleanCand = cleanCode(candidateCode);
-        const mCodes = [cleanCode(model.code), cleanCode(model.erpCode)];
-        if (model.erpCode && model.erpCode.includes('/')) {
-            model.erpCode.split('/').forEach(p => {
+        if (!cleanCand) return false;
+
+        const candTokens = candidateCode.includes('/') ? candidateCode.split('/').map(cleanCode).filter(Boolean) : [cleanCand];
+
+        const mTokens = [cleanCode(model.id), cleanCode(model.code), cleanCode(model.shortCode)].filter(Boolean);
+        if (model.code && model.code.includes('/')) {
+            model.code.split('/').forEach(p => {
                 const c = cleanCode(p);
-                if (c) mCodes.push(c);
+                if (c && !mTokens.includes(c)) mTokens.push(c);
             });
         }
-        if (candidateCode.includes('/')) {
-            const parts = candidateCode.split('/');
-            for (const p of parts) {
-                if (mCodes.includes(cleanCode(p))) return true;
-            }
+
+        for (const ct of candTokens) {
+            if (mTokens.includes(ct)) return true;
         }
-        return mCodes.includes(cleanCand);
+        return mTokens.includes(cleanCand);
     }
 
     // 4. Data Loaders
+    // Source: Screenshot 2 (fg_summary.html ➔ Stock Movement Report Finish Good FG ➔ Production Received)
     function getErpDataForMonth(monthKey) {
         const config = PENDING_MONTH_CONFIG[monthKey] || PENDING_MONTH_CONFIG['2026_September'];
         const erpMap = {};
-        CEILING_FAN_MODELS.forEach(m => erpMap[m.code] = 0);
+        CEILING_FAN_MODELS.forEach(m => erpMap[m.id] = 0);
 
         if (monthKey === '2026_August' || (BASELINE_ERP_MONTHS[monthKey] && monthKey !== '2026_September')) {
             const hist = BASELINE_ERP_MONTHS[monthKey];
@@ -189,36 +248,30 @@
         }
 
         if (monthKey === '2026_September') {
-            let assembleList = [];
+            let fgList = [];
             try {
-                const saved = localStorage.getItem('mep_assemble_custom_data');
-                if (saved) assembleList = JSON.parse(saved);
+                const saved = localStorage.getItem('mep_fg_summary_data');
+                if (saved) fgList = JSON.parse(saved);
             } catch(e) {}
 
-            if (!Array.isArray(assembleList) || assembleList.length === 0) {
-                if (typeof RAW_ASSEMBLE_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_ASSEMBLE_SUMMARY_DATA)) {
-                    assembleList = RAW_ASSEMBLE_SUMMARY_DATA;
-                }
-            }
-
-            if (!Array.isArray(assembleList) || assembleList.length === 0) {
-                if (typeof MEP_ERP_ENGINE !== 'undefined' && typeof MEP_ERP_ENGINE.computeLiveAssembleSummary === 'function') {
-                    assembleList = MEP_ERP_ENGINE.computeLiveAssembleSummary();
+            if (!Array.isArray(fgList) || fgList.length === 0) {
+                if (typeof RAW_FG_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_FG_SUMMARY_DATA)) {
+                    fgList = RAW_FG_SUMMARY_DATA;
                 }
             }
 
             let erpFoundCount = 0;
-            if (Array.isArray(assembleList)) {
-                assembleList.forEach(row => {
-                    const cat = (row.category || '').toUpperCase().trim();
-                    if (!cat.includes('CEILING FAN')) return;
+            if (Array.isArray(fgList)) {
+                fgList.forEach(row => {
+                    const sec = (row.section || row.category || '').toUpperCase();
+                    if (!sec.includes('CEILING FAN') || sec.includes('BLADE')) return;
 
-                    const code = row.code || row.erpCode || '';
-                    const prodRec = parseFloat(row.productionRec) || 0;
+                    const code = row.code || '';
+                    const prodRec = parseFloat(row.production) || 0;
 
                     for (const model of CEILING_FAN_MODELS) {
                         if (matchesFanModel(model, code)) {
-                            erpMap[model.code] += prodRec;
+                            erpMap[model.id] = prodRec;
                             if (prodRec > 0) erpFoundCount++;
                             break;
                         }
@@ -241,7 +294,7 @@
                 Object.values(snap.items).forEach(it => {
                     for (const model of CEILING_FAN_MODELS) {
                         if (matchesFanModel(model, it.code)) {
-                            erpMap[model.code] += (parseFloat(it.qty) || 0);
+                            erpMap[model.id] += (parseFloat(it.qty) || 0);
                             break;
                         }
                     }
@@ -256,7 +309,7 @@
     function getPhysicalDataForMonth(monthKey) {
         const config = PENDING_MONTH_CONFIG[monthKey] || PENDING_MONTH_CONFIG['2026_September'];
         const physMap = {};
-        CEILING_FAN_MODELS.forEach(m => physMap[m.code] = 0);
+        CEILING_FAN_MODELS.forEach(m => physMap[m.id] = 0);
 
         let dailyEntries = [];
         if (typeof getUnifiedDailyFGProductionData === 'function') {
@@ -302,7 +355,7 @@
             const itemCode = entry.item_code || entry.code;
             for (const model of CEILING_FAN_MODELS) {
                 if (matchesFanModel(model, itemCode)) {
-                    physMap[model.code] += qty;
+                    physMap[model.id] += qty;
                     physFoundTotal += qty;
                     break;
                 }
@@ -322,60 +375,106 @@
         return physMap;
     }
 
+    // Source: Screenshot 2 (fg_summary.html ➔ Stock Movement Report Finish Good FG ➔ Closing Column)
     function getClosingDataForMonth(monthKey) {
         const config = PENDING_MONTH_CONFIG[monthKey] || PENDING_MONTH_CONFIG['2026_September'];
         const closingMap = {};
-        CEILING_FAN_MODELS.forEach(m => closingMap[m.code] = 0);
+        CEILING_FAN_MODELS.forEach(m => closingMap[m.id] = 0);
 
         if (monthKey === '2026_August') {
             const hist = BASELINE_CLOSING_MONTHS['2026_August'];
-            Object.keys(hist).forEach(c => closingMap[c] = hist[c] || 0);
+            if (hist) {
+                Object.keys(hist).forEach(c => closingMap[c] = (parseFloat(hist[c]) || 0));
+            }
             return closingMap;
         }
 
         if (monthKey === '2026_September') {
             let fgList = [];
+            // 1. Primary Source: Saved FG Summary dataset (localStorage: mep_fg_summary_data)
             try {
                 const saved = localStorage.getItem('mep_fg_summary_data');
-                if (saved) fgList = JSON.parse(saved);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) fgList = parsed;
+                }
             } catch(e) {}
 
+            // 2. Secondary Source: Fallback to RAW_FG_SUMMARY_DATA
             if (!Array.isArray(fgList) || fgList.length === 0) {
                 if (typeof RAW_FG_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_FG_SUMMARY_DATA)) {
                     fgList = RAW_FG_SUMMARY_DATA;
                 }
             }
 
-            let closingFoundTotal = 0;
-            if (Array.isArray(fgList)) {
+            let matchCount = 0;
+            if (Array.isArray(fgList) && fgList.length > 0) {
                 fgList.forEach(row => {
                     const sec = (row.section || row.category || '').toUpperCase();
-                    if (!sec.includes('CEILING FAN') || sec.includes('BLADE')) return;
+                    if (sec && (!sec.includes('CEILING FAN') || sec.includes('BLADE'))) return;
 
                     const code = row.code || '';
-                    const closingVal = parseFloat(row.closing) || 0;
+                    if (!code) return;
+
+                    // Direct extraction of Closing quantity from FG Summary row (Screenshot 2: Closing column)
+                    const closingVal = parseFloat(
+                        row.closing !== undefined && row.closing !== null ? String(row.closing).replace(/,/g, '') :
+                        (row.binClosing !== undefined && row.binClosing !== null ? String(row.binClosing).replace(/,/g, '') : 
+                        (row.closingStock !== undefined && row.closingStock !== null ? String(row.closingStock).replace(/,/g, '') : 0))
+                    ) || 0;
+
                     for (const model of CEILING_FAN_MODELS) {
                         if (matchesFanModel(model, code)) {
-                            closingMap[model.code] += closingVal;
-                            closingFoundTotal += closingVal;
+                            closingMap[model.id] = closingVal;
+                            matchCount++;
                             break;
                         }
                     }
                 });
             }
 
-            if (closingFoundTotal > 0) {
+            // 3. Fallback to Closing (ERP) storage (mep_closing_fg_data) if no models were matched
+            if (matchCount === 0) {
+                try {
+                    const cfgSaved = localStorage.getItem('mep_closing_fg_data');
+                    if (cfgSaved) {
+                        const cfgList = JSON.parse(cfgSaved);
+                        if (Array.isArray(cfgList) && cfgList.length > 0) {
+                            cfgList.forEach(row => {
+                                const code = row.code || '';
+                                if (!code) return;
+                                const closingVal = parseFloat(
+                                    row.binClosing !== undefined && row.binClosing !== null ? String(row.binClosing).replace(/,/g, '') : 
+                                    (row.closing !== undefined && row.closing !== null ? String(row.closing).replace(/,/g, '') : 0)
+                                ) || 0;
+
+                                for (const model of CEILING_FAN_MODELS) {
+                                    if (matchesFanModel(model, code)) {
+                                        closingMap[model.id] = closingVal;
+                                        matchCount++;
+                                        break;
+                                    }
+                                }
+                            });
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            if (matchCount > 0) {
                 return closingMap;
             }
 
             const baseSep = BASELINE_CLOSING_MONTHS['2026_September'];
-            Object.keys(baseSep).forEach(c => closingMap[c] = baseSep[c] || 0);
+            if (baseSep) {
+                Object.keys(baseSep).forEach(c => closingMap[c] = (parseFloat(baseSep[c]) || 0));
+            }
             return closingMap;
         }
 
         if (BASELINE_CLOSING_MONTHS[monthKey]) {
             const b = BASELINE_CLOSING_MONTHS[monthKey];
-            Object.keys(b).forEach(c => closingMap[c] = b[c] || 0);
+            Object.keys(b).forEach(c => closingMap[c] = (parseFloat(b[c]) || 0));
             return closingMap;
         }
 
@@ -405,7 +504,11 @@
         const config = PENDING_MONTH_CONFIG[selectedMonth] || PENDING_MONTH_CONFIG['2026_September'];
 
         // Update Date Interval Badges
-        const dateIntervalStr = config.dateInterval;
+        let dateIntervalStr = config.dateInterval;
+        if (selectedMonth === '2026_September') {
+            const liveDate = localStorage.getItem('mep_closing_fg_date_interval') || localStorage.getItem('mep_erp_date_interval');
+            if (liveDate) dateIntervalStr = liveDate;
+        }
         const badgeEl = document.getElementById('modalPendingDateIntervalText');
         if (badgeEl) badgeEl.textContent = `Date Interval: ${dateIntervalStr}`;
         const assembleDateEl = document.getElementById('modalPendingAssembleDateInterval');
@@ -424,9 +527,9 @@
         let totalPhysical = 0;
         let totalDue = 0;
 
-        CEILING_FAN_MODELS.forEach(model => {
-            const erpVal = erpData[model.code] || 0;
-            const physVal = physicalData[model.code] || 0;
+        CEILING_FAN_MODELS.forEach((model, idx) => {
+            const erpVal = erpData[model.id] || 0;
+            const physVal = physicalData[model.id] || 0;
             const dueVal = erpVal - physVal;
 
             totalErp += erpVal;
@@ -444,9 +547,12 @@
                 dueHtml = `<span class="badge-due-pos">${formatNum(dueVal)}</span>`;
             }
 
+            const isSpecial = model.series === 'special';
+            const rowStyle = isSpecial ? 'background: rgba(254, 243, 199, 0.28);' : '';
+
             assembleRowsHtml += `
-                <tr>
-                    <td><span class="code-pill">${escapeHTML(model.code)}</span></td>
+                <tr style="${rowStyle}">
+                    <td><span class="code-pill ${isSpecial ? 'code-pill-special' : ''}">${escapeHTML(model.code)}</span></td>
                     <td class="cell-name">${escapeHTML(model.name)}</td>
                     <td class="cell-num">${formatNum(erpVal)}</td>
                     <td class="cell-num">${formatNum(physVal)}</td>
@@ -473,24 +579,27 @@
             }
         }
 
-        // 2. Render Right Table: Fan Floor FG Closing
+        // 2. Render Right Table: Fan Floor FG Closing (Box 2)
+        // Rule: Only ONE column for Quantity beside Code and Model (Unit column removed)
         const closingTbody = document.getElementById('tblPendingClosingBody');
         let closingRowsHtml = '';
         let totalClosing = 0;
 
-        CEILING_FAN_MODELS.forEach(model => {
-            const qty = closingData[model.code] || 0;
+        CEILING_FAN_MODELS.forEach((model, idx) => {
+            const qty = closingData[model.id] || 0;
             totalClosing += qty;
 
             const qtyHtml = qty > 0 
                 ? `<span class="qty-active">${formatNum(qty)}</span>`
-                : `<span style="color:#94a3b8;">0</span>`;
+                : `<span style="color:#94a3b8; font-weight:600;">0</span>`;
+
+            const isSpecial = model.series === 'special';
+            const rowStyle = isSpecial ? 'background: rgba(254, 243, 199, 0.28);' : '';
 
             closingRowsHtml += `
-                <tr>
-                    <td><span class="code-pill">${escapeHTML(model.code)}</span></td>
+                <tr style="${rowStyle}">
+                    <td><span class="code-pill ${isSpecial ? 'code-pill-special' : ''}">${escapeHTML(model.code)}</span></td>
                     <td class="cell-name">${escapeHTML(model.name)}</td>
-                    <td style="text-align:center;"><span class="unit-pill">${escapeHTML(model.unit)}</span></td>
                     <td class="cell-num">${qtyHtml}</td>
                 </tr>
             `;
@@ -580,8 +689,8 @@
 
                 let tErp = 0, tPhys = 0, tDue = 0;
                 CEILING_FAN_MODELS.forEach(m => {
-                    const e = erpData[m.code] || 0;
-                    const p = physicalData[m.code] || 0;
+                    const e = erpData[m.id] || 0;
+                    const p = physicalData[m.id] || 0;
                     const d = e - p;
                     tErp += e; tPhys += p; tDue += d;
                     sheet1Data.push([m.code, m.name, e, p, d]);
@@ -592,16 +701,16 @@
                     ["FAN FLOOR FG CLOSING REPORT"],
                     [`Month: ${config.monthName} ${config.year}`, `Date Interval: ${config.dateInterval}`],
                     [],
-                    ["Code", "Model Name", "Unit", "Closing Quantity"]
+                    ["Code", "Model Name", "Closing Quantity"]
                 ];
 
                 let tClose = 0;
                 CEILING_FAN_MODELS.forEach(m => {
-                    const q = closingData[m.code] || 0;
+                    const q = closingData[m.id] || 0;
                     tClose += q;
-                    sheet2Data.push([m.code, m.name, m.unit, q]);
+                    sheet2Data.push([m.code, m.name, q]);
                 });
-                sheet2Data.push(["TOTAL", "", "", tClose]);
+                sheet2Data.push(["TOTAL", "", tClose]);
 
                 const ws1 = XLSX.utils.aoa_to_sheet(sheet1Data);
                 const ws2 = XLSX.utils.aoa_to_sheet(sheet2Data);
@@ -620,8 +729,8 @@
         let csv = `Complete vs Pending - ${config.monthName} ${config.year}\n`;
         csv += `Code,Model,ERP,Physical,Due\n`;
         CEILING_FAN_MODELS.forEach(m => {
-            const e = erpData[m.code] || 0;
-            const p = physicalData[m.code] || 0;
+            const e = erpData[m.id] || 0;
+            const p = physicalData[m.id] || 0;
             csv += `"${m.code}","${m.name}",${e},${p},${e - p}\n`;
         });
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -656,11 +765,21 @@
             if (e.key === 'mep_fan_assemble_erp_data' || e.key === 'mep_fan_assemble_erp_data_updated' ||
                 e.key === 'mep_assemble_custom_data' || e.key === 'mep_assemble_summary_updated' ||
                 e.key === 'mep_fg_summary_data' || e.key === 'mep_fg_summary_last_updated' ||
+                e.key === 'mep_closing_fg_data' || e.key === 'mep_closing_fg_last_updated' ||
+                e.key === 'mep_closing_fg_date_interval' || e.key === 'closingDate_closing_fg' ||
                 e.key === 'custom_fg_production_entries' || e.key === 'deleted_fg_production_entry_ids') {
                 const modal = document.getElementById('pendingReportModal');
                 if (modal && modal.classList.contains('active')) {
                     renderPendingReportUI();
                 }
+            }
+        });
+
+        // Tab Focus Listener
+        window.addEventListener('focus', () => {
+            const modal = document.getElementById('pendingReportModal');
+            if (modal && modal.classList.contains('active')) {
+                renderPendingReportUI();
             }
         });
     }

@@ -164,6 +164,51 @@
                 }
             }
 
+            // Automatically resolve naked page filename to organized module folder if currently at portal root
+            const isCurrentlyInModule = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase().includes('/modules/');
+            if (!isCurrentlyInModule && !effectiveTarget.includes('/')) {
+                const PAGE_MODULE_LOOKUP = {
+                    'production_plan.html': 'modules/production/production_plan.html',
+                    'monthly_rm_demand_vs_received.html': 'modules/production/monthly_rm_demand_vs_received.html',
+                    'assemble_summary.html': 'modules/production/assemble_summary.html',
+                    'armature_summary.html': 'modules/production/armature_summary.html',
+                    'fg_summary.html': 'modules/production/fg_summary.html',
+                    'bom.html': 'modules/production/bom.html',
+                    'rm_requirement_summary_bom.html': 'modules/production/rm_requirement_summary_bom.html',
+                    'daily_fg_production_entry.html': 'modules/production/daily_fg_production_entry.html',
+                    'daily_production_received_assemble.html': 'modules/production/daily_production_received_assemble.html',
+                    'daily_production_plan.html': 'modules/production/daily_production_plan.html',
+                    'check_floor_stock.html': 'modules/production/check_floor_stock.html',
+                    'fan_damage_calculation_entry.html': 'modules/production/fan_damage_calculation_entry.html',
+                    'report_all_section_sfg.html': 'modules/production/report_all_section_sfg.html',
+                    'fan_assemble_erp.html': 'modules/production/fan_assemble_erp.html',
+                    'armature_winding_erp.html': 'modules/production/armature_winding_erp.html',
+                    'closing_finish_good_fg.html': 'modules/production/closing_finish_good_fg.html',
+                    'closing_all_sfg.html': 'modules/production/closing_all_sfg.html',
+                    'store_position_report.html': 'modules/production/store_position_report.html',
+                    'monthly_production_summary_physical.html': 'modules/production/monthly_production_summary_physical.html',
+                    'monthly_damage_summary.html': 'modules/production/monthly_damage_summary.html',
+                    'yearly_production_summary_physical.html': 'modules/production/yearly_production_summary_physical.html',
+                    'yearly_production_summary_erp.html': 'modules/production/yearly_production_summary_erp.html',
+                    'yearly_damage_summary.html': 'modules/production/yearly_damage_summary.html',
+                    'fg_pending_report.html': 'modules/production/fg_pending_report.html',
+                    'check_fg_need_item.html': 'modules/production/check_fg_need_item.html',
+                    'check_rm_prd_possible.html': 'modules/production/check_rm_prd_possible.html',
+                    'bom_with_sfg.html': 'modules/production/bom_with_sfg.html',
+                    'master.html': 'modules/production/master.html',
+                    'warehouse_dashboard.html': 'modules/warehouse/warehouse_dashboard.html',
+                    'intersales_requisition.html': 'modules/warehouse/intersales_requisition.html',
+                    'per_day_received.html': 'modules/warehouse/per_day_received.html',
+                    'spare_parts.html': 'modules/warehouse/spare_parts.html',
+                    'hrm_section_assemble_line.html': 'modules/hrm/hrm_section_assemble_line.html',
+                    'hrm_section_armature_winding.html': 'modules/hrm/hrm_section_armature_winding.html',
+                    'hrm_section_dimmer_blade.html': 'modules/hrm/hrm_section_dimmer_blade.html'
+                };
+                if (PAGE_MODULE_LOOKUP[cleanFile]) {
+                    effectiveTarget = PAGE_MODULE_LOOKUP[cleanFile];
+                }
+            }
+
             // Ensure active session timestamp is updated in sessionStorage
             sessionStorage.setItem(STORAGE_KEYS.isAuthenticated, "true");
             sessionStorage.setItem(STORAGE_KEYS.lastActivity, Date.now().toString());
@@ -188,7 +233,7 @@
             if (typeof window.navigateToReportPage === 'function') {
                 window.navigateToReportPage('master.html', event);
             } else {
-                window.location.href = 'master.html';
+                window.location.href = 'modules/production/master.html';
             }
         };
 
@@ -501,7 +546,11 @@
         }
 
         function switchToDashboardView() {
-            window.location.href = 'fg_pending_report.html';
+            if (typeof window.navigateToReportPage === 'function') {
+                window.navigateToReportPage('fg_pending_report.html');
+            } else {
+                window.location.href = 'modules/production/fg_pending_report.html';
+            }
         }
 
         function switchToDepartmentHub(targetModuleId) {
@@ -870,6 +919,17 @@
             return `${yText}, ${mText}, ${dText}`;
         }
 
+        function resolvePortalAssetUrl(assetPath) {
+            if (!assetPath) return '';
+            if (assetPath.startsWith('http://') || assetPath.startsWith('https://') || assetPath.startsWith('data:') || assetPath.startsWith('blob:') || assetPath.startsWith('/')) {
+                return assetPath;
+            }
+            const isSub = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase().includes('/modules/');
+            const clean = assetPath.replace(/^(\.\.\/)+/, '').replace(/^shared\/assets\//, '');
+            return isSub ? ('../../shared/assets/' + clean) : ('shared/assets/' + clean);
+        }
+        window.resolvePortalAssetUrl = resolvePortalAssetUrl;
+
         const DEFAULT_USER_PROFILE = {
             name: "Sayful Islam",
             role: "Senior Supervisor",
@@ -878,7 +938,7 @@
             section: "Fan Assemble (ERP)",
             joinDate: "01-Feb-2021",
             totalService: "5 Years, 7 Months, 9 Days",
-            photo: "profile.jpg"
+            photo: "shared/assets/profile.jpg"
         };
 
         function getUserProfile() {
@@ -972,7 +1032,8 @@
             const section = isViewOnly ? "Restricted Access" : prof.section;
             const joinDate = isViewOnly ? "N/A" : prof.joinDate;
             const service = isViewOnly ? "Restricted Access" : calculateServiceDuration(prof.joinDate);
-            const photo = isViewOnly ? "sayful_logo.png" : (prof.photo || "profile.jpg");
+            const rawPhoto = isViewOnly ? "sayful_logo.png" : (prof.photo || "profile.jpg");
+            const photo = resolvePortalAssetUrl(rawPhoto);
 
             // Text nameplates across headers and dropdowns
             document.querySelectorAll('.dynamic-profile-name').forEach(el => el.textContent = name);
@@ -1090,7 +1151,7 @@
             }
 
             const preview = document.getElementById('userProfilePhotoPreview');
-            if (preview) preview.src = isViewOnly ? 'sayful_logo.png' : (prof.photo || 'profile.jpg');
+            if (preview) preview.src = resolvePortalAssetUrl(isViewOnly ? 'sayful_logo.png' : (prof.photo || 'profile.jpg'));
 
             // Banner injection for locked user module
             updateUserProfileLockBanner(isPageLocked);
@@ -1186,7 +1247,7 @@
                 section: sectionInp ? sectionInp.value.trim() : current.section,
                 joinDate: joinDateVal,
                 totalService: calculateServiceDuration(joinDateVal),
-                photo: current.photo || 'profile.jpg'
+                photo: current.photo || 'shared/assets/profile.jpg'
             };
 
             if (saveUserProfile(updatedProfile)) {
@@ -1746,6 +1807,17 @@
                 switchToMISSelectionView();
             } else {
                 openMISPinSecurityModal();
+            }
+        }
+
+        function openModuleFlashAction(event) {
+            if (event) {
+                try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
+            }
+            if (typeof openFlashModal === 'function') {
+                openFlashModal();
+            } else if (typeof window.openFlashModal === 'function') {
+                window.openFlashModal();
             }
         }
 
@@ -2463,6 +2535,7 @@ window.closeModuleProfileDropdown = closeModuleProfileDropdown;
 window.openModuleNotice = openModuleNotice;
 window.openModuleUserAction = openModuleUserAction;
 window.openModuleMISAction = openModuleMISAction;
+window.openModuleFlashAction = openModuleFlashAction;
 window.switchToMISSelectionView = switchToMISSelectionView;
 window.toggleMISProfileDropdown = toggleMISProfileDropdown;
 window.closeMISProfileDropdown = closeMISProfileDropdown;

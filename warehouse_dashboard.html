@@ -1,24 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Warehouse Dashboard | MEP FAN LTD.</title>
-    <script src="portal_guard.js"></script>
+    <meta http-equiv="refresh" content="0; url=modules/warehouse/warehouse_dashboard.html">
+    <title>Redirecting to warehouse dashboard...</title>
     <script>
-        // Seamless entry router to Warehouse Module Dashboard
-        try {
-            sessionStorage.setItem('portal_current_view', 'warehouse');
-            sessionStorage.setItem('portal_active_erp_module', 'warehouse');
-        } catch(e) {}
-        window.location.replace('index.html?view=warehouse');
+        window.location.replace("modules/warehouse/warehouse_dashboard.html" + window.location.search + window.location.hash);
     </script>
 </head>
-<body style="margin:0; padding:0; background:#f8fafc; font-family:'Times New Roman', serif; display:flex; align-items:center; justify-content:center; height:100vh;">
-    <div style="text-align:center;">
-        <div style="font-size:36px; margin-bottom:12px;">📦</div>
-        <div style="font-size:16px; font-weight:700; color:#0f172a;">Loading Warehouse Management Dashboard...</div>
-        <div style="font-size:13px; color:#64748b; margin-top:4px;">Please wait while the executive dashboard loads.</div>
+<body style="margin:0; background:#0f2942; color:#ffffff; font-family:'Times New Roman',serif; display:flex; align-items:center; justify-content:center; height:100vh; text-align:center;">
+    <div>
+        <p style="font-size:18px; font-weight:700;">Redirecting to warehouse dashboard...</p>
+        <p style="font-size:13px; opacity:0.8;">If not redirected automatically, <a href="modules/warehouse/warehouse_dashboard.html" style="color:#38bdf8;">click here</a>.</p>
     </div>
 </body>
 </html>

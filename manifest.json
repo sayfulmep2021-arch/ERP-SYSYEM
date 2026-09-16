@@ -12,19 +12,19 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "shared/assets/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-512.png",
+      "src": "shared/assets/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-maskable.png",
+      "src": "shared/assets/icon-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -36,28 +36,28 @@
       "short_name": "Dashboard",
       "description": "Open Main Production Dashboard",
       "url": "./index.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "shared/assets/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Check Floor Stock",
       "short_name": "Floor Stock",
       "description": "Check Real-Time Floor Stock and BOM Movement",
       "url": "./check_floor_stock.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "shared/assets/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Daily Production Plan",
       "short_name": "Prod Plan",
       "description": "Daily Production Target and Plan",
       "url": "./daily_production_plan.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "shared/assets/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Assemble Summary",
       "short_name": "Assemble",
       "description": "Assemble Production and Bin Closing Summary",
       "url": "./assemble_summary.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "shared/assets/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

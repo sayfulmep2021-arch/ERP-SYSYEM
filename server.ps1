@@ -47,6 +47,27 @@ while ($listener.IsListening) {
         if ([string]::IsNullOrEmpty($path)) { $path = "index.html" }
         $filePath = Join-Path $folder $path
 
+        # Resolve directory to its index.html if present
+        if (Test-Path $filePath -PathType Container) {
+            $candidateIndex = Join-Path $filePath "index.html"
+            if (Test-Path $candidateIndex -PathType Leaf) {
+                $filePath = $candidateIndex
+            }
+        }
+
+        # Fallback to shared/assets/ for root-level asset requests (e.g. /favicon.ico, /profile.jpg)
+        if (-not (Test-Path $filePath -PathType Leaf)) {
+            $sharedAssetPath = Join-Path $folder (Join-Path "shared\assets" $path)
+            if (Test-Path $sharedAssetPath -PathType Leaf) {
+                $filePath = $sharedAssetPath
+            } elseif ($path -eq "shared/assets/manifest.json" -or $path -eq "shared\assets\manifest.json") {
+                $rootManifest = Join-Path $folder "manifest.json"
+                if (Test-Path $rootManifest -PathType Leaf) {
+                    $filePath = $rootManifest
+                }
+            }
+        }
+
         if (Test-Path $filePath -PathType Leaf) {
             $bytes = [System.IO.File]::ReadAllBytes($filePath)
             $ext = [System.IO.Path]::GetExtension($filePath).ToLower()

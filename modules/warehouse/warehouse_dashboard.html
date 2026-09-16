@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Warehouse Dashboard | MEP FAN LTD.</title>
+    <script src="../../shared/js/portal_guard.js"></script>
+    <script>
+        // Seamless entry router to Warehouse Module Dashboard
+        try {
+            sessionStorage.setItem('portal_current_view', 'warehouse');
+            sessionStorage.setItem('portal_active_erp_module', 'warehouse');
+        } catch(e) {}
+        window.location.replace("../../index.html?view=warehouse");
+    </script>
+</head>
+<body style="margin:0; padding:0; background:#f8fafc; font-family:'Times New Roman', serif; display:flex; align-items:center; justify-content:center; height:100vh;">
+    <div style="text-align:center;">
+        <div style="font-size:36px; margin-bottom:12px;">📦</div>
+        <div style="font-size:16px; font-weight:700; color:#0f172a;">Loading Warehouse Management Dashboard...</div>
+        <div style="font-size:13px; color:#64748b; margin-top:4px;">Please wait while the executive dashboard loads.</div>
+    </div>
+</body>
+</html>

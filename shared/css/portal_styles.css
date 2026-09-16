@@ -1,4 +1,4 @@
-﻿        /* ==========================================================================
+        /* ==========================================================================
            1. Global Design System & CSS Variables
            ========================================================================== */
         * {
@@ -6385,11 +6385,36 @@
 }
 
 /* 6 MIS Option Cards Grid - Balanced 2-Column Equal Size */
-.module-card-item.module-card-mis {
+.module-card-item.module-card-mis,
+.module-card-item.module-card-flash {
     grid-column: auto !important;
     width: 460px !important;
     height: 118px !important;
     margin: 0 !important;
+}
+
+.module-card-item.module-card-flash:hover {
+    border-color: #f59e0b !important;
+    box-shadow: 0 12px 28px rgba(245, 158, 11, 0.20), 0 4px 8px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Flash Executive Modal Dashboard — Smart, Compact & Ultra-Premium */
+.flash-modal-card {
+    width: 94vw !important;
+    max-width: 1400px !important;
+    height: auto !important;
+    max-height: 88vh !important;
+    background: #ffffff !important;
+    border: 1.5px solid #38bdf8 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 20px 50px -10px rgba(2, 132, 199, 0.28), 0 0 35px rgba(56, 189, 248, 0.12) !important;
+    padding: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+    animation: pinModalAppear 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 .module-card-icon-wrap {
@@ -14010,4 +14035,497 @@
 
 .btn-notif-modal-close:hover {
     background: #0284c7 !important;
+}
+
+/* Complete vs Pending Modal Table Cell & Pill Enhancements */
+.pending-data-tbl .code-pill {
+    display: inline-block !important;
+    padding: 2px 7px !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 5px !important;
+    font-family: 'JetBrains Mono', 'Segoe UI Mono', monospace !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    color: #0284c7 !important;
+    letter-spacing: 0.2px !important;
+}
+.pending-data-tbl .code-pill-special {
+    background: #fffbeb !important;
+    border-color: #fde68a !important;
+    color: #b45309 !important;
+}
+.pending-data-tbl .cell-name {
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    font-size: 0.82rem !important;
+}
+.pending-data-tbl .cell-num {
+    font-family: 'JetBrains Mono', 'Segoe UI Mono', monospace !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    text-align: right !important;
+    font-size: 0.82rem !important;
+    font-variant-numeric: tabular-nums !important;
+}
+.pending-data-tbl .cell-due {
+    text-align: right !important;
+    font-family: 'JetBrains Mono', 'Segoe UI Mono', monospace !important;
+    font-variant-numeric: tabular-nums !important;
+}
+.pending-data-tbl .badge-due-zero {
+    display: inline-block !important;
+    padding: 2px 7px !important;
+    background: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    border-radius: 5px !important;
+    font-weight: 700 !important;
+    font-size: 0.74rem !important;
+    border: 1px solid #e2e8f0 !important;
+}
+.pending-data-tbl .badge-due-pos {
+    display: inline-block !important;
+    padding: 2px 7px !important;
+    background: #ecfdf5 !important;
+    color: #059669 !important;
+    border-radius: 5px !important;
+    font-weight: 800 !important;
+    font-size: 0.74rem !important;
+    border: 1px solid #a7f3d0 !important;
+}
+.pending-data-tbl .badge-due-neg {
+    display: inline-block !important;
+    padding: 2px 7px !important;
+    background: #fff1f2 !important;
+    color: #e11d48 !important;
+    border-radius: 5px !important;
+    font-weight: 800 !important;
+    font-size: 0.74rem !important;
+    border: 1px solid #fecdd3 !important;
+}
+.pending-data-tbl .badge-due-total {
+    background: #ffe4e6 !important;
+    color: #be123c !important;
+    padding: 3px 8px !important;
+    border-radius: 5px !important;
+    font-size: 0.88rem !important;
+    font-weight: 900 !important;
+    border: 1px solid #fca5a5 !important;
+    display: inline-block !important;
+}
+.pending-data-tbl .qty-active {
+    color: #059669 !important;
+    font-weight: 900 !important;
+    background: #ecfdf5 !important;
+    padding: 2px 7px !important;
+    border-radius: 5px !important;
+    border: 1px solid #a7f3d0 !important;
+    display: inline-block !important;
+}
+
+/* ==========================================================================
+   FLASH MODULE — Executive Operational Data Hub (8 Live Report Sections)
+   Exact Hierarchy Matching User Screenshot:
+   1. MAIN PAGE CONTAINER: Spacious, grand canvas using available screen space
+   2. 8 REPORT SECTIONS: 3-column layout (3 + 3 + 2) matching screenshot
+   3. MAIN DISPLAY AREA: Prominent central framed area inside each section
+   4. CORNER LOAD BUTTON: Dedicated Load button at bottom-right corner
+   5. TOP ALL LOAD BUTTON: Master global action button in header
+   ========================================================================== */
+.flash-modal-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 8px 18px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    flex-shrink: 0 !important;
+}
+
+.flash-header-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.flash-header-logo-wrap {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    background: #0f172a !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25) !important;
+    flex-shrink: 0 !important;
+}
+
+.flash-header-logo-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+.flash-header-title {
+    margin: 0 !important;
+    font-size: 1.10rem !important;
+    font-weight: 900 !important;
+    color: #0f172a !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    line-height: 1.2 !important;
+}
+
+.flash-header-sub {
+    margin: 1px 0 0 !important;
+    font-size: 0.72rem !important;
+    color: #64748b !important;
+    line-height: 1.2 !important;
+}
+
+.flash-header-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.flash-stat-pill {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 3px 9px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    font-size: 0.70rem !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+}
+
+.flash-stat-pill .highlight {
+    color: #0284c7 !important;
+    font-weight: 800 !important;
+}
+
+/* Primary Global ALL LOAD Button */
+.flash-all-load-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 5px 15px !important;
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.01em !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.28) !important;
+    transition: all 0.18s ease !important;
+}
+
+.flash-all-load-btn:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.38) !important;
+    background: linear-gradient(135deg, #0369a1 0%, #075985 100%) !important;
+}
+
+.flash-all-load-btn:active {
+    transform: translateY(0) !important;
+}
+
+/* Body Viewport & 8-Card Grid Layout (4 columns x 2 rows: All 8 fit perfectly!) */
+.flash-body-viewport {
+    flex: 1 !important;
+    padding: 10px 14px !important;
+    overflow-y: auto !important;
+    background: #f8fafc !important;
+}
+
+.flash-cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+}
+
+@media (max-width: 1200px) {
+    .flash-cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .flash-cards-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Individual Report Card — Compact, Smart & Ultra-Premium */
+.flash-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 9px !important;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 185px !important;
+    min-height: 185px !important;
+    max-height: 185px !important;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease !important;
+    overflow: hidden !important;
+}
+
+.flash-card:hover {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Card Header */
+.flash-card-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 5px 9px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    background: #fbfcfe !important;
+    flex-shrink: 0 !important;
+    min-height: 28px !important;
+}
+
+.flash-card-title-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    min-width: 0 !important;
+}
+
+.flash-card-dot {
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+    background: #0284c7 !important;
+    flex-shrink: 0 !important;
+}
+
+.flash-card-title {
+    font-size: 0.77rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin: 0 !important;
+    letter-spacing: -0.01em !important;
+}
+
+.flash-card-badge {
+    font-size: 0.63rem !important;
+    font-weight: 700 !important;
+    padding: 1px 5px !important;
+    border-radius: 9999px !important;
+    background: #f1f5f9 !important;
+    color: #64748b !important;
+    flex-shrink: 0 !important;
+}
+
+.flash-card-badge.loaded {
+    background: #ecfdf5 !important;
+    color: #059669 !important;
+    border: 1px solid #a7f3d0 !important;
+}
+
+/* Main Display Area inside Card */
+.flash-main-display-area {
+    flex: 1 !important;
+    margin: 4px 6px 3px 6px !important;
+    background: #f8fafc !important;
+    border: 1px solid #eef2f6 !important;
+    border-radius: 6px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+    padding: 4px !important;
+    transition: all 0.18s ease !important;
+}
+
+.flash-main-display-area.has-data {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    padding: 0 !important;
+}
+
+/* Empty State inside Main Display Area */
+.flash-empty-state {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 4px 6px !important;
+}
+
+.flash-empty-icon-wrap {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 4px !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
+}
+
+.flash-empty-title {
+    font-size: 0.74rem !important;
+    font-weight: 750 !important;
+    color: #1e293b !important;
+    margin-bottom: 2px !important;
+    white-space: nowrap !important;
+}
+
+.flash-empty-desc {
+    font-size: 0.65rem !important;
+    color: #64748b !important;
+    max-width: 190px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.flash-skeleton {
+    width: 94% !important;
+    height: 11px !important;
+    border-radius: 3px !important;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%) !important;
+    background-size: 200% 100% !important;
+    animation: flashShimmer 1.2s infinite !important;
+    margin: 4px auto !important;
+}
+
+@keyframes flashShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Mini Table inside Main Display Area */
+.flash-mini-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 0.67rem !important;
+    text-align: left !important;
+}
+
+.flash-mini-table th {
+    position: sticky !important;
+    top: 0 !important;
+    background: #f8fafc !important;
+    color: #475569 !important;
+    font-weight: 750 !important;
+    padding: 3px 6px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    white-space: nowrap !important;
+    z-index: 1 !important;
+}
+
+.flash-mini-table td {
+    padding: 3px 6px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: #1e293b !important;
+    white-space: nowrap !important;
+}
+
+.flash-mini-table tr:hover td {
+    background: #f0f9ff !important;
+}
+
+/* Card Footer with Corner Load Button */
+.flash-card-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 3px 8px !important;
+    border-top: 1px solid #f1f5f9 !important;
+    background: #ffffff !important;
+    flex-shrink: 0 !important;
+    min-height: 26px !important;
+}
+
+.flash-card-meta {
+    font-size: 0.66rem !important;
+    color: #64748b !important;
+    font-weight: 600 !important;
+}
+
+/* Corner Load Button */
+.flash-load-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    padding: 2px 10px !important;
+    background: #0284c7 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 5px !important;
+    font-size: 0.69rem !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 4px rgba(2, 132, 199, 0.20) !important;
+    transition: all 0.18s ease !important;
+}
+
+.flash-load-btn svg {
+    width: 9px !important;
+    height: 9px !important;
+}
+
+.flash-load-btn:hover {
+    background: #0369a1 !important;
+    box-shadow: 0 3px 8px rgba(2, 132, 199, 0.30) !important;
+    transform: translateY(-1px) !important;
+}
+
+.flash-load-btn:active {
+    transform: translateY(0) !important;
+}
+
+.flash-load-btn.is-loading {
+    background: #64748b !important;
+    cursor: wait !important;
+    pointer-events: none !important;
+}
+
+/* Modern Enterprise Typography & Slim Scrollbars for Flash Hub */
+.flash-modal-card,
+.flash-modal-card * {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+.flash-main-display-area::-webkit-scrollbar,
+.flash-body-viewport::-webkit-scrollbar {
+    width: 4px !important;
+    height: 4px !important;
+}
+
+.flash-main-display-area::-webkit-scrollbar-thumb,
+.flash-body-viewport::-webkit-scrollbar-thumb {
+    background: #cbd5e1 !important;
+    border-radius: 4px !important;
+}
+
+.flash-main-display-area::-webkit-scrollbar-track,
+.flash-body-viewport::-webkit-scrollbar-track {
+    background: transparent !important;
 }

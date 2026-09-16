@@ -10,6 +10,13 @@
 (function(window) {
     'use strict';
 
+    // Universal path resolver for portal root navigation
+    function getPortalIndexUrl(query) {
+        const isSub = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase().includes('/modules/');
+        const base = isSub ? '../../index.html' : 'index.html';
+        return query ? (base + '?' + query) : base;
+    }
+
     // 1. Core Operating Modules (MIS & User Module are strictly excluded)
     const CORE_MODULES = [
         {
@@ -22,7 +29,7 @@
                 if (typeof window.switchToProductionModule === 'function') {
                     window.switchToProductionModule(e);
                 } else {
-                    window.location.href = 'index.html?view=main';
+                    window.location.href = getPortalIndexUrl('view=main');
                 }
             }
         },
@@ -36,7 +43,7 @@
                 if (typeof window.openModuleWarehouseAction === 'function') {
                     window.openModuleWarehouseAction(e);
                 } else {
-                    window.location.href = 'index.html?view=warehouse';
+                    window.location.href = getPortalIndexUrl('view=warehouse');
                 }
             }
         },
@@ -50,7 +57,7 @@
                 if (typeof window.openModuleHRMAction === 'function') {
                     window.openModuleHRMAction(e);
                 } else {
-                    window.location.href = 'index.html?view=hrm';
+                    window.location.href = getPortalIndexUrl('view=hrm');
                 }
             }
         }

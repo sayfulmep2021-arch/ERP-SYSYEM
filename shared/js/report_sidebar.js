@@ -6,16 +6,23 @@
  */
 
 (function() {
+    // Universal path resolver for portal root navigation
+    function getPortalIndexUrl(query) {
+        const isSub = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase().includes('/modules/');
+        const base = isSub ? '../../index.html' : 'index.html';
+        return query ? (base + '?' + query) : base;
+    }
+
     // 0. Session Auth Guard - Strict session validation
     if (typeof window.validateCurrentSession === 'function') {
         if (!window.validateCurrentSession().valid) {
-            window.location.replace('index.html');
+            window.location.replace(getPortalIndexUrl());
             return;
         }
     } else {
         const isAuthed = (sessionStorage.getItem('portal_auth_status') === 'true');
         if (!isAuthed) {
-            window.location.replace('index.html');
+            window.location.replace(getPortalIndexUrl());
             return;
         }
     }
@@ -55,7 +62,7 @@
         const perms = getViewPagePermissions();
         if (perms && perms[currentPageFile] === false) {
             alert("Access Denied: You do not have permission to view this page.");
-            window.location.replace('index.html');
+            window.location.replace(getPortalIndexUrl());
             return;
         }
     }
@@ -71,10 +78,7 @@
             items: [
                 { name: "Daily FG Production Entry", url: "daily_fg_production_entry.html" },
                 { name: "Daily Production Received Assemble (All)", url: "daily_production_received_assemble.html" },
-                { name: "Inter Company Received", url: "#" },
-                { name: "All Section RM", url: "#" },
                 { name: "Daily Production Plan", url: "daily_production_plan.html" },
-                { name: "Safety Stock SFG", url: "#" },
                 { name: "Check Floor Stock", url: "check_floor_stock.html" },
                 { name: "Fan Damage Calculation Entry", url: "fan_damage_calculation_entry.html" }
             ]
@@ -944,7 +948,7 @@
                 guardLiveTimeElements();
                 updateUniversalLiveClock(true);
 
-                let currentProf = { name: 'Sayful Islam', role: 'Senior Supervisor', photo: 'profile.jpg' };
+                let currentProf = { name: 'Sayful Islam', role: 'Senior Supervisor', photo: 'shared/assets/profile.jpg' };
                 try {
                     const rawProf = localStorage.getItem('mep_user_profile');
                     if (rawProf) {
@@ -958,7 +962,7 @@
                 if (isViewOnlyUser) {
                     currentProf.name = 'View User';
                     currentProf.role = 'Restricted Access';
-                    currentProf.photo = 'sayful_logo.png';
+                    currentProf.photo = 'shared/assets/sayful_logo.png';
                 }
 
                 let userBrand = navRight.querySelector('.user-brand-card');
@@ -968,9 +972,19 @@
                     userBrand.title = `${currentProf.name} - ${currentProf.role}`;
                     userBrand.setAttribute('role', 'banner');
                     userBrand.style.cursor = 'default';
+
+                    const isSubModule = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase().includes('/modules/');
+                    const rawPhoto = currentProf.photo || 'profile.jpg';
+                    let photoSrc = rawPhoto;
+                    if (photoSrc && !photoSrc.startsWith('http') && !photoSrc.startsWith('data:') && !photoSrc.startsWith('blob:') && !photoSrc.startsWith('/')) {
+                        const cleanPhoto = rawPhoto.replace(/^(\.\.\/)+/, '').replace(/^shared\/assets\//, '');
+                        photoSrc = isSubModule ? ('../../shared/assets/' + cleanPhoto) : ('shared/assets/' + cleanPhoto);
+                    }
+                    const fallbackLogo = isSubModule ? '../../shared/assets/sayful_logo.png' : 'shared/assets/sayful_logo.png';
+
                     userBrand.innerHTML = `
                         <div class="user-avatar-frame">
-                            <img src="${currentProf.photo}" alt="${currentProf.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <img src="${photoSrc}" alt="${currentProf.name}" onerror="this.src='${fallbackLogo}'; this.onerror=function(){this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';};">
                             <div class="user-avatar-fallback" style="display:none; width:100%; height:100%; background:#0284c7; color:#fff; align-items:center; justify-content:center; font-weight:800; font-size:13px;">${currentProf.name.charAt(0) || 'U'}</div>
                         </div>
                         <div class="user-brand-meta">
@@ -1027,7 +1041,7 @@
                             if (document.body) document.body.innerHTML = '';
                             document.documentElement.innerHTML = '';
                         } catch(e) {}
-                        window.location.replace('index.html');
+                        window.location.replace(getPortalIndexUrl());
                     };
                     navRight.appendChild(logoutBtn);
                 }
@@ -1180,7 +1194,7 @@
         aside.innerHTML = `
             <div class="mep-sidebar-actions mep-sidebar-actions-dual">
                 <!-- Button 1: Dashboard (Premium 3D Icon with Hover Tooltip) -->
-                <a href="index.html?view=main" class="mep-nav-3d-btn mep-btn-3d-dash" aria-label="Dashboard">
+                <a href="${getPortalIndexUrl('view=main')}" class="mep-nav-3d-btn mep-btn-3d-dash" aria-label="Dashboard">
                     <span class="nav-3d-icon-wrap">
                         <svg class="nav-3d-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
@@ -1218,7 +1232,7 @@
                     <span class="nav-3d-tooltip">Dashboard</span>
                 </a>
                 <!-- Button 2: Module (Premium 3D Icon with Hover Tooltip) -->
-                <a href="index.html?view=modules" class="mep-nav-3d-btn mep-btn-3d-mod" aria-label="Module">
+                <a href="${getPortalIndexUrl('view=modules')}" class="mep-nav-3d-btn mep-btn-3d-mod" aria-label="Module">
                     <span class="nav-3d-icon-wrap">
                         <svg class="nav-3d-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
@@ -1338,7 +1352,7 @@
                     subtitle: 'Manufacturing Hub',
                     theme: 'mod-theme-production',
                     iconSvg: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>',
-                    url: 'index.html?view=main'
+                    url: getPortalIndexUrl('view=main')
                 },
                 {
                     key: 'warehouse',
@@ -1346,7 +1360,7 @@
                     subtitle: 'Inventory & Stock Hub',
                     theme: 'mod-theme-warehouse',
                     iconSvg: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
-                    url: 'index.html?view=hub'
+                    url: getPortalIndexUrl('view=hub')
                 },
                 {
                     key: 'hrm',
@@ -1354,7 +1368,7 @@
                     subtitle: 'Human Resource Portal',
                     theme: 'mod-theme-hrm',
                     iconSvg: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>',
-                    url: 'index.html?view=hrm'
+                    url: getPortalIndexUrl('view=hrm')
                 }
             ];
             const altModules = allModules.filter(function(m) { return m.key !== activeKey; });
@@ -2013,10 +2027,13 @@
     };
 
     // Dynamically ensure notification_system.js is loaded
+    const _isSubMod = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase().includes('/modules/');
+    const _sharedJsPrefix = _isSubMod ? '../../shared/js/' : 'shared/js/';
+
     if (!document.getElementById('smartNotificationScript')) {
         const nScript = document.createElement('script');
         nScript.id = 'smartNotificationScript';
-        nScript.src = 'notification_system.js';
+        nScript.src = _sharedJsPrefix + 'notification_system.js';
         document.head.appendChild(nScript);
     }
 
@@ -2024,7 +2041,7 @@
     if (!document.getElementById('smartFirebaseSyncScript')) {
         const fbScript = document.createElement('script');
         fbScript.id = 'smartFirebaseSyncScript';
-        fbScript.src = 'smart_firebase_sync.js';
+        fbScript.src = _sharedJsPrefix + 'smart_firebase_sync.js';
         document.head.appendChild(fbScript);
     }
 
@@ -2467,8 +2484,9 @@
 
     function bootAllServices() {
         if (typeof window.exportSystemDataBackup !== 'function' && !document.querySelector('script[src*="data_backup_engine.js"]')) {
+            const _sub = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase().includes('/modules/');
             const backupScript = document.createElement('script');
-            backupScript.src = 'data_backup_engine.js';
+            backupScript.src = (_sub ? '../../shared/js/' : 'shared/js/') + 'data_backup_engine.js';
             document.head.appendChild(backupScript);
         }
         initFrozenSidebar();
