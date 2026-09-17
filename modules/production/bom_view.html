@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Permanent Authentication Guard -->
+    <script src="../../shared/js/portal_guard.js"></script>
+    <link rel="stylesheet" href="../../shared/css/corporate_design_system.css">
+    <link rel="stylesheet" href="../../shared/css/report_sidebar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BOM VIEW | MEP FAN LTD.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, serif !important;
+            background-color: #f8fafc;
+            color: #0f2942;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navbar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1.5px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            padding: 6px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-brand-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #0f2942;
+            text-transform: uppercase;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: #0284c7;
+            text-transform: uppercase;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Blank Canvas Workspace */
+        .page-content, .bom-blank-viewport {
+            flex: 1;
+            width: 100%;
+            min-height: calc(100vh - 60px);
+            background: #ffffff;
+            padding: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="portal-nav" role="navigation" aria-label="Main Navigation">
+        <div class="nav-container">
+            <div class="nav-left">
+                <span class="nav-brand-title">BOM VIEW</span>
+                <span class="nav-brand-sub">Sayful Islam (Fan)</span>
+            </div>
+            <div class="nav-right">
+                <div class="live-clock-badge">
+                    <span class="live-day-text">Loading date...</span>
+                    <span class="live-time-text">--:--:-- --</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Workspace Blank Area: Reserved for upcoming test data -->
+    <main class="page-content bom-blank-viewport" id="bomViewMainContainer">
+    </main>
+
+    <!-- Unified Sidebar Engine -->
+    <script src="../../shared/js/report_sidebar.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MEP Portal - System Settings, Themes & View Access Control Manager
  * Handles Light/Dark themes, View-User access restrictions, and Settings Modal
  * Auto-extracted from index.html during Phase 3 modularization
@@ -7,6 +7,9 @@
            System Settings, Themes & View Access Control Manager
            ========================================================================== */
         const ALL_PORTAL_PAGES = [
+            // Bill Of Materials (BOM)
+            { id: "bom_view", file: "bom_view.html", title: "BOM VIEW", module: "Bill Of Materials (BOM)" },
+
             // Complete vs Pending
             { id: "fg_pending", file: "fg_pending_report.html", title: "FG Pending Report (Complete vs Pending)", module: "Complete vs Pending" },
 

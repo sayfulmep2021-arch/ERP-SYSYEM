@@ -1,4 +1,4 @@
-        /* ==========================================================================
+﻿        /* ==========================================================================
            1. Global Design System & CSS Variables
            ========================================================================== */
         * {
@@ -6400,8 +6400,8 @@
 
 /* Flash Executive Modal Dashboard — Smart, Compact & Ultra-Premium */
 .flash-modal-card {
-    width: 94vw !important;
-    max-width: 1400px !important;
+    width: 92vw !important;
+    max-width: 1060px !important;
     height: auto !important;
     max-height: 88vh !important;
     background: #ffffff !important;
@@ -7382,6 +7382,49 @@
     border-color: #fca5a5 !important;
 }
 
+/* Screenshot Left Report Button */
+.btn-physical-screenshot {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    padding: 6px 14px !important;
+    background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid #4338ca !important;
+    border-radius: 6px !important;
+    font-size: 0.80rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+}
+
+.btn-physical-screenshot:hover {
+    background: linear-gradient(135deg, #4338ca 0%, #312e81 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.38) !important;
+}
+
+.btn-physical-screenshot:active {
+    transform: translateY(0) !important;
+}
+
+.btn-physical-screenshot:disabled {
+    opacity: 0.75 !important;
+    cursor: not-allowed !important;
+}
+
+.physical-spinner {
+    width: 12px !important;
+    height: 12px !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 50% !important;
+    border-top-color: #ffffff !important;
+    animation: spin 0.8s linear infinite !important;
+    display: inline-block !important;
+}
+
 /* Modal Body */
 .physical-modal-body {
     padding: 16px 20px !important;
@@ -7396,6 +7439,12 @@
     grid-template-columns: 1.25fr 0.85fr !important;
     gap: 16px !important;
     margin-bottom: 12px !important;
+}
+
+.physical-grid-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
 }
 
 @media (max-width: 1100px) {
@@ -7525,30 +7574,142 @@
     font-weight: 800 !important;
 }
 
-/* Total % Row: Soft, Modern, Enterprise-Grade Executive Warm Gold Gradient (No Harsh Neon Yellow/Pink) */
+/* Total % Row: Ultra-Modern Dynamic Progress Meter Gauge with Gradient Fill */
 .physical-tbl .cell-pct-label {
-    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important;
-    color: #0f172a !important;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    color: #f8fafc !important;
     font-weight: 800 !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    font-size: 0.78rem !important;
+    vertical-align: middle !important;
+    border-top: 2px solid #3b82f6 !important;
 }
 
-.physical-tbl .cell-pct {
-    background: linear-gradient(180deg, #fef9c3 0%, #fef08a 100%) !important;
-    color: #713f12 !important;
-    font-weight: 800 !important;
-    border-top: 2px solid #ca8a04 !important;
+.physical-tbl td.cell-pct-meter {
+    padding: 3px 4px !important;
+    background: #f8fafc !important;
+    border-top: 2px solid #94a3b8 !important;
+    vertical-align: middle !important;
+    height: 32px !important;
+    box-sizing: border-box !important;
+    position: relative !important;
 }
 
-.physical-tbl .cell-pct-total {
-    background: linear-gradient(135deg, #fde047 0%, #f59e0b 100%) !important;
-    color: #451a03 !important;
+.pct-meter-wrap {
+    position: relative !important;
+    width: 100% !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.pct-meter-track {
+    position: absolute !important;
+    inset: 0 !important;
+    background: #e2e8f0 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.pct-meter-fill {
+    height: 100% !important;
+    border-radius: 3px !important;
+    transition: width 0.6s cubic-bezier(0.34, 1.3, 0.64, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.pct-meter-sheen {
+    position: absolute !important;
+    inset: 0 !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0.12) 100%) !important;
+    pointer-events: none !important;
+}
+
+/* Tiered Gradients for Progress Fills */
+.pct-meter-fill.pct-tier-super {
+    background: linear-gradient(90deg, #10b981 0%, #06b6d4 35%, #6366f1 70%, #f59e0b 100%) !important;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+}
+
+.pct-meter-fill.pct-tier-high {
+    background: linear-gradient(90deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%) !important;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+}
+
+.pct-meter-fill.pct-tier-mid {
+    background: linear-gradient(90deg, #6366f1 0%, #3b82f6 50%, #06b6d4 100%) !important;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+}
+
+.pct-meter-fill.pct-tier-low {
+    background: linear-gradient(90deg, #f43f5e 0%, #fb923c 55%, #f59e0b 100%) !important;
+    box-shadow: 0 0 8px rgba(244, 63, 94, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+}
+
+.pct-meter-fill.pct-tier-zero {
+    width: 0% !important;
+    background: transparent !important;
+}
+
+.pct-meter-content {
+    position: relative !important;
+    z-index: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    width: 100% !important;
+    pointer-events: none !important;
+}
+
+.pct-meter-text {
+    font-family: 'JetBrains Mono', 'Consolas', monospace !important;
     font-weight: 900 !important;
-    border-top: 2px solid #b45309 !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    font-size: 0.82rem !important;
+    color: #0f172a !important;
+    line-height: 1 !important;
+    text-shadow: 0 1px 2px #ffffff, 0 -1px 2px #ffffff, 1px 0 2px #ffffff, -1px 0 2px #ffffff, 0 0 6px rgba(255, 255, 255, 0.95) !important;
+    letter-spacing: -0.2px !important;
 }
 
-/* Disabled Total Cell on Redmi Row (marked with X by user) */
+.pct-star-badge {
+    color: #d97706 !important;
+    font-size: 0.85rem !important;
+    line-height: 1 !important;
+    filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.9)) !important;
+    display: inline-block !important;
+    animation: pctStarPulse 1.8s ease-in-out infinite !important;
+}
+
+@keyframes pctStarPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.22); }
+}
+
+/* Grand Total Column */
+.physical-tbl td.cell-pct-grand-total {
+    background: #f1f5f9 !important;
+    border-left: 2px solid #0284c7 !important;
+    border-top: 2px solid #0284c7 !important;
+}
+
+.physical-tbl td.cell-pct-grand-total .pct-meter-track {
+    border: 1.5px solid #64748b !important;
+    background: #e2e8f0 !important;
+}
+
+.physical-tbl td.cell-pct-grand-total .pct-meter-text {
+    font-size: 0.86rem !important;
+    font-weight: 900 !important;
+}
 .physical-tbl .cell-no-total {
     background: #f1f5f9 !important;
     color: #94a3b8 !important;
@@ -7609,8 +7770,8 @@
 }
 
 .legend-box.total-pct {
-    background: linear-gradient(135deg, #fde047 0%, #f59e0b 100%) !important;
-    border-color: #b45309 !important;
+    background: linear-gradient(90deg, #6366f1 0%, #3b82f6 50%, #10b981 100%) !important;
+    border-color: #3b82f6 !important;
 }
 
 .physical-status-tag {
@@ -9440,6 +9601,139 @@
    DASHBOARD SIDEBAR: Per-Module Distinct Vibrant Gradients when OPEN
    Matches report_sidebar.css 100% (User Directive: Screenshot 2 fidelity)
    ========================================================================== */
+
+/* 0. Bill Of Materials (BOM) — Bespoke Executive Card & BOM VIEW Badge */
+#dashboardSidebar .mep-module-accordion.mep-bom-accordion,
+.mep-module-accordion.mep-bom-accordion {
+    margin-bottom: 6px !important;
+}
+
+#dashboardSidebar .mep-module-heading.mep-heading-bom-special,
+.mep-module-heading.mep-heading-bom-special {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+    border: 1.2px solid #bae6fd !important;
+    border-left: 4px solid #0284c7 !important;
+    box-shadow: 0 2px 7px rgba(2, 132, 199, 0.08) !important;
+    border-radius: 8px !important;
+    min-height: 40px !important;
+    padding: 6px 9px !important;
+    transform: none !important;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+#dashboardSidebar .mep-bom-icon-badge,
+.mep-bom-icon-badge {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    border-radius: 6px !important;
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 5px rgba(2, 132, 199, 0.28) !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.2s ease !important;
+}
+
+#dashboardSidebar .mep-bom-icon-badge svg,
+.mep-bom-icon-badge svg {
+    width: 13px !important;
+    height: 13px !important;
+    stroke: #ffffff !important;
+    display: block !important;
+}
+
+#dashboardSidebar .mep-bom-title-text,
+.mep-bom-title-text {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: #0c4a6e !important;
+    letter-spacing: 0.2px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+#dashboardSidebar .mep-bom-right-actions,
+.mep-bom-right-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+}
+
+#dashboardSidebar .mep-bom-direct-pill,
+.mep-bom-direct-pill {
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    padding: 2.5px 7px !important;
+    border-radius: 12px !important;
+    letter-spacing: 0.4px !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 5px rgba(37, 99, 235, 0.25) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease !important;
+}
+
+#dashboardSidebar .mep-bom-direct-pill:hover,
+.mep-bom-direct-pill:hover {
+    background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%) !important;
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.38) !important;
+    transform: scale(1.04) !important;
+}
+
+/* Hover State */
+#dashboardSidebar .mep-module-heading.mep-heading-bom-special:hover,
+.mep-module-heading.mep-heading-bom-special:hover {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+    border-color: #7dd3fc !important;
+    border-left: 4px solid #0284c7 !important;
+    box-shadow: 0 3px 10px rgba(2, 132, 199, 0.16) !important;
+    transform: none !important;
+}
+
+#dashboardSidebar .mep-module-heading.mep-heading-bom-special:hover .mep-bom-icon-badge,
+.mep-module-heading.mep-heading-bom-special:hover .mep-bom-icon-badge {
+    transform: scale(1.08) !important;
+}
+
+/* Open / Active Gradient State */
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-bom-special,
+#dashboardSidebar .mep-heading-bom-special.is-active-module,
+.mep-module-accordion.is-open .mep-heading-bom-special,
+.mep-heading-bom-special.is-active-module {
+    background: linear-gradient(135deg, #dbeafe 0%, #bae6fd 50%, #7dd3fc 100%) !important;
+    border: 1.2px solid #38bdf8 !important;
+    border-left: 4px solid #0284c7 !important;
+    box-shadow: 0 3px 10px rgba(2, 132, 199, 0.18) !important;
+}
+
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-bom-special .mep-bom-title-text,
+#dashboardSidebar .mep-heading-bom-special.is-active-module .mep-bom-title-text,
+.mep-module-accordion.is-open .mep-heading-bom-special .mep-bom-title-text,
+.mep-heading-bom-special.is-active-module .mep-bom-title-text {
+    color: #0c4a6e !important;
+    font-weight: 800 !important;
+}
+
+#dashboardSidebar .mep-module-accordion.is-open .mep-heading-bom-special .mep-mod-chevron,
+#dashboardSidebar .mep-heading-bom-special.is-active-module .mep-mod-chevron,
+.mep-module-accordion.is-open .mep-heading-bom-special .mep-mod-chevron,
+.mep-heading-bom-special.is-active-module .mep-mod-chevron {
+    color: #0284c7 !important;
+    transform: rotate(180deg) !important;
+}
 
 /* 1. All Report Summary - Royal Sapphire Blue Gradient */
 #dashboardSidebar .mep-module-accordion.is-open .mep-heading-mep-acc-01,
@@ -14124,7 +14418,7 @@
 }
 
 /* ==========================================================================
-   FLASH MODULE — Executive Operational Data Hub (8 Live Report Sections)
+       FLASH MODULE — Executive Operational Data Hub (8 Live Report Sections)
    Exact Hierarchy Matching User Screenshot:
    1. MAIN PAGE CONTAINER: Spacious, grand canvas using available screen space
    2. 8 REPORT SECTIONS: 3-column layout (3 + 3 + 2) matching screenshot
@@ -14132,34 +14426,72 @@
    4. CORNER LOAD BUTTON: Dedicated Load button at bottom-right corner
    5. TOP ALL LOAD BUTTON: Master global action button in header
    ========================================================================== */
-.flash-modal-header {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding: 8px 18px !important;
+.flash-modal-card {
+    width: 100% !important;
+    max-width: 710px !important;
+    max-height: 94vh !important;
     background: #ffffff !important;
-    border-bottom: 1px solid #e2e8f0 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 25px 60px -10px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.12) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    position: relative !important;
+    animation: flashModalAppear 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes flashModalAppear {
+    0% { opacity: 0; transform: scale(0.96) translateY(8px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Top Glow Line with Multi-Color Electric Gradient */
+.flash-header-top-glow {
+    height: 4px !important;
+    width: 100% !important;
+    background: linear-gradient(90deg, #f59e0b 0%, #06b6d4 25%, #3b82f6 50%, #8b5cf6 75%, #ec4899 100%) !important;
     flex-shrink: 0 !important;
 }
 
-.flash-header-left {
+/* Grand Executive Slide Hero Banner Header */
+.flash-modal-header {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 16px 20px 14px !important;
+    background: linear-gradient(135deg, #091322 0%, #0e2242 45%, #082d49 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.16) !important;
+}
+
+/* Header Slide Upper Deck: Brand Logo, Title & Close */
+.flash-header-deck-top {
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
+    justify-content: space-between !important;
+    margin-bottom: 5px !important;
+    width: 100% !important;
+}
+
+.flash-header-brand-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
 }
 
 .flash-header-logo-wrap {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    max-width: 34px !important;
-    border-radius: 8px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 10px !important;
     overflow: hidden !important;
-    background: #0f172a !important;
+    background: #0284c7 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25) !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45) !important;
     flex-shrink: 0 !important;
 }
 
@@ -14171,153 +14503,274 @@
 
 .flash-header-title {
     margin: 0 !important;
-    font-size: 1.10rem !important;
-    font-weight: 900 !important;
-    color: #0f172a !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    line-height: 1.2 !important;
-}
-
-.flash-header-sub {
-    margin: 1px 0 0 !important;
-    font-size: 0.72rem !important;
-    color: #64748b !important;
-    line-height: 1.2 !important;
-}
-
-.flash-header-right {
+    font-size: 1.20rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
     display: flex !important;
     align-items: center !important;
     gap: 8px !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.02em !important;
+}
+
+.flash-version-badge {
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    padding: 2px 8px !important;
+    border-radius: 9999px !important;
+    background: rgba(56, 189, 248, 0.15) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+}
+
+.flash-header-sub {
+    margin: 0 0 10px 0 !important;
+    font-size: 0.74rem !important;
+    color: #94a3b8 !important;
+    line-height: 1.3 !important;
+}
+
+/* Header Slide Lower Deck: Metrics + Master Action */
+.flash-header-deck-bottom {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding-top: 8px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    width: 100% !important;
+}
+
+.flash-stats-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
 }
 
 .flash-stat-pill {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
-    gap: 4px !important;
-    padding: 3px 9px !important;
-    background: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
+    gap: 5px !important;
+    padding: 3px 10px !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-radius: 20px !important;
-    font-size: 0.70rem !important;
-    font-weight: 700 !important;
-    color: #334155 !important;
+    font-size: 0.68rem !important;
+    font-weight: 600 !important;
+    color: #cbd5e1 !important;
+    backdrop-filter: blur(8px) !important;
 }
 
 .flash-stat-pill .highlight {
-    color: #0284c7 !important;
+    color: #38bdf8 !important;
     font-weight: 800 !important;
 }
 
-/* Primary Global ALL LOAD Button */
+/* Primary Master ALL LOAD Button */
 .flash-all-load-btn {
     display: inline-flex !important;
     align-items: center !important;
     gap: 6px !important;
-    padding: 5px 15px !important;
+    padding: 5px 16px !important;
     background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
     color: #ffffff !important;
-    border: none !important;
-    border-radius: 6px !important;
-    font-size: 0.78rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 7px !important;
+    font-size: 0.76rem !important;
     font-weight: 800 !important;
-    letter-spacing: 0.01em !important;
+    letter-spacing: 0.02em !important;
     cursor: pointer !important;
-    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.28) !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4) !important;
     transition: all 0.18s ease !important;
+    height: 30px !important;
 }
 
 .flash-all-load-btn:hover {
     transform: translateY(-1px) !important;
-    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.38) !important;
-    background: linear-gradient(135deg, #0369a1 0%, #075985 100%) !important;
+    box-shadow: 0 6px 18px rgba(2, 132, 199, 0.55) !important;
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
 }
 
 .flash-all-load-btn:active {
     transform: translateY(0) !important;
 }
 
-/* Body Viewport & 8-Card Grid Layout (4 columns x 2 rows: All 8 fit perfectly!) */
+.flash-close-btn {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    font-size: 14px !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+
+.flash-close-btn:hover {
+    background: rgba(239, 68, 68, 0.85) !important;
+    border-color: #ef4444 !important;
+    transform: rotate(90deg) !important;
+}
+
+/* Body Viewport & 9-Card Grid Layout */
 .flash-body-viewport {
     flex: 1 !important;
-    padding: 10px 14px !important;
+    padding: 14px 16px !important;
     overflow-y: auto !important;
     background: #f8fafc !important;
 }
 
 .flash-cards-grid {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 10px !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
     width: 100% !important;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 960px) {
     .flash-cards-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(3, 1fr) !important;
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 600px) {
     .flash-cards-grid {
         grid-template-columns: 1fr !important;
     }
 }
 
-/* Individual Report Card — Compact, Smart & Ultra-Premium */
+/* Individual Report Card Base */
 .flash-card {
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 9px !important;
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 5px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03) !important;
     display: flex !important;
     flex-direction: column !important;
-    height: 185px !important;
-    min-height: 185px !important;
-    max-height: 185px !important;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease !important;
+    justify-content: space-between !important;
+    min-height: 80px !important;
+    height: auto !important;
+    padding: 10px 12px !important;
+    box-sizing: border-box !important;
+    position: relative !important;
     overflow: hidden !important;
+    cursor: pointer !important;
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), 
+                filter 0.24s ease, 
+                box-shadow 0.24s ease, 
+                border-color 0.24s ease !important;
 }
 
+/* Card Hover Float Upwards & Lighten (Mouse Over Effect) */
 .flash-card:hover {
-    border-color: #38bdf8 !important;
-    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12) !important;
-    transform: translateY(-1px) !important;
+    transform: translateY(-6px) scale(1.02) !important;
+    filter: brightness(1.14) contrast(1.03) !important;
+    box-shadow: 0 14px 28px -4px rgba(15, 23, 42, 0.22), 0 6px 12px -2px rgba(15, 23, 42, 0.12) !important;
+    z-index: 10 !important;
+}
+
+/* 9 Distinct Gradient Color Themes */
+/* 1. Inter Sales Requisition: Ocean Azure */
+.flash-card.flash-theme-intersales {
+    background: linear-gradient(145deg, #e0f2fe 0%, #bae6fd 60%, #7dd3fc 100%) !important;
+    border: 1.5px solid #38bdf8 !important;
+}
+.flash-card.flash-theme-intersales .flash-card-title {
+    color: #0369a1 !important;
+}
+
+/* 2. Per Day Received: Mint Emerald */
+.flash-card.flash-theme-perday {
+    background: linear-gradient(145deg, #dcfce7 0%, #bbf7d0 60%, #86efac 100%) !important;
+    border: 1.5px solid #4ade80 !important;
+}
+.flash-card.flash-theme-perday .flash-card-title {
+    color: #065f46 !important;
+}
+
+/* 3. Spare Parts: Warm Amber */
+.flash-card.flash-theme-spareparts {
+    background: linear-gradient(145deg, #fef3c7 0%, #fde68a 60%, #fcd34d 100%) !important;
+    border: 1.5px solid #fbbf24 !important;
+}
+.flash-card.flash-theme-spareparts .flash-card-title {
+    color: #92400e !important;
+}
+
+/* 4. Fan Assemble: Electric Indigo */
+.flash-card.flash-theme-fanassemble {
+    background: linear-gradient(145deg, #e0e7ff 0%, #c7d2fe 60%, #a5b4fc 100%) !important;
+    border: 1.5px solid #818cf8 !important;
+}
+.flash-card.flash-theme-fanassemble .flash-card-title {
+    color: #3730a3 !important;
+}
+
+/* 5. Armature & Winding: Royal Purple */
+.flash-card.flash-theme-armature {
+    background: linear-gradient(145deg, #f3e8ff 0%, #e9d5ff 60%, #d8b4fe 100%) !important;
+    border: 1.5px solid #c084fc !important;
+}
+.flash-card.flash-theme-armature .flash-card-title {
+    color: #6b21a8 !important;
+}
+
+/* 6. Finish Good (FG): Rose Pink */
+.flash-card.flash-theme-finishgood {
+    background: linear-gradient(145deg, #ffe4e6 0%, #fecdd3 60%, #fda4af 100%) !important;
+    border: 1.5px solid #fb7185 !important;
+}
+.flash-card.flash-theme-finishgood .flash-card-title {
+    color: #9f1239 !important;
+}
+
+/* 7. Closing All SFG: Sunset Orange */
+.flash-card.flash-theme-closingsfg {
+    background: linear-gradient(145deg, #ffedd5 0%, #fed7aa 60%, #fdba74 100%) !important;
+    border: 1.5px solid #fb923c !important;
+}
+.flash-card.flash-theme-closingsfg .flash-card-title {
+    color: #9a3412 !important;
+}
+
+/* 8. Store Position Report: Marine Teal */
+.flash-card.flash-theme-storeposition {
+    background: linear-gradient(145deg, #ccfbf1 0%, #99f6e4 60%, #5eead4 100%) !important;
+    border: 1.5px solid #2dd4bf !important;
+}
+.flash-card.flash-theme-storeposition .flash-card-title {
+    color: #115e59 !important;
+}
+
+/* 9. Bill Of Materials: Sapphire Blue */
+.flash-card.flash-theme-bom {
+    background: linear-gradient(145deg, #dbeafe 0%, #bfdbfe 60%, #93c5fd 100%) !important;
+    border: 1.5px solid #60a5fa !important;
+}
+.flash-card.flash-theme-bom .flash-card-title {
+    color: #1e40af !important;
 }
 
 /* Card Header */
 .flash-card-header {
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    padding: 5px 9px !important;
-    border-bottom: 1px solid #f1f5f9 !important;
-    background: #fbfcfe !important;
-    flex-shrink: 0 !important;
-    min-height: 28px !important;
-}
-
-.flash-card-title-wrap {
-    display: flex !important;
-    align-items: center !important;
-    gap: 5px !important;
-    min-width: 0 !important;
-}
-
-.flash-card-dot {
-    width: 6px !important;
-    height: 6px !important;
-    border-radius: 50% !important;
-    background: #0284c7 !important;
-    flex-shrink: 0 !important;
+    justify-content: flex-start !important;
+    padding: 0 !important;
+    border-bottom: none !important;
+    background: transparent !important;
+    margin-bottom: 6px !important;
 }
 
 .flash-card-title {
-    font-size: 0.77rem !important;
-    font-weight: 800 !important;
-    color: #0f172a !important;
+    font-size: 0.82rem !important;
+    font-weight: 750 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -14325,89 +14778,24 @@
     letter-spacing: -0.01em !important;
 }
 
-.flash-card-badge {
-    font-size: 0.63rem !important;
-    font-weight: 700 !important;
-    padding: 1px 5px !important;
-    border-radius: 9999px !important;
-    background: #f1f5f9 !important;
-    color: #64748b !important;
-    flex-shrink: 0 !important;
-}
-
-.flash-card-badge.loaded {
-    background: #ecfdf5 !important;
-    color: #059669 !important;
-    border: 1px solid #a7f3d0 !important;
-}
-
-/* Main Display Area inside Card */
+/* Main Display Area inside Card (Hidden until data is loaded) */
 .flash-main-display-area {
-    flex: 1 !important;
-    margin: 4px 6px 3px 6px !important;
-    background: #f8fafc !important;
-    border: 1px solid #eef2f6 !important;
+    display: none;
+    margin-bottom: 8px !important;
+    border: 1px solid #e2e8f0 !important;
     border-radius: 6px !important;
+    background: #ffffff !important;
+    max-height: 140px !important;
     overflow-y: auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    position: relative !important;
-    padding: 4px !important;
-    transition: all 0.18s ease !important;
 }
 
 .flash-main-display-area.has-data {
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    justify-content: flex-start !important;
-    align-items: stretch !important;
-    padding: 0 !important;
-}
-
-/* Empty State inside Main Display Area */
-.flash-empty-state {
-    text-align: center !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 4px 6px !important;
-}
-
-.flash-empty-icon-wrap {
-    width: 30px !important;
-    height: 30px !important;
-    border-radius: 8px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    margin-bottom: 4px !important;
-    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
-}
-
-.flash-empty-title {
-    font-size: 0.74rem !important;
-    font-weight: 750 !important;
-    color: #1e293b !important;
-    margin-bottom: 2px !important;
-    white-space: nowrap !important;
-}
-
-.flash-empty-desc {
-    font-size: 0.65rem !important;
-    color: #64748b !important;
-    max-width: 190px !important;
-    line-height: 1.2 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    display: block !important;
 }
 
 .flash-skeleton {
     width: 94% !important;
-    height: 11px !important;
+    height: 10px !important;
     border-radius: 3px !important;
     background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%) !important;
     background-size: 200% 100% !important;
@@ -14451,50 +14839,41 @@
     background: #f0f9ff !important;
 }
 
-/* Card Footer with Corner Load Button */
+/* Card Footer with Action Button */
 .flash-card-footer {
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    padding: 3px 8px !important;
-    border-top: 1px solid #f1f5f9 !important;
-    background: #ffffff !important;
-    flex-shrink: 0 !important;
-    min-height: 26px !important;
+    justify-content: flex-end !important;
+    padding: 0 !important;
+    border-top: none !important;
+    background: transparent !important;
+    margin-top: auto !important;
 }
 
-.flash-card-meta {
-    font-size: 0.66rem !important;
-    color: #64748b !important;
-    font-weight: 600 !important;
-}
-
-/* Corner Load Button */
+/* Translucent Frosted Glass Load Button */
 .flash-load-btn {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 3px !important;
-    padding: 2px 10px !important;
-    background: #0284c7 !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 5px !important;
-    font-size: 0.69rem !important;
-    font-weight: 800 !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    height: 26px !important;
+    padding: 0 10px !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    color: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.95) !important;
+    border-radius: 6px !important;
+    font-size: 0.74rem !important;
+    font-weight: 750 !important;
     cursor: pointer !important;
-    box-shadow: 0 1px 4px rgba(2, 132, 199, 0.20) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
     transition: all 0.18s ease !important;
 }
 
-.flash-load-btn svg {
-    width: 9px !important;
-    height: 9px !important;
-}
-
 .flash-load-btn:hover {
-    background: #0369a1 !important;
-    box-shadow: 0 3px 8px rgba(2, 132, 199, 0.30) !important;
-    transform: translateY(-1px) !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16) !important;
 }
 
 .flash-load-btn:active {
@@ -14502,7 +14881,9 @@
 }
 
 .flash-load-btn.is-loading {
-    background: #64748b !important;
+    background: #f1f5f9 !important;
+    color: #64748b !important;
+    border-color: #cbd5e1 !important;
     cursor: wait !important;
     pointer-events: none !important;
 }

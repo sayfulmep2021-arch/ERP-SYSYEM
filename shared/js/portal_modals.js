@@ -128,6 +128,15 @@
                         </select>
                     </div>
 
+                    <!-- Screenshot Left Section (Dual Box: Ceiling Fan + Blade) -->
+                    <button type="button" class="btn-physical-screenshot" id="btnCaptureLeftReport" onclick="window.captureLeftPhysicalReportScreenshot()" title="Capture Left 2 Reports (Ceiling Fan & Blade) as High-Resolution PNG">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <span>Screenshot Left (2 Tables)</span>
+                    </button>
+
                     <!-- Refresh / Sync Button -->
                     <button type="button" class="btn-physical-sync" onclick="syncPhysicalReportData()" title="Sync with Monthly Production Summary">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -145,53 +154,59 @@
             <!-- Modal Body (2x2 Grid of 4 Tables) -->
             <div class="physical-modal-body">
                 <div class="physical-report-grid">
-                    <!-- TABLE 1: Ceiling Fan Target & Achive Report -->
-                    <div class="physical-card" id="cardCeilingFanReport">
-                        <div class="physical-tbl-title-bar">
-                            <div class="physical-tbl-title-spacer"></div>
-                            <span class="physical-tbl-title-text">Ceiling Fan Target &amp; Achive Report</span>
-                            <button type="button" class="btn-toggle-redmi" id="btnToggleRedmiRow" onclick="window.toggleRedmiAdjustmentRow(event)" title="1-click to Hide/Unhide the [-] Adjustment row">
-                                <svg class="icon-eye" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                                <span id="labelToggleRedmi">Hide [-]</span>
-                            </button>
+                    <!-- LEFT COLUMN: Ceiling Fan & Blade (Screenshot Target Area) -->
+                    <div class="physical-grid-col physical-left-col" id="physicalLeftReportArea">
+                        <!-- TABLE 1: Ceiling Fan Target & Achive Report -->
+                        <div class="physical-card" id="cardCeilingFanReport">
+                            <div class="physical-tbl-title-bar">
+                                <div class="physical-tbl-title-spacer"></div>
+                                <span class="physical-tbl-title-text">Ceiling Fan Target &amp; Achive Report</span>
+                                <button type="button" class="btn-toggle-redmi" id="btnToggleRedmiRow" onclick="window.toggleRedmiAdjustmentRow(event)" title="1-click to Hide/Unhide the [-] Adjustment row">
+                                    <svg class="icon-eye" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span id="labelToggleRedmi">Hide [-]</span>
+                                </button>
+                            </div>
+                            <div class="physical-tbl-wrapper">
+                                <table class="physical-tbl" id="tblCeilingFan">
+                                    <!-- Dynamic Render by MEP_PHYSICAL_UI -->
+                                </table>
+                            </div>
                         </div>
-                        <div class="physical-tbl-wrapper">
-                            <table class="physical-tbl" id="tblCeilingFan">
-                                <!-- Dynamic Render by MEP_PHYSICAL_UI -->
-                            </table>
+
+                        <!-- TABLE 3: Blade Report -->
+                        <div class="physical-card" id="cardBladeReport">
+                            <div class="physical-tbl-title">Blade Report</div>
+                            <div class="physical-tbl-wrapper">
+                                <table class="physical-tbl" id="tblBlade">
+                                    <!-- Dynamic Render by MEP_PHYSICAL_UI -->
+                                </table>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- TABLE 2: Accessories Report -->
-                    <div class="physical-card" id="cardAccessoriesReport">
-                        <div class="physical-tbl-title">Accessories Report</div>
-                        <div class="physical-tbl-wrapper">
-                            <table class="physical-tbl" id="tblAccessories">
-                                <!-- Dynamic Render by MEP_PHYSICAL_UI -->
-                            </table>
+                    <!-- RIGHT COLUMN: Accessories & Armature -->
+                    <div class="physical-grid-col physical-right-col" id="physicalRightReportArea">
+                        <!-- TABLE 2: Accessories Report -->
+                        <div class="physical-card" id="cardAccessoriesReport">
+                            <div class="physical-tbl-title">Accessories Report</div>
+                            <div class="physical-tbl-wrapper">
+                                <table class="physical-tbl" id="tblAccessories">
+                                    <!-- Dynamic Render by MEP_PHYSICAL_UI -->
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- TABLE 3: Blade Report -->
-                    <div class="physical-card" id="cardBladeReport">
-                        <div class="physical-tbl-title">Blade Report</div>
-                        <div class="physical-tbl-wrapper">
-                            <table class="physical-tbl" id="tblBlade">
-                                <!-- Dynamic Render by MEP_PHYSICAL_UI -->
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- TABLE 4: Armature -->
-                    <div class="physical-card" id="cardArmatureReport">
-                        <div class="physical-tbl-title">Armature</div>
-                        <div class="physical-tbl-wrapper">
-                            <table class="physical-tbl" id="tblArmature">
-                                <!-- Dynamic Render by MEP_PHYSICAL_UI -->
-                            </table>
+                        <!-- TABLE 4: Armature -->
+                        <div class="physical-card" id="cardArmatureReport">
+                            <div class="physical-tbl-title">Armature</div>
+                            <div class="physical-tbl-wrapper">
+                                <table class="physical-tbl" id="tblArmature">
+                                    <!-- Dynamic Render by MEP_PHYSICAL_UI -->
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,7 +217,7 @@
                         <span class="legend-item"><span class="legend-box editable"></span> Editable Target / Adjustments</span>
                         <span class="legend-item"><span class="legend-box source-achieve"></span> Auto-pulled from Physical Production</span>
                         <span class="legend-item"><span class="legend-box need"></span> Locked Need Formula (Target - Achieve)</span>
-                        <span class="legend-item"><span class="legend-box total-pct"></span> Locked Achievement %</span>
+                        <span class="legend-item"><span class="legend-box total-pct"></span> Locked Achievement Progress %</span>
                         <button type="button" class="legend-toggle-link" onclick="window.toggleRedmiAdjustmentRow(event)">[-] Row: <strong id="legendToggleStatus" style="color:#059669;">Visible</strong> (1-Click Toggle)</button>
                     </div>
                     <div class="physical-status-tag" id="physicalEditStatus">Auto-saved to local state</div>
@@ -1495,258 +1510,168 @@
          ========================================================================== -->
     <div class="mis-pin-modal-backdrop flash-modal-backdrop" id="flashSpeedModal" style="display:none;" onclick="if(event.target===this) closeFlashModal()">
         <div class="flash-modal-card" role="dialog" aria-modal="true" aria-labelledby="flashModalTitle">
-            <!-- Top Glow Line with Electric Gradient -->
-            <div style="height: 4px; width: 100%; background: linear-gradient(90deg, #f59e0b, #38bdf8, #0284c7, #f59e0b); flex-shrink: 0;"></div>
+            <!-- Top Glow Line with Multi-Color Electric Gradient -->
+            <div class="flash-header-top-glow"></div>
 
-            <!-- Header with Flash Logo, Stats, All Load Button & Close Button -->
+            <!-- Grand Executive Slide Hero Banner Header -->
             <div class="flash-modal-header">
-                <div class="flash-header-left">
-                    <div class="flash-header-logo-wrap">
-                        <img src="shared/assets/module_flash.png" onerror="this.src='../../shared/assets/module_flash.png'" alt="Flash" style="width: 100%; height: 100%; object-fit: contain;">
+                <!-- Upper Deck: Brand, Title & Close Button -->
+                <div class="flash-header-deck-top">
+                    <div class="flash-header-brand-wrap">
+                        <div class="flash-header-logo-wrap">
+                            <img src="shared/assets/module_flash.png" onerror="this.src='../../shared/assets/module_flash.png'" alt="Flash">
+                        </div>
+                        <div>
+                            <h3 id="flashModalTitle" class="flash-header-title">
+                                Flash Enterprise Hub <span class="flash-version-badge">v2.4 PRO</span>
+                            </h3>
+                        </div>
                     </div>
-                    <div>
-                        <h3 id="flashModalTitle" class="flash-header-title">
-                            Flash <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 9999px; background: #eff6ff; color: #0284c7; border: 1px solid #bfdbfe; font-weight: 800; text-transform: uppercase;">ENTERPRISE HUB v2.4</span>
-                        </h3>
-                        <p class="flash-header-sub">High-Speed Real-time Synchronized Operational Reports &amp; Intelligence Center</p>
-                    </div>
+                    <button type="button" class="flash-close-btn" onclick="closeFlashModal()" aria-label="Close Flash Modal" title="Close">✕</button>
                 </div>
 
-                <div class="flash-header-right">
-                    <div class="flash-stat-pill" title="In-Memory Cache Latency">
-                        <span>⚡ Response:</span> <span class="highlight">1.2 ms</span>
-                    </div>
-                    <div class="flash-stat-pill" title="Live Memory Database">
-                        <span>⚡ Cache:</span> <span style="color: #16a34a; font-weight: 800;">100% In-Memory</span>
+                <!-- Subtitle -->
+                <p class="flash-header-sub">High-Speed Real-time Synchronized Operational Reports &amp; Intelligence Center</p>
+
+                <!-- Lower Deck: Stats Pills + Primary Master ALL LOAD Button -->
+                <div class="flash-header-deck-bottom">
+                    <div class="flash-stats-group">
+                        <div class="flash-stat-pill" title="In-Memory Cache Latency">
+                            <span>⚡ Response:</span> <span class="highlight">1.2 ms</span>
+                        </div>
+                        <div class="flash-stat-pill" title="Live Memory Database">
+                            <span>🟢 Sync:</span> <span class="highlight">100% In-Memory</span>
+                        </div>
+                        <div class="flash-stat-pill" title="Active Synchronized Reports">
+                            <span>📊 Modules:</span> <span class="highlight">9 Live</span>
+                        </div>
                     </div>
 
-                    <!-- Primary ALL LOAD Button -->
-                    <button type="button" class="flash-all-load-btn" id="flashAllLoadBtn" onclick="loadAllFlashTables()" title="Click to load all 8 operational report tables simultaneously">
+                    <button type="button" class="flash-all-load-btn" id="flashAllLoadBtn" onclick="loadAllFlashTables()" title="Click to load all 9 operational report tables simultaneously">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                         </svg>
                         <span>All Load</span>
                     </button>
-
-                    <button type="button" class="mis-pin-close-btn" onclick="closeFlashModal()" aria-label="Close Flash Modal" style="background: #f1f5f9; border: none; font-size: 16px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">✕</button>
                 </div>
             </div>
 
-            <!-- Body Viewport with 8 Table Cards Grid (3 Columns Hierarchy matching Screenshot) -->
+            <!-- Body Viewport with 9 Table Cards Grid (3x3 Symmetrical Hierarchy) -->
             <div class="flash-body-viewport">
                 <div class="flash-cards-grid">
 
-                    <!-- 1. Inter Sales Requisition -->
-                    <div class="flash-card" id="flashCard1">
+                    <!-- 1. Inter Sales Requisition (Ocean Azure) -->
+                    <div class="flash-card flash-theme-intersales" id="flashCard1">
                         <div class="flash-card-header">
-                            <div class="flash-card-title-wrap">
-                                <span class="flash-card-dot" style="background: #0284c7;"></span>
-                                <h4 class="flash-card-title">Inter Sales Requisition</h4>
-                            </div>
-                            <span class="flash-card-badge" id="flashBadge1">Ready</span>
+                            <h4 class="flash-card-title">Inter Sales Requisition</h4>
                         </div>
-                        <div class="flash-main-display-area" id="flashContent1">
-                            <div class="flash-empty-state">
-                                <div class="flash-empty-icon-wrap" style="background: #eff6ff; border: 1px solid #bfdbfe;">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0284c7" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                                </div>
-                                <div class="flash-empty-title">Inter Sales Requisitions</div>
-                                <div class="flash-empty-desc">Click Load to stream real-time requisition records</div>
-                            </div>
-                        </div>
+                        <div class="flash-main-display-area" id="flashContent1" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <span class="flash-card-meta" id="flashMeta1">Warehouse Module</span>
                             <button type="button" class="flash-load-btn" id="flashBtn1" onclick="loadFlashTable(1)">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                                 <span>Load</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 2. Per Day Received -->
-                    <div class="flash-card" id="flashCard2">
+                    <!-- 2. Per Day Received (Mint Emerald) -->
+                    <div class="flash-card flash-theme-perday" id="flashCard2">
                         <div class="flash-card-header">
-                            <div class="flash-card-title-wrap">
-                                <span class="flash-card-dot" style="background: #059669;"></span>
-                                <h4 class="flash-card-title">Per Day Received</h4>
-                            </div>
-                            <span class="flash-card-badge" id="flashBadge2">Ready</span>
+                            <h4 class="flash-card-title">Per Day Received</h4>
                         </div>
-                        <div class="flash-main-display-area" id="flashContent2">
-                            <div class="flash-empty-state">
-                                <div class="flash-empty-icon-wrap" style="background: #ecfdf5; border: 1px solid #a7f3d0;">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#059669" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect></svg>
-                                </div>
-                                <div class="flash-empty-title">Daily GRN Batches</div>
-                                <div class="flash-empty-desc">Click Load to stream daily goods received records</div>
-                            </div>
-                        </div>
+                        <div class="flash-main-display-area" id="flashContent2" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <span class="flash-card-meta" id="flashMeta2">Warehouse Module</span>
                             <button type="button" class="flash-load-btn" id="flashBtn2" onclick="loadFlashTable(2)">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                                 <span>Load</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 3. Spare Parts -->
-                    <div class="flash-card" id="flashCard3">
+                    <!-- 3. Spare Parts (Warm Amber) -->
+                    <div class="flash-card flash-theme-spareparts" id="flashCard3">
                         <div class="flash-card-header">
-                            <div class="flash-card-title-wrap">
-                                <span class="flash-card-dot" style="background: #d97706;"></span>
-                                <h4 class="flash-card-title">Spare Parts</h4>
-                            </div>
-                            <span class="flash-card-badge" id="flashBadge3">Ready</span>
+                            <h4 class="flash-card-title">Spare Parts</h4>
                         </div>
-                        <div class="flash-main-display-area" id="flashContent3">
-                            <div class="flash-empty-state">
-                                <div class="flash-empty-icon-wrap" style="background: #fffbeb; border: 1px solid #fde68a;">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#d97706" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                                </div>
-                                <div class="flash-empty-title">Spare Parts Stock</div>
-                                <div class="flash-empty-desc">Click Load to stream critical spare stock levels</div>
-                            </div>
-                        </div>
+                        <div class="flash-main-display-area" id="flashContent3" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <span class="flash-card-meta" id="flashMeta3">Warehouse Module</span>
                             <button type="button" class="flash-load-btn" id="flashBtn3" onclick="loadFlashTable(3)">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                                 <span>Load</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 4. Fan Assemble -->
-                    <div class="flash-card" id="flashCard4">
+                    <!-- 4. Fan Assemble (Electric Indigo) -->
+                    <div class="flash-card flash-theme-fanassemble" id="flashCard4">
                         <div class="flash-card-header">
-                            <div class="flash-card-title-wrap">
-                                <span class="flash-card-dot" style="background: #0284c7;"></span>
-                                <h4 class="flash-card-title">Fan Assemble</h4>
-                            </div>
-                            <span class="flash-card-badge" id="flashBadge4">Ready</span>
+                            <h4 class="flash-card-title">Fan Assemble</h4>
                         </div>
-                        <div class="flash-main-display-area" id="flashContent4">
-                            <div class="flash-empty-state">
-                                <div class="flash-empty-icon-wrap" style="background: #eff6ff; border: 1px solid #bfdbfe;">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                </div>
-                                <div class="flash-empty-title">Fan Assemble Closing</div>
-                                <div class="flash-empty-desc">Click Load to stream assemble closing records</div>
-                            </div>
-                        </div>
+                        <div class="flash-main-display-area" id="flashContent4" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <span class="flash-card-meta" id="flashMeta4">Production Closing</span>
                             <button type="button" class="flash-load-btn" id="flashBtn4" onclick="loadFlashTable(4)">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                                 <span>Load</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 5. Armature & Winding -->
-                    <div class="flash-card" id="flashCard5">
+                    <!-- 5. Armature & Winding (Royal Purple) -->
+                    <div class="flash-card flash-theme-armature" id="flashCard5">
                         <div class="flash-card-header">
-                            <div class="flash-card-title-wrap">
-                                <span class="flash-card-dot" style="background: #7c3aed;"></span>
-                                <h4 class="flash-card-title">Armature &amp; Winding</h4>
-                            </div>
-                            <span class="flash-card-badge" id="flashBadge5">Ready</span>
+                            <h4 class="flash-card-title">Armature &amp; Winding</h4>
                         </div>
-                        <div class="flash-main-display-area" id="flashContent5">
-                            <div class="flash-empty-state">
-                                <div class="flash-empty-icon-wrap" style="background: #f5f3ff; border: 1px solid #ddd6fe;">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                                </div>
-                                <div class="flash-empty-title">Armature &amp; Winding Balances</div>
-                                <div class="flash-empty-desc">Click Load to stream winding balances &amp; stock</div>
-                            </div>
-                        </div>
+                        <div class="flash-main-display-area" id="flashContent5" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <span class="flash-card-meta" id="flashMeta5">Production Closing</span>
                             <button type="button" class="flash-load-btn" id="flashBtn5" onclick="loadFlashTable(5)">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                                 <span>Load</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 6. Finish Good (FG) -->
-                    <div class="flash-card" id="flashCard6">
+                    <!-- 6. Finish Good (FG) (Rose Pink) -->
+                    <div class="flash-card flash-theme-finishgood" id="flashCard6">
                         <div class="flash-card-header">
-                            <div class="flash-card-title-wrap">
-                                <span class="flash-card-dot" style="background: #dc2626;"></span>
-                                <h4 class="flash-card-title">Finish Good (FG)</h4>
-                            </div>
-                            <span class="flash-card-badge" id="flashBadge6">Ready</span>
+                            <h4 class="flash-card-title">Finish Good (FG)</h4>
                         </div>
-                        <div class="flash-main-display-area" id="flashContent6">
-                            <div class="flash-empty-state">
-                                <div class="flash-empty-icon-wrap" style="background: #fef2f2; border: 1px solid #fecaca;">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#dc2626" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                                </div>
-                                <div class="flash-empty-title">Finish Good (FG) Closing</div>
-                                <div class="flash-empty-desc">Click Load to stream FG closing report</div>
-                            </div>
-                        </div>
+                        <div class="flash-main-display-area" id="flashContent6" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <span class="flash-card-meta" id="flashMeta6">Production Closing</span>
                             <button type="button" class="flash-load-btn" id="flashBtn6" onclick="loadFlashTable(6)">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                                 <span>Load</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 7. Closing All SFG -->
-                    <div class="flash-card" id="flashCard7">
+                    <!-- 7. Closing All SFG (Sunset Orange) -->
+                    <div class="flash-card flash-theme-closingsfg" id="flashCard7">
                         <div class="flash-card-header">
-                            <div class="flash-card-title-wrap">
-                                <span class="flash-card-dot" style="background: #ea580c;"></span>
-                                <h4 class="flash-card-title">Closing All SFG</h4>
-                            </div>
-                            <span class="flash-card-badge" id="flashBadge7">Ready</span>
+                            <h4 class="flash-card-title">Closing All SFG</h4>
                         </div>
-                        <div class="flash-main-display-area" id="flashContent7">
-                            <div class="flash-empty-state">
-                                <div class="flash-empty-icon-wrap" style="background: #fff7ed; border: 1px solid #fed7aa;">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#ea580c" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
-                                </div>
-                                <div class="flash-empty-title">Semi-Finished Goods (SFG)</div>
-                                <div class="flash-empty-desc">Click Load to stream semi-finished stock</div>
-                            </div>
-                        </div>
+                        <div class="flash-main-display-area" id="flashContent7" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <span class="flash-card-meta" id="flashMeta7">Production Closing</span>
                             <button type="button" class="flash-load-btn" id="flashBtn7" onclick="loadFlashTable(7)">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                                 <span>Load</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 8. Store Position Report -->
-                    <div class="flash-card" id="flashCard8">
+                    <!-- 8. Store Position Report (Marine Teal) -->
+                    <div class="flash-card flash-theme-storeposition" id="flashCard8">
                         <div class="flash-card-header">
-                            <div class="flash-card-title-wrap">
-                                <span class="flash-card-dot" style="background: #0891b2;"></span>
-                                <h4 class="flash-card-title">Store Position Report</h4>
-                            </div>
-                            <span class="flash-card-badge" id="flashBadge8">Ready</span>
+                            <h4 class="flash-card-title">Store Position Report</h4>
                         </div>
-                        <div class="flash-main-display-area" id="flashContent8">
-                            <div class="flash-empty-state">
-                                <div class="flash-empty-icon-wrap" style="background: #ecfeff; border: 1px solid #a5f3fc;">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0891b2" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                                </div>
-                                <div class="flash-empty-title">Store Position &amp; Scrap</div>
-                                <div class="flash-empty-desc">Click Load to stream store inventory</div>
-                            </div>
-                        </div>
+                        <div class="flash-main-display-area" id="flashContent8" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <span class="flash-card-meta" id="flashMeta8">Production Closing</span>
                             <button type="button" class="flash-load-btn" id="flashBtn8" onclick="loadFlashTable(8)">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                <span>Load</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 9. Bill Of Materials (Sapphire Blue) -->
+                    <div class="flash-card flash-theme-bom" id="flashCard9">
+                        <div class="flash-card-header">
+                            <h4 class="flash-card-title">Bill Of Materials</h4>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent9" style="display:none;"></div>
+                        <div class="flash-card-footer">
+                            <button type="button" class="flash-load-btn" id="flashBtn9" onclick="loadFlashTable(9)">
                                 <span>Load</span>
                             </button>
                         </div>
@@ -1855,15 +1780,25 @@
                 ['200100003', 'Aluminium Bar', 'KG', '0', '<span style="color:#0284c7;font-weight:800;">0.00</span>']
             ],
             badgeText: '340 Items'
+        },
+        9: {
+            title: 'Bill Of Materials',
+            url: 'modules/production/bom.html',
+            headers: ['Item Code', 'Item Description', 'Unit', 'Type', 'Status'],
+            rows: [
+                ['SFG1010083', 'Stator Core Assembly 56"', 'Pcs', 'Local', '<span style="color:#0284c7;font-weight:700;">Active</span>'],
+                ['SFG1010084', 'Rotor Die-Cast Assembly', 'Pcs', 'Local', '<span style="color:#16a34a;font-weight:700;">Active</span>'],
+                ['3101010135', 'Ball Bearing 6202-2RS', 'Pcs', 'Import', '<span style="color:#16a34a;font-weight:700;">Optimal</span>'],
+                ['3101010140', 'Super Enamelled Wire 0.32mm', 'KG', 'Local', '<span style="color:#0284c7;font-weight:700;">Active</span>']
+            ],
+            badgeText: 'Live BOM'
         }
     };
 
     function loadFlashTable(id) {
         var card = document.getElementById('flashCard' + id);
         var content = document.getElementById('flashContent' + id);
-        var badge = document.getElementById('flashBadge' + id);
         var btn = document.getElementById('flashBtn' + id);
-        var meta = document.getElementById('flashMeta' + id);
         var data = FLASH_TABLES_DATA[id];
 
         if (!card || !content || !data) return;
@@ -1874,8 +1809,9 @@
         }
 
         // Show Shimmer Skeleton
+        content.style.display = 'block';
         content.classList.remove('has-data');
-        content.innerHTML = '<div class="flash-skeleton" style="height:18px;"></div><div class="flash-skeleton" style="height:14px; width:80%;"></div><div class="flash-skeleton" style="height:14px; width:90%;"></div><div class="flash-skeleton" style="height:14px; width:70%;"></div>';
+        content.innerHTML = '<div class="flash-skeleton" style="height:14px; margin:4px 0;"></div><div class="flash-skeleton" style="height:14px; width:80%; margin:4px 0;"></div>';
 
         setTimeout(function() {
             var tableHtml = '<table class="flash-mini-table"><thead><tr>';
@@ -1892,51 +1828,47 @@
                 tableHtml += '</tr>';
             });
             tableHtml += '</tbody></table>';
+            tableHtml += '<div style="padding:4px 6px; text-align:right;"><a href="' + data.url + '" style="font-size:0.68rem; color:#0284c7; font-weight:700; text-decoration:none;">Open Full Page →</a></div>';
 
             content.classList.add('has-data');
             content.innerHTML = tableHtml;
 
-            if (badge) {
-                badge.className = 'flash-card-badge loaded';
-                badge.textContent = data.badgeText || 'Loaded';
-            }
-
             if (btn) {
                 btn.classList.remove('is-loading');
-                btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>Loaded</span>';
+                btn.innerHTML = '<span>Loaded</span>';
                 btn.style.background = '#059669';
+                btn.style.borderColor = '#059669';
+                btn.style.color = '#ffffff';
                 setTimeout(function() {
-                    btn.style.background = '#0284c7';
-                    btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> <span>Load</span>';
-                }, 2000);
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                    btn.innerHTML = '<span>Load</span>';
+                }, 2500);
             }
-
-            if (meta) {
-                meta.innerHTML = '<a href="' + data.url + '" style="color:#0284c7; text-decoration:none; font-weight:700;" title="Open full report page">View Full Report →</a>';
-            }
-        }, 320);
+        }, 280);
     }
 
     function loadAllFlashTables() {
         var allBtn = document.getElementById('flashAllLoadBtn');
         if (allBtn) {
-            allBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" class="fa-spin"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg> <span>Loading All 8 Tables...</span>';
+            allBtn.innerHTML = '<span>Loading All 9 Tables...</span>';
             allBtn.style.pointerEvents = 'none';
         }
 
         var count = 0;
-        for (var i = 1; i <= 8; i++) {
+        for (var i = 1; i <= 9; i++) {
             (function(idx) {
                 setTimeout(function() {
                     loadFlashTable(idx);
                     count++;
-                    if (count === 8 && allBtn) {
+                    if (count === 9 && allBtn) {
                         setTimeout(function() {
-                            allBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>All 8 Tables Loaded</span>';
+                            allBtn.innerHTML = '<span>All 9 Tables Loaded</span>';
                             allBtn.style.background = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
                             allBtn.style.pointerEvents = 'auto';
                             if (typeof window.showToast === 'function') {
-                                window.showToast('⚡ Flash Hub: All 8 operational report tables synchronized!');
+                                window.showToast('⚡ Flash Hub: All 9 operational report tables synchronized!');
                             }
                             setTimeout(function() {
                                 allBtn.style.background = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
@@ -1944,7 +1876,7 @@
                             }, 3000);
                         }, 400);
                     }
-                }, idx * 70);
+                }, idx * 60);
             })(i);
         }
     }

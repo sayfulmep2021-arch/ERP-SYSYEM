@@ -70,6 +70,18 @@
         // 1. Module Definition with Bespoke Pastel SVG Icons (Serialized 1 to 12)
     const MEP_NAV_MODULES = [
         {
+            id: "mep-acc-bom",
+            title: "Bill Of Materials (BOM)",
+            badge: "1 Report",
+            isBOM: true,
+            iconBg: "#e0f2fe",
+            iconColor: "#0284c7",
+            iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`,
+            items: [
+                { name: "BOM VIEW", url: "bom_view.html", highlight: true }
+            ]
+        },
+        {
             id: "mep-acc-02",
             title: "Daily Check Report",
             iconBg: "#fef3c7",
@@ -1037,10 +1049,6 @@
                         localStorage.removeItem('portal_auth_role');
                         localStorage.removeItem('portal_auth_sig');
                         localStorage.setItem('portal_logout_broadcast', Date.now().toString());
-                        try {
-                            if (document.body) document.body.innerHTML = '';
-                            document.documentElement.innerHTML = '';
-                        } catch(e) {}
                         window.location.replace(getPortalIndexUrl());
                     };
                     navRight.appendChild(logoutBtn);
@@ -1109,6 +1117,38 @@
             });
 
             const badgeText = mod.badge || (isClosing ? 'LIVE ERP' : `${accessibleItems.length} Reports`);
+
+            if (mod.isBOM) {
+                accordionHtml += `
+                    <div class="mep-module-accordion mep-bom-accordion ${isThisActiveModule ? 'is-open' : ''}" id="mep-acc-group-${mod.id}">
+                        <div class="mep-module-heading mep-heading-bom-special mep-heading-${mod.id} ${isThisActiveModule ? 'is-active-module' : ''}" onclick="toggleSidebarModule('${mod.id}')" title="Click to open/collapse ${mod.title}">
+                            <div class="mep-mod-left">
+                                <div class="mep-bom-icon-badge" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" class="mep-bom-svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="mep-mod-info">
+                                    <div class="mep-bom-title-text">${mod.title}</div>
+                                </div>
+                            </div>
+                            <div class="mep-mod-chevron">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mep-module-sublist sub-report-list" id="mep-acc-body-${mod.id}">
+                            ${subItemsHtml}
+                        </div>
+                    </div>
+                `;
+                return;
+            }
 
             accordionHtml += `
                 <div class="mep-module-accordion ${isThisActiveModule ? 'is-open' : ''}" id="mep-acc-group-${mod.id}">

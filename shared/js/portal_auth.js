@@ -81,6 +81,7 @@
             'Assemble Summary': 'assemble_summary.html',
             'Armature Summary': 'armature_summary.html',
             'FG Summary': 'fg_summary.html',
+            'BOM VIEW': 'bom_view.html',
             'BOM': 'bom.html',
             'BOM (Bill of Materials)': 'bom.html',
             'RM Requirement Summary (BOM)': 'rm_requirement_summary_bom.html',
@@ -173,6 +174,7 @@
                     'assemble_summary.html': 'modules/production/assemble_summary.html',
                     'armature_summary.html': 'modules/production/armature_summary.html',
                     'fg_summary.html': 'modules/production/fg_summary.html',
+                    'bom_view.html': 'modules/production/bom_view.html',
                     'bom.html': 'modules/production/bom.html',
                     'rm_requirement_summary_bom.html': 'modules/production/rm_requirement_summary_bom.html',
                     'daily_fg_production_entry.html': 'modules/production/daily_fg_production_entry.html',
@@ -370,6 +372,14 @@
         }
 
         function showLoginView() {
+            // 1. Immediately eliminate any FOUC head stylesheet that cloaks #loginView
+            var fouc = document.getElementById('zero-fouc-instant-view-style');
+            if (fouc) {
+                fouc.textContent = 
+                    '#loginView { display: flex !important; visibility: visible !important; opacity: 1 !important; } ' +
+                    '#mainInterfaceView, #moduleSelectionView, #departmentHubView, #warehouseModuleView, #hrmModuleView, #misSelectionView, #userModuleView, #dashboardView { display: none !important; }';
+            }
+
             var dashView = document.getElementById('dashboardView');
             var hubView = document.getElementById('departmentHubView');
             var mainView = document.getElementById('mainInterfaceView');
@@ -377,16 +387,22 @@
             var hrmView = document.getElementById('hrmModuleView');
             var misView = document.getElementById('misSelectionView');
             var warehouseView = document.getElementById('warehouseModuleView');
+            var userView = document.getElementById('userModuleView');
             if (hrmView) hrmView.style.setProperty('display', 'none', 'important');
             if (misView) misView.style.setProperty('display', 'none', 'important');
             if (warehouseView) warehouseView.style.setProperty('display', 'none', 'important');
+            if (userView) userView.style.setProperty('display', 'none', 'important');
             var loginView = document.getElementById('loginView');
 
             if (dashView) dashView.style.setProperty('display', 'none', 'important');
             if (hubView) hubView.style.setProperty('display', 'none', 'important');
             if (mainView) mainView.style.setProperty('display', 'none', 'important');
             if (moduleView) moduleView.style.setProperty('display', 'none', 'important');
-            if (loginView) loginView.style.setProperty('display', 'flex', 'important');
+            if (loginView) {
+                loginView.style.setProperty('display', 'flex', 'important');
+                loginView.style.setProperty('visibility', 'visible', 'important');
+                loginView.style.setProperty('opacity', '1', 'important');
+            }
 
             // Default to ADMIN role
             if (typeof selectRole === 'function') {
@@ -2405,6 +2421,13 @@
             // Ensure any active notification toast is completely hidden
             const toast = document.getElementById('notification-toast');
             if (toast) toast.classList.remove('show');
+
+            // Clean URL query parameters (e.g. ?view=modules, ?view=hub)
+            try {
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            } catch (e) {}
 
             showLoginView();
         }

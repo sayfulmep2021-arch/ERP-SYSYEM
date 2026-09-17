@@ -73,8 +73,6 @@
     <link rel="stylesheet" href="shared/css/corporate_design_system.css?v=20260905">
     <link rel="stylesheet" href="shared/css/report_sidebar.css?v=20260905">
     <link rel="stylesheet" href="modules/warehouse/warehouse_module.css?v=20260913_fix2">
-    <script src="shared/js/notification_system.js?v=20260905"></script>
-    <script src="shared/js/smart_firebase_sync.js?v=20260905"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Sayful Islam (Fan) | Report Management Portal</title>
@@ -2813,8 +2811,8 @@
     <script src="modules/production/daily_fg_production_data.js"></script>
     <script src="modules/production/monthly_production_summary_data.js"></script>
     <script src="modules/production/daily_production_received_assemble_data.js"></script>
+    <script src="shared/js/html2canvas.min.js"></script>
     <script src="modules/production/physical_production_report_engine.js"></script>
-    <script src="shared/js/xlsx.full.min.js"></script>
     <script src="modules/production/fg_pending_modal_engine.js"></script>
     <script src="shared/js/sidebar_dynamic_models.js"></script>
 
@@ -2837,12 +2835,16 @@
     <script src="shared/js/notebook_engine.js"></script>
     <script src="shared/js/portal_dashboard_runtime.js?v=20260915_cfs22778"></script>
     <script src="shared/js/data_backup_engine.js"></script>
+    <script src="shared/js/notification_system.js?v=20260905" defer></script>
+    <script src="shared/js/smart_firebase_sync.js?v=20260905" defer></script>
 
     <!-- Strict Direct Link: All Report Summary ➔ Assemble Summary ➔ Ceiling Fan Series ➔ Production Receive (Marked Cell) ➔ Dashboard Achievement -->
     <script>
         (function initDirectDashboardAchievementLink() {
             function syncAchievementFromAssembleSummary() {
                 try {
+                    var isAuthed = (sessionStorage.getItem('portal_auth_status') === 'true');
+                    if (!isAuthed) return;
                     let val = localStorage.getItem('mep_assemble_cfs_production_receipt');
                     if (!val) {
                         // Check if live Assemble Summary data exists

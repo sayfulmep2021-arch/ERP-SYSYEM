@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -1794,21 +1794,6 @@
                 if (nameEl) nameEl.value = '';
                 if (unitSel) unitSel.value = 'Pcs';
             }
-        }
-
-            // 2. Secondary: Auto-fill closing/prod numbers from Closing FG or Closing All SFG
-            const codeClean = code.trim().toUpperCase();
-            const editingIdx = document.getElementById('itemModal')?.dataset?.editIndex;
-            let isSerial1To25 = false;
-            if (editingIdx !== undefined && editingIdx !== '') {
-                const idx = parseInt(editingIdx, 10);
-                if (itemsList[idx] && ((Number(itemsList[idx].sl) >= 1 && Number(itemsList[idx].sl) <= 25) || idx < 25)) {
-                    isSerial1To25 = true;
-                }
-            } else if (codeClean.startsWith('CF') || codeClean.startsWith('EF') || codeClean.startsWith('MRTF') || codeClean.startsWith('CG') || codeClean.startsWith('CR')) {
-                isSerial1To25 = true;
-            }
-
         }
 
         function buildSectionDropdown() {

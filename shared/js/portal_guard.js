@@ -17,6 +17,11 @@
     var currentFile = decodeURIComponent(rawFile).split('?')[0].split('#')[0].toLowerCase();
     var isPortalRoot = (!currentFile || currentFile === 'index.html' || !!window.isPortalRootOverride);
 
+    function getRootIndexUrl() {
+        var isSub = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase().includes('/modules/');
+        return isSub ? '../../index.html' : 'index.html';
+    }
+
     // 1. Anti-FOUC & Anti-Bypass: Immediately cloak page content before rendering begins
     // In index.html, only cloak if we need to enforce clean view state; for internal pages, cloak entirely
     if (!isPortalRoot) {
@@ -71,13 +76,8 @@
         var check = validateCurrentSession();
 
         if (!check.valid) {
-            // UNAUTHORIZED: Instantly destroy DOM tree to eliminate DevTools inspection
-            try {
-                if (document.body) document.body.innerHTML = '';
-                document.documentElement.innerHTML = '';
-            } catch(e) {}
-            // Redirect to Login Page
-            window.location.replace('index.html');
+            // UNAUTHORIZED: Redirect to Login Page
+            window.location.replace(getRootIndexUrl());
             return;
         }
 
@@ -96,12 +96,8 @@
                             }
                         }
                         if (isDenied) {
-                            try {
-                                if (document.body) document.body.innerHTML = '';
-                                document.documentElement.innerHTML = '';
-                            } catch(e) {}
                             alert("Access Denied: You do not have permission to view this report.");
-                            window.location.replace('index.html');
+                            window.location.replace(getRootIndexUrl());
                             return;
                         }
                     }
@@ -141,11 +137,7 @@
         if (e.key === 'portal_logout_broadcast' || e.key === 'portal_auth_status_cleared') {
             sessionStorage.clear();
             if (!isPortalRoot) {
-                try {
-                    if (document.body) document.body.innerHTML = '';
-                    document.documentElement.innerHTML = '';
-                } catch(err) {}
-                window.location.replace('index.html');
+                window.location.replace(getRootIndexUrl());
             } else {
                 if (typeof window.showLoginView === 'function') {
                     window.showLoginView();

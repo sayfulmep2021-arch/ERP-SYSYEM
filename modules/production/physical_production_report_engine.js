@@ -742,6 +742,48 @@
         }
     }
 
+    /**
+     * Render an ultra-premium dynamic progress meter gauge for achievement % cells
+     * 0% to 100% (and >100% with overachievement glow) with proportional gradient fill
+     */
+    function renderTotalPctCell(pctStr, isGrandTotal) {
+        pctStr = (pctStr !== undefined && pctStr !== null) ? String(pctStr).trim() : '0%';
+        if (!pctStr.endsWith('%')) pctStr += '%';
+        const num = parseFloat(pctStr.replace(/[^0-9.]/g, '')) || 0;
+        // Progress fill width (capped at 100 for visual bar, label displays true percentage e.g. 186%)
+        const fillWidth = Math.min(Math.max(num, 0), 100);
+        
+        let tierCls = 'pct-tier-zero';
+        let isSuper = false;
+        if (num >= 100) {
+            tierCls = 'pct-tier-super';
+            isSuper = true;
+        } else if (num >= 75) {
+            tierCls = 'pct-tier-high';
+        } else if (num >= 40) {
+            tierCls = 'pct-tier-mid';
+        } else if (num > 0) {
+            tierCls = 'pct-tier-low';
+        }
+        
+        const grandCls = isGrandTotal ? ' cell-pct-grand-total col-total' : '';
+        const starBadge = isSuper ? '<span class="pct-star-badge" title="Target Achieved &amp; Exceeded!">★</span>' : '';
+        
+        return '<td class="cell-locked cell-pct-meter' + grandCls + '" data-pct="' + num + '">' +
+            '<div class="pct-meter-wrap" title="' + pctStr + ' Achieved">' +
+                '<div class="pct-meter-track">' +
+                    '<div class="pct-meter-fill ' + tierCls + '" style="width: ' + fillWidth + '%;">' +
+                        '<span class="pct-meter-sheen"></span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="pct-meter-content">' +
+                    '<span class="pct-meter-text">' + pctStr + '</span>' +
+                    starBadge +
+                '</div>' +
+            '</div>' +
+        '</td>';
+    }
+
     function renderPhysicalReportUI() {
         const yEl = document.getElementById('physicalYearSelect');
         const mEl = document.getElementById('physicalMonthSelect');
@@ -783,9 +825,9 @@
                 return '<td class="cell-locked cell-need">' + (cf.need[m] || 0) + '</td>';
             }).join('');
 
-            // Total % Row (Locked, Yellow)
+            // Total % Row (Locked, Dynamic Gradient Progress Meter)
             const pctCells = cf.models.map(function(m) {
-                return '<td class="cell-locked cell-pct">' + (cf.totalPct[m] || '0%') + '</td>';
+                return renderTotalPctCell(cf.totalPct[m] || '0%', false);
             }).join('');
 
             tblCf.innerHTML = '<thead>' +
@@ -820,7 +862,7 @@
                 '<tr class="row-total-pct">' +
                     '<th class="row-label cell-pct-label">Total</th>' +
                     pctCells +
-                    '<td class="cell-pct-total col-total cell-locked">' + cf.totals.totalPct + '</td>' +
+                    renderTotalPctCell(cf.totals.totalPct, true) +
                 '</tr>' +
             '</tbody>';
         }
@@ -850,9 +892,9 @@
                 return '<td class="cell-locked cell-need">' + (acc.need[k] || 0) + '</td>';
             }).join('');
 
-            // Total % Row (Locked, Yellow)
+            // Total % Row (Locked, Dynamic Gradient Progress Meter)
             const pctCells = acc.keys.map(function(k) {
-                return '<td class="cell-locked cell-pct">' + (acc.totalPct[k] || '0%') + '</td>';
+                return renderTotalPctCell(acc.totalPct[k] || '0%', false);
             }).join('');
 
             tblAcc.innerHTML = '<thead>' +
@@ -880,7 +922,7 @@
                 '<tr class="row-total-pct">' +
                     '<th class="row-label cell-pct-label">Total</th>' +
                     pctCells +
-                    '<td class="cell-pct-total col-total cell-locked">' + acc.totals.totalPct + '</td>' +
+                    renderTotalPctCell(acc.totals.totalPct, true) +
                 '</tr>' +
             '</tbody>';
         }
@@ -909,9 +951,9 @@
                 return '<td class="cell-locked cell-need">' + (b.need[m] || 0) + '</td>';
             }).join('');
 
-            // Total % Row (Locked, Yellow)
+            // Total % Row (Locked, Dynamic Gradient Progress Meter)
             const pctCells = b.models.map(function(m) {
-                return '<td class="cell-locked cell-pct">' + (b.totalPct[m] || '0%') + '</td>';
+                return renderTotalPctCell(b.totalPct[m] || '0%', false);
             }).join('');
 
             tblBlade.innerHTML = '<thead>' +
@@ -939,7 +981,7 @@
                 '<tr class="row-total-pct">' +
                     '<th class="row-label cell-pct-label">Total</th>' +
                     pctCells +
-                    '<td class="cell-pct-total col-total cell-locked">' + b.totals.totalPct + '</td>' +
+                    renderTotalPctCell(b.totals.totalPct, true) +
                 '</tr>' +
             '</tbody>';
         }
@@ -969,9 +1011,9 @@
                 return '<td class="cell-locked cell-need">' + (arm.need[k] || 0) + '</td>';
             }).join('');
 
-            // Total % Row (Locked, Yellow)
+            // Total % Row (Locked, Dynamic Gradient Progress Meter)
             const pctCells = arm.keys.map(function(k) {
-                return '<td class="cell-locked cell-pct">' + (arm.totalPct[k] || '0%') + '</td>';
+                return renderTotalPctCell(arm.totalPct[k] || '0%', false);
             }).join('');
 
             tblArm.innerHTML = '<thead>' +
@@ -999,7 +1041,7 @@
                 '<tr class="row-total-pct">' +
                     '<th class="row-label cell-pct-label">Total</th>' +
                     pctCells +
-                    '<td class="cell-pct-total col-total cell-locked">' + arm.totals.totalPct + '</td>' +
+                    renderTotalPctCell(arm.totals.totalPct, true) +
                 '</tr>' +
             '</tbody>';
         }
@@ -1038,6 +1080,172 @@
         showStatusMsg('Data synchronized from physical source!');
     }
 
+    /**
+     * Capture High-Resolution PNG Screenshot of the Left Section (Ceiling Fan & Blade Reports)
+     */
+    function captureLeftPhysicalReportScreenshot() {
+        const btn = document.getElementById('btnCaptureLeftReport');
+        const originalBtnHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="physical-spinner"></span> <span>Capturing PNG...</span>';
+        }
+
+        const yEl = document.getElementById('physicalYearSelect');
+        const mEl = document.getElementById('physicalMonthSelect');
+        const year = yEl ? yEl.value : '2026';
+        const month = mEl ? mEl.value : 'September';
+
+        const cardCf = document.getElementById('cardCeilingFanReport');
+        const cardBlade = document.getElementById('cardBladeReport');
+        const footerLegend = document.querySelector('.physical-footer-note');
+
+        if (!cardCf || !cardBlade) {
+            alert('Could not locate the left report tables to screenshot.');
+            if (btn) { btn.disabled = false; btn.innerHTML = originalBtnHtml; }
+            return;
+        }
+
+        function doCapture() {
+            try {
+                // Create a dedicated pristine snapshot wrapper container
+                const snapContainer = document.createElement('div');
+                snapContainer.id = 'physicalSnapExportTarget';
+                snapContainer.style.cssText = [
+                    'position: fixed',
+                    'left: -9999px',
+                    'top: 0',
+                    'width: 880px',
+                    'background: #f8fafc',
+                    'padding: 24px',
+                    'box-sizing: border-box',
+                    'border-radius: 8px',
+                    'border: 2px solid #cbd5e1',
+                    'font-family: "Plus Jakarta Sans", "Inter", sans-serif',
+                    'z-index: 99999'
+                ].join(' !important;') + ' !important;';
+
+                // 1. Executive Snapshot Header
+                const headerEl = document.createElement('div');
+                headerEl.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; margin-bottom: 18px; border-bottom: 2px solid #0284c7;';
+                headerEl.innerHTML = [
+                    '<div style="display: flex; align-items: center; gap: 12px;">',
+                        '<div style="width: 42px; height: 42px; border-radius: 8px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35);">',
+                            '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>',
+                        '</div>',
+                        '<div>',
+                            '<h2 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #0f172a; letter-spacing: -0.01em;">Physical Production Report</h2>',
+                            '<div style="font-size: 0.82rem; font-weight: 600; color: #64748b; margin-top: 2px;">Live Executive Performance &amp; Target Variance Tracking • Dual-Section (Ceiling Fan &amp; Blade)</div>',
+                        '</div>',
+                    '</div>',
+                    '<div style="text-align: right;">',
+                        '<div style="display: inline-block; background: #0284c7; color: #ffffff; padding: 4px 14px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.02em;">' + month + ' ' + year + '</div>',
+                        '<div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px; font-weight: 600;">Sayful Islam (Fan) ERP • Confidential</div>',
+                    '</div>'
+                ].join('');
+                snapContainer.appendChild(headerEl);
+
+                // 2. Tables Body Wrapper
+                const tablesWrap = document.createElement('div');
+                tablesWrap.style.cssText = 'display: flex; flex-direction: column; gap: 18px; margin-bottom: 18px;';
+
+                // Clone Table 1: Ceiling Fan
+                const cloneCf = cardCf.cloneNode(true);
+                const toggleBtnInClone = cloneCf.querySelector('#btnToggleRedmiRow');
+                if (toggleBtnInClone) toggleBtnInClone.style.display = 'none';
+                tablesWrap.appendChild(cloneCf);
+
+                // Clone Table 2: Blade
+                const cloneBlade = cardBlade.cloneNode(true);
+                tablesWrap.appendChild(cloneBlade);
+
+                snapContainer.appendChild(tablesWrap);
+
+                // 3. Footer Legend
+                if (footerLegend) {
+                    const cloneFooter = footerLegend.cloneNode(true);
+                    const legendToggleInClone = cloneFooter.querySelector('.legend-toggle-link');
+                    if (legendToggleInClone) legendToggleInClone.style.display = 'none';
+                    cloneFooter.style.cssText = 'background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 14px; font-size: 0.78rem; display: flex; justify-content: space-between; align-items: center; color: #475569;';
+                    snapContainer.appendChild(cloneFooter);
+                }
+
+                // 4. Timestamp Watermark
+                const watermark = document.createElement('div');
+                watermark.style.cssText = 'margin-top: 10px; font-size: 0.70rem; color: #94a3b8; text-align: center; font-weight: 600;';
+                watermark.textContent = 'Generated from Sayful Islam ERP System on ' + new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+                snapContainer.appendChild(watermark);
+
+                document.body.appendChild(snapContainer);
+
+                window.html2canvas(snapContainer, {
+                    scale: 2, // 2x Retina resolution
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#f8fafc',
+                    logging: false
+                }).then(function(canvas) {
+                    try {
+                        const link = document.createElement('a');
+                        link.download = 'Physical_Report_CeilingFan_Blade_' + month + '_' + year + '.png';
+                        link.href = canvas.toDataURL('image/png');
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        if (btn) {
+                            btn.innerHTML = '<span style="color: #4ade80;">✓</span> <span>Downloaded!</span>';
+                            setTimeout(function() {
+                                btn.disabled = false;
+                                btn.innerHTML = originalBtnHtml;
+                            }, 2200);
+                        }
+
+                        if (typeof window.showToast === 'function') {
+                            window.showToast('📸 Screenshot saved: Physical_Report_CeilingFan_Blade_' + month + '_' + year + '.png');
+                        }
+                    } catch(e) {
+                        console.error('[Screenshot Download Error]', e);
+                        alert('Could not generate download file: ' + e.message);
+                        if (btn) { btn.disabled = false; btn.innerHTML = originalBtnHtml; }
+                    } finally {
+                        if (snapContainer.parentNode) {
+                            snapContainer.parentNode.removeChild(snapContainer);
+                        }
+                    }
+                }).catch(function(err) {
+                    console.error('[html2canvas error]', err);
+                    alert('Failed to capture screenshot: ' + err.message);
+                    if (snapContainer.parentNode) {
+                        snapContainer.parentNode.removeChild(snapContainer);
+                    }
+                    if (btn) { btn.disabled = false; btn.innerHTML = originalBtnHtml; }
+                });
+
+            } catch(err) {
+                console.error('[Capture Execution Error]', err);
+                alert('Screenshot capture encountered an error: ' + err.message);
+                if (btn) { btn.disabled = false; btn.innerHTML = originalBtnHtml; }
+            }
+        }
+
+        // Check if html2canvas is ready
+        if (typeof window.html2canvas === 'function') {
+            doCapture();
+        } else {
+            const script = document.createElement('script');
+            script.src = (window.location.pathname.includes('/modules/') ? '../../' : '') + 'shared/js/html2canvas.min.js';
+            script.onload = function() {
+                doCapture();
+            };
+            script.onerror = function() {
+                alert('Could not load html2canvas library. Please verify shared/js/html2canvas.min.js');
+                if (btn) { btn.disabled = false; btn.innerHTML = originalBtnHtml; }
+            };
+            document.head.appendChild(script);
+        }
+    }
+
     if (typeof document !== 'undefined') {
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -1068,6 +1276,7 @@
     window.toggleRedmiAdjustmentRow = toggleRedmiAdjustmentRow;
     window.isRedmiRowHidden = isRedmiRowHidden;
     window.applyRedmiRowVisibility = applyRedmiRowVisibility;
+    window.captureLeftPhysicalReportScreenshot = captureLeftPhysicalReportScreenshot;
 
     // Listen for storage updates from Daily Check Report in other tabs/windows
     if (typeof window !== 'undefined') {

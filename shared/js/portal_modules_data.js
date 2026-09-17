@@ -6,6 +6,17 @@
     'use strict';
 
     const REPORT_MODULES_DATA = {
+        'mod-bom': {
+            name: 'Bill Of Materials (BOM)',
+            badge: '1 Report',
+            iconBg: '#eff6ff',
+            iconColor: '#0284c7',
+            iconSvg: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
+            isBOM: true,
+            reports: [
+                { title: 'BOM VIEW', url: 'modules/production/bom_view.html', highlight: true }
+            ]
+        },
         'mod-01': {
             name: 'All Report Summary',
             badge: '5 Reports',
@@ -165,6 +176,7 @@
 
     // Sidebar Accordion Order without serial numbers and with Data Backup above MASTER Central DB
     const SIDEBAR_MODULE_ORDER = [
+        { key: 'mod-bom', id: 'mep-acc-bom', title: 'Bill Of Materials (BOM)', isBOM: true },
         { key: 'mod-02', id: 'mep-acc-02', title: 'Daily Check Report' },
         { key: 'mod-03', id: 'mep-acc-03', title: 'Report All Branch Fan' },
         { key: 'mod-11', id: 'mep-acc-11', title: 'Individual Check' },
@@ -179,6 +191,7 @@
 
     // Drawer Accordion Order matching cleaned sidebar
     const DRAWER_MODULE_ORDER = [
+        { key: 'mod-bom', suffix: 'bom' },
         { key: 'mod-02', suffix: '02' },
         { key: 'mod-03', suffix: '03' },
         { key: 'mod-11', suffix: '11' },
@@ -273,6 +286,38 @@
                 }
             });
 
+            if (mod.isBOM) {
+                html += `
+                    <div class="mep-module-accordion mep-bom-accordion" id="mep-acc-group-${mod.id}">
+                        <div class="mep-module-heading mep-heading-bom-special mep-heading-${mod.id}" onclick="toggleSidebarModule('${mod.id}')" title="Click to open/collapse ${mod.title}">
+                            <div class="mep-mod-left">
+                                <div class="mep-bom-icon-badge" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" class="mep-bom-svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="mep-mod-info">
+                                    <div class="mep-bom-title-text">${mod.title}</div>
+                                </div>
+                            </div>
+                            <div class="mep-mod-chevron">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mep-module-sublist sub-report-list" id="mep-acc-body-${mod.id}">
+                            ${subItemsHtml}
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
             html += `
                 <div class="mep-module-accordion" id="mep-acc-group-${mod.id}">
                     <div class="mep-module-heading mep-heading-${mod.id}" onclick="toggleSidebarModule('${mod.id}')" title="Click to open/collapse ${mod.title}">
@@ -316,6 +361,42 @@
         DRAWER_MODULE_ORDER.forEach(item => {
             const data = REPORT_MODULES_DATA[item.key];
             if (!data) return;
+
+            if (item.key === 'mod-bom') {
+                let bomSubItemsHtml = '';
+                (data.reports || []).forEach(rep => {
+                    bomSubItemsHtml += `
+                        <button type="button" class="sub-report-item${rep.highlight ? ' item-highlight-entry' : ''}" onclick="navigateToReportPage('${rep.url}', event)">
+                            <div class="sub-item-left">
+                                <span class="sub-item-dot"></span>
+                                <span class="sub-item-title">${rep.title}</span>
+                            </div>
+                            <svg class="sub-item-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    `;
+                });
+                html += `
+                    <div class="accordion-card bom-drawer-card" id="accordion-bom">
+                        <div class="accordion-header bom-drawer-header" onclick="toggleAccordion('accordion-bom')" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' ') toggleAccordion('accordion-bom')">
+                            <div class="card-title-wrap">
+                                <span class="drawer-card-icon" style="background:#e0f2fe; color:#0284c7;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${data.iconSvg}</svg>
+                                </span>
+                                <span class="card-title" style="font-weight:700; color:#0c4a6e;">${data.name}</span>
+                            </div>
+                            <span class="accordion-chevron" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </span>
+                        </div>
+                        <div class="accordion-body">
+                            <div class="sub-report-list">
+                                ${bomSubItemsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
 
             if (item.key === 'mod-master') {
                 html += `
