@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Global Permanent Authentication Guard -->
@@ -10,12 +10,24 @@
     <title>BOM VIEW | MEP FAN LTD.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { font-family: 'Times New Roman', Times, serif !important; box-sizing: border-box; }
-        body {
+        *, *::before, *::after {
+            box-sizing: border-box;
             font-family: 'Times New Roman', Times, serif !important;
-            background-color: #f8fafc;
+        }
+
+        :root {
+            --brand-primary: #0284c7;
+            --brand-dark: #0f2942;
+            --brand-accent: #059669;
+            --bg-page: #f8fafc;
+            --border-color: #cbd5e1;
+            --header-gradient: linear-gradient(135deg, #0f2942 0%, #1e3a8a 100%);
+        }
+
+        body {
+            background-color: var(--bg-page);
             color: #0f2942;
             margin: 0;
             padding: 0;
@@ -29,13 +41,14 @@
         .portal-nav {
             background: #ffffff;
             border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(15, 41, 66, 0.04);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .nav-container {
-            padding: 6px 18px;
+            padding: 8px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -48,16 +61,16 @@
         }
 
         .nav-brand-title {
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             font-weight: 800;
-            color: #0f2942;
-            text-transform: uppercase;
+            color: var(--brand-dark);
+            letter-spacing: -0.3px;
         }
 
         .nav-brand-sub {
-            font-size: 0.70rem;
+            font-size: 0.72rem;
             font-weight: 700;
-            color: #0284c7;
+            color: var(--brand-primary);
             text-transform: uppercase;
         }
 
@@ -67,38 +80,988 @@
             gap: 12px;
         }
 
-        /* Blank Canvas Workspace */
-        .page-content, .bom-blank-viewport {
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0284c7;
+        }
+
+        /* Main Workspace Container */
+        .page-content {
             flex: 1;
-            width: 100%;
-            min-height: calc(100vh - 60px);
+            padding: 20px 24px;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* Header Banner */
+        .report-header-banner {
+            background: var(--header-gradient);
+            padding: 18px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(15, 41, 66, 0.12);
+            color: #ffffff;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .header-title-group h1 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .source-tag {
+            background: rgba(2, 132, 199, 0.35);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            color: #e0f2fe;
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        .header-title-sub {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: 1.5px solid transparent;
+        }
+
+        .btn-sync-primary {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #38bdf8;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-sync-primary:hover {
+            background: #0369a1;
+            transform: translateY(-1px);
+        }
+
+        .btn-sync-primary.is-running {
+            background: #d97706 !important;
+            border-color: #f59e0b !important;
+            cursor: not-allowed;
+        }
+
+        .btn-action-light {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-action-light:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        /* 4 Executive KPI Stat Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        @media (max-width: 992px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .kpi-card {
             background: #ffffff;
-            padding: 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(15, 41, 66, 0.03);
+            border-left: 4px solid #0284c7;
+        }
+
+        .kpi-card:nth-child(2) { border-left-color: #059669; }
+        .kpi-card:nth-child(3) { border-left-color: #d97706; }
+        .kpi-card:nth-child(4) { border-left-color: #7c3aed; }
+
+        .kpi-label {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .kpi-value {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            margin-top: 2px;
+        }
+
+        /* Filter Toolbar */
+        .filter-toolbar {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 1px 4px rgba(15, 41, 66, 0.02);
+        }
+
+        .filter-group-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+            max-width: 380px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 7px 12px 7px 32px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0f2942;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: #0284c7;
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            stroke: #94a3b8;
+            pointer-events: none;
+        }
+
+        .filter-select {
+            padding: 7px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0f2942;
+            background: #f8fafc;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            border-color: #0284c7;
+        }
+
+        /* Master Table Card */
+        .table-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(15, 41, 66, 0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-stats-bar {
+            padding: 10px 18px;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .table-scroll-container {
+            overflow: auto;
+            max-height: calc(100vh - 290px);
+            position: relative;
+        }
+
+        .bom-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+
+        .bom-table thead th {
+            position: sticky;
+            top: 0;
+            background: #0f2942;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 9px 10px;
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 2px solid #0284c7;
+            white-space: nowrap;
+            z-index: 20;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .bom-table tbody tr.bom-master-row {
+            border-bottom: 1px solid #e2e8f0;
+            transition: background-color 0.15s;
+            cursor: pointer;
+        }
+
+        .bom-table tbody tr.bom-master-row:hover {
+            background-color: #f0f9ff;
+        }
+
+        .bom-table tbody tr.bom-master-row.expanded {
+            background-color: #e0f2fe;
+            border-bottom: none;
+        }
+
+        .bom-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        /* Badges & Pills */
+        .badge-code {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #0369a1;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .badge-section {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .badge-status-approved {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .badge-rm-count {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+            font-weight: 800;
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .btn-expand-toggle {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #0284c7;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-expand-toggle:hover {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #0284c7;
+        }
+
+        /* Accordion Recipe Detail Row */
+        .bom-detail-row {
+            background-color: #f8fafc;
+            border-bottom: 2px solid #0284c7;
+            display: none;
+        }
+
+        .bom-detail-row.show {
+            display: table-row;
+        }
+
+        .bom-detail-cell {
+            padding: 14px 20px !important;
+        }
+
+        .recipe-box {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .recipe-meta-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1.5px solid #e2e8f0;
+            margin-bottom: 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #475569;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .recipe-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.76rem;
+        }
+
+        .recipe-table th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 800;
+            padding: 6px 10px;
+            border-bottom: 1.5px solid #cbd5e1;
+            text-align: left;
+        }
+
+        .recipe-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+        }
+
+        .recipe-table tbody tr:hover {
+            background: #f0fdf4;
+        }
+
+        /* Toast Feedback */
+        .toast-msg {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f2942;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            border-left: 4px solid #10b981;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
+
     <!-- Top Navbar -->
-    <nav class="portal-nav" role="navigation" aria-label="Main Navigation">
+    <header class="portal-nav" role="navigation">
         <div class="nav-container">
             <div class="nav-left">
-                <span class="nav-brand-title">BOM VIEW</span>
-                <span class="nav-brand-sub">Sayful Islam (Fan)</span>
+                <div>
+                    <div class="nav-brand-title">BILL OF MATERIALS (BOM)</div>
+                    <div class="nav-brand-sub">Sayful Islam (Fan Production)</div>
+                </div>
             </div>
             <div class="nav-right">
                 <div class="live-clock-badge">
-                    <span class="live-day-text">Loading date...</span>
-                    <span class="live-time-text">--:--:-- --</span>
+                    <span id="liveDayText">Loading date...</span>
+                    <span id="liveTimeText">--:--:-- --</span>
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Workspace Blank Area: Reserved for upcoming test data -->
-    <main class="page-content bom-blank-viewport" id="bomViewMainContainer">
+    <!-- Main Workspace -->
+    <main class="page-content">
+
+        <!-- Report Header Banner -->
+        <div class="report-header-banner">
+            <div class="header-title-group">
+                <h1>
+                    <span>Bill of Materials (BOM) — Master Recipe</span>
+                    <span class="source-tag">Production Module ⟶ Bill of Materials (BOM) ⟶ BOM VIEW</span>
+                </h1>
+                <div class="header-title-sub">
+                    <span>MEP FAN LTD. • Accurate Raw Material Breakdown</span>
+                    <span>•</span>
+                    <span id="bomSyncedTime">Last Synced: Live Ready</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" class="btn-action-btn btn-sync-primary" id="btnBomSync" onclick="syncBomFromErp(this)" data-tooltip="⚡ Sync from ERP" title="Run Bot 9 to scrape and sync live BOM specs from ERP">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span>⚡ Sync from ERP</span>
+                </button>
+                <button type="button" class="btn-action-btn btn-action-light" onclick="toggleAllBoms()" id="btnToggleAll" data-tooltip="📋 Expand All" title="Expand or Collapse All BOM Recipes">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                    <span>📋 Expand All</span>
+                </button>
+                <button type="button" class="btn-action-btn btn-action-light" onclick="exportBomCSV()" data-tooltip="📥 Export CSV" title="Export all BOMs & Recipes to CSV">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export CSV</span>
+                </button>
+                <button type="button" class="btn-action-btn btn-action-light" onclick="window.print()" data-tooltip="🖨️ Print" title="Print BOM View">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4 Top Executive KPI Stat Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Active BOMs</div>
+                    <div class="kpi-value" id="kpiTotalBoms" style="color:#0284c7;">0</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Production Sections</div>
+                    <div class="kpi-value" id="kpiSections" style="color:#059669;">0</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Total Raw Material Lines</div>
+                    <div class="kpi-value" id="kpiTotalRmLines" style="color:#d97706;">0</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Approval Integrity</div>
+                    <div class="kpi-value" id="kpiApprovalRate" style="color:#7c3aed;">100%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="filter-toolbar">
+            <div class="filter-group-left">
+                <!-- Search Box -->
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="bomSearchInput" placeholder="Search BOM No, Item Code, Product Name, Material..." oninput="applyBomFilters()">
+                </div>
+
+                <!-- Section Filter -->
+                <select id="bomSectionFilter" class="filter-select" onchange="applyBomFilters()">
+                    <option value="ALL">📁 All Sections</option>
+                </select>
+
+                <!-- Status Filter -->
+                <select id="bomStatusFilter" class="filter-select" onchange="applyBomFilters()">
+                    <option value="ALL">All Status</option>
+                    <option value="APPROVED">APPROVED Only</option>
+                </select>
+
+                <button type="button" class="filter-select" onclick="resetBomFilters()" style="border-color:#e2e8f0; background:#f1f5f9;">Reset</button>
+            </div>
+        </div>
+
+        <!-- Table Container Card -->
+        <div class="table-card">
+            <div class="table-stats-bar">
+                <span id="bomTableStats">Showing <strong>0</strong> of <strong>0</strong> BOM Recipes</span>
+                <span style="color:#059669; display:flex; align-items:center; gap:6px;">
+                    <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block;"></span>
+                    <span>100% ERP Exact Master Replica</span>
+                </span>
+            </div>
+
+            <div class="table-scroll-container">
+                <table class="bom-table" id="bomTable">
+                    <thead>
+                        <tr>
+                            <th style="width:40px; text-align:center;">S/L</th>
+                            <th style="width:100px;">BOM No</th>
+                            <th style="width:90px;">Date</th>
+                            <th style="width:150px;">Section</th>
+                            <th style="width:120px;">Item Code</th>
+                            <th>Product / Assembly Name</th>
+                            <th style="width:100px; text-align:right;">Batch Size</th>
+                            <th style="width:100px; text-align:center;">Status</th>
+                            <th style="width:90px; text-align:center;">RM Items</th>
+                            <th style="width:80px; text-align:center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bomTableBody">
+                        <tr>
+                            <td colspan="10" style="text-align:center; padding:30px; color:#64748b;">Loading BOM specifications...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Unified Sidebar Engine -->
+    <!-- Toast Feedback Message -->
+    <div class="toast-msg" id="toastBox">Notification message</div>
+
+    <!-- Data Engine & Sidebar Scripts -->
+    <script src="bom_view_data.js"></script>
+    <script src="../../shared/js/bot_data_engine.js"></script>
+    <script>
+        let allBoms = [];
+        let filteredBoms = [];
+        let allExpanded = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBomData();
+            buildSectionFilter();
+            renderBomView();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+
+        // Global Event Listener for Realtime Bot 9 Sync
+        window.addEventListener('mep_erp_sync_completed', (e) => {
+            if (e.detail && e.detail.botId === 9) {
+                loadBomData();
+                buildSectionFilter();
+                renderBomView();
+                showToast('⚡ Live BOM VIEW ERP Data Refreshed!');
+            }
+        });
+
+        function loadBomData() {
+            // Check localStorage first
+            const saved = localStorage.getItem('mep_bom_data_custom');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && Array.isArray(parsed.data) && parsed.data.length > 0) {
+                        allBoms = parsed.data;
+                        const syncTime = localStorage.getItem('mep_bom_synced');
+                        if (syncTime) {
+                            document.getElementById('bomSyncedTime').innerText = 'Last Synced: ' + new Date(syncTime).toLocaleTimeString();
+                        }
+                        return;
+                    }
+                } catch(e) {
+                    console.error('Error parsing stored BOM view data:', e);
+                }
+            }
+
+            // Fallback to RAW_BOM_VIEW_DATA from bom_view_data.js
+            if (typeof RAW_BOM_VIEW_DATA !== 'undefined' && RAW_BOM_VIEW_DATA && Array.isArray(RAW_BOM_VIEW_DATA.data)) {
+                allBoms = RAW_BOM_VIEW_DATA.data;
+                localStorage.setItem('mep_bom_data_custom', JSON.stringify(RAW_BOM_VIEW_DATA));
+            } else {
+                allBoms = [];
+            }
+        }
+
+        function buildSectionFilter() {
+            const select = document.getElementById('bomSectionFilter');
+            if (!select) return;
+
+            const sections = {};
+            allBoms.forEach(b => {
+                const s = (b.section || 'General').trim();
+                if (s) sections[s] = (sections[s] || 0) + 1;
+            });
+
+            let html = `<option value="ALL">📁 All Sections (${allBoms.length} BOMs)</option>`;
+            Object.keys(sections).sort().forEach(sec => {
+                html += `<option value="${escapeHTML(sec)}">📂 ${escapeHTML(sec)} (${sections[sec]})</option>`;
+            });
+            select.innerHTML = html;
+        }
+
+        function applyBomFilters() {
+            const query = (document.getElementById('bomSearchInput').value || '').trim().toLowerCase();
+            const sec = document.getElementById('bomSectionFilter').value;
+            const stat = document.getElementById('bomStatusFilter').value;
+
+            filteredBoms = allBoms.filter(b => {
+                if (sec !== 'ALL' && (b.section || '').trim() !== sec) return false;
+                if (stat !== 'ALL' && (b.status || '').trim().toUpperCase() !== stat) return false;
+
+                if (query) {
+                    const mNo = (b.bom_no || '').toLowerCase().includes(query);
+                    const mCode = (b.item_code || '').toLowerCase().includes(query);
+                    const mProd = (b.product_name || '').toLowerCase().includes(query);
+                    const mSec = (b.section || '').toLowerCase().includes(query);
+                    let mRm = false;
+                    if (Array.isArray(b.raw_materials)) {
+                        mRm = b.raw_materials.some(rm => 
+                            (rm.item_code || '').toLowerCase().includes(query) ||
+                            (rm.item_description || '').toLowerCase().includes(query)
+                        );
+                    }
+                    if (!mNo && !mCode && !mProd && !mSec && !mRm) return false;
+                }
+                return true;
+            });
+
+            renderTableRows();
+            updateKPIs();
+        }
+
+        function resetBomFilters() {
+            document.getElementById('bomSearchInput').value = '';
+            document.getElementById('bomSectionFilter').value = 'ALL';
+            document.getElementById('bomStatusFilter').value = 'ALL';
+            applyBomFilters();
+        }
+
+        function renderBomView() {
+            filteredBoms = [...allBoms];
+            renderTableRows();
+            updateKPIs();
+        }
+
+        function updateKPIs() {
+            document.getElementById('kpiTotalBoms').innerText = allBoms.length.toLocaleString();
+
+            const secSet = new Set(allBoms.map(b => (b.section || '').trim()).filter(Boolean));
+            document.getElementById('kpiSections').innerText = secSet.size;
+
+            let totalRm = 0;
+            allBoms.forEach(b => {
+                if (Array.isArray(b.raw_materials)) totalRm += b.raw_materials.length;
+            });
+            document.getElementById('kpiTotalRmLines').innerText = totalRm.toLocaleString();
+
+            const approvedCount = allBoms.filter(b => (b.status || '').toUpperCase() === 'APPROVED').length;
+            const rate = allBoms.length > 0 ? Math.round((approvedCount / allBoms.length) * 100) : 100;
+            document.getElementById('kpiApprovalRate').innerText = `${rate}% Approved`;
+        }
+
+        function renderTableRows() {
+            const tbody = document.getElementById('bomTableBody');
+            const stats = document.getElementById('bomTableStats');
+            if (stats) stats.innerHTML = `Showing <strong>${filteredBoms.length}</strong> of <strong>${allBoms.length}</strong> BOM Recipes`;
+
+            if (filteredBoms.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:35px; color:#64748b;">No matching BOM specifications found.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            filteredBoms.forEach((b, idx) => {
+                const bomNo = escapeHTML(b.bom_no || '');
+                const rawMaterials = Array.isArray(b.raw_materials) ? b.raw_materials : [];
+                const isApproved = (b.status || '').toUpperCase() === 'APPROVED';
+
+                html += `
+                <tr class="bom-master-row" id="master_row_${bomNo}" onclick="toggleBomDetails('${bomNo}')">
+                    <td style="text-align:center; font-weight:700; color:#64748b;">${idx + 1}</td>
+                    <td><span class="badge-code">${bomNo}</span></td>
+                    <td style="color:#475569;">${escapeHTML(b.bom_date || '')}</td>
+                    <td><span class="badge-section">${escapeHTML(b.section || 'N/A')}</span></td>
+                    <td><span class="badge-code">${escapeHTML(b.item_code || '')}</span></td>
+                    <td style="font-weight:700; color:#0f2942;">${escapeHTML(b.product_name || '')}</td>
+                    <td style="text-align:right; font-weight:700;">${parseFloat(b.batch_quantity || 1).toFixed(2)} ${escapeHTML(b.batch_unit || 'Pcs')}</td>
+                    <td style="text-align:center;">
+                        <span class="${isApproved ? 'badge-status-approved' : 'badge-section'}">
+                            ${isApproved ? '✔ ' : ''}${escapeHTML(b.status || 'PENDING')}
+                        </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span class="badge-rm-count">${rawMaterials.length} Specs</span>
+                    </td>
+                    <td style="text-align:center;" onclick="event.stopPropagation()">
+                        <button type="button" class="btn-expand-toggle" id="btn_toggle_${bomNo}" onclick="toggleBomDetails('${bomNo}')">
+                            <span id="txt_toggle_${bomNo}">Recipe</span> ▾
+                        </button>
+                    </td>
+                </tr>
+                <tr class="bom-detail-row" id="detail_row_${bomNo}">
+                    <td colspan="10" class="bom-detail-cell">
+                        <div class="recipe-box">
+                            <div class="recipe-meta-bar">
+                                <div>
+                                    <strong style="color:#0f2942;">Recipe Specification for:</strong> ${escapeHTML(b.product_name_detail || b.product_name || '')}
+                                </div>
+                                <div style="display:flex; gap:16px;">
+                                    <span><strong>Floor:</strong> ${escapeHTML(b.floor || b.section || '')}</span>
+                                    <span><strong>Entry By:</strong> ${escapeHTML(b.entry_by || 'ERP')}</span>
+                                    <span><strong>Approved By:</strong> ${escapeHTML(b.approved_by || 'Kaosar')}</span>
+                                    <span><strong>Approved Date:</strong> ${escapeHTML(b.approved_on || b.bom_date || '')}</span>
+                                </div>
+                            </div>
+
+                            <table class="recipe-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:40px;">S/L</th>
+                                        <th style="width:140px;">Category</th>
+                                        <th style="width:120px;">Raw Material Code</th>
+                                        <th>Material Description</th>
+                                        <th style="width:80px; text-align:center;">Unit</th>
+                                        <th style="width:110px; text-align:right;">Required Qty</th>
+                                        <th style="width:90px; text-align:center;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${renderRecipeRows(rawMaterials)}
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function renderRecipeRows(rms) {
+            if (!rms || rms.length === 0) {
+                return `<tr><td colspan="7" style="text-align:center; padding:12px; color:#64748b;">No raw materials defined for this BOM.</td></tr>`;
+            }
+
+            return rms.map((rm, i) => {
+                const isActive = (rm.status || '').toLowerCase() === 'active';
+                return `
+                <tr>
+                    <td style="color:#64748b; font-weight:700;">${i + 1}</td>
+                    <td><span style="font-weight:600; color:#475569;">${escapeHTML(rm.category || 'Raw')}</span></td>
+                    <td><span class="badge-code">${escapeHTML(rm.item_code || '')}</span></td>
+                    <td style="font-weight:700; color:#0f2942;">${escapeHTML(rm.item_description || '')}</td>
+                    <td style="text-align:center; font-weight:600;">${escapeHTML(rm.unit || '')}</td>
+                    <td style="text-align:right; font-weight:700; font-family:'JetBrains Mono',monospace !important; color:#0284c7;">
+                        ${parseFloat(rm.quantity || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 5})}
+                    </td>
+                    <td style="text-align:center;">
+                        <span style="font-size:0.7rem; font-weight:800; padding:1px 6px; border-radius:4px; ${isActive ? 'background:#ecfdf5; color:#059669;' : 'background:#fef2f2; color:#dc2626;'}">
+                            ${escapeHTML(rm.status || 'Active')}
+                        </span>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function toggleBomDetails(bomNo) {
+            const dRow = document.getElementById(`detail_row_${bomNo}`);
+            const mRow = document.getElementById(`master_row_${bomNo}`);
+            const btnTxt = document.getElementById(`txt_toggle_${bomNo}`);
+            if (!dRow) return;
+
+            const isShown = dRow.classList.contains('show');
+            if (isShown) {
+                dRow.classList.remove('show');
+                if (mRow) mRow.classList.remove('expanded');
+                if (btnTxt) btnTxt.innerText = 'Recipe';
+            } else {
+                dRow.classList.add('show');
+                if (mRow) mRow.classList.add('expanded');
+                if (btnTxt) btnTxt.innerText = 'Hide';
+            }
+        }
+
+        function toggleAllBoms() {
+            allExpanded = !allExpanded;
+            const btn = document.getElementById('btnToggleAll');
+            if (btn) btn.innerHTML = allExpanded ? '<span>🔼 Collapse All</span>' : '<span>📋 Expand All</span>';
+
+            filteredBoms.forEach(b => {
+                const bomNo = b.bom_no;
+                const dRow = document.getElementById(`detail_row_${bomNo}`);
+                const mRow = document.getElementById(`master_row_${bomNo}`);
+                const btnTxt = document.getElementById(`txt_toggle_${bomNo}`);
+                if (dRow) {
+                    if (allExpanded) {
+                        dRow.classList.add('show');
+                        if (mRow) mRow.classList.add('expanded');
+                        if (btnTxt) btnTxt.innerText = 'Hide';
+                    } else {
+                        dRow.classList.remove('show');
+                        if (mRow) mRow.classList.remove('expanded');
+                        if (btnTxt) btnTxt.innerText = 'Recipe';
+                    }
+                }
+            });
+        }
+
+        async function syncBomFromErp(btn) {
+            if (window.triggerBotRun) {
+                await window.triggerBotRun(9, btn);
+            } else {
+                const origText = btn.innerHTML;
+                btn.disabled = true;
+                btn.classList.add('is-running');
+                btn.innerHTML = '⏳ Scraping BOMs from ERP...';
+
+                try {
+                    const res = await fetch('http://127.0.0.1:5000/api/bot/sync/9', { method: 'POST' });
+                    const resData = await res.json();
+
+                    if (resData.status === 'success' && resData.data) {
+                        if (window.syncBotToModuleLocalStorage) {
+                            window.syncBotToModuleLocalStorage(9, resData.data);
+                        } else {
+                            localStorage.setItem('mep_bom_data_custom', JSON.stringify(resData.data));
+                            localStorage.setItem('mep_bom_synced', new Date().toISOString());
+                        }
+                        loadBomData();
+                        buildSectionFilter();
+                        renderBomView();
+                        showToast(`⚡ Successfully scraped & synced ${resData.items_count || 96} BOM recipes from ERP!`);
+                    } else {
+                        showToast(`⚠️ BOM Sync: ${resData.error || 'Server error'}`);
+                    }
+                } catch (err) {
+                    console.error('Sync BOM Error:', err);
+                    showToast('⚠️ Could not connect to Bot Server on port 5000.');
+                } finally {
+                    btn.disabled = false;
+                    btn.classList.remove('is-running');
+                    btn.innerHTML = origText;
+                }
+            }
+        }
+
+        function exportBomCSV() {
+            let csv = "BOM No,Date,Section,Finished Item Code,Product Name,Batch Size,Batch Unit,Status,RM S/L,RM Category,RM Item Code,RM Description,RM Unit,RM Quantity,RM Status\r\n";
+
+            filteredBoms.forEach(b => {
+                const rms = Array.isArray(b.raw_materials) ? b.raw_materials : [];
+                if (rms.length === 0) {
+                    csv += `"${b.bom_no || ''}","${b.bom_date || ''}","${b.section || ''}","${b.item_code || ''}","${(b.product_name || '').replace(/"/g, '""')}","${b.batch_quantity || 1}","${b.batch_unit || 'Pcs'}","${b.status || ''}","","","","","","",""\r\n`;
+                } else {
+                    rms.forEach((rm, i) => {
+                        csv += `"${b.bom_no || ''}","${b.bom_date || ''}","${b.section || ''}","${b.item_code || ''}","${(b.product_name || '').replace(/"/g, '""')}","${b.batch_quantity || 1}","${b.batch_unit || 'Pcs'}","${b.status || ''}","${i + 1}","${rm.category || ''}","${rm.item_code || ''}","${(rm.item_description || '').replace(/"/g, '""')}","${rm.unit || ''}","${rm.quantity || 0}","${rm.status || ''}"\r\n`;
+                    });
+                }
+            });
+
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", `MEP_FAN_BOM_VIEW_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("📥 Exported BOM Master & Recipes to CSV!");
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const dateNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const dayElem = document.getElementById('liveDayText');
+            const timeElem = document.getElementById('liveTimeText');
+            if (dayElem) dayElem.innerText = `${dayName}, ${dateNum} ${monthName} ${yearNum}`;
+            if (timeElem) timeElem.innerText = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        function escapeHTML(str) {
+            return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    </script>
     <script src="../../shared/js/report_sidebar.js"></script>
 </body>
 </html>

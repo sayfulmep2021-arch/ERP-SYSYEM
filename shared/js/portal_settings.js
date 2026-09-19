@@ -1702,7 +1702,7 @@
 
             // 2. Warehouse Module (3 Dedicated Pages)
             { file: 'intersales_requisition.html', title: 'Intersales Requisition', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Warehouse Logistics', icon: '📋' },
-            { file: 'per_day_received.html', title: 'Per Day Received', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Receiving & GRN', icon: '📥' },
+            { file: 'per_day_received.html', title: 'Inter Sales Chalan Report', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Receiving & GRN', icon: '📥' },
             { file: 'spare_parts.html', title: 'Spare Parts', module: 'Warehouse Module', moduleId: 'WAREHOUSE', category: 'Maintenance & Spares', icon: '⚙️' },
 
             // 3. HRM Module (1 Editable Database Page)

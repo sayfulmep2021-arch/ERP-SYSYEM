@@ -254,9 +254,14 @@
                 : btoa('ADMIN:::MEP_SECURE_PORTAL_2026');
 
             if (isAuth && (storedRole === 'ADMIN' || storedRole === 'VIEW') && sig === expectedSig) {
-                const isViewOnly = (storedRole === 'VIEW') || (sessionStorage.getItem('portal_view_only') === 'true');
+                const isViewOnly = (storedRole === 'VIEW');
+                if (storedRole === 'ADMIN') {
+                    sessionStorage.removeItem('portal_view_only');
+                    localStorage.removeItem('portal_view_only');
+                } else {
+                    sessionStorage.setItem('portal_view_only', 'true');
+                }
                 sessionStorage.setItem('portal_auth_role', storedRole);
-                sessionStorage.setItem('portal_view_only', isViewOnly ? "true" : "false");
                 sessionStorage.setItem('portal_auth_sig', sig);
                 sessionStorage.setItem(STORAGE_KEYS.lastActivity, Date.now().toString());
 
@@ -2332,13 +2337,19 @@
 
         function isCurrentUserViewOnly() {
             try {
-                const sig = sessionStorage.getItem('portal_auth_sig') || '';
-                if (sig === btoa('VIEW:::MEP_SECURE_PORTAL_2026')) return true;
-                if (sig === btoa('ADMIN:::MEP_SECURE_PORTAL_2026')) return false;
-                const isView = (sessionStorage.getItem('portal_view_only') === 'true');
                 const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
-                const localRole = (localStorage.getItem('portal_auth_role') || '').toUpperCase();
-                return isView || role === 'VIEW' || localRole === 'VIEW';
+                const sig = sessionStorage.getItem('portal_auth_sig') || '';
+
+                // Strict Admin Precedence: ADMIN role can NEVER be View-Only under any circumstances
+                if (role === 'ADMIN' || sig === btoa('ADMIN:::MEP_SECURE_PORTAL_2026')) {
+                    sessionStorage.removeItem('portal_view_only');
+                    localStorage.removeItem('portal_view_only');
+                    return false;
+                }
+
+                if (sig === btoa('VIEW:::MEP_SECURE_PORTAL_2026') || role === 'VIEW') return true;
+                const isView = (sessionStorage.getItem('portal_view_only') === 'true');
+                return isView;
             } catch(e) {
                 return false;
             }

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +19,7 @@
         <div class="navbar-inner" style="width:100%; display:flex; align-items:center; justify-content:space-between;">
             <!-- Left: Brand Title -->
             <a href="../../index.html?view=warehouse" class="smart-brand-card" style="text-decoration:none;" title="Click to return to Warehouse Dashboard">
-                <span class="smart-brand-text">Fan Assemble (ERP) | Warehouse Management Hub</span>
+                <span class="smart-brand-text">Warehouse Management</span>
             </a>
 
             <!-- Right Controls -->
@@ -87,7 +87,28 @@
                 <a href="../../index.html?view=modules" class="mep-nav-3d-btn mep-btn-3d-mod" aria-label="Module Selection" title="Department Selection">
                     <span class="nav-3d-icon-wrap">
                         <svg class="nav-3d-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="16" cy="16" r="10" fill="#ea580c" />
+                            <defs>
+                                <linearGradient id="whSprModTopGrad1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fb923c" /><stop offset="100%" stop-color="#ea580c" /></linearGradient>
+                                <linearGradient id="whSprModLeftGrad1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c2410c" /><stop offset="100%" stop-color="#9a3412" /></linearGradient>
+                                <linearGradient id="whSprModRightGrad1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ea580c" /><stop offset="100%" stop-color="#c2410c" /></linearGradient>
+                                <linearGradient id="whSprModTopGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38bdf8" /><stop offset="100%" stop-color="#0284c7" /></linearGradient>
+                                <linearGradient id="whSprModLeftGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0369a1" /><stop offset="100%" stop-color="#075985" /></linearGradient>
+                                <linearGradient id="whSprModRightGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0284c7" /><stop offset="100%" stop-color="#0369a1" /></linearGradient>
+                                <radialGradient id="whSprModShadow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ea580c" stop-opacity="0.32" /><stop offset="100%" stop-color="#ea580c" stop-opacity="0" /></radialGradient>
+                            </defs>
+                            <ellipse cx="16" cy="28.5" rx="12" ry="3.5" fill="url(#whSprModShadow)" />
+                            <polygon points="4,15.5 11,19.5 11,26 4,22" fill="url(#whSprModLeftGrad1)" />
+                            <polygon points="11,19.5 18,15.5 18,22 11,26" fill="url(#whSprModRightGrad1)" />
+                            <polygon points="11,13 18,15.5 11,19.5 4,15.5" fill="url(#whSprModTopGrad1)" stroke="#fdba74" stroke-width="0.6" />
+                            <polygon points="14,15.5 21,19.5 21,26 14,22" fill="url(#whSprModLeftGrad1)" />
+                            <polygon points="21,19.5 28,15.5 28,22 21,26" fill="url(#whSprModRightGrad1)" />
+                            <polygon points="21,13 28,15.5 21,19.5 14,15.5" fill="url(#whSprModTopGrad1)" stroke="#fdba74" stroke-width="0.6" />
+                            <polygon points="9,7.5 16,11.5 16,18 9,14" fill="url(#whSprModLeftGrad2)" />
+                            <polygon points="16,11.5 23,7.5 23,14 16,18" fill="url(#whSprModRightGrad2)" />
+                            <polygon points="16,2.5 23,7.5 16,11.5 9,7.5" fill="url(#whSprModTopGrad2)" stroke="#7dd3fc" stroke-width="0.75" />
+                            <circle cx="16" cy="7.5" r="1.3" fill="#ffffff" />
+                            <circle cx="11" cy="16.5" r="1" fill="#fed7aa" />
+                            <circle cx="21" cy="16.5" r="1" fill="#fed7aa" />
                         </svg>
                     </span>
                     <span class="nav-3d-tooltip">Module</span>
@@ -112,8 +133,8 @@
                     <span class="wh-nav-badge badge-info">34</span>
                 </a>
 
-                <!-- Page 2: Per Day Received -->
-                <a href="per_day_received.html" class="wh-nav-item" id="whMenuReceived" title="Per Day Received">
+                <!-- Page 2: Inter Sales Chalan Report -->
+                <a href="per_day_received.html" class="wh-nav-item" id="whMenuReceived" title="Inter Sales Chalan Report">
                     <div class="wh-nav-icon-box" style="background:#ecfdf5; color:#059669;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="21 8 21 21 3 21 3 8"></polyline>
@@ -121,7 +142,7 @@
                             <line x1="10" y1="12" x2="14" y2="12"></line>
                         </svg>
                     </div>
-                    <span>Per Day Received</span>
+                    <span>Inter Sales Chalan Report</span>
                     <span class="wh-nav-badge badge-success">18</span>
                 </a>
 
@@ -164,26 +185,40 @@
                             <div style="font-size:12.5px; color:#64748b; margin-top:2px;">Maintenance Spares, Critical Replacements &amp; Inventory Level Thresholds</div>
                         </div>
                     </div>
-                    <span class="wh-subpage-badge" style="background:#fefce8; color:#d97706; border-color:#fef08a;">Registered Spares: 412 Items (8 Reorder Alerts)</span>
+                    <span class="wh-subpage-badge" id="whSpareBadge" style="background:#fefce8; color:#d97706; border-color:#fef08a;">Live ERP Spares: Loading...</span>
                 </div>
 
                 <!-- Action Toolbar -->
-                <div class="wh-action-toolbar">
-                    <div class="wh-search-input-box">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" id="whSearchInput" placeholder="Search by Spare Code, Part Name, Category, Bin..." oninput="filterSpares(this.value)">
+                <div class="wh-action-toolbar" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+                    <div style="display:flex; align-items:center; gap:12px; flex:1; flex-wrap:wrap;">
+                        <div class="wh-search-input-box" style="flex:1; min-width:240px; max-width:360px;">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="whSearchInput" placeholder="Search by Spare Code, Part Name, Subcategory, FG..." oninput="applyAllFilters()">
+                        </div>
+
+                        <div style="display:inline-flex; align-items:center; gap:8px;">
+                            <span style="font-size:12px; font-weight:800; color:#0f2942; text-transform:uppercase; letter-spacing:0.3px;">📁 SubCategory:</span>
+                            <select id="whSubcategorySelect" onchange="selectSubcategory(this.value)" style="padding:7px 12px; border:1.5px solid #d97706; border-radius:8px; background:#fffbeb; font-weight:700; color:#b45309; outline:none; cursor:pointer; font-size:12.5px;">
+                                <option value="ALL">All Sub Categories</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="wh-btn-group">
+                        <button type="button" class="wh-btn wh-btn-primary" id="btnSyncSpareErp" style="background:#d97706;" onclick="syncSparePartsFromErp(this)" title="Fetch Live Spare Parts Stock from ERP">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                            <span>⚡ Sync from ERP</span>
+                        </button>
                         <button type="button" class="wh-btn wh-btn-outline" onclick="window.print()" title="Print Spares Inventory">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                             <span>Print Inventory</span>
                         </button>
-                        <button type="button" class="wh-btn wh-btn-primary" id="btnNewSparePart" style="background:#d97706;" onclick="alert('New Spare Part Registration form will be activated here in the next update.')" title="Register New Spare Part Item">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                            <span>+ Add Spare Part</span>
-                        </button>
                     </div>
+                </div>
+
+                <!-- Clickable Category Filter Pill Buttons (Screenshot 2 Fix) -->
+                <div class="wh-cat-filter-bar" id="whCatFilterBar">
+                    <!-- Populated dynamically: [ All Categories (532) ] [ Electrical Items (180) ] [ Mechanical Parts (352) ] -->
                 </div>
 
                 <!-- Spares Inventory Data Table -->
@@ -191,95 +226,32 @@
                     <table class="wh-table" id="whSparesTable">
                         <thead>
                             <tr>
-                                <th>Item Code</th>
-                                <th>Part Description &amp; Spec</th>
-                                <th>Category</th>
-                                <th>In Stock</th>
-                                <th>Min Safe Level</th>
-                                <th>Stock Ratio</th>
-                                <th>Bin Location</th>
-                                <th>Status</th>
-                                <th style="text-align:right;">Actions</th>
+                                <th style="width:45px; text-align:center;">SL</th>
+                                <th>Sub Category</th>
+                                <th style="width:110px;">Item Code</th>
+                                <th style="width:75px;">FG Ref</th>
+                                <th>Spare Parts Description</th>
+                                <th style="width:55px; text-align:center;">Unit</th>
+                                <th style="text-align:right;">Store Qty</th>
+                                <th style="text-align:right;">Section Qty</th>
+                                <th style="text-align:right;">Total Qty</th>
+                                <th style="text-align:right;">Rate (৳)</th>
+                                <th style="text-align:right;">Stock Value (৳)</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="whSparesTableBody">
                             <tr>
-                                <td style="font-weight:700; color:#d97706;">SPR-0104</td>
-                                <td style="font-weight:600;">Ball Bearing 6202-2RS (High Speed, C3 Clearance)</td>
-                                <td>Mechanical Spare</td>
-                                <td style="font-weight:700;">480 Pcs</td>
-                                <td>150 Pcs</td>
-                                <td>
-                                    <div class="wh-gauge-bar-track" style="width:100px;">
-                                        <div class="wh-gauge-bar-fill fill-emerald" style="width:85%;"></div>
-                                    </div>
-                                </td>
-                                <td>Rack M-02</td>
-                                <td><span class="status-pill status-completed">Optimal</span></td>
-                                <td style="text-align:right;">
-                                    <button class="wh-btn wh-btn-outline" style="padding:3px 8px; font-size:11px;" onclick="alert('Viewing SPR-0104 ledger.')">Card</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:700; color:#d97706;">SPR-0218</td>
-                                <td style="font-weight:600;">Starting Capacitor 2.5µF 450V AC Heavy Duty</td>
-                                <td>Electrical Spare</td>
-                                <td style="font-weight:700;">620 Pcs</td>
-                                <td>200 Pcs</td>
-                                <td>
-                                    <div class="wh-gauge-bar-track" style="width:100px;">
-                                        <div class="wh-gauge-bar-fill fill-emerald" style="width:90%;"></div>
-                                    </div>
-                                </td>
-                                <td>Drawer E-05</td>
-                                <td><span class="status-pill status-completed">Optimal</span></td>
-                                <td style="text-align:right;">
-                                    <button class="wh-btn wh-btn-outline" style="padding:3px 8px; font-size:11px;" onclick="alert('Viewing SPR-0218 ledger.')">Card</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:700; color:#d97706;">SPR-0345</td>
-                                <td style="font-weight:600;">Shaft 18mm Hardened Ground Steel for Deluxe Fan</td>
-                                <td>Precision Component</td>
-                                <td style="font-weight:700;">110 Pcs</td>
-                                <td>100 Pcs</td>
-                                <td>
-                                    <div class="wh-gauge-bar-track" style="width:100px;">
-                                        <div class="wh-gauge-bar-fill fill-amber" style="width:45%;"></div>
-                                    </div>
-                                </td>
-                                <td>Bin S-01</td>
-                                <td><span class="status-pill status-pending">Normal</span></td>
-                                <td style="text-align:right;">
-                                    <button class="wh-btn wh-btn-outline" style="padding:3px 8px; font-size:11px;" onclick="alert('Viewing SPR-0345 ledger.')">Card</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:700; color:#d97706;">SPR-0412</td>
-                                <td style="font-weight:600;">Rubber Bush &amp; Vibration Grommet Damper (High Temp)</td>
-                                <td>Hardware Consumable</td>
-                                <td style="font-weight:700; color:#dc2626;">35 Pcs</td>
-                                <td>80 Pcs</td>
-                                <td>
-                                    <div class="wh-gauge-bar-track" style="width:100px;">
-                                        <div class="wh-gauge-bar-fill fill-rose" style="width:22%;"></div>
-                                    </div>
-                                </td>
-                                <td>Bin R-11</td>
-                                <td><span class="status-pill status-alert">Low Stock</span></td>
-                                <td style="text-align:right;">
-                                    <button class="wh-btn wh-btn-outline" style="padding:3px 8px; font-size:11px;" onclick="alert('Triggering Purchase Reorder for SPR-0412.')">Reorder</button>
-                                </td>
+                                <td colspan="11" style="text-align:center; padding:30px; color:#64748b;">Loading live ERP Spare Parts records...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Under Development Future Notice Banner -->
-                <div class="wh-placeholder-box" style="margin-top:10px;">
-                    <div class="wh-placeholder-icon">⚙️</div>
-                    <h3 class="wh-placeholder-title">Spare Parts Operations Hub</h3>
-                    <p class="wh-placeholder-desc">This page is pre-structured and ready. Automated reorder triggers, machine maintenance requisition link, and maintenance cost center allocations will be connected in future releases.</p>
+                <!-- Grand Summary Strip -->
+                <div id="whSpareSummaryStrip" style="margin-top:14px; background:#fffbeb; border:1.5px solid #fde68a; border-radius:8px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center; font-weight:700; color:#92400e; font-size:13.5px;">
+                    <span id="whSpareSummaryCount">Total: 0 Items (0 In-Stock)</span>
+                    <span id="whSpareSummaryQty">Total Quantity: 0 Units</span>
+                    <span id="whSpareSummaryAmount" style="color:#b45309; font-size:15px; font-weight:800;">Stock Valuation: ৳ 0.00</span>
                 </div>
             </div>
         </main>
@@ -288,46 +260,211 @@
     <!-- Scripts -->
     <script src="../../shared/js/sidebar_dynamic_models.js"></script>
     <script src="warehouse_module_engine.js?v=20260913_fix2"></script>
+    <script src="spare_parts_data.js"></script>
+    <script src="../../shared/js/bot_data_engine.js"></script>
     <script>
-        function filterSpares(query) {
-            const q = (query || '').toLowerCase();
-            const rows = document.querySelectorAll('#whSparesTable tbody tr');
-            rows.forEach(r => {
-                const text = r.textContent.toLowerCase();
-                r.style.display = text.includes(q) ? '' : 'none';
-            });
+        let allSpareParts = [];
+
+        function loadSparePartsData() {
+            let data = null;
+            const saved = localStorage.getItem('mep_spare_parts_data');
+            if (saved) {
+                try { data = JSON.parse(saved); } catch(e) {}
+            }
+            if ((!data || !data.items || data.items.length === 0) && typeof RAW_SPARE_PARTS_DATA !== 'undefined') {
+                data = RAW_SPARE_PARTS_DATA;
+            }
+
+            if (data && data.items && data.items.length > 0) {
+                allSpareParts = data.items;
+                const badge = document.getElementById('whSpareBadge');
+                if (badge && data.meta) {
+                    badge.innerText = `Live ERP Spares: ${data.meta.total_items || allSpareParts.length} Items (${data.meta.in_stock_items || 0} In-Stock)`;
+                }
+            } else if (typeof RAW_SPARE_PARTS_DATA !== 'undefined' && RAW_SPARE_PARTS_DATA && RAW_SPARE_PARTS_DATA.items) {
+                allSpareParts = RAW_SPARE_PARTS_DATA.items;
+            }
+            buildCategoryFilters();
+            applyAllFilters();
         }
 
-        // Lock State Detection from MIS Option 5
-        function checkPageLockStatus() {
-            try {
-                const raw = localStorage.getItem('portal_page_lock_states');
-                if (raw) {
-                    const locks = JSON.parse(raw);
-                    if (locks['spare_parts.html'] === true) {
-                        const banner = document.getElementById('whLockStateBanner');
-                        if (banner) {
-                            banner.innerHTML = `
-                                <div style="background:#fff1f2; border:1px solid #fecdd3; border-left:5px solid #e11d48; padding:10px 16px; border-radius:8px; margin-bottom:16px; display:flex; align-items:center; gap:10px; color:#9f1239;">
-                                    <span style="font-size:1.3rem;">🔒</span>
-                                    <div>
-                                        <strong style="font-size:14px;">PAGE ACCESS LOCKED (READ-ONLY)</strong>
-                                        <div style="font-size:12px; color:#881337; margin-top:2px;">Spare Parts is in read-only mode. Adding new spare parts or modifying inventory levels is prohibited until unlocked from <strong>MIS Module > Option 5</strong>.</div>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                        const newBtn = document.getElementById('btnNewSparePart');
-                        if (newBtn) {
-                            newBtn.disabled = true;
-                            newBtn.style.opacity = '0.5';
-                            newBtn.style.cursor = 'not-allowed';
-                        }
-                    }
-                }
-            } catch(e) {}
+        let activeCategory = 'ALL';
+
+        function buildCategoryFilters() {
+            const counts = {};
+            allSpareParts.forEach(it => {
+                const cat = (it.subcategory || it.category || 'General').trim();
+                counts[cat] = (counts[cat] || 0) + 1;
+            });
+
+            const categories = Object.keys(counts).sort();
+            const totalItems = allSpareParts.length;
+
+            // 1. Build Clickable Pills
+            const pillsBar = document.getElementById('whCatFilterBar');
+            if (pillsBar) {
+                let pillsHtml = `
+                    <button type="button" class="wh-cat-pill ${activeCategory === 'ALL' ? 'active' : ''}" onclick="selectSubcategory('ALL')">
+                        <span>All Categories</span>
+                        <span class="wh-cat-pill-count">${totalItems}</span>
+                    </button>
+                `;
+                categories.forEach(cat => {
+                    const isActive = activeCategory.toLowerCase() === cat.toLowerCase();
+                    pillsHtml += `
+                        <button type="button" class="wh-cat-pill ${isActive ? 'active' : ''}" onclick="selectSubcategory('${cat.replace(/'/g, "\\'")}')">
+                            <span>${cat}</span>
+                            <span class="wh-cat-pill-count">${counts[cat]}</span>
+                        </button>
+                    `;
+                });
+                pillsBar.innerHTML = pillsHtml;
+            }
+
+            // 2. Build Select Dropdown Options
+            const sel = document.getElementById('whSubcategorySelect');
+            if (sel) {
+                let selHtml = `<option value="ALL">All Sub Categories (${totalItems})</option>`;
+                categories.forEach(cat => {
+                    selHtml += `<option value="${cat.replace(/"/g, '&quot;')}" ${activeCategory === cat ? 'selected' : ''}>${cat} (${counts[cat]})</option>`;
+                });
+                sel.innerHTML = selHtml;
+                sel.value = activeCategory;
+            }
         }
-        document.addEventListener('DOMContentLoaded', checkPageLockStatus);
+
+        function selectSubcategory(cat) {
+            activeCategory = cat;
+            const sel = document.getElementById('whSubcategorySelect');
+            if (sel) sel.value = cat;
+
+            // Update active state on pills
+            const pills = document.querySelectorAll('.wh-cat-pill');
+            pills.forEach(p => {
+                const text = p.querySelector('span')?.textContent?.trim();
+                if ((cat === 'ALL' && text === 'All Categories') || text === cat) {
+                    p.classList.add('active');
+                } else {
+                    p.classList.remove('active');
+                }
+            });
+
+            applyAllFilters();
+        }
+
+        function applyAllFilters() {
+            const query = (document.getElementById('whSearchInput')?.value || '').toLowerCase().trim();
+
+            let filtered = allSpareParts;
+
+            // Filter by SubCategory
+            if (activeCategory !== 'ALL') {
+                filtered = filtered.filter(it => {
+                    const cat = (it.subcategory || it.category || 'General').trim().toLowerCase();
+                    return cat === activeCategory.toLowerCase();
+                });
+            }
+
+            // Filter by Search Query
+            if (query) {
+                filtered = filtered.filter(it => {
+                    return String(it.item_code).toLowerCase().includes(query) ||
+                           String(it.item_name).toLowerCase().includes(query) ||
+                           String(it.subcategory || '').toLowerCase().includes(query) ||
+                           String(it.fg || '').toLowerCase().includes(query);
+                });
+            }
+
+            renderSparesTable(filtered);
+        }
+
+        function filterSpares(query) {
+            applyAllFilters();
+        }
+
+        function renderSparesTable(items) {
+            const tbody = document.getElementById('whSparesTableBody');
+            if (!tbody) return;
+
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:40px; color:#64748b;">No Spare Parts found matching selected filter.</td></tr>`;
+                updateSummary(0, 0, 0, 0);
+                return;
+            }
+
+            let totQty = 0;
+            let totVal = 0;
+            let inStockCount = 0;
+
+            let html = '';
+            items.forEach((it, idx) => {
+                const q = parseFloat(it.total_qty) || 0;
+                const val = parseFloat(it.stock_amt) || 0;
+                totQty += q;
+                totVal += val;
+                if (q > 0) inStockCount++;
+
+                html += `
+                    <tr>
+                        <td style="text-align:center; font-family:monospace; color:#64748b; font-size:12px;">${idx + 1}</td>
+                        <td style="font-size:12px; font-weight:600; color:#475569;">${it.subcategory || it.category || 'General'}</td>
+                        <td style="font-family:monospace; font-weight:700; color:#d97706; font-size:13px;">${it.item_code}</td>
+                        <td style="font-family:monospace; color:#64748b; font-size:12px;">${it.fg || '-'}</td>
+                        <td style="font-weight:600; color:#0f172a;">${it.item_name}</td>
+                        <td style="text-align:center;">${it.unit || 'Pcs'}</td>
+                        <td style="text-align:right; color:#475569;">${Number(it.store_qty || 0).toLocaleString()}</td>
+                        <td style="text-align:right; color:#475569;">${Number(it.section_qty || 0).toLocaleString()}</td>
+                        <td style="text-align:right; font-weight:700; color:${q > 0 ? '#0284c7' : '#94a3b8'};">${Number(q).toLocaleString()}</td>
+                        <td style="text-align:right; color:#475569;">৳ ${Number(it.rate || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                        <td style="text-align:right; font-weight:700; color:#059669;">৳ ${Number(val).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            updateSummary(items.length, inStockCount, totQty, totVal);
+        }
+
+        function updateSummary(totalCount, inStock, totQty, totVal) {
+            const countEl = document.getElementById('whSpareSummaryCount');
+            const qtyEl = document.getElementById('whSpareSummaryQty');
+            const amtEl = document.getElementById('whSpareSummaryAmount');
+
+            if (countEl) countEl.innerText = `Total: ${totalCount} Items (${inStock} In-Stock)`;
+            if (qtyEl) qtyEl.innerText = `Total Quantity: ${Number(totQty).toLocaleString(undefined, {maximumFractionDigits:2})} Units`;
+            if (amtEl) amtEl.innerText = `Stock Valuation: ৳ ${Number(totVal).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+        }
+
+        async function syncSparePartsFromErp(btn) {
+            if (typeof window.triggerBotRun === 'function') {
+                const res = await window.triggerBotRun(3, btn);
+                if (res && res.success) {
+                    loadSparePartsData();
+                }
+            } else {
+                alert('Bot engine is loading... Please retry in a second.');
+            }
+        }
+
+        // Live event listener from Flash Hub or direct run
+        window.addEventListener('mep_erp_sync_completed', (e) => {
+            if (!e.detail || e.detail.botId === 3) {
+                loadSparePartsData();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof updateWarehouseLiveClock === 'function') {
+                updateWarehouseLiveClock();
+                setInterval(updateWarehouseLiveClock, 1000);
+            }
+            if (typeof enforceWarehouseRoleBadge === 'function') {
+                enforceWarehouseRoleBadge();
+            }
+            loadSparePartsData();
+            if (typeof checkPageLockStatus === 'function') {
+                checkPageLockStatus();
+            }
+        });
     </script>
 </body>
 </html>

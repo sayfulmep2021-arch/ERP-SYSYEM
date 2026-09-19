@@ -1533,7 +1533,7 @@
                 <!-- Subtitle -->
                 <p class="flash-header-sub">High-Speed Real-time Synchronized Operational Reports &amp; Intelligence Center</p>
 
-                <!-- Lower Deck: Stats Pills + Primary Master ALL LOAD Button -->
+                <!-- Lower Deck: Stats Pills + Date Range + Primary Master ALL LOAD Button -->
                 <div class="flash-header-deck-bottom">
                     <div class="flash-stats-group">
                         <div class="flash-stat-pill" title="In-Memory Cache Latency">
@@ -1547,12 +1547,40 @@
                         </div>
                     </div>
 
-                    <button type="button" class="flash-all-load-btn" id="flashAllLoadBtn" onclick="loadAllFlashTables()" title="Click to load all 9 operational report tables simultaneously">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                        </svg>
-                        <span>All Load</span>
-                    </button>
+                    <div class="flash-header-actions-cluster">
+                        <div class="flash-header-date-box" title="Date Range for Inter Sales Requisition Collection">
+                            <span class="flash-date-box-label">📅 Date Range:</span>
+                            <div class="flash-date-input-pair">
+                                <input type="text" id="headerDateFromInput" value="01-09-2026" placeholder="DD-MM-YYYY" title="From Date for Inter Sales Requisition">
+                                <span class="flash-date-arrow">⟶</span>
+                                <input type="text" id="headerDateToInput" value="17-09-2026" placeholder="DD-MM-YYYY" title="To Date for Inter Sales Requisition">
+                            </div>
+                        </div>
+
+                        <button type="button" class="flash-all-load-btn" id="flashAllLoadBtn" onclick="triggerRunAllBotsAction(this)" title="One Click: Automatically collect and sync all 9 ERP operational reports">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                            <span>⚡ Run Bot</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status Strip for Live Progress Reporting across 9 Bots -->
+                <div class="flash-bot-status-strip" id="flashBotStatusStrip" style="display: none;">
+                    <div class="flash-status-main-col">
+                        <div class="flash-status-header-row">
+                            <div class="flash-status-text" id="flashStatusText">Ready to run 9 bots</div>
+                            <div class="flash-status-percentage" id="flashStatusPercentage">0%</div>
+                        </div>
+                        <div class="flash-status-bar-track">
+                            <div class="flash-status-bar-fill" id="flashStatusBarFill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="flash-status-progress" id="flashStatusProgress" title="Collection Time">
+                        <span class="flash-timer-icon">⏱️</span>
+                        <span id="flashTimerDisplay">0s</span>
+                    </div>
                 </div>
             </div>
 
@@ -1560,119 +1588,155 @@
             <div class="flash-body-viewport">
                 <div class="flash-cards-grid">
 
-                    <!-- 1. Inter Sales Requisition (Ocean Azure) -->
+                    <!-- 1. Inter Sales Requisition (Ocean Azure) — Bot 1 -->
                     <div class="flash-card flash-theme-intersales" id="flashCard1">
                         <div class="flash-card-header">
                             <h4 class="flash-card-title">Inter Sales Requisition</h4>
+                            <div class="flash-card-source" title="Source: Warehouse Module ⟶ Intersales Requisition">📍 Warehouse Module ⟶ Intersales Requisition</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent1" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn1" onclick="loadFlashTable(1)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn1" onclick="triggerBotRunAction(1, this)" title="Run Bot 01 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn1" onclick="openCollectedDataAction(1)" title="View Collected Data for Bot 01">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 2. Per Day Received (Mint Emerald) -->
+                    <!-- 2. Inter Sales Chalan Report (Mint Emerald) — Bot 2 -->
                     <div class="flash-card flash-theme-perday" id="flashCard2">
                         <div class="flash-card-header">
-                            <h4 class="flash-card-title">Per Day Received</h4>
+                            <h4 class="flash-card-title">Inter Sales Chalan Report</h4>
+                            <div class="flash-card-source" title="Source: Warehouse Module ⟶ Inter Sales Chalan Report">📍 Warehouse Module ⟶ Inter Sales Chalan Report</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent2" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn2" onclick="loadFlashTable(2)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn2" onclick="triggerBotRunAction(2, this)" title="Run Bot 02 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn2" onclick="openCollectedDataAction(2)" title="View Collected Data for Bot 02">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 3. Spare Parts (Warm Amber) -->
+                    <!-- 3. Spare Parts (Warm Amber) — Bot 3 -->
                     <div class="flash-card flash-theme-spareparts" id="flashCard3">
                         <div class="flash-card-header">
                             <h4 class="flash-card-title">Spare Parts</h4>
+                            <div class="flash-card-source" title="Source: Warehouse Module ⟶ Spare Parts">📍 Warehouse Module ⟶ Spare Parts</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent3" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn3" onclick="loadFlashTable(3)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn3" onclick="triggerBotRunAction(3, this)" title="Run Bot 03 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn3" onclick="openCollectedDataAction(3)" title="View Collected Data for Bot 03">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 4. Fan Assemble (Electric Indigo) -->
+                    <!-- 4. Fan Assemble (Electric Indigo) — Bot 4 -->
                     <div class="flash-card flash-theme-fanassemble" id="flashCard4">
                         <div class="flash-card-header">
                             <h4 class="flash-card-title">Fan Assemble</h4>
+                            <div class="flash-card-source" title="Source: Production Module ⟶ Closing ERP ⟶ Fan Assemble">📍 Production Module ⟶ Closing ERP ⟶ Fan Assemble</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent4" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn4" onclick="loadFlashTable(4)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn4" onclick="triggerBotRunAction(4, this)" title="Run Bot 04 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn4" onclick="openCollectedDataAction(4)" title="View Collected Data for Bot 04">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 5. Armature & Winding (Royal Purple) -->
+                    <!-- 5. Armature & Winding (Royal Purple) — Bot 5 -->
                     <div class="flash-card flash-theme-armature" id="flashCard5">
                         <div class="flash-card-header">
                             <h4 class="flash-card-title">Armature &amp; Winding</h4>
+                            <div class="flash-card-source" title="Source: Production Module ⟶ Closing ERP ⟶ Armature &amp; Winding">📍 Production Module ⟶ Closing ERP ⟶ Armature &amp; Winding</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent5" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn5" onclick="loadFlashTable(5)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn5" onclick="triggerBotRunAction(5, this)" title="Run Bot 05 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn5" onclick="openCollectedDataAction(5)" title="View Collected Data for Bot 05">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 6. Finish Good (FG) (Rose Pink) -->
+                    <!-- 6. Finish Good (FG) (Rose Pink) — Bot 6 -->
                     <div class="flash-card flash-theme-finishgood" id="flashCard6">
                         <div class="flash-card-header">
                             <h4 class="flash-card-title">Finish Good (FG)</h4>
+                            <div class="flash-card-source" title="Source: Production Module ⟶ Closing ERP ⟶ Finish Good (FG)">📍 Production Module ⟶ Closing ERP ⟶ Finish Good (FG)</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent6" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn6" onclick="loadFlashTable(6)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn6" onclick="triggerBotRunAction(6, this)" title="Run Bot 06 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn6" onclick="openCollectedDataAction(6)" title="View Collected Data for Bot 06">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 7. Closing All SFG (Sunset Orange) -->
+                    <!-- 7. Closing All SFG (Sunset Orange) — Bot 7 -->
                     <div class="flash-card flash-theme-closingsfg" id="flashCard7">
                         <div class="flash-card-header">
                             <h4 class="flash-card-title">Closing All SFG</h4>
+                            <div class="flash-card-source" title="Source: Production Module ⟶ Closing ERP ⟶ Closing All SFG">📍 Production Module ⟶ Closing ERP ⟶ Closing All SFG</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent7" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn7" onclick="loadFlashTable(7)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn7" onclick="triggerBotRunAction(7, this)" title="Run Bot 07 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn7" onclick="openCollectedDataAction(7)" title="View Collected Data for Bot 07">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 8. Store Position Report (Marine Teal) -->
+                    <!-- 8. Store Position Report (Marine Teal) — Bot 8 -->
                     <div class="flash-card flash-theme-storeposition" id="flashCard8">
                         <div class="flash-card-header">
                             <h4 class="flash-card-title">Store Position Report</h4>
+                            <div class="flash-card-source" title="Source: Production Module ⟶ Closing ERP ⟶ Store Position Report">📍 Production Module ⟶ Closing ERP ⟶ Store Position Report</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent8" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn8" onclick="loadFlashTable(8)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn8" onclick="triggerBotRunAction(8, this)" title="Run Bot 08 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn8" onclick="openCollectedDataAction(8)" title="View Collected Data for Bot 08">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 9. Bill Of Materials (Sapphire Blue) -->
+                    <!-- 9. Bill Of Materials (Sapphire Blue) — Bot 9 -->
                     <div class="flash-card flash-theme-bom" id="flashCard9">
                         <div class="flash-card-header">
                             <h4 class="flash-card-title">Bill Of Materials</h4>
+                            <div class="flash-card-source" title="Source: Production Module ⟶ Bill of Materials (BOM) ⟶ BOM VIEW">📍 Production Module ⟶ Bill of Materials (BOM) ⟶ BOM VIEW</div>
                         </div>
                         <div class="flash-main-display-area" id="flashContent9" style="display:none;"></div>
                         <div class="flash-card-footer">
-                            <button type="button" class="flash-load-btn" id="flashBtn9" onclick="loadFlashTable(9)">
-                                <span>Load</span>
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn9" onclick="triggerBotRunAction(9, this)" title="Run Bot 09 to collect/sync live ERP data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn9" onclick="openCollectedDataAction(9)" title="View Collected Data for Bot 09">
+                                <span>📊 Collected Data</span>
                             </button>
                         </div>
                     </div>
@@ -1698,7 +1762,7 @@
             badgeText: '4 Active'
         },
         2: {
-            title: 'Per Day Received',
+            title: 'Inter Sales Chalan Report',
             url: 'modules/warehouse/per_day_received.html',
             headers: ['GRN No', 'Supplier', 'Category', 'Qty', 'QC Status'],
             rows: [
@@ -1843,7 +1907,7 @@
                     btn.style.background = '';
                     btn.style.borderColor = '';
                     btn.style.color = '';
-                    btn.innerHTML = '<span>Load</span>';
+                    btn.innerHTML = (id === 2) ? '<span>Load</span>' : '<span>⚡ Run Bot</span>';
                 }, 2500);
             }
         }, 280);
@@ -1872,7 +1936,7 @@
                             }
                             setTimeout(function() {
                                 allBtn.style.background = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
-                                allBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> <span>All Load</span>';
+                                allBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> <span>⚡ Run Bot</span>';
                             }, 3000);
                         }, 400);
                     }
@@ -1933,10 +1997,52 @@
         document.addEventListener('DOMContentLoaded', mountPortalModals);
     }
 
+    // Mapping bot ID to card ID for fallback execution (1:1 direct mapping)
+    var BOT_TO_CARD_MAP = {
+        1: 1, // Inter Sales Requisition -> Card 1
+        2: 2, // Inter Sales Chalan Report -> Card 2
+        3: 3, // Spare Parts -> Card 3
+        4: 4, // Fan Assemble -> Card 4
+        5: 5, // Armature & Winding -> Card 5
+        6: 6, // Finish Good (FG) -> Card 6
+        7: 7, // Closing All SFG -> Card 7
+        8: 8, // Store Position Report -> Card 8
+        9: 9  // Bill Of Materials -> Card 9
+    };
+
+    function triggerRunAllBotsAction(btn) {
+        if (typeof window.triggerRunAllBots === 'function') {
+            window.triggerRunAllBots(btn);
+        } else if (typeof window.loadAllFlashTables === 'function') {
+            window.loadAllFlashTables();
+        }
+    }
+
+    function triggerBotRunAction(botId, btn) {
+        if (typeof window.triggerBotRun === 'function') {
+            window.triggerBotRun(botId, btn);
+        } else {
+            var cardId = BOT_TO_CARD_MAP[botId] || botId;
+            loadFlashTable(cardId);
+        }
+    }
+
+    function openCollectedDataAction(botId) {
+        if (typeof window.openCollectedDataModal === 'function') {
+            window.openCollectedDataModal(botId);
+        } else {
+            var cardId = BOT_TO_CARD_MAP[botId] || botId;
+            loadFlashTable(cardId);
+        }
+    }
+
     window.openFlashModal = openFlashModal;
     window.closeFlashModal = closeFlashModal;
     window.loadFlashTable = loadFlashTable;
     window.loadAllFlashTables = loadAllFlashTables;
     window.triggerFlashTurboBoost = triggerFlashTurboBoost;
     window.mountPortalModals = mountPortalModals;
+    window.triggerBotRunAction = triggerBotRunAction;
+    window.triggerRunAllBotsAction = triggerRunAllBotsAction;
+    window.openCollectedDataAction = openCollectedDataAction;
 })();

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>User Profile Management | User Module | MEP FAN LTD.</title>
+    <script src="../../shared/js/portal_guard.js"></script>
+    <link rel="stylesheet" href="../../shared/css/corporate_design_system.css?v=20260905">
+    <link rel="stylesheet" href="../../shared/css/report_sidebar.css?v=20260905">
+    <link rel="stylesheet" href="user_module.css">
+    <style>
+        *, *::before, *::after { font-family: "Times New Roman", Times, serif !important; }
+        body { margin: 0; padding: 0; background: #f8fafc; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body>
+    <!-- Top Full-Width Navbar -->
+    <header class="workspace-navbar" style="background:#ffffff; border-bottom:1.5px solid #cbd5e1; height:48px; min-height:48px; padding:0 16px 0 12px; width:100%; position:sticky; top:0; z-index:1000; flex-shrink:0;">
+        <div class="navbar-inner" style="width:100%; display:flex; align-items:center; justify-content:space-between;">
+            <!-- Left: Brand Title -->
+            <a href="../../index.html?view=user" class="smart-brand-card" style="text-decoration:none;" title="Click to return to User Module">
+                <span class="smart-brand-text">User Management Hub</span>
+            </a>
+
+            <!-- Right Controls -->
+            <div class="nav-user-controls" style="display:flex; align-items:center; gap:10px;">
+                <div class="smart-view-only-badge" id="userViewOnlyBadge" style="display:none;" title="View-Only Mode">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span>View Only</span>
+                </div>
+
+                <div class="live-clock-badge" id="userLiveClockBadge" title="Live System Day &amp; Time">
+                    <span class="smart-cloud-status-badge" id="userCloudStatusBadge" title="Realtime Cloud: Connected (Live Sync)">
+                        <span class="cloud-pulse-dot"></span>
+                        <span class="cloud-status-text">LIVE</span>
+                    </span>
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="userLiveDayText">Loading date...</span>
+                        <span class="live-time-text" id="userLiveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+
+                <div class="profile-dropdown-wrapper">
+                    <div class="user-brand-card" onclick="if(window.toggleProfileDropdown) toggleProfileDropdown(event)" role="button" tabindex="0" title="Profile Details">
+                        <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <img src="../../shared/assets/profile.jpg" alt="Sayful Islam" id="navbarProfileImg" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='../../shared/assets/sayful_logo.png'">
+                        </div>
+                        <div class="user-brand-meta">
+                            <span class="user-brand-name" id="navbarProfileName">Sayful Islam</span>
+                            <span class="user-brand-role" id="navbarProfileRole">Senior Supervisor</span>
+                        </div>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#64748b" stroke-width="2.2" class="user-brand-chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                </div>
+
+                <button type="button" class="header-logout-btn" onclick="if(window.handleLogout) handleLogout(); else window.location.href = '../../index.html';" title="Logout / Lock Portal" aria-label="Logout">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Shell Layout -->
+    <div class="user-shell-layout">
+        <!-- Sidebar -->
+        <aside class="user-sidebar" id="userSidebar">
+            <div class="user-sidebar-top-actions">
+                <a href="../../index.html?view=user" class="mep-nav-3d-btn mep-btn-3d-dash" aria-label="User Hub" title="Return to User Module Hub">
+                    <span class="nav-3d-icon-wrap">
+                        <svg class="nav-3d-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="usrTopGrad" x1="16" y1="3" x2="16" y2="15" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#38bdf8" /><stop offset="100%" stop-color="#0284c7" /></linearGradient>
+                                <linearGradient id="usrLeftGrad" x1="3" y1="9" x2="16" y2="29" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0369a1" /><stop offset="100%" stop-color="#075985" /></linearGradient>
+                                <linearGradient id="usrRightGrad" x1="16" y1="15" x2="29" y2="29" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0284c7" /><stop offset="100%" stop-color="#1e40af" /></linearGradient>
+                            </defs>
+                            <polygon points="3,9 16,16 16,26 3,19" fill="url(#usrLeftGrad)" />
+                            <polygon points="16,16 29,9 29,19 16,26" fill="url(#usrRightGrad)" />
+                            <polygon points="16,2.5 29,9 16,15.5 3,9" fill="url(#usrTopGrad)" stroke="#7dd3fc" stroke-width="0.75" />
+                        </svg>
+                    </span>
+                    <span class="nav-3d-tooltip">Dashboard</span>
+                </a>
+                <a href="../../index.html?view=modules" class="mep-nav-3d-btn mep-btn-3d-mod" aria-label="Module Selection" title="Department Selection">
+                    <span class="nav-3d-icon-wrap">
+                        <svg class="nav-3d-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="usrModTopGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fb923c" /><stop offset="100%" stop-color="#ea580c" /></linearGradient>
+                                <linearGradient id="usrModLeftGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c2410c" /><stop offset="100%" stop-color="#9a3412" /></linearGradient>
+                                <linearGradient id="usrModRightGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ea580c" /><stop offset="100%" stop-color="#c2410c" /></linearGradient>
+                            </defs>
+                            <polygon points="4,15.5 11,19.5 11,26 4,22" fill="url(#usrModLeftGrad)" />
+                            <polygon points="11,19.5 18,15.5 18,22 11,26" fill="url(#usrModRightGrad)" />
+                            <polygon points="11,13 18,15.5 11,19.5 4,15.5" fill="url(#usrModTopGrad)" stroke="#fdba74" stroke-width="0.6" />
+                        </svg>
+                    </span>
+                    <span class="nav-3d-tooltip">Modules</span>
+                </a>
+            </div>
+
+            <!-- Dedicated User Page Menu -->
+            <div class="user-nav-menu">
+                <div class="user-nav-section-title">User Module Pages</div>
+
+                <!-- Page 1: User Profile Management (ACTIVE) -->
+                <a href="user_profile.html" class="user-nav-item active" id="userMenuProfile" title="User Profile Management">
+                    <div class="user-nav-icon-box" style="background:#0284c7; color:#ffffff;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <span>User Profile Management</span>
+                    <span class="user-nav-badge badge-blue" id="sidebarUserCountBadge">2</span>
+                </a>
+
+                <!-- Page 2: All Mapping -->
+                <a href="all_mapping.html" class="user-nav-item" id="userMenuMapping" title="Complete ERP All Mapping Documentation">
+                    <div class="user-nav-icon-box" style="background:#f3e8ff; color:#7e22ce;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </div>
+                    <span>All Mapping</span>
+                    <span class="user-nav-badge badge-purple">9 Bots</span>
+                </a>
+            </div>
+
+            <!-- Bottom Module Switcher -->
+            <div class="user-sidebar-footer">
+                <div id="warehouseSwitcherLinks" class="mod-switcher-inner"></div>
+            </div>
+        </aside>
+
+        <!-- Main Viewport -->
+        <main class="user-main-viewport">
+            <!-- View-Only Warning Banner (if logged in as View User) -->
+            <div class="view-only-lock-banner" id="viewUserLockBanner" style="display:none;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span><strong>View-Only Account Mode:</strong> You are logged in with restricted viewing permissions. You can view user directories, but profile creation, editing, status changes, and role modifications are restricted to Administrators.</span>
+            </div>
+
+            <!-- Page Header -->
+            <div class="user-page-header">
+                <div class="user-header-left">
+                    <div class="user-header-icon-box">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="user-page-title">User Profile Management</h1>
+                        <p class="user-page-subtitle">Centralized Enterprise User Accounts, Role Assignments &amp; Access Control Matrix</p>
+                    </div>
+                </div>
+                <div class="user-header-actions">
+                    <button type="button" class="btn-primary" id="btnOpenAddUserModal" onclick="openAddUserModal()">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <span>Add New User Profile</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4 Executive KPI Cards -->
+            <div class="kpi-summary-grid">
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Total Users <span>👥</span></div>
+                    <div class="kpi-value" id="kpiTotalUsers">2</div>
+                    <div class="kpi-sub">Configured Accounts</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Active Administrators <span>🛡️</span></div>
+                    <div class="kpi-value" id="kpiActiveAdmins" style="color:#b91c1c;">1</div>
+                    <div class="kpi-sub" style="color:#b91c1c;">Full Access Level</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">View-Only Accounts <span>👁️</span></div>
+                    <div class="kpi-value" id="kpiViewUsers" style="color:#d97706;">1</div>
+                    <div class="kpi-sub" style="color:#d97706;">Read-Only Auditing</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Account Security <span>🟢</span></div>
+                    <div class="kpi-value" id="kpiSecurityStatus" style="color:#059669; font-size:18px;">100% Active</div>
+                    <div class="kpi-sub">Strict Portal Guard</div>
+                </div>
+            </div>
+
+            <!-- User Directory Table Card -->
+            <div class="table-container-card">
+                <div style="padding:14px 18px; border-bottom:1.5px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; background:#fafafa;">
+                    <div style="font-weight:800; font-size:15px; color:#0f172a; display:flex; align-items:center; gap:8px;">
+                        <span>📋</span>
+                        <span>Enterprise User &amp; Role Directory</span>
+                    </div>
+                    <div style="font-size:12.5px; color:#64748b; font-weight:700;" id="tableSubCount">
+                        Showing 2 registered accounts
+                    </div>
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table class="user-table" id="usersDirectoryTable">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center; width:50px;">SL</th>
+                                <th>User / Profile</th>
+                                <th>Username / Email</th>
+                                <th>Designation</th>
+                                <th>Role</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Created Date</th>
+                                <th>Last Login</th>
+                                <th style="text-align:right; width:130px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <!-- Injected dynamically by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Add / Edit User Profile -->
+    <div class="modal-overlay" id="userFormModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title" id="userFormModalTitle">Add New User Profile</h3>
+                <button type="button" class="modal-close-btn" onclick="closeUserModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="userProfileForm" onsubmit="handleSaveUser(event)">
+                    <input type="hidden" id="formUserId" value="">
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="formFullName" required placeholder="e.g. Sayful Islam">
+                        </div>
+                        <div class="form-group">
+                            <label>Username / Email *</label>
+                            <input type="text" id="formUsername" required placeholder="e.g. sayful.prd.fan@mepgroupbd.com">
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Designation *</label>
+                            <input type="text" id="formDesignation" required placeholder="e.g. Senior Supervisor">
+                        </div>
+                        <div class="form-group">
+                            <label>User Role *</label>
+                            <select id="formRole" required>
+                                <option value="ADMIN">ADMIN (Full Access &amp; Management)</option>
+                                <option value="VIEW USER">VIEW USER (Restricted Read-Only)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Department / Section *</label>
+                            <input type="text" id="formDepartment" required placeholder="e.g. Fan Assemble (ERP)">
+                        </div>
+                        <div class="form-group">
+                            <label>Account Status *</label>
+                            <select id="formStatus" required>
+                                <option value="Active">Active</option>
+                                <option value="Disabled">Disabled</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Granted Permissions</label>
+                        <div class="permissions-checkbox-grid">
+                            <label class="perm-item"><input type="checkbox" id="permFull" checked> Full Administrative Access</label>
+                            <label class="perm-item"><input type="checkbox" id="permUserMgmt" checked> User &amp; Role Management</label>
+                            <label class="perm-item"><input type="checkbox" id="permMapping" checked> All Mapping Control &amp; Tests</label>
+                            <label class="perm-item"><input type="checkbox" id="permSync" checked> Live ERP Bot Execution &amp; Sync</label>
+                            <label class="perm-item"><input type="checkbox" id="permDb" checked> Database &amp; BOM Modifications</label>
+                            <label class="perm-item"><input type="checkbox" id="permAudit" checked> Security &amp; Audit Log Access</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="margin:-20px; margin-top:20px;">
+                        <button type="button" class="btn-secondary" onclick="closeUserModal()">Cancel</button>
+                        <button type="submit" class="btn-primary" id="btnSubmitUserForm">Save User Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../shared/js/sidebar_dynamic_models.js"></script>
+    <script src="user_module_engine.js"></script>
+    <script>
+        function checkUserPermissionsUI() {
+            const isAdmin = window.USER_MODULE_ENGINE.isCurrentUserAdmin();
+            const isViewOnly = window.USER_MODULE_ENGINE.isCurrentUserViewOnly();
+
+            const badge = document.getElementById('userViewOnlyBadge');
+            const lockBanner = document.getElementById('viewUserLockBanner');
+            const addBtn = document.getElementById('btnOpenAddUserModal');
+
+            if (isViewOnly) {
+                if (badge) badge.style.display = 'flex';
+                if (lockBanner) lockBanner.style.display = 'flex';
+                if (addBtn) {
+                    addBtn.disabled = true;
+                    addBtn.style.opacity = '0.5';
+                    addBtn.style.cursor = 'not-allowed';
+                    addBtn.title = 'View-Only users cannot add new profiles';
+                }
+            } else {
+                if (badge) badge.style.display = 'none';
+                if (lockBanner) lockBanner.style.display = 'none';
+                if (addBtn) {
+                    addBtn.disabled = false;
+                    addBtn.style.opacity = '1';
+                    addBtn.style.cursor = 'pointer';
+                }
+            }
+
+            // Sync top navbar profile
+            const currentProfile = JSON.parse(localStorage.getItem('mep_user_profile') || '{}');
+            if (currentProfile.name) {
+                const nameEl = document.getElementById('navbarProfileName');
+                const roleEl = document.getElementById('navbarProfileRole');
+                if (nameEl) nameEl.innerText = isViewOnly ? 'View User' : currentProfile.name;
+                if (roleEl) roleEl.innerText = isViewOnly ? 'Restricted Access' : currentProfile.role;
+            }
+        }
+
+        function renderUsersTable() {
+            const accounts = window.USER_MODULE_ENGINE.getUserAccounts();
+            const tbody = document.getElementById('userTableBody');
+            const isAdmin = window.USER_MODULE_ENGINE.isCurrentUserAdmin();
+            const isViewOnly = window.USER_MODULE_ENGINE.isCurrentUserViewOnly();
+
+            if (!tbody) return;
+
+            let html = '';
+            accounts.forEach((u, idx) => {
+                const isUserAdmin = (u.role || '').toUpperCase().includes('ADMIN');
+                const roleBadge = isUserAdmin 
+                    ? `<span class="role-badge role-admin">🛡️ ADMIN</span>`
+                    : `<span class="role-badge role-view">👁️ VIEW USER</span>`;
+                
+                const statusBadge = (u.status === 'Active')
+                    ? `<span class="status-pill status-active">● Active</span>`
+                    : `<span class="status-pill status-disabled">● Disabled</span>`;
+
+                const actionControls = isAdmin ? `
+                    <div style="display:flex; align-items:center; justify-content:flex-end; gap:6px;">
+                        <button type="button" class="btn-secondary" style="padding:4px 9px; font-size:12px;" onclick="openEditUserModal('${u.id}')" title="Edit Profile">✏️ Edit</button>
+                        <button type="button" class="btn-secondary" style="padding:4px 9px; font-size:12px; color:#b91c1c;" onclick="handleToggleStatus('${u.id}')" title="Toggle Active/Disabled">⏻</button>
+                    </div>
+                ` : `
+                    <div style="display:flex; align-items:center; justify-content:flex-end;">
+                        <span style="font-size:11.5px; color:#64748b; font-weight:700;">🔒 View Only</span>
+                    </div>
+                `;
+
+                html += `
+                    <tr>
+                        <td style="text-align:center; font-family:monospace; font-weight:700; color:#64748b;">${idx + 1}</td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:1.5px solid #0284c7; flex-shrink:0;">
+                                    <img src="${u.avatar}" alt="${u.fullName}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='../../shared/assets/sayful_logo.png'">
+                                </div>
+                                <div>
+                                    <div style="font-weight:800; color:#0f172a;">${u.fullName}</div>
+                                    <div style="font-size:11px; color:#64748b;">ID: ${u.id}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="font-family:monospace; font-weight:600; color:#0284c7;">${u.username}</td>
+                        <td style="font-weight:600; color:#334155;">${u.designation}</td>
+                        <td>${roleBadge}</td>
+                        <td style="color:#475569;">${u.department}</td>
+                        <td>${statusBadge}</td>
+                        <td style="font-size:12px; color:#64748b;">${u.createdDate}</td>
+                        <td style="font-size:12px; color:#059669; font-weight:700;">${u.lastLogin}</td>
+                        <td>${actionControls}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+
+            // Update KPI numbers
+            const totalUsersEl = document.getElementById('kpiTotalUsers');
+            const adminsEl = document.getElementById('kpiActiveAdmins');
+            const viewUsersEl = document.getElementById('kpiViewUsers');
+            const subCountEl = document.getElementById('tableSubCount');
+            const sidebarBadge = document.getElementById('sidebarUserCountBadge');
+
+            const adminsCount = accounts.filter(a => (a.role || '').toUpperCase().includes('ADMIN')).length;
+            const viewCount = accounts.filter(a => !(a.role || '').toUpperCase().includes('ADMIN')).length;
+
+            if (totalUsersEl) totalUsersEl.innerText = accounts.length;
+            if (adminsEl) adminsEl.innerText = adminsCount;
+            if (viewUsersEl) viewUsersEl.innerText = viewCount;
+            if (subCountEl) subCountEl.innerText = `Showing ${accounts.length} registered accounts`;
+            if (sidebarBadge) sidebarBadge.innerText = accounts.length;
+        }
+
+        function openAddUserModal() {
+            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
+                alert("Access Denied: View-Only accounts cannot create new user profiles.");
+                return;
+            }
+            document.getElementById('userFormModalTitle').innerText = "Add New User Profile";
+            document.getElementById('formUserId').value = "";
+            document.getElementById('formFullName').value = "";
+            document.getElementById('formUsername').value = "";
+            document.getElementById('formDesignation').value = "";
+            document.getElementById('formRole').value = "ADMIN";
+            document.getElementById('formDepartment').value = "Fan Assemble (ERP)";
+            document.getElementById('formStatus').value = "Active";
+            document.getElementById('userFormModal').style.display = 'flex';
+        }
+
+        function openEditUserModal(userId) {
+            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
+                alert("Access Denied: View-Only accounts cannot edit user profiles.");
+                return;
+            }
+            const accounts = window.USER_MODULE_ENGINE.getUserAccounts();
+            const u = accounts.find(a => a.id === userId);
+            if (!u) return;
+
+            document.getElementById('userFormModalTitle').innerText = `Edit User: ${u.fullName}`;
+            document.getElementById('formUserId').value = u.id;
+            document.getElementById('formFullName').value = u.fullName;
+            document.getElementById('formUsername').value = u.username;
+            document.getElementById('formDesignation').value = u.designation;
+            document.getElementById('formRole').value = u.role;
+            document.getElementById('formDepartment').value = u.department;
+            document.getElementById('formStatus').value = u.status;
+            document.getElementById('userFormModal').style.display = 'flex';
+        }
+
+        function closeUserModal() {
+            document.getElementById('userFormModal').style.display = 'none';
+        }
+
+        function handleSaveUser(e) {
+            e.preventDefault();
+            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
+                alert("Access Denied: View-Only accounts cannot modify users.");
+                return;
+            }
+
+            const id = document.getElementById('formUserId').value;
+            const fullName = document.getElementById('formFullName').value.trim();
+            const username = document.getElementById('formUsername').value.trim();
+            const designation = document.getElementById('formDesignation').value.trim();
+            const role = document.getElementById('formRole').value;
+            const department = document.getElementById('formDepartment').value.trim();
+            const status = document.getElementById('formStatus').value;
+
+            let accounts = window.USER_MODULE_ENGINE.getUserAccounts();
+
+            if (id) {
+                // Update existing
+                accounts = accounts.map(a => {
+                    if (a.id === id) {
+                        return {
+                            ...a,
+                            fullName: fullName,
+                            username: username,
+                            designation: designation,
+                            role: role,
+                            department: department,
+                            status: status
+                        };
+                    }
+                    return a;
+                });
+            } else {
+                // Add new
+                const newId = `usr_${Date.now()}`;
+                accounts.push({
+                    id: newId,
+                    username: username,
+                    fullName: fullName,
+                    designation: designation,
+                    role: role,
+                    department: department,
+                    status: status,
+                    permissions: role === 'ADMIN' ? ["Full Access", "User Management", "Sync ERP"] : ["Restricted View"],
+                    createdDate: new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }),
+                    lastLogin: "Never",
+                    avatar: "../../shared/assets/profile.jpg",
+                    modules: ["Warehouse Module", "Production Module"],
+                    pages: "All Permitted Pages"
+                });
+            }
+
+            window.USER_MODULE_ENGINE.saveUserAccounts(accounts);
+            closeUserModal();
+            renderUsersTable();
+        }
+
+        function handleToggleStatus(userId) {
+            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
+                alert("Access Denied: View-Only accounts cannot modify user status.");
+                return;
+            }
+            let accounts = window.USER_MODULE_ENGINE.getUserAccounts();
+            accounts = accounts.map(a => {
+                if (a.id === userId) {
+                    const newStatus = (a.status === 'Active') ? 'Disabled' : 'Active';
+                    return { ...a, status: newStatus };
+                }
+                return a;
+            });
+            window.USER_MODULE_ENGINE.saveUserAccounts(accounts);
+            renderUsersTable();
+        }
+
+        function updateLiveClock() {
+            const dayEl = document.getElementById('userLiveDayText');
+            const timeEl = document.getElementById('userLiveTimeText');
+            const now = new Date();
+            if (dayEl) {
+                dayEl.innerText = now.toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
+            }
+            if (timeEl) {
+                timeEl.innerText = now.toLocaleTimeString('en-US', { hour12: true });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+            checkUserPermissionsUI();
+            renderUsersTable();
+        });
+    </script>
+</body>
+</html>

@@ -33,16 +33,20 @@
     
     function isCurrentUserViewOnly() {
         try {
+            const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
+            const sig = sessionStorage.getItem('portal_auth_sig') || '';
+            if (role === 'ADMIN' || sig === btoa('ADMIN:::MEP_SECURE_PORTAL_2026')) {
+                sessionStorage.removeItem('portal_view_only');
+                localStorage.removeItem('portal_view_only');
+                return false;
+            }
             if (typeof window.validateCurrentSession === 'function') {
                 const s = window.validateCurrentSession();
-                return s.valid && s.role === 'VIEW';
+                if (s && s.valid) return s.role === 'VIEW';
             }
-            const sig = sessionStorage.getItem('portal_auth_sig') || '';
-            if (sig === btoa('VIEW:::MEP_SECURE_PORTAL_2026')) return true;
-            if (sig === btoa('ADMIN:::MEP_SECURE_PORTAL_2026')) return false;
+            if (sig === btoa('VIEW:::MEP_SECURE_PORTAL_2026') || role === 'VIEW') return true;
             const isView = (sessionStorage.getItem('portal_view_only') === 'true');
-            const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
-            return isView || role === 'VIEW';
+            return isView;
         } catch(e) {
             return false;
         }
@@ -497,16 +501,55 @@
         } catch(e) {}
     }
 
+    function isNavigationOrViewElement(el) {
+        if (!el) return false;
+        // Direct anchor tag or any child of anchor
+        if (el.closest('a')) return true;
+
+        // Navigation containers, sidebars, top headers, breadcrumbs
+        if (el.closest('.frozen-sidebar-wrapper, .wh-sidebar, .wh-nav-menu, .portal-nav, .workspace-navbar, .nav-container, .navbar-inner, .report-sidebar, .sidebar-nav')) {
+            return true;
+        }
+
+        // 3D navigation buttons, brand cards, user profile, logout buttons
+        if (el.closest('.mep-nav-3d-btn, .nav-brand-card, .smart-brand-card, .user-brand-card, .header-logout-btn, .btn-nav-notif, .btn-nav-tab, .btn-header-pill, .mod-switcher-inner, .wh-sidebar-footer, .profile-dropdown-wrapper')) {
+            return true;
+        }
+
+        // Accordion headers and triggers
+        if (el.closest('.accordion-header, .accordion-toggle, .mep-accordion-btn, [data-accordion], .nav-section-title, .mep-sub-title')) {
+            return true;
+        }
+
+        // BOM recipe expansion rows and buttons
+        if (el.closest('.btn-expand-bom, .btn-expand-toggle, .bom-master-row, .bom-toggle-btn, [data-action="toggle-recipe"], .btn-expand, [onclick*="toggleBomDetails"]')) {
+            return true;
+        }
+
+        // View modals and dialogs
+        if (el.closest('#flashCollectedModal, #pendingModal, #switchModal, #toastBox, .modal-close-btn, .btn-close, .btn-modal-cancel')) {
+            return true;
+        }
+
+        // Search, filters, export, print, pagination
+        if (isSearchOrFilterControl(el)) return true;
+
+        return false;
+    }
+
     function isSearchOrFilterControl(el) {
         if (!el) return false;
         return !!(
             el.closest('#searchInput') ||
             el.closest('.search-box') ||
+            el.closest('#whSearchInput') ||
             el.closest('#searchBtn') ||
             el.closest('.btn-search') ||
             el.closest('.btn-clear-search') ||
             el.closest('#monthFilter') ||
             el.closest('#yearFilter') ||
+            el.closest('#sectionFilter') ||
+            el.closest('#subCategoryFilter') ||
             el.closest('.filter-select') ||
             el.closest('.period-select') ||
             el.closest('.filter-date-input') ||
@@ -527,19 +570,30 @@
             el.closest('.portal-nav') ||
             el.closest('.modal-close-btn') ||
             el.closest('.btn-modal-cancel') ||
-            el.closest('.btn-close')
+            el.closest('.btn-close') ||
+            el.closest('.btn-sync-primary') ||
+            el.closest('#btnSyncChalanErp') ||
+            el.closest('[id^="btnSync"]') ||
+            el.closest('.btn-action-outline')
         );
     }
 
     function isEditableDataTarget(el) {
         if (!el) return false;
-        if (isSearchOrFilterControl(el)) return false;
+        if (isNavigationOrViewElement(el)) return false;
 
         if (el.isContentEditable || el.getAttribute('contenteditable') === 'true' || el.closest('[contenteditable="true"]')) return true;
-        if (el.closest('.excel-table tbody, .data-table tbody, table tbody, .data-row, tr.data-row, table.bom-table tbody, .planning-table tbody, .damage-table tbody, #planTable tbody, #damageTable tbody, #entryTable tbody, #masterTable tbody')) return true;
-        if (el.matches('.excel-cell-input, .excel-cell-text, .cell-input, .cell-editable, [contenteditable="true"], .plan-input, .damage-input, .bom-input')) return true;
 
-        if (el.closest('.modal-backdrop, .entry-modal, #newEntryModal, #pasteModal, #componentModal, #addMasterModal, #bulkPasteModal, #damageModal, #addDamageModal')) {
+        // Specific inline-editable spreadsheet cells or inputs
+        if (el.matches('.excel-cell-input, .cell-input, .cell-editable, .plan-input, .damage-input, .bom-input')) return true;
+
+        // Form inputs/textareas (excluding search/filter controls)
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            return !isSearchOrFilterControl(el);
+        }
+
+        // Data Entry modal bodies (excluding cancel/close buttons)
+        if (el.closest('.entry-modal, #newEntryModal, #pasteModal, #componentModal, #addMasterModal, #bulkPasteModal, #damageModal, #addDamageModal')) {
             if (el.closest('.modal-close-btn, .btn-modal-cancel, .btn-close')) return false;
             return true;
         }
@@ -548,17 +602,17 @@
 
     function isEditActionButton(el) {
         if (!el) return false;
-        if (isSearchOrFilterControl(el)) return false;
+        if (isNavigationOrViewElement(el)) return false;
 
         const btn = el.closest('button, .btn, a.btn, [role="button"], input[type="button"], input[type="submit"]');
         if (!btn) return false;
 
-        if (btn.matches('.btn-action-export, .btn-export, .btn-print, .btn-action-print, .btn-page, .smart-page-lock-btn, .btn-nav-notif, .header-logout-btn, .btn-nav-tab, .btn-header-pill, .modal-close-btn, .btn-close, .btn-modal-cancel')) {
+        if (btn.matches('.btn-action-export, .btn-export, .btn-print, .btn-action-print, .btn-page, .smart-page-lock-btn, .btn-nav-notif, .header-logout-btn, .btn-nav-tab, .btn-header-pill, .modal-close-btn, .btn-close, .btn-modal-cancel, .btn-expand-bom')) {
             return false;
         }
 
         const text = (btn.textContent || '').trim().toLowerCase();
-        if (text.includes('export') || text.includes('print') || text.includes('download') || text.includes('csv') || text.includes('close') || text.includes('cancel')) {
+        if (text.includes('export') || text.includes('print') || text.includes('download') || text.includes('csv') || text.includes('close') || text.includes('cancel') || text.includes('sync') || text.includes('recipe') || text.includes('hide') || text.includes('expand')) {
             return false;
         }
 
@@ -567,8 +621,8 @@
         }
 
         const oc = btn.getAttribute('onclick') || '';
-        if (/(open.*Modal|save|Save|del|delete|Delete|add|Add|edit|Edit|paste|Paste|import|Import|sync|Sync|replace|Replace|reset|Reset|remove|clear|update)/i.test(oc)) {
-            if (!/export|print|download|close|cancel/i.test(oc)) {
+        if (/(save|del|delete|add|edit|paste|import|replace|reset|remove|clear)/i.test(oc)) {
+            if (!/export|print|download|close|cancel|sync|toggle|recipe|expand/i.test(oc)) {
                 return true;
             }
         }
@@ -591,7 +645,9 @@
         // Global Event Interceptors (Capture Phase)
         document.addEventListener('click', function(e) {
             if (!isPageEditable(getCurrentPage()) || !isPageLocked) return;
-            if (isSearchOrFilterControl(e.target)) return;
+
+            // Strict Protection: NEVER block navigation, sidebar, accordions, recipe toggles, or logout
+            if (isNavigationOrViewElement(e.target)) return;
 
             if (isEditActionButton(e.target)) {
                 e.preventDefault();
@@ -619,9 +675,9 @@
 
         document.addEventListener('dblclick', function(e) {
             if (!isPageEditable(getCurrentPage()) || !isPageLocked) return;
-            if (isSearchOrFilterControl(e.target)) return;
+            if (isNavigationOrViewElement(e.target)) return;
 
-            if (isEditableDataTarget(e.target) || e.target.closest('td, th, tr')) {
+            if (isEditableDataTarget(e.target) || e.target.closest('.excel-cell-input, .cell-editable, [contenteditable="true"]')) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
                 showPageLockToast('🔒 Double-click Editing Disabled. Unlock this page from MIS Module > Lock and Unlock Page.', 'warn');
@@ -908,7 +964,7 @@
                 if (oldBell) oldBell.remove();
 
                 // View-Only Mode Status Indicator (Dynamic: Only shown if logged in as View-Only)
-                const isViewOnlyMode = (sessionStorage.getItem('portal_view_only') === 'true');
+                const isViewOnlyMode = isCurrentUserViewOnly();
                 let viewBadge = navRight.querySelector('.smart-view-only-badge');
                 if (isViewOnlyMode) {
                     if (!viewBadge) {
@@ -1419,8 +1475,7 @@
                         '    ' + m.iconSvg +
                         '  </div>' +
                         '  <div class="mod-switcher-meta">' +
-                        '    <span class="mod-switcher-title">' + m.name + '</span>' +
-                        '    <span class="mod-switcher-sub">' + m.subtitle + '</span>' +
+                        '    <span class="mod-switcher-title" style="font-family:\'Times New Roman\', Times, serif !important; font-size:13.5px !important; font-weight:700 !important;">' + m.name + '</span>' +
                         '  </div>' +
                         '  <div class="mod-switcher-arrow-pill">' +
                         '    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>' +

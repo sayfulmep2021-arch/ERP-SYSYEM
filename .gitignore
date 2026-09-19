@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Secrets and Credentials
+.env
+.env.*
+.erp_secret.json
+*.secret.json
+secrets/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Local cache & data logs
+*.log

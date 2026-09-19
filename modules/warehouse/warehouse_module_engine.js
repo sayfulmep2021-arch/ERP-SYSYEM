@@ -201,6 +201,37 @@
         }
     }
 
+    /**
+     * Enforce correct View-Only badge visibility based on verified user session
+     */
+    function enforceWarehouseRoleBadge() {
+        try {
+            const role = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase();
+            const sig = sessionStorage.getItem('portal_auth_sig') || '';
+            const isAdmin = (role === 'ADMIN' || sig === btoa('ADMIN:::MEP_SECURE_PORTAL_2026'));
+            const isViewOnly = !isAdmin && (sessionStorage.getItem('portal_view_only') === 'true' || role === 'VIEW' || sig === btoa('VIEW:::MEP_SECURE_PORTAL_2026'));
+
+            document.querySelectorAll('.smart-view-only-badge').forEach(function(badge) {
+                if (isViewOnly) {
+                    badge.style.setProperty('display', 'inline-flex', 'important');
+                } else {
+                    badge.style.setProperty('display', 'none', 'important');
+                }
+            });
+        } catch(e) {}
+    }
+
+    // Safe global fallback for page lock checker
+    window.checkPageLockStatus = function() {
+        if (typeof window.applyCentralLockState === 'function') {
+            window.applyCentralLockState();
+        }
+        enforceWarehouseRoleBadge();
+    };
+
+    window.updateWarehouseLiveClock = updateWarehouseLiveClock;
+    window.enforceWarehouseRoleBadge = enforceWarehouseRoleBadge;
+
     // Expose Global Public API
     window.WAREHOUSE_ENGINE = {
         init: initWarehouseEngine,
@@ -216,10 +247,23 @@
         }
     };
 
-    // Auto-init if element is present
+    // Auto-init across both dashboard and subpages
     document.addEventListener('DOMContentLoaded', function() {
+        enforceWarehouseRoleBadge();
         if (document.getElementById('warehouseModuleView')) {
             initWarehouseEngine();
+        } else if (document.getElementById('whLiveClockBadge') || document.getElementById('whLiveTimeText') || document.querySelector('.live-time-text')) {
+            updateWarehouseLiveClock();
+            setInterval(updateWarehouseLiveClock, 1000);
+            if (typeof window.renderSidebarDynamicModels === 'function') {
+                window.renderSidebarDynamicModels('warehouse');
+            }
+        }
+    });
+
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'portal_auth_role' || e.key === 'portal_view_only') {
+            enforceWarehouseRoleBadge();
         }
     });
 

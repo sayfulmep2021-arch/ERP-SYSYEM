@@ -4493,24 +4493,17 @@ body.page-locked .header-logout-btn {
 }
 
 .mod-switcher-title {
-    font-size: 12px !important;
+    font-size: 13.5px !important;
     font-weight: 750 !important;
     color: #0f172a !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
 .mod-switcher-sub {
-    font-size: 8.5px !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.4px !important;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    display: none !important;
 }
 
 .mod-switcher-arrow-pill {

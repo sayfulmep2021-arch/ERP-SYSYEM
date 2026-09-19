@@ -1058,6 +1058,10 @@
             </div>
 
             <div class="header-action-group">
+                <button type="button" class="btn-action btn-action-paste" onclick="syncClosingAllSfgFromErp(this)" id="btnSyncErp" data-tooltip="⚡ Sync from ERP" title="Run Bot 7 to scrape and sync live Closing All SFG data from ERP" style="background:#0284c7; border-color:#0284c7;">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span>⚡ Sync from ERP</span>
+                </button>
                 <button type="button" class="btn-action btn-action-paste" onclick="openPasteModal()" title="Copy table from ERP or Excel and paste here (Exact Copy - Zero Filtering)">
                     <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
                     <span>📋 Paste ERP Table</span>
@@ -1226,6 +1230,7 @@
     <!-- Scripts -->
     <script src="all_section_sfg_data.js"></script>
     <script src="closing_all_sfg_data.js"></script>
+    <script src="../../shared/js/bot_data_engine.js"></script>
     <script>
         const STORAGE_KEY = 'mep_closing_all_sfg_data';
         let itemsList = [];
@@ -1280,6 +1285,49 @@
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
         });
+
+        // Realtime Global Bot 7 Sync Event Listener
+        window.addEventListener('mep_erp_sync_completed', (e) => {
+            if (e.detail && e.detail.botId === 7) {
+                loadDataset();
+                loadDateInterval();
+                buildCategoryFilter();
+                renderTable();
+                showToast('⚡ Live Closing All SFG ERP Data Refreshed!');
+            }
+        });
+
+        async function syncClosingAllSfgFromErp(btn) {
+            if (window.triggerBotRun) {
+                await window.triggerBotRun(7, btn);
+            } else {
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '⏳ Scraping ERP...';
+                try {
+                    const res = await fetch('http://127.0.0.1:5000/api/bot/sync/7', { method: 'POST' });
+                    const resData = await res.json();
+                    if (resData.status === 'success' && resData.data) {
+                        if (window.syncBotToModuleLocalStorage) {
+                            window.syncBotToModuleLocalStorage(7, resData.data);
+                        } else {
+                            loadDataset();
+                            loadDateInterval();
+                            buildCategoryFilter();
+                            renderTable();
+                        }
+                        showToast(`⚡ Synced ${resData.items_count || 112} items from ERP!`);
+                    } else {
+                        showToast(`⚠️ Sync: ${resData.error || 'Failed'}`);
+                    }
+                } catch(err) {
+                    showToast('⚠️ Could not connect to Bot Server on port 5000');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            }
+        }
 
         function loadDateInterval() {
             const savedDate = localStorage.getItem('mep_closing_all_sfg_date_interval') || '2026-08-01 to 2026-08-29';

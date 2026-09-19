@@ -432,9 +432,15 @@
     color: #ffffff !important;
 }
 
-/* Clean ERP Data Table */
+/* Clean ERP Data Table with Sticky Header */
 .wh-table-wrap {
-    overflow-x: auto !important;
+    overflow: auto !important;
+    max-height: calc(100vh - 275px) !important;
+    position: relative !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
 }
 
 .wh-table {
@@ -445,15 +451,20 @@
 }
 
 .wh-table th {
-    background: #f8fafc !important;
-    color: #475569 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+    background: #0f2942 !important;
+    color: #ffffff !important;
     font-weight: 700 !important;
     padding: 9px 12px !important;
-    border-bottom: 1.5px solid #e2e8f0 !important;
+    border-bottom: 2px solid #0284c7 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
     font-size: 11px !important;
     letter-spacing: 0.04em !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06) !important;
 }
 
 .wh-table td {
@@ -859,3 +870,66 @@
     animation: none !important;
     box-sizing: border-box !important;
 }
+
+/* ==========================================================================
+   Module Switcher Refinements: Hide subtitles & Set Times New Roman Font
+   ========================================================================== */
+.mod-switcher-sub {
+    display: none !important;
+}
+.mod-switcher-title {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+}
+
+/* ==========================================================================
+   Category Filter Pill Tabs for Warehouse Spare Parts
+   ========================================================================== */
+.wh-cat-filter-bar {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 12px !important;
+}
+.wh-cat-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 6px 14px !important;
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 20px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    cursor: pointer !important;
+    transition: all 0.18s ease !important;
+    user-select: none !important;
+}
+.wh-cat-pill:hover {
+    border-color: #d97706 !important;
+    color: #d97706 !important;
+    background: #fffbeb !important;
+}
+.wh-cat-pill.active {
+    background: #d97706 !important;
+    border-color: #d97706 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.28) !important;
+}
+.wh-cat-pill-count {
+    display: inline-block !important;
+    padding: 1px 6px !important;
+    border-radius: 10px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+.wh-cat-pill.active .wh-cat-pill-count {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+}
+

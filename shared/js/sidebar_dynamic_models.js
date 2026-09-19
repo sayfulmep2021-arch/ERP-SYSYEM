@@ -79,8 +79,8 @@
             if (viewParam === 'hub' || curView === 'hub' || curView === 'warehouse' || viewParam === 'warehouse') return 'warehouse';
             
             // Standalone report pages check
-            const path = window.location.pathname.toLowerCase();
             if (path.includes('warehouse') || path.includes('stock') || path.includes('intersales') || path.includes('received') || path.includes('spare')) return 'warehouse';
+            if (path.includes('user')) return 'user';
 
             // Default: Production Module
             return 'production';
@@ -110,8 +110,7 @@
                     '    ' + m.iconSvg +
                     '  </div>' +
                     '  <div class="mod-switcher-meta">' +
-                    '    <span class="mod-switcher-title">' + m.name + '</span>' +
-                    '    <span class="mod-switcher-sub">' + m.subtitle + '</span>' +
+                    '    <span class="mod-switcher-title" style="font-family:\'Times New Roman\', Times, serif !important; font-size:13.5px !important; font-weight:700 !important;">' + m.name + '</span>' +
                     '  </div>' +
                     '  <div class="mod-switcher-arrow-pill">' +
                     '    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>' +

@@ -1197,6 +1197,10 @@
             </div>
 
             <div class="header-actions">
+                <button type="button" class="btn-action-paste" onclick="syncFanAssembleFromErp(this)" id="btnSyncErp" data-tooltip="⚡ Sync from ERP" title="Run Bot 4 to scrape and sync live Stock Movement data from ERP" style="background:#0284c7; border-color:#0284c7;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span>⚡ Sync from ERP</span>
+                </button>
                 <button type="button" class="btn-action-paste" onclick="openPasteModal()" title="Copy from ERP and Paste here to Auto-Sync!">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
                     <span>📋 Paste ERP Report (Auto-Sync)</span>
@@ -1348,6 +1352,7 @@
     <script src="../../shared/js/master_database.js"></script>
     <script src="fan_assemble_erp_data.js"></script>
     <script src="erp_engine.js"></script>
+    <script src="../../shared/js/bot_data_engine.js"></script>
     <script>
         let allMovementData = [];
         let filteredMovementData = [];
@@ -1404,6 +1409,49 @@
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
         });
+
+        // Realtime Global Bot 4 Sync Event Listener
+        window.addEventListener('mep_erp_sync_completed', (e) => {
+            if (e.detail && e.detail.botId === 4) {
+                loadMovementData();
+                loadDateInterval();
+                buildCategoryFilter();
+                applyMovementFilters();
+                showToast('⚡ Live Fan Assemble ERP Data Refreshed!');
+            }
+        });
+
+        async function syncFanAssembleFromErp(btn) {
+            if (window.triggerBotRun) {
+                await window.triggerBotRun(4, btn);
+            } else {
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '⏳ Scraping ERP...';
+                try {
+                    const res = await fetch('http://127.0.0.1:5000/api/bot/sync/4', { method: 'POST' });
+                    const resData = await res.json();
+                    if (resData.status === 'success' && resData.data) {
+                        if (window.syncBotToModuleLocalStorage) {
+                            window.syncBotToModuleLocalStorage(4, resData.data);
+                        } else {
+                            loadMovementData();
+                            loadDateInterval();
+                            buildCategoryFilter();
+                            applyMovementFilters();
+                        }
+                        showToast(`⚡ Synced ${resData.items_count || 186} items from ERP!`);
+                    } else {
+                        showToast(`⚠️ Sync: ${resData.error || 'Failed'}`);
+                    }
+                } catch(err) {
+                    showToast('⚠️ Could not connect to Bot Server on port 5000');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            }
+        }
 
         function loadDateInterval() {
             const savedDate = localStorage.getItem('mep_fan_assemble_date_interval') || localStorage.getItem('mep_erp_date_interval') || '2026-08-01 to 2026-08-29';

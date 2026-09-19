@@ -864,8 +864,41 @@
             <!-- Module Section Heading -->
             <div class="module-section-heading">
                 <div class="module-heading-line"></div>
-                <h1 class="module-heading-text">User Profile Management</h1>
+                <h1 class="module-heading-text">Select Your Option</h1>
                 <div class="module-heading-line"></div>
+            </div>
+
+            <!-- User Module 2 Primary Option Tiles -->
+            <div class="module-cards-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 860px; margin: 0 auto 30px auto; gap: 20px;">
+                <!-- Option 1: User Profile Management -->
+                <div class="module-card-item" onclick="window.location.href='modules/user/user_profile.html'" role="button" tabindex="0" title="Open User Profile Management">
+                    <div class="module-card-icon-wrap" style="background:#eff6ff;">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="module-card-content">
+                        <h2 class="module-card-title">User Profile Management</h2>
+                        <p class="module-card-desc">User accounts directory, role assignments, Admin controls &amp; permissions matrix</p>
+                    </div>
+                </div>
+
+                <!-- Option 2: All Mapping -->
+                <div class="module-card-item" onclick="window.location.href='modules/user/all_mapping.html'" role="button" tabindex="0" title="Open All Mapping System">
+                    <div class="module-card-icon-wrap" style="background:#f3e8ff;">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#7e22ce" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </div>
+                    <div class="module-card-content">
+                        <h2 class="module-card-title">All Mapping</h2>
+                        <p class="module-card-desc">Complete ERP Mapping: ERP Sources ⟶ Bots ⟶ Data Collectors ⟶ Application Pages</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Profile Management Pane -->
@@ -2494,8 +2527,8 @@
                         <span class="wh-nav-badge badge-info">34</span>
                     </a>
 
-                    <!-- Page 2: Per Day Received -->
-                    <a href="modules/warehouse/per_day_received.html" class="wh-nav-item" id="whMenuReceived" title="Open Per Day Received">
+                    <!-- Page 2: Inter Sales Chalan Report -->
+                    <a href="modules/warehouse/per_day_received.html" class="wh-nav-item" id="whMenuReceived" title="Open Inter Sales Chalan Report">
                         <div class="wh-nav-icon-box" style="background:#ecfdf5; color:#059669;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="21 8 21 21 3 21 3 8"></polyline>
@@ -2503,7 +2536,7 @@
                                 <line x1="10" y1="12" x2="14" y2="12"></line>
                             </svg>
                         </div>
-                        <span>Per Day Received</span>
+                        <span>Inter Sales Chalan Report</span>
                         <span class="wh-nav-badge badge-success">18</span>
                     </a>
 
@@ -2690,15 +2723,15 @@
                         </div>
                     </div>
 
-                    <!-- Panel 2: Per Day Received Activity -->
+                    <!-- Panel 2: Inter Sales Chalan Report Activity -->
                     <div class="wh-panel-box">
                         <div class="wh-panel-header">
                             <div class="wh-panel-title-wrap">
                                 <span style="font-size:1.15rem;">📥</span>
-                                <h2 class="wh-panel-title">Per Day Receiving Summary</h2>
+                                <h2 class="wh-panel-title">Inter Sales Chalan Report Summary</h2>
                             </div>
-                            <a href="modules/warehouse/per_day_received.html" class="wh-panel-action-btn" title="Open Per Day Received Page">
-                                <span>Open Per Day Received</span>
+                            <a href="modules/warehouse/per_day_received.html" class="wh-panel-action-btn" title="Open Inter Sales Chalan Report Page">
+                                <span>Open Inter Sales Chalan Report</span>
                                 <span>→</span>
                             </a>
                         </div>
@@ -2803,6 +2836,7 @@
     <!-- Dynamic Modals Mount Target -->
     <div id="portalModalsContainer" style="display: contents;"></div>
     <script src="shared/js/portal_modals.js"></script>
+    <script src="shared/js/bot_data_engine.js"></script>
 
     <!-- ==========================================================================
          JavaScript: Authentication, UI Toggles & Routing Logic

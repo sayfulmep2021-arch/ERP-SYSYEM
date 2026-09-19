@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>All Mapping Documentation &amp; Relationship System | User Module | MEP FAN LTD.</title>
+    <script src="../../shared/js/portal_guard.js"></script>
+    <link rel="stylesheet" href="../../shared/css/corporate_design_system.css?v=20260905">
+    <link rel="stylesheet" href="../../shared/css/report_sidebar.css?v=20260905">
+    <link rel="stylesheet" href="user_module.css">
+    <style>
+        *, *::before, *::after { font-family: "Times New Roman", Times, serif !important; }
+        body { margin: 0; padding: 0; background: #f8fafc; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body>
+    <!-- Top Full-Width Navbar -->
+    <header class="workspace-navbar" style="background:#ffffff; border-bottom:1.5px solid #cbd5e1; height:48px; min-height:48px; padding:0 16px 0 12px; width:100%; position:sticky; top:0; z-index:1000; flex-shrink:0;">
+        <div class="navbar-inner" style="width:100%; display:flex; align-items:center; justify-content:space-between;">
+            <!-- Left: Brand Title -->
+            <a href="../../index.html?view=user" class="smart-brand-card" style="text-decoration:none;" title="Click to return to User Module">
+                <span class="smart-brand-text">User Management Hub</span>
+            </a>
+
+            <!-- Right Controls -->
+            <div class="nav-user-controls" style="display:flex; align-items:center; gap:10px;">
+                <div class="smart-view-only-badge" id="mappingViewOnlyBadge" style="display:none;" title="View-Only Mode">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span>View Only</span>
+                </div>
+
+                <div class="live-clock-badge" id="mappingLiveClockBadge" title="Live System Day &amp; Time">
+                    <span class="smart-cloud-status-badge" id="mappingCloudStatusBadge" title="Realtime Cloud: Connected (Live Sync)">
+                        <span class="cloud-pulse-dot"></span>
+                        <span class="cloud-status-text">LIVE</span>
+                    </span>
+                    <div class="live-clock-info">
+                        <span class="live-day-text" id="mappingLiveDayText">Loading date...</span>
+                        <span class="live-time-text" id="mappingLiveTimeText">--:--:-- --</span>
+                    </div>
+                </div>
+
+                <div class="profile-dropdown-wrapper">
+                    <div class="user-brand-card" onclick="if(window.toggleProfileDropdown) toggleProfileDropdown(event)" role="button" tabindex="0" title="Profile Details">
+                        <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <img src="../../shared/assets/profile.jpg" alt="Sayful Islam" id="navbarProfileImg" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='../../shared/assets/sayful_logo.png'">
+                        </div>
+                        <div class="user-brand-meta">
+                            <span class="user-brand-name" id="navbarProfileName">Sayful Islam</span>
+                            <span class="user-brand-role" id="navbarProfileRole">Senior Supervisor</span>
+                        </div>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#64748b" stroke-width="2.2" class="user-brand-chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                </div>
+
+                <button type="button" class="header-logout-btn" onclick="if(window.handleLogout) handleLogout(); else window.location.href = '../../index.html';" title="Logout / Lock Portal" aria-label="Logout">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Shell Layout -->
+    <div class="user-shell-layout">
+        <!-- Sidebar -->
+        <aside class="user-sidebar" id="userSidebar">
+            <div class="user-sidebar-top-actions">
+                <a href="../../index.html?view=user" class="mep-nav-3d-btn mep-btn-3d-dash" aria-label="User Hub" title="Return to User Module Hub">
+                    <span class="nav-3d-icon-wrap">
+                        <svg class="nav-3d-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="mapTopGrad" x1="16" y1="3" x2="16" y2="15" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#38bdf8" /><stop offset="100%" stop-color="#0284c7" /></linearGradient>
+                                <linearGradient id="mapLeftGrad" x1="3" y1="9" x2="16" y2="29" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0369a1" /><stop offset="100%" stop-color="#075985" /></linearGradient>
+                                <linearGradient id="mapRightGrad" x1="16" y1="15" x2="29" y2="29" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0284c7" /><stop offset="100%" stop-color="#1e40af" /></linearGradient>
+                            </defs>
+                            <polygon points="3,9 16,16 16,26 3,19" fill="url(#mapLeftGrad)" />
+                            <polygon points="16,16 29,9 29,19 16,26" fill="url(#mapRightGrad)" />
+                            <polygon points="16,2.5 29,9 16,15.5 3,9" fill="url(#mapTopGrad)" stroke="#7dd3fc" stroke-width="0.75" />
+                        </svg>
+                    </span>
+                    <span class="nav-3d-tooltip">Dashboard</span>
+                </a>
+                <a href="../../index.html?view=modules" class="mep-nav-3d-btn mep-btn-3d-mod" aria-label="Module Selection" title="Department Selection">
+                    <span class="nav-3d-icon-wrap">
+                        <svg class="nav-3d-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="mapModTopGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fb923c" /><stop offset="100%" stop-color="#ea580c" /></linearGradient>
+                                <linearGradient id="mapModLeftGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c2410c" /><stop offset="100%" stop-color="#9a3412" /></linearGradient>
+                                <linearGradient id="mapModRightGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ea580c" /><stop offset="100%" stop-color="#c2410c" /></linearGradient>
+                            </defs>
+                            <polygon points="4,15.5 11,19.5 11,26 4,22" fill="url(#mapModLeftGrad)" />
+                            <polygon points="11,19.5 18,15.5 18,22 11,26" fill="url(#mapModRightGrad)" />
+                            <polygon points="11,13 18,15.5 11,19.5 4,15.5" fill="url(#mapModTopGrad)" stroke="#fdba74" stroke-width="0.6" />
+                        </svg>
+                    </span>
+                    <span class="nav-3d-tooltip">Modules</span>
+                </a>
+            </div>
+
+            <!-- Dedicated User Page Menu -->
+            <div class="user-nav-menu">
+                <div class="user-nav-section-title">User Module Pages</div>
+
+                <!-- Page 1: User Profile Management -->
+                <a href="user_profile.html" class="user-nav-item" id="userMenuProfile" title="User Profile Management">
+                    <div class="user-nav-icon-box" style="background:#eff6ff; color:#0284c7;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <span>User Profile Management</span>
+                    <span class="user-nav-badge badge-blue">2</span>
+                </a>
+
+                <!-- Page 2: All Mapping (ACTIVE) -->
+                <a href="all_mapping.html" class="user-nav-item active" id="userMenuMapping" title="Complete ERP All Mapping Documentation">
+                    <div class="user-nav-icon-box" style="background:#7e22ce; color:#ffffff;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </div>
+                    <span>All Mapping</span>
+                    <span class="user-nav-badge badge-purple" id="sidebarBotsBadge">9 Bots</span>
+                </a>
+            </div>
+
+            <!-- Bottom Module Switcher -->
+            <div class="user-sidebar-footer">
+                <div id="warehouseSwitcherLinks" class="mod-switcher-inner"></div>
+            </div>
+        </aside>
+
+        <!-- Main Viewport -->
+        <main class="user-main-viewport">
+            <!-- View-Only Warning Banner -->
+            <div class="view-only-lock-banner" id="mappingViewOnlyLockBanner" style="display:none;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span><strong>View-Only Account Mode:</strong> You can explore all ERP relationships, flow diagrams, and bot connections. Testing and modifying mappings are reserved for Administrators.</span>
+            </div>
+
+            <!-- Page Header -->
+            <div class="user-page-header">
+                <div class="user-header-left">
+                    <div class="user-header-icon-box" style="background:#f3e8ff; color:#7e22ce; border-color:#e9d5ff;">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="user-page-title">All Mapping — Complete ERP Documentation &amp; Relationship Center</h1>
+                        <p class="user-page-subtitle">Central Visual Mapping: ERP Sources ⟶ Bots ⟶ Data Collectors ⟶ Application Pages &amp; Workflows</p>
+                    </div>
+                </div>
+                <div class="user-header-actions">
+                    <button type="button" class="btn-primary" id="btnAddMappingBtn" onclick="openAddMappingModal()">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <span>Add Custom Mapping</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section A: 8 Overview KPI Cards -->
+            <div class="kpi-summary-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Total Modules <span>🏢</span></div>
+                    <div class="kpi-value" id="kpiModules">6</div>
+                    <div class="kpi-sub">Enterprise Wings</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Total Pages <span>📄</span></div>
+                    <div class="kpi-value" id="kpiPages">35+</div>
+                    <div class="kpi-sub">Application Screens</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">ERP Sources <span>🌐</span></div>
+                    <div class="kpi-value" id="kpiErpSources">9</div>
+                    <div class="kpi-sub">Web Scraped URLs</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Bot Connections <span>🤖</span></div>
+                    <div class="kpi-value" id="kpiBots" style="color:#0284c7;">9</div>
+                    <div class="kpi-sub" style="color:#0284c7;">Automated Pipelines</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Total Mappings <span>🔗</span></div>
+                    <div class="kpi-value" id="kpiTotalMappings" style="color:#7e22ce;">9</div>
+                    <div class="kpi-sub" style="color:#7e22ce;">Active Relational Maps</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Active Mappings <span>🟢</span></div>
+                    <div class="kpi-value" id="kpiActiveMappings" style="color:#059669;">9</div>
+                    <div class="kpi-sub" style="color:#059669;">100% Operational</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Broken Mappings <span>🔴</span></div>
+                    <div class="kpi-value" id="kpiBrokenMappings" style="color:#64748b;">0</div>
+                    <div class="kpi-sub">Zero Error Rate</div>
+                </div>
+                <div class="kpi-summary-card">
+                    <div class="kpi-label">Last Sync Time <span>⏱️</span></div>
+                    <div class="kpi-value" id="kpiLastSync" style="font-size:14px; font-weight:700; color:#0f172a;">Live Active</div>
+                    <div class="kpi-sub">Real-time Verified</div>
+                </div>
+            </div>
+
+            <!-- View Switcher Tabs -->
+            <div class="view-tabs-bar">
+                <button type="button" class="view-tab-btn active" id="tabFlowMap" onclick="switchMappingView('flow')">
+                    <span>🔀</span>
+                    <span>Visual Interactive Flow Map</span>
+                </button>
+                <button type="button" class="view-tab-btn" id="tabBotPipelines" onclick="switchMappingView('bots')">
+                    <span>🤖</span>
+                    <span>9 Bots Automated Pipelines</span>
+                </button>
+                <button type="button" class="view-tab-btn" id="tabModuleTree" onclick="switchMappingView('tree')">
+                    <span>🌳</span>
+                    <span>Module ⟶ Page Hierarchy</span>
+                </button>
+                <button type="button" class="view-tab-btn" id="tabNavigationMap" onclick="switchMappingView('nav')">
+                    <span>🧭</span>
+                    <span>Page Navigation Guide</span>
+                </button>
+            </div>
+
+            <!-- Search & Filters Bar -->
+            <div class="mapping-controls-bar">
+                <div class="search-input-wrap">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="mappingSearchInput" placeholder="Search by Module, Page, ERP Source, Bot, Collector..." oninput="handleFilterSearch()">
+                </div>
+                <div class="filter-pills-wrap" id="filterPillsContainer">
+                    <button type="button" class="filter-pill active" onclick="setFilterCategory('all')">All Mappings</button>
+                    <button type="button" class="filter-pill" onclick="setFilterCategory('warehouse')">Warehouse</button>
+                    <button type="button" class="filter-pill" onclick="setFilterCategory('production')">Production</button>
+                    <button type="button" class="filter-pill" onclick="setFilterCategory('hrm')">HRM</button>
+                    <button type="button" class="filter-pill" onclick="setFilterCategory('user')">User Module</button>
+                    <button type="button" class="filter-pill" onclick="setFilterCategory('bots')">9 Bots Only</button>
+                    <button type="button" class="filter-pill" onclick="setFilterCategory('active')">🟢 Connected</button>
+                </div>
+            </div>
+
+            <!-- Dynamic Content Area -->
+            <div id="mappingContentArea">
+                <!-- Flow View Container -->
+                <div id="viewFlowMapContainer"></div>
+
+                <!-- Bot Pipeline View Container -->
+                <div id="viewBotPipelineContainer" style="display:none;"></div>
+
+                <!-- Module Tree View Container -->
+                <div id="viewModuleTreeContainer" style="display:none;"></div>
+
+                <!-- Navigation Map Container -->
+                <div id="viewNavMapContainer" style="display:none;"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Mapping Detail View -->
+    <div class="modal-overlay" id="mappingDetailModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span id="modalDetailBadge" class="pipeline-badge badge-blue">BOT-02</span>
+                    <h3 class="modal-title" id="modalDetailTitle">Inter Sales Chalan Report</h3>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalDetailBody">
+                <!-- Injected dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeDetailModal()">Close</button>
+                <button type="button" class="btn-test-mapping" id="modalBtnTestMapping" onclick="runTestFromDetailModal()">⚡ Test Mapping Connection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Test Mapping Live Results -->
+    <div class="modal-overlay" id="testResultModal">
+        <div class="modal-card" style="max-width: 580px;">
+            <div class="modal-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:20px;">🔬</span>
+                    <h3 class="modal-title">Live Connection Diagnostic Report</h3>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeTestResultModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="testResultModalBody">
+                <!-- Test steps progress -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-primary" onclick="closeTestResultModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../shared/js/sidebar_dynamic_models.js"></script>
+    <script src="user_module_engine.js"></script>
+    <script>
+        let currentViewMode = 'flow';
+        let currentCategoryFilter = 'all';
+        let currentSearchQuery = '';
+        let activeSelectedMappingId = null;
+
+        function updateLiveClock() {
+            const dayEl = document.getElementById('mappingLiveDayText');
+            const timeEl = document.getElementById('mappingLiveTimeText');
+            const now = new Date();
+            if (dayEl) dayEl.innerText = now.toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
+            if (timeEl) timeEl.innerText = now.toLocaleTimeString('en-US', { hour12: true });
+        }
+
+        function checkPermissionsUI() {
+            const isAdmin = window.USER_MODULE_ENGINE.isCurrentUserAdmin();
+            const isViewOnly = window.USER_MODULE_ENGINE.isCurrentUserViewOnly();
+
+            const badge = document.getElementById('mappingViewOnlyBadge');
+            const lockBanner = document.getElementById('mappingViewOnlyLockBanner');
+            const addBtn = document.getElementById('btnAddMappingBtn');
+
+            if (isViewOnly) {
+                if (badge) badge.style.display = 'flex';
+                if (lockBanner) lockBanner.style.display = 'flex';
+                if (addBtn) {
+                    addBtn.disabled = true;
+                    addBtn.style.opacity = '0.5';
+                    addBtn.style.cursor = 'not-allowed';
+                    addBtn.title = 'View-Only users cannot add custom mappings';
+                }
+            } else {
+                if (badge) badge.style.display = 'none';
+                if (lockBanner) lockBanner.style.display = 'none';
+                if (addBtn) {
+                    addBtn.disabled = false;
+                    addBtn.style.opacity = '1';
+                    addBtn.style.cursor = 'pointer';
+                }
+            }
+
+            const currentProfile = JSON.parse(localStorage.getItem('mep_user_profile') || '{}');
+            if (currentProfile.name) {
+                const nameEl = document.getElementById('navbarProfileName');
+                const roleEl = document.getElementById('navbarProfileRole');
+                if (nameEl) nameEl.innerText = isViewOnly ? 'View User' : currentProfile.name;
+                if (roleEl) roleEl.innerText = isViewOnly ? 'Restricted Access' : currentProfile.role;
+            }
+        }
+
+        function switchMappingView(viewMode) {
+            currentViewMode = viewMode;
+
+            ['flow', 'bots', 'tree', 'nav'].forEach(m => {
+                const tabBtn = document.getElementById(`tab${m.charAt(0).toUpperCase() + m.slice(1)}` + (m === 'flow' ? 'Map' : (m === 'bots' ? 'Pipelines' : (m === 'tree' ? 'Tree' : 'Map'))));
+                if (tabBtn) {
+                    if (m === viewMode) tabBtn.classList.add('active');
+                    else tabBtn.classList.remove('active');
+                }
+            });
+
+            document.getElementById('viewFlowMapContainer').style.display = (viewMode === 'flow') ? 'block' : 'none';
+            document.getElementById('viewBotPipelineContainer').style.display = (viewMode === 'bots') ? 'block' : 'none';
+            document.getElementById('viewModuleTreeContainer').style.display = (viewMode === 'tree') ? 'block' : 'none';
+            document.getElementById('viewNavMapContainer').style.display = (viewMode === 'nav') ? 'block' : 'none';
+
+            renderCurrentView();
+        }
+
+        function setFilterCategory(cat) {
+            currentCategoryFilter = cat;
+            const pills = document.querySelectorAll('#filterPillsContainer .filter-pill');
+            pills.forEach(p => p.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
+            renderCurrentView();
+        }
+
+        function handleFilterSearch() {
+            const val = document.getElementById('mappingSearchInput').value.toLowerCase().trim();
+            currentSearchQuery = val;
+            renderCurrentView();
+        }
+
+        function getFilteredMappings() {
+            let mappings = window.USER_MODULE_ENGINE.getAllMappings();
+
+            if (currentCategoryFilter === 'warehouse') {
+                mappings = mappings.filter(m => m.erpModule.toLowerCase().includes('warehouse'));
+            } else if (currentCategoryFilter === 'production') {
+                mappings = mappings.filter(m => m.erpModule.toLowerCase().includes('production'));
+            } else if (currentCategoryFilter === 'hrm') {
+                mappings = mappings.filter(m => m.erpModule.toLowerCase().includes('hrm'));
+            } else if (currentCategoryFilter === 'user') {
+                mappings = mappings.filter(m => m.erpModule.toLowerCase().includes('user'));
+            } else if (currentCategoryFilter === 'bots') {
+                mappings = mappings.filter(m => !!m.botName);
+            } else if (currentCategoryFilter === 'active') {
+                mappings = mappings.filter(m => m.status === 'Connected');
+            }
+
+            if (currentSearchQuery) {
+                const q = currentSearchQuery;
+                mappings = mappings.filter(m => {
+                    return (m.name || '').toLowerCase().includes(q) ||
+                           (m.erpModule || '').toLowerCase().includes(q) ||
+                           (m.erpPage || '').toLowerCase().includes(q) ||
+                           (m.botName || '').toLowerCase().includes(q) ||
+                           (m.collector || '').toLowerCase().includes(q) ||
+                           (m.appPage || '').toLowerCase().includes(q);
+                });
+            }
+
+            return mappings;
+        }
+
+        // =========================================================================
+        // VIEW 1: Visual Interactive Flow Map (The 5-Node Flow)
+        // =========================================================================
+        function renderFlowMapView() {
+            const container = document.getElementById('viewFlowMapContainer');
+            const mappings = getFilteredMappings();
+            const isAdmin = window.USER_MODULE_ENGINE.isCurrentUserAdmin();
+
+            if (!container) return;
+
+            if (mappings.length === 0) {
+                container.innerHTML = `
+                    <div style="background:#ffffff; border:1.5px solid #cbd5e1; border-radius:12px; padding:50px 20px; text-align:center; color:#64748b;">
+                        <div style="font-size:36px; margin-bottom:10px;">🔍</div>
+                        <h3 style="margin:0; font-size:17px; color:#0f172a;">No Mappings Found</h3>
+                        <p style="margin:6px 0 0; font-size:13px;">No ERP sources or bots match your search query "${currentSearchQuery}".</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            mappings.forEach(m => {
+                const statusClass = (m.status === 'Connected') ? 'status-connected' : 'status-unconfigured';
+                const testBtnHtml = isAdmin ? `
+                    <button type="button" class="btn-test-mapping" onclick="executeMappingTest(${m.id})" title="Test real-time connection">
+                        <span>⚡ Test</span>
+                    </button>
+                ` : ``;
+
+                html += `
+                    <div class="flow-pipeline-card" id="pipelineCard_${m.id}">
+                        <div class="pipeline-header">
+                            <div class="pipeline-title-group">
+                                <span class="pipeline-badge badge-blue">${m.botCode || 'MAP'}</span>
+                                <span class="pipeline-name">${m.name}</span>
+                                <span style="font-size:12px; color:#64748b; font-weight:700;">&bull; Category: ${m.category || m.erpModule}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span class="pipeline-status-badge ${statusClass}">
+                                    <span class="status-pulse-dot"></span>
+                                    <span>${m.status}</span>
+                                </span>
+                                ${testBtnHtml}
+                                <button type="button" class="btn-details" onclick="openDetailModal(${m.id})" title="View Full Flow Details">Details ➔</button>
+                            </div>
+                        </div>
+
+                        <!-- 5 Clickable Nodes Flow -->
+                        <div class="flow-nodes-track">
+                            <!-- Node 1: ERP Source Module -->
+                            <div class="flow-node" onclick="openDetailModal(${m.id}, 'erpModule')" title="Click to inspect ERP Source Module">
+                                <span class="node-role-label">🏢 1. ERP Module</span>
+                                <span class="node-main-title">${m.erpModule}</span>
+                                <span class="node-meta-text">Enterprise Source</span>
+                            </div>
+
+                            <div class="flow-arrow-separator">➔</div>
+
+                            <!-- Node 2: ERP Source Page -->
+                            <div class="flow-node" onclick="openDetailModal(${m.id}, 'erpPage')" title="Click to inspect ERP Page URL">
+                                <span class="node-role-label">📄 2. ERP Page</span>
+                                <span class="node-main-title">${m.erpPage}</span>
+                                <span class="node-meta-text">${m.erpUrl ? 'Live Web URL' : 'Internal Page'}</span>
+                            </div>
+
+                            <div class="flow-arrow-separator">➔</div>
+
+                            <!-- Node 3: Automated Bot -->
+                            <div class="flow-node" onclick="openDetailModal(${m.id}, 'bot')" style="background:#eff6ff; border-color:#93c5fd;" title="Click to inspect Automated Bot">
+                                <span class="node-role-label" style="color:#0369a1;">🤖 3. Bot Collector</span>
+                                <span class="node-main-title" style="color:#0284c7;">${m.botName || 'Auto Sync'}</span>
+                                <span class="node-meta-text">${m.botScript || 'Python Script'}</span>
+                            </div>
+
+                            <div class="flow-arrow-separator">➔</div>
+
+                            <!-- Node 4: Data Collector Store -->
+                            <div class="flow-node" onclick="openDetailModal(${m.id}, 'collector')" title="Click to inspect Storage / Cache">
+                                <span class="node-role-label">💾 4. Data Storage</span>
+                                <span class="node-main-title">${m.cacheFile || 'Local Cache'}</span>
+                                <span class="node-meta-text">${m.dataStoreKey || 'Browser Store'}</span>
+                            </div>
+
+                            <div class="flow-arrow-separator">➔</div>
+
+                            <!-- Node 5: Application Page -->
+                            <div class="flow-node" onclick="openDetailModal(${m.id}, 'appPage')" style="background:#f0fdf4; border-color:#86efac;" title="Click to open or inspect Application Page">
+                                <span class="node-role-label" style="color:#15803d;">🖥️ 5. Application Page</span>
+                                <span class="node-main-title" style="color:#059669;">${m.appPage}</span>
+                                <span class="node-meta-text">Target Destination</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // =========================================================================
+        // VIEW 2: 9 Bots Automated Pipelines Table View
+        // =========================================================================
+        function renderBotPipelineView() {
+            const container = document.getElementById('viewBotPipelineContainer');
+            const bots = window.USER_MODULE_ENGINE.ALL_9_BOTS_MAPPING;
+            const isAdmin = window.USER_MODULE_ENGINE.isCurrentUserAdmin();
+
+            if (!container) return;
+
+            let html = `
+                <div class="table-container-card">
+                    <div style="padding:14px 18px; border-bottom:1.5px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; background:#fafafa;">
+                        <div style="font-weight:800; font-size:15px; color:#0f172a; display:flex; align-items:center; gap:8px;">
+                            <span>🤖</span>
+                            <span>All 9 Automated ERP Bots ⟶ Data Pipeline Matrix</span>
+                        </div>
+                        <span class="user-nav-badge badge-blue">9 Automated Pipelines Active</span>
+                    </div>
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center; width:50px;">Bot</th>
+                                <th>Bot Name &amp; Purpose</th>
+                                <th>ERP Source Page</th>
+                                <th>Automation Script</th>
+                                <th>Data Collector Cache</th>
+                                <th>Application Destination Page</th>
+                                <th>Sync Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            bots.forEach(b => {
+                const testBtn = isAdmin ? `
+                    <button type="button" class="btn-test-mapping" onclick="executeMappingTest(${b.id})" title="Test this bot pipeline">⚡ Test</button>
+                ` : ``;
+
+                html += `
+                    <tr>
+                        <td style="text-align:center;"><span class="pipeline-badge badge-purple">${b.botCode}</span></td>
+                        <td>
+                            <strong style="color:#0f172a; font-size:14px;">${b.name}</strong>
+                            <div style="font-size:11.5px; color:#64748b;">${b.category}</div>
+                        </td>
+                        <td>
+                            <div style="font-weight:700; color:#334155;">${b.erpPage}</div>
+                            <div style="font-size:11px; color:#0284c7;">${b.erpModule}</div>
+                        </td>
+                        <td style="font-family:monospace; font-size:12px; color:#475569;">${b.botScript}</td>
+                        <td style="font-family:monospace; font-size:12px; color:#059669;">${b.cacheFile}</td>
+                        <td>
+                            <a href="${b.appPageUrl}" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:800;">
+                                ${b.appPage} ↗
+                            </a>
+                        </td>
+                        <td>
+                            <span class="pipeline-status-badge status-connected">
+                                <span class="status-pulse-dot"></span>
+                                <span>Connected</span>
+                            </span>
+                        </td>
+                        <td style="text-align:right;">
+                            <div style="display:flex; align-items:center; justify-content:flex-end; gap:6px;">
+                                ${testBtn}
+                                <button type="button" class="btn-details" onclick="openDetailModal(${b.id})">Details</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // =========================================================================
+        // VIEW 3: Module ⟶ Page Hierarchy Tree
+        // =========================================================================
+        function renderModuleTreeView() {
+            const container = document.getElementById('viewModuleTreeContainer');
+            const catalog = window.USER_MODULE_ENGINE.ERP_MODULES_CATALOG;
+
+            if (!container) return;
+
+            let html = `
+                <div style="display:flex; flex-direction:column; gap:16px;">
+            `;
+
+            catalog.forEach(mod => {
+                html += `
+                    <div class="flow-pipeline-card" style="padding:16px 20px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:8px; border-bottom:1.5px solid #f1f5f9;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="font-size:22px;">${mod.icon}</span>
+                                <div>
+                                    <h3 style="margin:0; font-size:16px; font-weight:800; color:#0f172a;">${mod.module}</h3>
+                                    <p style="margin:2px 0 0; font-size:12px; color:#64748b;">${mod.description}</p>
+                                </div>
+                            </div>
+                            <span class="user-nav-badge badge-blue">${mod.badge}</span>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
+                `;
+
+                mod.pages.forEach(p => {
+                    const botPill = p.botId ? `<span class="pipeline-badge badge-purple" style="font-size:10px;">BOT-0${p.botId} SYNC</span>` : ``;
+                    html += `
+                        <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:10px 12px; display:flex; flex-direction:column; gap:4px;">
+                            <div style="display:flex; align-items:center; justify-content:space-between;">
+                                <strong style="font-size:13.5px; color:#0f172a;">${p.title}</strong>
+                                ${botPill}
+                            </div>
+                            <div style="font-size:11.5px; color:#64748b;">${p.purpose}</div>
+                            <div style="font-family:monospace; font-size:11px; color:#0284c7; margin-top:2px;">${p.path}</div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // =========================================================================
+        // VIEW 4: Page Navigation Mapping Guide
+        // =========================================================================
+        function renderNavigationMapView() {
+            const container = document.getElementById('viewNavMapContainer');
+            if (!container) return;
+
+            const navPaths = [
+                {
+                    from: "Central Gateway (index.html)",
+                    route: "Dashboard ⟶ Warehouse Module ⟶ Inter Sales Chalan Report",
+                    dest: "modules/warehouse/per_day_received.html",
+                    desc: "Daily goods receiving, consignment notes verification, and physical warehouse inventory."
+                },
+                {
+                    from: "Central Gateway (index.html)",
+                    route: "Dashboard ⟶ Warehouse Module ⟶ Intersales Requisition",
+                    dest: "modules/warehouse/intersales_requisition.html",
+                    desc: "Requisitions received from Printing, Packaging, and Motor sister concerns."
+                },
+                {
+                    from: "Central Gateway (index.html)",
+                    route: "Dashboard ⟶ Warehouse Module ⟶ Spare Parts",
+                    dest: "modules/warehouse/spare_parts.html",
+                    desc: "Electrical and mechanical spare parts inventory valuation and category filtering."
+                },
+                {
+                    from: "Central Gateway (index.html)",
+                    route: "Dashboard ⟶ Production Module ⟶ Closing ERP ⟶ Fan Assemble",
+                    dest: "modules/production/fan_assemble_erp.html",
+                    desc: "Fan assemble daily floor stock, consumption, and closing ERP quantities."
+                },
+                {
+                    from: "Central Gateway (index.html)",
+                    route: "Dashboard ⟶ Production Module ⟶ Bill of Materials (BOM) ⟶ BOM VIEW",
+                    dest: "modules/production/bom_view.html",
+                    desc: "Detailed raw material specifications for 96 finished fan products."
+                },
+                {
+                    from: "Central Gateway (index.html)",
+                    route: "Dashboard ⟶ User Module ⟶ User Profile Management",
+                    dest: "modules/user/user_profile.html",
+                    desc: "User accounts directory, role changes (Admin vs View), and security permissions."
+                },
+                {
+                    from: "Central Gateway (index.html)",
+                    route: "Dashboard ⟶ User Module ⟶ All Mapping",
+                    dest: "modules/user/all_mapping.html",
+                    desc: "Interactive visual relationship and workflow documentation system."
+                }
+            ];
+
+            let html = `
+                <div class="table-container-card">
+                    <div style="padding:14px 18px; border-bottom:1.5px solid #e2e8f0; background:#fafafa;">
+                        <h3 style="margin:0; font-size:15px; font-weight:800; color:#0f172a;">🧭 ERP Application Navigation Breadcrumb Guide</h3>
+                        <p style="margin:4px 0 0; font-size:12.5px; color:#64748b;">Step-by-step user journey mapping from Central Gateway to individual operational reports.</p>
+                    </div>
+                    <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+            `;
+
+            navPaths.forEach((p, idx) => {
+                html += `
+                    <div style="background:#ffffff; border:1.5px solid #cbd5e1; border-radius:10px; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+                        <div>
+                            <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase;">Journey ${idx + 1}</div>
+                            <div style="font-size:15px; font-weight:800; color:#0284c7; margin:2px 0;">${p.route}</div>
+                            <div style="font-size:12px; color:#475569;">${p.desc}</div>
+                        </div>
+                        <div style="text-align:right; flex-shrink:0;">
+                            <a href="${p.dest}" target="_blank" class="btn-secondary" style="font-size:12px; text-decoration:none;">Open Page ↗</a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function renderCurrentView() {
+            if (currentViewMode === 'flow') renderFlowMapView();
+            else if (currentViewMode === 'bots') renderBotPipelineView();
+            else if (currentViewMode === 'tree') renderModuleTreeView();
+            else if (currentViewMode === 'nav') renderNavigationMapView();
+        }
+
+        // =========================================================================
+        // Mapping Detail Modal & Live Connection Probing
+        // =========================================================================
+        function openDetailModal(mappingId, highlightNode) {
+            const mappings = window.USER_MODULE_ENGINE.getAllMappings();
+            const m = mappings.find(item => item.id === mappingId);
+            if (!m) return;
+
+            activeSelectedMappingId = mappingId;
+
+            document.getElementById('modalDetailBadge').innerText = m.botCode || 'MAP';
+            document.getElementById('modalDetailTitle').innerText = m.name;
+
+            const modalBody = document.getElementById('modalDetailBody');
+            modalBody.innerHTML = `
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                    <div style="background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:10px; padding:12px 16px;">
+                        <h4 style="margin:0; font-size:14px; font-weight:800; color:#0369a1;">Mapping Information</h4>
+                        <div style="margin-top:8px; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:13px;">
+                            <div><strong>ERP Module:</strong> ${m.erpModule}</div>
+                            <div><strong>ERP Page:</strong> ${m.erpPage}</div>
+                            <div><strong>Bot Name:</strong> ${m.botName || 'System Sync'}</div>
+                            <div><strong>Collector:</strong> ${m.collector || 'Standard Collector'}</div>
+                            <div><strong>Storage Key:</strong> <code style="color:#0284c7;">${m.dataStoreKey || 'local'}</code></div>
+                            <div><strong>Sync Method:</strong> ${m.syncMethod || 'Sync from ERP'}</div>
+                        </div>
+                    </div>
+
+                    <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:10px; padding:12px 16px;">
+                        <h4 style="margin:0; font-size:14px; font-weight:800; color:#0f172a;">Full Pipeline Flowchart</h4>
+                        <div style="margin-top:10px; font-size:13px; font-weight:700; color:#334155; line-height:1.7;">
+                            <div>1. <strong>SOURCE:</strong> ${m.erpModule} ⟶ ${m.erpPage}</div>
+                            <div style="color:#94a3b8; padding-left:14px;">↓ (Automated Web Extraction)</div>
+                            <div>2. <strong>BOT:</strong> ${m.botName || 'Scheduled Collector'} (${m.botScript || 'Python'})</div>
+                            <div style="color:#94a3b8; padding-left:14px;">↓ (Disk Serialization &amp; Excel Mirror)</div>
+                            <div>3. <strong>COLLECTION:</strong> ${m.cacheFile || 'Local Storage'}</div>
+                            <div style="color:#94a3b8; padding-left:14px;">↓ (Module JS Dynamic Export)</div>
+                            <div>4. <strong>DESTINATION:</strong> <a href="${m.appPageUrl}" target="_blank" style="color:#0284c7;">${m.appPage}</a></div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; align-items:center; justify-content:space-between; font-size:12.5px; color:#64748b; padding:4px 2px;">
+                        <span>Status: <strong style="color:#059669;">● ${m.status}</strong></span>
+                        <span>Destination Link: <a href="${m.appPageUrl}" target="_blank" style="color:#0284c7; font-weight:700;">Open Target Page ↗</a></span>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('mappingDetailModal').style.display = 'flex';
+        }
+
+        function closeDetailModal() {
+            document.getElementById('mappingDetailModal').style.display = 'none';
+        }
+
+        async function executeMappingTest(mappingId) {
+            const isAdmin = window.USER_MODULE_ENGINE.isCurrentUserAdmin();
+            if (!isAdmin) {
+                alert("Access Denied: Only Administrators can test ERP mapping connections.");
+                return;
+            }
+
+            const modal = document.getElementById('testResultModal');
+            const body = document.getElementById('testResultModalBody');
+            modal.style.display = 'flex';
+
+            body.innerHTML = `
+                <div style="text-align:center; padding:30px 20px;">
+                    <div style="font-size:32px; animation:spin 1s linear infinite;">⏳</div>
+                    <h4 style="margin:12px 0 4px; font-size:16px; color:#0f172a;">Testing ERP Mapping Connection...</h4>
+                    <p style="margin:0; font-size:12.5px; color:#64748b;">Probing Port 5000 Backend, Data Collector Cache &amp; Application DOM...</p>
+                </div>
+            `;
+
+            const testResult = await window.USER_MODULE_ENGINE.testMappingConnection(mappingId);
+
+            let stagesHtml = '';
+            testResult.stages.forEach(st => {
+                const color = (st.status === 'PASSED') ? '#059669' : (st.status === 'WARNING' ? '#d97706' : '#64748b');
+                stagesHtml += `
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-bottom:8px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <strong style="font-size:13px; color:#0f172a;">${st.stage}</strong>
+                            <span style="font-weight:800; font-size:11.5px; color:${color};">● ${st.status}</span>
+                        </div>
+                        <div style="font-size:12px; color:#475569; margin-top:3px;">${st.detail}</div>
+                    </div>
+                `;
+            });
+
+            body.innerHTML = `
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="background:#ecfdf5; border:1.5px solid #a7f3d0; border-radius:10px; padding:12px 16px; display:flex; align-items:center; justify-content:space-between;">
+                        <div>
+                            <h4 style="margin:0; font-size:15px; font-weight:800; color:#065f46;">✅ Mapping Test Successful</h4>
+                            <p style="margin:2px 0 0; font-size:12px; color:#047857;">All pipeline stages verified with zero mismatch.</p>
+                        </div>
+                        <span style="font-family:monospace; font-weight:800; color:#059669; font-size:13px;">${testResult.latencyMs}ms</span>
+                    </div>
+                    <div>
+                        <div style="font-size:12px; font-weight:800; text-transform:uppercase; color:#64748b; margin-bottom:6px;">Stage Diagnostic Breakdown</div>
+                        ${stagesHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function runTestFromDetailModal() {
+            if (activeSelectedMappingId) {
+                closeDetailModal();
+                executeMappingTest(activeSelectedMappingId);
+            }
+        }
+
+        function closeTestResultModal() {
+            document.getElementById('testResultModal').style.display = 'none';
+        }
+
+        function openAddMappingModal() {
+            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
+                alert("Access Denied: View-Only accounts cannot add custom mappings.");
+                return;
+            }
+            alert("Custom Mapping Creator: Configure additional custom ERP pages or databases directly into the central mapping catalog.");
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+            checkPermissionsUI();
+            renderCurrentView();
+        });
+    </script>
+</body>
+</html>
