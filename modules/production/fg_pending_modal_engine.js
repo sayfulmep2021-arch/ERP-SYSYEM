@@ -84,19 +84,19 @@
         }
     };
 
-    // 3. Verified Baseline Datasets (Screenshot 2: 22,778 Live Production Received)
+    // 3. Verified Baseline Datasets (Screenshot 2: 28,326 Live Production Received)
     const BASELINE_ERP_MONTHS = {
         '2026_September': {
-            'CF5601IV': 7080,
+            'CF5601IV': 9380,
             'CF5601WH': 33,
-            'CF5602IV': 4500,
+            'CF5602IV': 5553,
             'CF5603IV': 1062,
             'CF5606IV': 0,
             'CF5607IV': 0,
-            'CF4801IV': 2193,
-            'CF3601IV': 5546,
+            'CF4801IV': 2331,
+            'CF3601IV': 7602,
             'CF2401IV': 2188,
-            'CR5601IV': 0,
+            'CR5601IV': 176,
             'CR5601WH': 0,
             'CG5601IV': 0,
             'CR5603IV': 0,
@@ -169,10 +169,10 @@
 
     const BASELINE_CLOSING_MONTHS = {
         '2026_September': {
-            'CF5601IV': 0,
+            'CF5601IV': 50,
             'CF5601WH': 0,
-            'CF5602IV': 500,
-            'CF5603IV': 62,
+            'CF5602IV': 0,
+            'CF5603IV': 0,
             'CF5606IV': 8,
             'CF5607IV': 0,
             'CF4801IV': 0,
@@ -183,9 +183,9 @@
             'CG5601IV': 0,
             'CR5603IV': 0,
             'CR5606IV': 2,
-            'CG5606IV': 0,
+            'CG5606IV': 4,
             'CR4801IV': 0,
-            'CR3601IV': 0
+            'CR3601IV': 15
         },
         '2026_August': {
             'CF5601IV': 0,
@@ -235,7 +235,7 @@
     }
 
     // 4. Data Loaders
-    // Source: Screenshot 2 (fg_summary.html ➔ Stock Movement Report Finish Good FG ➔ Production Received)
+    // Source: Screenshot 2 (assemble_summary.html ➔ Ceiling Fan Series ➔ Production Receive)
     function getErpDataForMonth(monthKey) {
         const config = PENDING_MONTH_CONFIG[monthKey] || PENDING_MONTH_CONFIG['2026_September'];
         const erpMap = {};
@@ -248,26 +248,35 @@
         }
 
         if (monthKey === '2026_September') {
-            let fgList = [];
+            // Priority 1: Assemble Summary Dataset (Screenshot 2: assemble_summary.html ➔ PRODUCTION RECEIVE)
+            let assemList = [];
             try {
-                const saved = localStorage.getItem('mep_fg_summary_data');
-                if (saved) fgList = JSON.parse(saved);
+                const savedAssem = localStorage.getItem('mep_assemble_custom_data');
+                if (savedAssem) {
+                    const parsed = JSON.parse(savedAssem);
+                    if (Array.isArray(parsed) && parsed.length > 0) assemList = parsed;
+                }
             } catch(e) {}
 
-            if (!Array.isArray(fgList) || fgList.length === 0) {
-                if (typeof RAW_FG_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_FG_SUMMARY_DATA)) {
-                    fgList = RAW_FG_SUMMARY_DATA;
-                }
+            if ((!Array.isArray(assemList) || assemList.length === 0) && typeof MEP_ERP_ENGINE !== 'undefined') {
+                try {
+                    const live = MEP_ERP_ENGINE.computeLiveAssembleSummary();
+                    if (Array.isArray(live) && live.length > 0) assemList = live;
+                } catch(e) {}
+            }
+
+            if ((!Array.isArray(assemList) || assemList.length === 0) && typeof RAW_ASSEMBLE_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_ASSEMBLE_SUMMARY_DATA)) {
+                assemList = RAW_ASSEMBLE_SUMMARY_DATA;
             }
 
             let erpFoundCount = 0;
-            if (Array.isArray(fgList)) {
-                fgList.forEach(row => {
-                    const sec = (row.section || row.category || '').toUpperCase();
-                    if (!sec.includes('CEILING FAN') || sec.includes('BLADE')) return;
-
+            if (Array.isArray(assemList) && assemList.length > 0) {
+                assemList.forEach(row => {
+                    const sec = (row.category || row.section || '').toUpperCase();
+                    if (sec && !sec.includes('CEILING FAN')) return;
                     const code = row.code || '';
-                    const prodRec = parseFloat(row.production) || 0;
+                    if (!code) return;
+                    const prodRec = parseFloat(row.productionRec !== undefined ? row.productionRec : (row.production !== undefined ? row.production : 0)) || 0;
 
                     for (const model of CEILING_FAN_MODELS) {
                         if (matchesFanModel(model, code)) {
@@ -281,6 +290,65 @@
 
             if (erpFoundCount > 0) {
                 return erpMap;
+            }
+
+            // Priority 2: Closing FG Dataset (otherReceive = Production Receive)
+            let cfgList = [];
+            try {
+                const savedCfg = localStorage.getItem('mep_closing_fg_data');
+                if (savedCfg) cfgList = JSON.parse(savedCfg);
+            } catch(e) {}
+            if (!Array.isArray(cfgList) || cfgList.length === 0) {
+                if (typeof RAW_CLOSING_FG_DATA !== 'undefined' && Array.isArray(RAW_CLOSING_FG_DATA)) {
+                    cfgList = RAW_CLOSING_FG_DATA;
+                }
+            }
+            if (Array.isArray(cfgList) && cfgList.length > 0) {
+                cfgList.forEach(row => {
+                    const code = row.code || '';
+                    if (!code) return;
+                    const prodRec = parseFloat(row.otherReceive !== undefined ? row.otherReceive : (row.productionRec || 0)) || 0;
+                    for (const model of CEILING_FAN_MODELS) {
+                        if (matchesFanModel(model, code)) {
+                            erpMap[model.id] = prodRec;
+                            if (prodRec > 0) erpFoundCount++;
+                            break;
+                        }
+                    }
+                });
+                if (erpFoundCount > 0) {
+                    return erpMap;
+                }
+            }
+
+            // Priority 3: FG Summary Dataset
+            let fgList = [];
+            try {
+                const saved = localStorage.getItem('mep_fg_summary_data');
+                if (saved) fgList = JSON.parse(saved);
+            } catch(e) {}
+            if (!Array.isArray(fgList) || fgList.length === 0) {
+                if (typeof RAW_FG_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_FG_SUMMARY_DATA)) {
+                    fgList = RAW_FG_SUMMARY_DATA;
+                }
+            }
+            if (Array.isArray(fgList)) {
+                fgList.forEach(row => {
+                    const sec = (row.section || row.category || '').toUpperCase();
+                    if (!sec.includes('CEILING FAN') || sec.includes('BLADE')) return;
+                    const code = row.code || '';
+                    const prodRec = parseFloat(row.production) || 0;
+                    for (const model of CEILING_FAN_MODELS) {
+                        if (matchesFanModel(model, code)) {
+                            erpMap[model.id] = prodRec;
+                            if (prodRec > 0) erpFoundCount++;
+                            break;
+                        }
+                    }
+                });
+                if (erpFoundCount > 0) {
+                    return erpMap;
+                }
             }
 
             const defaultSep = BASELINE_ERP_MONTHS['2026_September'];
@@ -375,7 +443,7 @@
         return physMap;
     }
 
-    // Source: Screenshot 2 (fg_summary.html ➔ Stock Movement Report Finish Good FG ➔ Closing Column)
+    // Source: Screenshot 3 (fg_summary.html ➔ Stock Movement Report Finish Good FG ➔ Closing Column)
     function getClosingDataForMonth(monthKey) {
         const config = PENDING_MONTH_CONFIG[monthKey] || PENDING_MONTH_CONFIG['2026_September'];
         const closingMap = {};
@@ -390,8 +458,47 @@
         }
 
         if (monthKey === '2026_September') {
+            // Priority 1: Closing FG Dataset (Primary authoritative source for Closing FG - Screenshot 3)
+            let cfgList = [];
+            try {
+                const cfgSaved = localStorage.getItem('mep_closing_fg_data');
+                if (cfgSaved) {
+                    const parsed = JSON.parse(cfgSaved);
+                    if (Array.isArray(parsed) && parsed.length > 0) cfgList = parsed;
+                }
+            } catch(e) {}
+            if (!Array.isArray(cfgList) || cfgList.length === 0) {
+                if (typeof RAW_CLOSING_FG_DATA !== 'undefined' && Array.isArray(RAW_CLOSING_FG_DATA)) {
+                    cfgList = RAW_CLOSING_FG_DATA;
+                }
+            }
+
+            let matchCount = 0;
+            if (Array.isArray(cfgList) && cfgList.length > 0) {
+                cfgList.forEach(row => {
+                    const code = row.code || '';
+                    if (!code) return;
+                    const closingVal = parseFloat(
+                        row.binClosing !== undefined && row.binClosing !== null ? String(row.binClosing).replace(/,/g, '') : 
+                        (row.closing !== undefined && row.closing !== null ? String(row.closing).replace(/,/g, '') : 0)
+                    ) || 0;
+
+                    for (const model of CEILING_FAN_MODELS) {
+                        if (matchesFanModel(model, code)) {
+                            closingMap[model.id] = closingVal;
+                            if (closingVal > 0) matchCount++;
+                            break;
+                        }
+                    }
+                });
+            }
+
+            if (matchCount > 0) {
+                return closingMap;
+            }
+
+            // Priority 2: Saved FG Summary dataset (localStorage: mep_fg_summary_data) or RAW_FG_SUMMARY_DATA
             let fgList = [];
-            // 1. Primary Source: Saved FG Summary dataset (localStorage: mep_fg_summary_data)
             try {
                 const saved = localStorage.getItem('mep_fg_summary_data');
                 if (saved) {
@@ -400,14 +507,12 @@
                 }
             } catch(e) {}
 
-            // 2. Secondary Source: Fallback to RAW_FG_SUMMARY_DATA
             if (!Array.isArray(fgList) || fgList.length === 0) {
                 if (typeof RAW_FG_SUMMARY_DATA !== 'undefined' && Array.isArray(RAW_FG_SUMMARY_DATA)) {
                     fgList = RAW_FG_SUMMARY_DATA;
                 }
             }
 
-            let matchCount = 0;
             if (Array.isArray(fgList) && fgList.length > 0) {
                 fgList.forEach(row => {
                     const sec = (row.section || row.category || '').toUpperCase();
@@ -416,7 +521,6 @@
                     const code = row.code || '';
                     if (!code) return;
 
-                    // Direct extraction of Closing quantity from FG Summary row (Screenshot 2: Closing column)
                     const closingVal = parseFloat(
                         row.closing !== undefined && row.closing !== null ? String(row.closing).replace(/,/g, '') :
                         (row.binClosing !== undefined && row.binClosing !== null ? String(row.binClosing).replace(/,/g, '') : 
@@ -426,39 +530,11 @@
                     for (const model of CEILING_FAN_MODELS) {
                         if (matchesFanModel(model, code)) {
                             closingMap[model.id] = closingVal;
-                            matchCount++;
+                            if (closingVal > 0) matchCount++;
                             break;
                         }
                     }
                 });
-            }
-
-            // 3. Fallback to Closing (ERP) storage (mep_closing_fg_data) if no models were matched
-            if (matchCount === 0) {
-                try {
-                    const cfgSaved = localStorage.getItem('mep_closing_fg_data');
-                    if (cfgSaved) {
-                        const cfgList = JSON.parse(cfgSaved);
-                        if (Array.isArray(cfgList) && cfgList.length > 0) {
-                            cfgList.forEach(row => {
-                                const code = row.code || '';
-                                if (!code) return;
-                                const closingVal = parseFloat(
-                                    row.binClosing !== undefined && row.binClosing !== null ? String(row.binClosing).replace(/,/g, '') : 
-                                    (row.closing !== undefined && row.closing !== null ? String(row.closing).replace(/,/g, '') : 0)
-                                ) || 0;
-
-                                for (const model of CEILING_FAN_MODELS) {
-                                    if (matchesFanModel(model, code)) {
-                                        closingMap[model.id] = closingVal;
-                                        matchCount++;
-                                        break;
-                                    }
-                                }
-                            });
-                        }
-                    }
-                } catch(e) {}
             }
 
             if (matchCount > 0) {

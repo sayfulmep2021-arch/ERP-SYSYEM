@@ -1,15 +1,15 @@
 {
   "meta": {
-    "collected_at": "2026-09-19 14:33:23",
+    "collected_at": "2026-09-21 09:41:48",
     "f_date": "2026-09-01",
-    "t_date": "2026-09-19",
+    "t_date": "2026-09-21",
     "company": "FAN",
     "report_code": "3224",
     "report_name": "Spare parts Stock Summary Report with rate (3224)",
     "total_items": 532,
-    "in_stock_items": 201,
-    "total_quantity": 4385.05,
-    "total_stock_value": 4588920.910186038
+    "in_stock_items": 198,
+    "total_quantity": 3665.05,
+    "total_stock_value": 4331949.738327078
   },
   "items": [
     {
@@ -1046,11 +1046,11 @@
       "fg": "5489",
       "item_name": "Rectifier MTC 200A / 1600V",
       "unit": "Pcs",
-      "store_qty": 6.0,
+      "store_qty": 2.0,
       "section_qty": 0.0,
-      "total_qty": 6.0,
+      "total_qty": 2.0,
       "rate": 10057.8675,
-      "stock_amt": 60347.204784
+      "stock_amt": 20115.734928
     },
     {
       "sl": "66",
@@ -1062,11 +1062,11 @@
       "fg": "5490",
       "item_name": "Rectifier MTC 200A / 1600V",
       "unit": "Pcs",
-      "store_qty": 6.0,
+      "store_qty": 2.0,
       "section_qty": 0.0,
-      "total_qty": 6.0,
+      "total_qty": 2.0,
       "rate": 11078.9357,
-      "stock_amt": 66473.61429426
+      "stock_amt": 22157.87143142
     },
     {
       "sl": "67",
@@ -1270,11 +1270,11 @@
       "fg": "60015",
       "item_name": "Hand Tap 1/4",
       "unit": "Set",
-      "store_qty": 9.0,
+      "store_qty": 3.0,
       "section_qty": 0.0,
-      "total_qty": 9.0,
+      "total_qty": 3.0,
       "rate": 325.8574,
-      "stock_amt": 2932.7165217
+      "stock_amt": 977.5721739
     },
     {
       "sl": "80",
@@ -1286,11 +1286,11 @@
       "fg": "60016",
       "item_name": "Cutting Disk",
       "unit": "Pcs",
-      "store_qty": 32.0,
+      "store_qty": 20.0,
       "section_qty": 0.0,
-      "total_qty": 32.0,
+      "total_qty": 20.0,
       "rate": 16.2056,
-      "stock_amt": 518.57915776
+      "stock_amt": 324.1119736
     },
     {
       "sl": "81",
@@ -2406,11 +2406,11 @@
       "fg": "60086",
       "item_name": "Thread Tape",
       "unit": "Pcs",
-      "store_qty": 48.0,
+      "store_qty": 47.0,
       "section_qty": 0.0,
-      "total_qty": 48.0,
+      "total_qty": 47.0,
       "rate": 15.26,
-      "stock_amt": 732.48
+      "stock_amt": 717.22
     },
     {
       "sl": "151",
@@ -3318,11 +3318,11 @@
       "fg": "60161",
       "item_name": "Drill Machine Chuck (1.0-13mm) B-16 Key",
       "unit": "Pcs",
-      "store_qty": 7.0,
+      "store_qty": 5.0,
       "section_qty": 0.0,
-      "total_qty": 7.0,
+      "total_qty": 5.0,
       "rate": 75.9393,
-      "stock_amt": 531.57520003
+      "stock_amt": 379.69657145
     },
     {
       "sl": "208",
@@ -4150,11 +4150,11 @@
       "fg": "60598",
       "item_name": "MS angle 1 Inch",
       "unit": "Feet",
-      "store_qty": 80.0,
+      "store_qty": 0.0,
       "section_qty": 0.0,
-      "total_qty": 80.0,
+      "total_qty": 0.0,
       "rate": 46.9464,
-      "stock_amt": 3755.7127328
+      "stock_amt": 0.0
     },
     {
       "sl": "260",
@@ -4726,11 +4726,11 @@
       "fg": "60843",
       "item_name": "MS Rod 10mm",
       "unit": "Feet",
-      "store_qty": 600.0,
+      "store_qty": 0.0,
       "section_qty": 0.0,
-      "total_qty": 600.0,
+      "total_qty": 0.0,
       "rate": 26.18,
-      "stock_amt": 15708.0
+      "stock_amt": 0.0
     },
     {
       "sl": "296",
@@ -5078,11 +5078,11 @@
       "fg": "61089",
       "item_name": "Cutting plier 6Inch",
       "unit": "Pcs",
-      "store_qty": 11.0,
+      "store_qty": 8.0,
       "section_qty": 0.0,
-      "total_qty": 11.0,
+      "total_qty": 8.0,
       "rate": 247.735,
-      "stock_amt": 2725.08480244
+      "stock_amt": 1981.87985632
     },
     {
       "sl": "318",
@@ -6150,11 +6150,11 @@
       "fg": "62107",
       "item_name": "Insulation tape",
       "unit": "Pcs",
-      "store_qty": 7.0,
+      "store_qty": 5.0,
       "section_qty": 0.0,
-      "total_qty": 7.0,
+      "total_qty": 5.0,
       "rate": 21.05,
-      "stock_amt": 147.35
+      "stock_amt": 105.25
     },
     {
       "sl": "385",
@@ -8342,11 +8342,11 @@
       "fg": "63308",
       "item_name": "Ladle Cup 1.5kg",
       "unit": "Pcs",
-      "store_qty": 6.0,
+      "store_qty": 4.0,
       "section_qty": 0.0,
-      "total_qty": 6.0,
+      "total_qty": 4.0,
       "rate": 3110.8278,
-      "stock_amt": 18664.966956
+      "stock_amt": 12443.311304
     },
     {
       "sl": "522",
@@ -8374,11 +8374,11 @@
       "fg": "63310",
       "item_name": "Plunger Shot Sleeve",
       "unit": "Pcs",
-      "store_qty": 4.0,
+      "store_qty": 2.0,
       "section_qty": 0.0,
-      "total_qty": 4.0,
+      "total_qty": 2.0,
       "rate": 69993.7061,
-      "stock_amt": 279974.824364
+      "stock_amt": 139987.412182
     },
     {
       "sl": "524",
@@ -8406,11 +8406,11 @@
       "fg": "63313",
       "item_name": "Trolley Wheel-7`` OD×W:(7×2) Inch",
       "unit": "Set",
-      "store_qty": 2.0,
+      "store_qty": 0.0,
       "section_qty": 0.0,
-      "total_qty": 2.0,
+      "total_qty": 0.0,
       "rate": 1824.5617,
-      "stock_amt": 3649.12346666
+      "stock_amt": 0.0
     },
     {
       "sl": "526",

@@ -880,7 +880,7 @@
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">User Profile Management</h2>
-                        <p class="module-card-desc">User accounts directory, role assignments, Admin controls &amp; permissions matrix</p>
+                        <p class="module-card-desc">Manage User Profile &amp; Permissions</p>
                     </div>
                 </div>
 
@@ -896,132 +896,8 @@
                     </div>
                     <div class="module-card-content">
                         <h2 class="module-card-title">All Mapping</h2>
-                        <p class="module-card-desc">Complete ERP Mapping: ERP Sources ⟶ Bots ⟶ Data Collectors ⟶ Application Pages</p>
+                        <p class="module-card-desc">Explore Complete ERP Mapping</p>
                     </div>
-                </div>
-            </div>
-
-            <!-- Profile Management Pane -->
-            <div class="user-content-pane" id="paneUserProfileManagement" style="display:block;">
-                <div class="user-profile-layout-grid">
-                    <!-- Left: Identity Overview Card -->
-                    <div class="user-identity-card">
-                        <div class="user-avatar-upload-frame">
-                            <img src="shared/assets/profile.jpg" alt="Sayful Islam" id="userProfilePhotoPreview" class="dynamic-profile-img" onerror="this.src='shared/assets/sayful_logo.png'">
-                            <button type="button" class="btn-avatar-camera" onclick="document.getElementById('userProfilePhotoInput').click()" title="Change Profile Photo" id="btnChangeAvatarPhoto">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                            </button>
-                            <input type="file" id="userProfilePhotoInput" accept="image/*" style="display:none;" onchange="handleProfilePhotoUpload(event)">
-                        </div>
-
-                        <h2 class="user-identity-title dynamic-profile-name" id="userModuleDisplayTitle">Sayful Islam</h2>
-                        <div class="user-identity-role-badge dynamic-profile-role" id="userModuleDisplayRole">Senior Supervisor</div>
-                        <div class="user-identity-id-tag">Employee ID: <strong class="dynamic-profile-id" id="userModuleDisplayId">10676</strong></div>
-
-                        <div class="user-identity-divider"></div>
-
-                        <div class="user-identity-stats-list">
-                            <div class="identity-stat-row">
-                                <span class="stat-row-label">Department:</span>
-                                <strong class="stat-row-val dynamic-profile-section" id="userModuleDisplaySection">Fan Assemble (ERP)</strong>
-                            </div>
-                            <div class="identity-stat-row">
-                                <span class="stat-row-label">Join Date:</span>
-                                <strong class="stat-row-val dynamic-profile-joindate" id="userModuleDisplayJoinDate">01-Feb-2021</strong>
-                            </div>
-                            <div class="identity-stat-row">
-                                <span class="stat-row-label">Total Service:</span>
-                                <strong class="stat-row-val" style="color: #0284c7; font-weight: 800;">
-                                    <span class="dynamic-profile-service profileServiceDuration" id="userProfileServiceVal">5 Years, 7 Months, 9 Days</span>
-                                </strong>
-                            </div>
-                        </div>
-
-                        <div class="user-identity-auth-pill">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#059669" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            <span>Enterprise Admin Identity</span>
-                        </div>
-                    </div>
-
-                    <!-- Right: Edit Profile Information Form Card -->
-                    <div class="user-edit-details-card">
-                        <div class="edit-card-header">
-                            <div>
-                                <h3 class="edit-card-title">Official Profile Information</h3>
-                                <p class="edit-card-subtitle">Changes saved here will automatically synchronize with all header nameplates and user profiles across the ERP.</p>
-                            </div>
-                            <div class="live-sync-indicator" title="Single Source of Truth Active">
-                                <span class="sync-dot"></span>
-                                <span>Single Source of Truth</span>
-                            </div>
-                        </div>
-
-                        <form id="userProfileEditForm" onsubmit="saveUserProfileFromForm(event)">
-                            <div class="user-form-grid">
-                                <!-- 1. Name -->
-                                <div class="user-form-group">
-                                    <label class="user-field-label">Full Name *</label>
-                                    <input type="text" id="editProfName" class="user-field-input" required placeholder="Full Name" value="Sayful Islam">
-                                </div>
-
-                                <!-- 2. Role / Designation -->
-                                <div class="user-form-group">
-                                    <label class="user-field-label">Designation / Role *</label>
-                                    <input type="text" id="editProfRole" class="user-field-input" required placeholder="Designation" value="Senior Supervisor">
-                                </div>
-
-                                <!-- 3. ID Number -->
-                                <div class="user-form-group">
-                                    <label class="user-field-label">ID Number *</label>
-                                    <input type="text" id="editProfId" class="user-field-input" required placeholder="ID Number" value="10676">
-                                </div>
-
-                                <!-- 4. Phone Number -->
-                                <div class="user-form-group">
-                                    <label class="user-field-label">Phone Number *</label>
-                                    <input type="tel" id="editProfPhone" class="user-field-input" required placeholder="Phone Number" value="01796444132">
-                                </div>
-
-                                <!-- 5. Section -->
-                                <div class="user-form-group">
-                                    <label class="user-field-label">Section *</label>
-                                    <input type="text" id="editProfSection" class="user-field-input" required placeholder="Section" value="Fan Assemble (ERP)">
-                                </div>
-
-                                <!-- 6. Join Date -->
-                                <div class="user-form-group">
-                                    <label class="user-field-label">Joining Date *</label>
-                                    <input type="text" id="editProfJoinDate" class="user-field-input" required placeholder="DD-Mon-YYYY (e.g. 01-Feb-2021)" value="01-Feb-2021" oninput="if(window.updateServiceDuration) window.updateServiceDuration(this.value)" onchange="if(window.updateServiceDuration) window.updateServiceDuration(this.value)">
-                                </div>
-
-                                <!-- 7. Total Service (Auto-Calculated in Years, Months, and Days) -->
-                                <div class="user-form-group user-form-full">
-                                    <label class="user-field-label" style="display:flex; justify-content:space-between; align-items:center;">
-                                        <span>Total Service (Duration) *</span>
-                                        <span class="policy-locked-tag" style="background:#eff6ff; color:#0284c7; border-color:#bfdbfe; font-weight:700;">⚡ Auto-Calculated (Years, Months, Days)</span>
-                                    </label>
-                                    <div class="service-fixed-input-wrap">
-                                        <input type="text" id="editProfTotalService" class="user-field-input" value="5 Years, 7 Months, 9 Days" readonly style="background:#f8fafc; color:#0284c7; font-weight:800; cursor:default;" title="Automatically calculated in Years, Months, and Days based on Joining Date and current date.">
-                                        <div class="lock-shield-icon" title="Live Auto-Calculated Duration" style="color:#0284c7;">⏱️</div>
-                                    </div>
-                                    <span class="field-hint-text" style="color:#64748b;">Automatically calculated in Years, Months, and Days based on your Joining Date and current date.</span>
-                                </div>
-                            </div>
-
-                            <!-- Footer Action Bar -->
-                            <div class="edit-card-footer">
-                                <button type="button" class="btn-user-secondary" onclick="resetUserProfileToDefault()" id="btnResetProfDefault">
-                                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
-                                    <span>Reset to Default</span>
-                                </button>
-                                <button type="submit" class="btn-user-primary" id="btnSaveUserProfile">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                    <span>Save Profile Changes</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
         </main>
     </div>
@@ -2372,14 +2248,14 @@
                         <span>View Only</span>
                     </div>
 
-                    <!-- Live Day & Time Badge (Standard Global Anti-Jitter Component) -->
-                    <div class="live-clock-badge" title="Live System Day &amp; Time">
+                    <!-- Live Day & Time Top Corner Badge with Integrated Realtime Cloud Status (Matching Screenshot 2) -->
+                    <div class="live-clock-badge" id="whLiveClockBadge" title="Live System Day &amp; Time">
                         <span class="smart-cloud-status-badge" id="whCloudStatusBadge" title="Realtime Cloud: Connected (Live Sync)">
                             <span class="cloud-pulse-dot"></span>
                             <span class="cloud-status-text">LIVE</span>
                         </span>
                         <div class="live-clock-info">
-                            <span class="live-day-text">Loading date...</span>
+                            <span class="live-day-text">Sunday, 20 Sep 2026</span>
                             <span class="live-time-text">--:--:-- --</span>
                         </div>
                     </div>
@@ -2588,105 +2464,138 @@
                     </div>
                 </div>
 
-                <!-- 1. Executive 5-Card KPI Grid (Clean Pastel Theme) -->
+                <!-- 1. Executive 5-Card KPI Grid (Data-Bound to Live ERP Datasets) -->
                 <div class="wh-kpi-grid">
-                    <!-- KPI 1: Warehouse Overview -->
+                    <!-- BOX 1: TOTAL DEMAND HUNDRED PERCENT (Marked Box 1) -->
                     <div class="wh-kpi-card card-overview">
                         <div class="wh-kpi-header">
-                            <div class="wh-kpi-icon-wrap">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                            </div>
-                            <span class="wh-kpi-tag" style="background:#eff6ff; color:#0284c7;">Active</span>
-                        </div>
-                        <div class="wh-kpi-value-row">
-                            <span class="wh-kpi-metric">1,428</span>
-                            <span class="wh-kpi-unit">SKUs</span>
-                        </div>
-                        <div class="wh-kpi-label">Warehouse Overview</div>
-                        <div class="wh-kpi-footer-meta">
-                            <span>Health: <strong>98.6%</strong></span>
-                            <span>•</span>
-                            <span>Capacity: <strong>74.2%</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- KPI 2: Receiving Summary -->
-                    <div class="wh-kpi-card card-received">
-                        <div class="wh-kpi-header">
-                            <div class="wh-kpi-icon-wrap">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
-                            </div>
-                            <span class="wh-kpi-tag" style="background:#ecfdf5; color:#059669;">Daily Inflow</span>
-                        </div>
-                        <div class="wh-kpi-value-row">
-                            <span class="wh-kpi-metric">18</span>
-                            <span class="wh-kpi-unit">Consignments</span>
-                        </div>
-                        <div class="wh-kpi-label">Receiving Summary</div>
-                        <div class="wh-kpi-footer-meta">
-                            <span>Total Units: <strong>4,250</strong></span>
-                            <span>•</span>
-                            <span>GRN: <strong>100% Cleared</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- KPI 3: Requisition Summary -->
-                    <div class="wh-kpi-card card-requisition">
-                        <div class="wh-kpi-header">
-                            <div class="wh-kpi-icon-wrap">
+                            <div class="wh-kpi-icon-wrap" style="background:#eff6ff; color:#0284c7;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                             </div>
-                            <span class="wh-kpi-tag" style="background:#fdf2f8; color:#db2777;">Intersales</span>
+                            <span class="wh-kpi-tag" style="background:#eff6ff; color:#0284c7;">100% Base</span>
                         </div>
                         <div class="wh-kpi-value-row">
-                            <span class="wh-kpi-metric">34</span>
-                            <span class="wh-kpi-unit">Requests</span>
+                            <span class="wh-kpi-metric" id="whKpiTotalDemand">1,660,624</span>
+                            <span class="wh-kpi-unit">Pcs</span>
                         </div>
-                        <div class="wh-kpi-label">Requisition Summary</div>
+                        <div class="wh-kpi-label">TOTAL DEMAND HUNDRED PERCENT</div>
+                        <!-- Percentage Dual Stats & Full 100% Progress Line (Matching Screenshot 2) -->
+                        <div class="kpi-dual-stats" style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#64748b; font-weight:700; margin-top:4px;">
+                            <span>Target Base: <strong id="whKpiDemandSubVal" style="color:#0f2942;">1,660,624 Pcs</strong></span>
+                            <span style="color:#0284c7; font-weight:800;" id="whKpiDemandSubPct">100%</span>
+                        </div>
+                        <div class="kpi-progress-track" style="width:100%; height:5px; background:#e2e8f0; border-radius:4px; overflow:hidden; margin-top:2px; margin-bottom:4px;">
+                            <div class="kpi-progress-bar" id="whKpiDemandProgressBar" style="width:100%; height:100%; background:#0284c7; border-radius:4px;"></div>
+                        </div>
                         <div class="wh-kpi-footer-meta">
-                            <span>Dispatched: <strong>28</strong></span>
+                            <span>Base: <strong>100%</strong></span>
                             <span>•</span>
-                            <span>In-Process: <strong>6</strong></span>
+                            <span id="whKpiDemandMeta"><strong>9 Demands</strong> (90 Items)</span>
                         </div>
                     </div>
 
-                    <!-- KPI 4: Spare Parts Overview -->
+                    <!-- BOX 2: TOTAL RECEIVED (Marked Box 2) -->
+                    <div class="wh-kpi-card card-received">
+                        <div class="wh-kpi-header">
+                            <div class="wh-kpi-icon-wrap" style="background:#ecfdf5; color:#059669;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                            </div>
+                            <span class="wh-kpi-tag" style="background:#ecfdf5; color:#059669;">Intersales Inflow</span>
+                        </div>
+                        <div class="wh-kpi-value-row">
+                            <span class="wh-kpi-metric" id="whKpiTotalReceived" style="color:#059669;">1,180,478</span>
+                            <span class="wh-kpi-unit">Pcs</span>
+                        </div>
+                        <div class="wh-kpi-label">TOTAL RECEIVED</div>
+                        <!-- Percentage Dual Stats & Fulfillment Progress Line (Matching Screenshot 2) -->
+                        <div class="kpi-dual-stats" style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#64748b; font-weight:700; margin-top:4px;">
+                            <span>Received: <strong id="whKpiReceivedSubVal" style="color:#059669;">1,180,478 Pcs</strong></span>
+                            <span style="color:#059669; font-weight:800;" id="whKpiReceivedSubPct">71.1%</span>
+                        </div>
+                        <div class="kpi-progress-track" style="width:100%; height:5px; background:#e2e8f0; border-radius:4px; overflow:hidden; margin-top:2px; margin-bottom:4px;">
+                            <div class="kpi-progress-bar" id="whKpiReceivedProgressBar" style="width:71.1%; height:100%; background:#059669; border-radius:4px;"></div>
+                        </div>
+                        <div class="wh-kpi-footer-meta">
+                            <span>By Fan Factory</span>
+                            <span>•</span>
+                            <span>Pending: <strong id="whKpiTotalPending" style="color:#d97706;">480,146</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- BOX 3: RECEIVED % & PENDING % (Marked Box 3) -->
+                    <div class="wh-kpi-card card-requisition">
+                        <div class="wh-kpi-header">
+                            <div class="wh-kpi-icon-wrap" style="background:#f5f3ff; color:#7c3aed;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                            </div>
+                            <span class="wh-kpi-tag" style="background:#f5f3ff; color:#7c3aed;">Fulfillment Ratio</span>
+                        </div>
+                        <div class="wh-kpi-value-row" style="align-items:center;">
+                            <div style="display:flex; align-items:baseline; gap:6px;">
+                                <span class="wh-kpi-metric" id="whKpiReceivedPct" style="color:#059669;">71.1%</span>
+                                <span style="font-size:0.85rem; color:#94a3b8; font-weight:700;">/</span>
+                                <span id="whKpiPendingPct" style="font-size:1.15rem; font-weight:800; color:#d97706;">28.9%</span>
+                            </div>
+                            <span class="wh-kpi-unit">Rec / Pend</span>
+                        </div>
+                        <div class="wh-kpi-label">RECEIVED % &amp; PENDING %</div>
+                        <!-- Percentage Dual Stats & Dual Segmented Progress Bar -->
+                        <div class="kpi-dual-stats" style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#64748b; font-weight:700; margin-top:4px;">
+                            <span>Remaining: <strong id="whKpiPendingSubVal" style="color:#d97706;">480,146 Pcs</strong></span>
+                            <span style="color:#d97706; font-weight:800;" id="whKpiPendingSubPct">28.9%</span>
+                        </div>
+                        <div class="wh-kpi-dual-bar" style="height:5px; background:#e2e8f0; border-radius:4px; overflow:hidden; display:flex; margin-top:2px; margin-bottom:4px;">
+                            <div id="whKpiRecBar" style="width:71.1%; background:#10b981; height:100%; transition:width 0.6s ease;"></div>
+                            <div id="whKpiPendBar" style="width:28.9%; background:#f59e0b; height:100%; transition:width 0.6s ease;"></div>
+                        </div>
+                        <div class="wh-kpi-footer-meta">
+                            <span style="color:#059669;">Received: <strong id="whKpiRecMeta">71.1%</strong></span>
+                            <span>•</span>
+                            <span style="color:#d97706;">Pending: <strong id="whKpiPendMeta">28.9%</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- BOX 4: SPARE PARTS SUMMARY (Marked Box 4) -->
                     <div class="wh-kpi-card card-spares">
                         <div class="wh-kpi-header">
-                            <div class="wh-kpi-icon-wrap">
+                            <div class="wh-kpi-icon-wrap" style="background:#fffbeb; color:#d97706;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                             </div>
-                            <span class="wh-kpi-tag" style="background:#fefce8; color:#d97706;">Maintenance</span>
+                            <span class="wh-kpi-tag" style="background:#fffbeb; color:#d97706;">Report 3224</span>
                         </div>
                         <div class="wh-kpi-value-row">
-                            <span class="wh-kpi-metric">412</span>
-                            <span class="wh-kpi-unit">Parts</span>
+                            <span class="wh-kpi-metric" id="whKpiTotalSpares">532</span>
+                            <span class="wh-kpi-unit">Total Spares</span>
                         </div>
-                        <div class="wh-kpi-label">Spare Parts Overview</div>
+                        <div class="wh-kpi-label">TOTAL SPARE PARTS</div>
+                        <div class="wh-kpi-spares-split" style="display:flex; justify-content:space-between; font-size:11.5px; background:#fffbeb; border:1px solid #fde68a; padding:4px 8px; border-radius:6px; margin-top:2px;">
+                            <span>⚡ Electrical: <strong id="whKpiSparesElectrical" style="color:#b45309;">65</strong></span>
+                            <span style="color:#cbd5e1;">|</span>
+                            <span>🔩 Mechanical: <strong id="whKpiSparesMechanical" style="color:#b45309;">467</strong></span>
+                        </div>
                         <div class="wh-kpi-footer-meta">
-                            <span>Critical: <strong>64</strong></span>
+                            <span>In-Stock: <strong id="whKpiSparesInStock">201</strong></span>
                             <span>•</span>
-                            <span style="color:#d97706;">Reorder Alerts: <strong>8</strong></span>
+                            <span>Total Qty: <strong id="whKpiSparesQty">4,385.05</strong></span>
                         </div>
                     </div>
 
-                    <!-- KPI 5: Pending / Completed Status -->
+                    <!-- BOX 5: STOCK VALUATION (Marked Box 5) -->
                     <div class="wh-kpi-card card-status">
                         <div class="wh-kpi-header">
-                            <div class="wh-kpi-icon-wrap">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            <div class="wh-kpi-icon-wrap" style="background:#eef2ff; color:#4338ca;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><line x1="12" y1="6" x2="12" y2="8"></line><line x1="12" y1="16" x2="12" y2="18"></line></svg>
                             </div>
-                            <span class="wh-kpi-tag" style="background:#f5f3ff; color:#7c3aed;">Efficiency</span>
+                            <span class="wh-kpi-tag" style="background:#eef2ff; color:#4338ca;">ERP Asset Value</span>
                         </div>
                         <div class="wh-kpi-value-row">
-                            <span class="wh-kpi-metric">94.2%</span>
-                            <span class="wh-kpi-unit">Fulfillment</span>
+                            <span class="wh-kpi-metric wh-kpi-currency-val" id="whKpiStockValuation" style="font-size:1.35rem; color:#4338ca; font-family:'JetBrains Mono', monospace; letter-spacing:-0.5px;">৳ 4,588,920.91</span>
                         </div>
-                        <div class="wh-kpi-label">Pending / Completed Status</div>
+                        <div class="wh-kpi-label">STOCK VALUATION</div>
                         <div class="wh-kpi-footer-meta">
-                            <span style="color:#15803d;">Completed: <strong>94%</strong></span>
+                            <span>Spare Parts Inventory</span>
                             <span>•</span>
-                            <span style="color:#b45309;">Pending: <strong>12</strong></span>
+                            <span style="color:#059669;"><strong>Live Value</strong></span>
                         </div>
                     </div>
                 </div>
@@ -2864,7 +2773,10 @@
     <script src="shared/js/portal_settings.js"></script>
     <script src="modules/hrm/hrm_database_data.js"></script>
     <script src="modules/hrm/hrm_module_engine.js"></script>
-    <script src="modules/warehouse/warehouse_module_engine.js?v=20260913_fix2"></script>
+    <script src="modules/warehouse/intersales_requisition_data.js"></script>
+    <script src="modules/warehouse/inter_sales_chalan_data.js"></script>
+    <script src="modules/warehouse/spare_parts_data.js"></script>
+    <script src="modules/warehouse/warehouse_module_engine.js?v=20260920_kpi_fix"></script>
     <script src="shared/js/portal_auth.js"></script>
     <script src="shared/js/notebook_engine.js"></script>
     <script src="shared/js/portal_dashboard_runtime.js?v=20260915_cfs22778"></script>

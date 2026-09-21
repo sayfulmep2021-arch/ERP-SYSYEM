@@ -933,3 +933,87 @@
     color: #ffffff !important;
 }
 
+/* ==========================================================================
+   Executive Live Status Pill & KPI Additions
+   ========================================================================== */
+.wh-live-status-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    padding: 4px 12px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    height: 32px !important;
+    user-select: none !important;
+}
+
+.wh-live-indicator {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    color: #059669 !important;
+    letter-spacing: 0.5px !important;
+}
+
+.wh-live-indicator .cloud-pulse-dot {
+    width: 7px !important;
+    height: 7px !important;
+    border-radius: 50% !important;
+    background: #10b981 !important;
+    box-shadow: 0 0 6px #10b981 !important;
+    animation: whPulse 1.8s infinite ease-in-out !important;
+}
+
+@keyframes whPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.85); }
+}
+
+.wh-live-sep {
+    color: #cbd5e1 !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+}
+
+.wh-live-status-pill .live-day-text {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+    font-family: 'Times New Roman', serif !important;
+}
+
+.wh-live-status-pill .live-time-text {
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    color: #0f2942 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    min-width: 82px !important;
+    text-align: right !important;
+}
+
+.wh-kpi-spares-split {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 11.5px !important;
+    background: #fffbeb !important;
+    border: 1px solid #fde68a !important;
+    padding: 4px 8px !important;
+    border-radius: 6px !important;
+    margin-top: 2px !important;
+}
+
+.wh-kpi-dual-bar {
+    height: 6px !important;
+    background: #f1f5f9 !important;
+    border-radius: 3px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    margin-top: 2px !important;
+    border: 1px solid #e2e8f0 !important;
+}
+

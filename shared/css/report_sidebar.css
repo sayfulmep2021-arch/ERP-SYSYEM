@@ -3530,9 +3530,10 @@ body.page-locked .btn-plan.btn-add-item {
     transition: opacity 0.2s ease, filter 0.2s ease !important;
 }
 
-/* Persistent Lock Status Banner */
-.smart-locked-page-banner {
-    display: flex;
+/* Persistent Lock Status Banner (Permanently Suppressed) */
+.smart-locked-page-banner,
+#smartLockedPageBanner {
+    display: none !important;
     align-items: center;
     justify-content: space-between;
     background: linear-gradient(90deg, #fef2f2 0%, #fff1f2 100%);
@@ -4192,8 +4193,9 @@ body.page-locked .btn-action-export {
     text-transform: uppercase;
 }
 
-body.page-locked .smart-locked-page-banner {
-    display: flex !important;
+body.page-locked .smart-locked-page-banner,
+body.page-locked #smartLockedPageBanner {
+    display: none !important;
 }
 
 /* Visual Indicators on Locked Pages */

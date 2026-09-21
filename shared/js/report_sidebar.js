@@ -239,8 +239,9 @@
 
     function isPageEditable(page) {
         const p = (page || getCurrentPage() || '').toLowerCase().split('?')[0].split('#')[0];
+        if (p === 'bom_view.html') return false; // BOM View is a report display page, never an editable entry form
         if (EDITABLE_PAGES_REGISTRY.includes(p)) return true;
-        if (document.querySelector('.excel-cell-input, .cell-editable, table.excel-table tbody td input, table.bom-table')) return true;
+        if (document.querySelector('.excel-cell-input, .cell-editable, table.excel-table tbody td input')) return true;
         return false;
     }
 
@@ -328,34 +329,11 @@
 
     function injectLockedPageBanner(show) {
         let banner = document.getElementById('smartLockedPageBanner');
-        if (!show) {
-            if (banner) banner.style.display = 'none';
-            return;
+        if (banner) {
+            banner.remove();
         }
-        if (!banner) {
-            banner = document.createElement('div');
-            banner.id = 'smartLockedPageBanner';
-            banner.className = 'smart-locked-page-banner';
-            banner.innerHTML = `
-                <div class="banner-icon">🔒</div>
-                <div class="banner-text">
-                    <span class="banner-tag">Locked / Read-Only</span>
-                    This page is currently locked by Administrator. All data modifications, entries, additions, and deletions are strictly disabled. To unlock, open <strong>MIS Module &gt; Lock and Unlock Page</strong>.
-                </div>
-            `;
-            const targetContainer = document.querySelector('.report-container, .main-container, .dashboard-container, .container-fluid, .content') || document.body;
-            if (targetContainer === document.body) {
-                const nav = document.querySelector('.portal-nav, nav, header');
-                if (nav && nav.nextSibling) {
-                    nav.parentNode.insertBefore(banner, nav.nextSibling);
-                } else {
-                    document.body.insertBefore(banner, document.body.firstChild);
-                }
-            } else {
-                targetContainer.insertBefore(banner, targetContainer.firstChild);
-            }
-        }
-        banner.style.display = 'flex';
+        // Permanently suppressed per user request - do not render locked banner
+        return;
     }
 
     function enforceDomLockState(isLocked) {
@@ -521,13 +499,13 @@
             return true;
         }
 
-        // BOM recipe expansion rows and buttons
-        if (el.closest('.btn-expand-bom, .btn-expand-toggle, .bom-master-row, .bom-toggle-btn, [data-action="toggle-recipe"], .btn-expand, [onclick*="toggleBomDetails"]')) {
+        // BOM recipe expansion rows, buttons, and full view modals
+        if (el.closest('.btn-expand-bom, .btn-expand-toggle, .btn-view-recipe, .bom-master-row, .bom-toggle-btn, [data-action="toggle-recipe"], .btn-expand, [onclick*="toggleBomDetails"], [onclick*="openBomRecipeModal"]')) {
             return true;
         }
 
         // View modals and dialogs
-        if (el.closest('#flashCollectedModal, #pendingModal, #switchModal, #toastBox, .modal-close-btn, .btn-close, .btn-modal-cancel')) {
+        if (el.closest('#flashCollectedModal, #pendingModal, #switchModal, #bomRecipeModal, #demandGraphModal, #btnDemandGraph, #toastBox, .modal-close-btn, .btn-close, .btn-modal-cancel, .bom-modal-close-btn, .graph-modal-close-btn')) {
             return true;
         }
 

@@ -10,8 +10,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Aluminium Bar Scrap",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 16988.50002,
-    "totalQty": 16988.50002
+    "sectionQty": 1364.50002,
+    "totalQty": 1364.50002
   },
   {
     "sl": 2,
@@ -24,8 +24,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Silicon Sheet 25 Gage Scrap",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 3357.628,
-    "totalQty": 3357.628
+    "sectionQty": 7750.956,
+    "totalQty": 7750.956
   },
   {
     "sl": 3,
@@ -38,8 +38,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Aluminum Ingot",
     "unit": "KG",
     "storeQty": 32000.0,
-    "sectionQty": 482.654,
-    "totalQty": 32482.654
+    "sectionQty": 365.154,
+    "totalQty": 32365.154
   },
   {
     "sl": 4,
@@ -66,8 +66,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Aluminum Blade Sheet-1.22mm(18G)",
     "unit": "KG",
     "storeQty": 73542.0,
-    "sectionQty": 14480.028,
-    "totalQty": 88022.028
+    "sectionQty": 12278.787,
+    "totalQty": 85820.787
   },
   {
     "sl": 6,
@@ -108,8 +108,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Silicon Sheet 0.51mm (25G) Hard 5.5`` (142.8mm)",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 17818.881,
-    "totalQty": 17818.881
+    "sectionQty": 8870.249,
+    "totalQty": 8870.249
   },
   {
     "sl": 9,
@@ -178,8 +178,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "MS Pipe - OD=22mm, ID=18mm, T=2mm, L=20feet",
     "unit": "Feet",
     "storeQty": 0.0,
-    "sectionQty": 20056.04,
-    "totalQty": 20056.04
+    "sectionQty": 17554.04,
+    "totalQty": 17554.04
   },
   {
     "sl": 14,
@@ -192,8 +192,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Super Wire (SWG 33) / 0.253mm",
     "unit": "KG",
     "storeQty": 73.16,
-    "sectionQty": 2149.29,
-    "totalQty": 2222.45
+    "sectionQty": 1555.29,
+    "totalQty": 1628.45
   },
   {
     "sl": 15,
@@ -234,8 +234,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Insulation Fiber 20 mm x 0.35mm",
     "unit": "KG",
     "storeQty": 1563.45,
-    "sectionQty": 129.508,
-    "totalQty": 1692.958
+    "sectionQty": 123.208,
+    "totalQty": 1686.6580000000001
   },
   {
     "sl": 18,
@@ -248,8 +248,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Insulation Fiber 27 mm x 0.190mm",
     "unit": "KG",
     "storeQty": 1818.74,
-    "sectionQty": 179.465,
-    "totalQty": 1998.205
+    "sectionQty": 163.265,
+    "totalQty": 1982.005
   },
   {
     "sl": 19,
@@ -262,8 +262,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Lather Fiber 10 mm",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 54.525,
-    "totalQty": 54.525
+    "sectionQty": 52.725,
+    "totalQty": 52.725
   },
   {
     "sl": 20,
@@ -276,8 +276,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "FAN Ampere Tube-03 no",
     "unit": "Mtr",
     "storeQty": 4780.0,
-    "sectionQty": 5426.36,
-    "totalQty": 10206.36
+    "sectionQty": 4828.05,
+    "totalQty": 9608.05
   },
   {
     "sl": 21,
@@ -290,8 +290,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "FAN Ampere Tube-04 no",
     "unit": "Mtr",
     "storeQty": 1100.0,
-    "sectionQty": 6958.666,
-    "totalQty": 8058.666
+    "sectionQty": 6950.826,
+    "totalQty": 8050.826
   },
   {
     "sl": 22,
@@ -303,9 +303,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010024",
     "itemName": "FAN Ampere Tube-08 no",
     "unit": "Mtr",
-    "storeQty": 2000.0,
-    "sectionQty": 83.224,
-    "totalQty": 2083.224
+    "storeQty": 1500.0,
+    "sectionQty": 438.37,
+    "totalQty": 1938.37
   },
   {
     "sl": 23,
@@ -331,9 +331,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010026",
     "itemName": "Solven",
     "unit": "Ltr",
-    "storeQty": 935.0,
-    "sectionQty": 166.083,
-    "totalQty": 1101.083
+    "storeQty": 835.0,
+    "sectionQty": 233.683,
+    "totalQty": 1068.683
   },
   {
     "sl": 25,
@@ -345,9 +345,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010027",
     "itemName": "Vernish-1132",
     "unit": "Ltr",
-    "storeQty": 3940.0,
-    "sectionQty": 163.536,
-    "totalQty": 4103.536
+    "storeQty": 3820.0,
+    "sectionQty": 251.136,
+    "totalQty": 4071.136
   },
   {
     "sl": 26,
@@ -373,9 +373,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010030",
     "itemName": "XL/Shaft (Big)-144mm",
     "unit": "Pcs",
-    "storeQty": 43700.0,
-    "sectionQty": 3526.0,
-    "totalQty": 47226.0
+    "storeQty": 33700.0,
+    "sectionQty": 10426.0,
+    "totalQty": 44126.0
   },
   {
     "sl": 28,
@@ -388,8 +388,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "XL/Shaft (small)-137mm",
     "unit": "pcs",
     "storeQty": 4800.0,
-    "sectionQty": 4616.0,
-    "totalQty": 9416.0
+    "sectionQty": 4567.0,
+    "totalQty": 9367.0
   },
   {
     "sl": 29,
@@ -430,8 +430,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Capacitor 2.5 uF (BM)",
     "unit": "Pcs",
     "storeQty": 2800.0,
-    "sectionQty": 2706.0,
-    "totalQty": 5506.0
+    "sectionQty": 2657.0,
+    "totalQty": 5457.0
   },
   {
     "sl": 32,
@@ -458,8 +458,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Deko Paint Oxford Blue",
     "unit": "KG",
     "storeQty": 26.0,
-    "sectionQty": 10.85928,
-    "totalQty": 36.85928
+    "sectionQty": 8.91958,
+    "totalQty": 34.919579999999996
   },
   {
     "sl": 34,
@@ -486,8 +486,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Golden Powder",
     "unit": "KG",
     "storeQty": 2.0,
-    "sectionQty": 1.0743,
-    "totalQty": 3.0743
+    "sectionQty": 1.0694,
+    "totalQty": 3.0694
   },
   {
     "sl": 36,
@@ -500,8 +500,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Powder Coating  - cresent White",
     "unit": "KG",
     "storeQty": 1980.0,
-    "sectionQty": 1120.33,
-    "totalQty": 3100.33
+    "sectionQty": 890.598,
+    "totalQty": 2870.598
   },
   {
     "sl": 37,
@@ -514,8 +514,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Gardo Clean - 619 (FAN)",
     "unit": "KG",
     "storeQty": 450.0,
-    "sectionQty": 290.8115,
-    "totalQty": 740.8115
+    "sectionQty": 271.0655,
+    "totalQty": 721.0654999999999
   },
   {
     "sl": 38,
@@ -528,8 +528,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Gardo Acid -E219",
     "unit": "Ltr",
     "storeQty": 350.0,
-    "sectionQty": 119.4587,
-    "totalQty": 469.4587
+    "sectionQty": 107.6867,
+    "totalQty": 457.6867
   },
   {
     "sl": 39,
@@ -542,8 +542,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Gardo bond -E711",
     "unit": "Ltr",
     "storeQty": 420.0,
-    "sectionQty": 102.52445,
-    "totalQty": 522.52445
+    "sectionQty": 83.21045,
+    "totalQty": 503.21045
   },
   {
     "sl": 40,
@@ -556,8 +556,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Gardo Acid -201AA",
     "unit": "Ltr",
     "storeQty": 525.0,
-    "sectionQty": 162.971,
-    "totalQty": 687.971
+    "sectionQty": 141.097,
+    "totalQty": 666.097
   },
   {
     "sl": 41,
@@ -570,8 +570,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Gardo Acid -206M",
     "unit": "Ltr",
     "storeQty": 50.0,
-    "sectionQty": 106.896,
-    "totalQty": 156.89600000000002
+    "sectionQty": 104.352,
+    "totalQty": 154.352
   },
   {
     "sl": 42,
@@ -583,9 +583,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010045",
     "itemName": "Gardo len-26M",
     "unit": "Kg",
-    "storeQty": 75.0,
-    "sectionQty": 95.24845,
-    "totalQty": 170.24845
+    "storeQty": 25.0,
+    "sectionQty": 142.70445,
+    "totalQty": 167.70445
   },
   {
     "sl": 43,
@@ -598,8 +598,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Gardo bond-C.e",
     "unit": "Ltr",
     "storeQty": 120.0,
-    "sectionQty": 54.677,
-    "totalQty": 174.677
+    "sectionQty": 40.757,
+    "totalQty": 160.757
   },
   {
     "sl": 44,
@@ -640,8 +640,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Gardo bond -Acc14",
     "unit": "Ltr.",
     "storeQty": 30.0,
-    "sectionQty": 44.68655,
-    "totalQty": 74.68655
+    "sectionQty": 43.58063,
+    "totalQty": 73.58063
   },
   {
     "sl": 47,
@@ -654,8 +654,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Doco Paint (Golden-98191) Kangaroo",
     "unit": "Ltr",
     "storeQty": 0.0,
-    "sectionQty": 8.048,
-    "totalQty": 8.048
+    "sectionQty": 8.0235,
+    "totalQty": 8.0235
   },
   {
     "sl": 48,
@@ -668,8 +668,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Show Cap-Plastic",
     "unit": "Pcs",
     "storeQty": 130000.0,
-    "sectionQty": 7766.0,
-    "totalQty": 137766.0
+    "sectionQty": 7717.0,
+    "totalQty": 137717.0
   },
   {
     "sl": 49,
@@ -724,8 +724,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Safety Wire",
     "unit": "Pcs",
     "storeQty": 66200.0,
-    "sectionQty": 19653.0,
-    "totalQty": 85853.0
+    "sectionQty": 18083.0,
+    "totalQty": 84283.0
   },
   {
     "sl": 53,
@@ -738,8 +738,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Silika Gel",
     "unit": "Pcs",
     "storeQty": 20000.0,
-    "sectionQty": 11305.0,
-    "totalQty": 31305.0
+    "sectionQty": 11256.0,
+    "totalQty": 31256.0
   },
   {
     "sl": 54,
@@ -766,8 +766,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "MS/Alu Rivet (1020/kg)",
     "unit": "KG",
     "storeQty": 2300.0,
-    "sectionQty": 152.163,
-    "totalQty": 2452.163
+    "sectionQty": 130.779,
+    "totalQty": 2430.779
   },
   {
     "sl": 56,
@@ -780,8 +780,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Rubber Bend (5000/kg)",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 29.2023,
-    "totalQty": 29.2023
+    "sectionQty": 26.4151,
+    "totalQty": 26.4151
   },
   {
     "sl": 57,
@@ -794,8 +794,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Down Pipe  Nut 8mm (190/kg)",
     "unit": "KG",
     "storeQty": 325.0,
-    "sectionQty": 228.45,
-    "totalQty": 553.45
+    "sectionQty": 203.6,
+    "totalQty": 528.6
   },
   {
     "sl": 58,
@@ -808,8 +808,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Safety Lock Nut 3/16 (1200/kg)",
     "unit": "Pcs",
     "storeQty": 30750.0,
-    "sectionQty": 24468.0,
-    "totalQty": 55218.0
+    "sectionQty": 22898.0,
+    "totalQty": 53648.0
   },
   {
     "sl": 59,
@@ -822,8 +822,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Spiring Washer 6mm 1400/kg)",
     "unit": "KG",
     "storeQty": 150.0,
-    "sectionQty": 76.178,
-    "totalQty": 226.178
+    "sectionQty": 75.982,
+    "totalQty": 225.982
   },
   {
     "sl": 60,
@@ -836,8 +836,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Spiring Washer 8mm (880/kg)",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 123.9674,
-    "totalQty": 123.9674
+    "sectionQty": 119.2654,
+    "totalQty": 119.2654
   },
   {
     "sl": 61,
@@ -850,8 +850,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Ms Washer 3/16 (1910/kg)",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 100.194,
-    "totalQty": 100.194
+    "sectionQty": 99.252,
+    "totalQty": 99.252
   },
   {
     "sl": 62,
@@ -863,9 +863,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010071",
     "itemName": "Down Pipe Bolt 8mm x 1.5```` (50/kg)",
     "unit": "Pcs",
-    "storeQty": 0.0,
-    "sectionQty": 38421.0,
-    "totalQty": 38421.0
+    "storeQty": 742.0,
+    "sectionQty": 34791.0,
+    "totalQty": 35533.0
   },
   {
     "sl": 63,
@@ -877,9 +877,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010072",
     "itemName": "Down Pipe Bolt 8mm x 2```` (45/kg)",
     "unit": "Pcs",
-    "storeQty": 0.0,
-    "sectionQty": 9723.0,
-    "totalQty": 9723.0
+    "storeQty": 2506.0,
+    "sectionQty": 8383.0,
+    "totalQty": 10889.0
   },
   {
     "sl": 64,
@@ -891,9 +891,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010073",
     "itemName": "Down Pipe Sira Pin(Fan)",
     "unit": "Pcs",
-    "storeQty": 0.0,
-    "sectionQty": 230884.0,
-    "totalQty": 230884.0
+    "storeQty": 25295.0,
+    "sectionQty": 225914.0,
+    "totalQty": 251209.0
   },
   {
     "sl": 65,
@@ -906,8 +906,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Shaft/XL /Safity lock Screw 3/16x3/8```` (400/kg)",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 339.482,
-    "totalQty": 339.482
+    "sectionQty": 336.244,
+    "totalQty": 336.244
   },
   {
     "sl": 66,
@@ -920,8 +920,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Body Screw  18x6mm,H=10mm (200/kg)",
     "unit": "KG",
     "storeQty": 6.4,
-    "sectionQty": 246.404,
-    "totalQty": 252.804
+    "sectionQty": 245.62,
+    "totalQty": 252.02
   },
   {
     "sl": 67,
@@ -948,8 +948,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Blade/Body Screw 12.7x6mm,H=10mm (220/kg)",
     "unit": "KG",
     "storeQty": 457.95,
-    "sectionQty": 832.9915,
-    "totalQty": 1290.9415
+    "sectionQty": 831.8155,
+    "totalQty": 1289.7655
   },
   {
     "sl": 69,
@@ -961,9 +961,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010078",
     "itemName": "Canopy Big",
     "unit": "Pcs",
-    "storeQty": 0.0,
-    "sectionQty": 1838.0,
-    "totalQty": 1838.0
+    "storeQty": 7888.0,
+    "sectionQty": 38.0,
+    "totalQty": 7926.0
   },
   {
     "sl": 70,
@@ -990,8 +990,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Capacitor Cover",
     "unit": "Pcs",
     "storeQty": 21989.0,
-    "sectionQty": 21773.0,
-    "totalQty": 43762.0
+    "sectionQty": 21724.0,
+    "totalQty": 43713.0
   },
   {
     "sl": 72,
@@ -1004,8 +1004,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Rubber Gasket (56`` 48``)",
     "unit": "Pcs",
     "storeQty": 55207.0,
-    "sectionQty": 78254.0,
-    "totalQty": 133461.0
+    "sectionQty": 78107.0,
+    "totalQty": 133314.0
   },
   {
     "sl": 73,
@@ -1032,8 +1032,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Plastic XL Cap",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 615.0,
-    "totalQty": 615.0
+    "sectionQty": 566.0,
+    "totalQty": 566.0
   },
   {
     "sl": 75,
@@ -1045,9 +1045,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010085",
     "itemName": "Insulation Rubber",
     "unit": "Pcs",
-    "storeQty": 12702.0,
-    "sectionQty": 70242.0,
-    "totalQty": 82944.0
+    "storeQty": 28082.0,
+    "sectionQty": 68542.0,
+    "totalQty": 96624.0
   },
   {
     "sl": 76,
@@ -1060,8 +1060,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Canopy Rubber Ring",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 136811.0,
-    "totalQty": 136811.0
+    "sectionQty": 135011.0,
+    "totalQty": 135011.0
   },
   {
     "sl": 77,
@@ -1088,8 +1088,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Flaxible Cable 14x0.0076 - Red",
     "unit": "Mtr",
     "storeQty": 19570.0,
-    "sectionQty": 19058.42,
-    "totalQty": 38628.42
+    "sectionQty": 18068.085,
+    "totalQty": 37638.085
   },
   {
     "sl": 79,
@@ -1102,8 +1102,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "FAN Ampere Tube-01 no",
     "unit": "Mtr",
     "storeQty": 1900.0,
-    "sectionQty": 3017.4032,
-    "totalQty": 4917.403200000001
+    "sectionQty": 2545.0532,
+    "totalQty": 4445.0532
   },
   {
     "sl": 80,
@@ -1130,8 +1130,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Soldering Wire",
     "unit": "KG",
     "storeQty": 12.0,
-    "sectionQty": 11.698,
-    "totalQty": 23.698
+    "sectionQty": 11.6735,
+    "totalQty": 23.6735
   },
   {
     "sl": 82,
@@ -1143,9 +1143,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3101010107",
     "itemName": "Nice Regulator Small White(FAN)",
     "unit": "Pcs",
-    "storeQty": 10496.0,
+    "storeQty": 14096.0,
     "sectionQty": 0.0,
-    "totalQty": 10496.0
+    "totalQty": 14096.0
   },
   {
     "sl": 83,
@@ -1158,8 +1158,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "NC / ABC Thinner",
     "unit": "Ltr",
     "storeQty": 26.46,
-    "sectionQty": 49.3779,
-    "totalQty": 75.83789999999999
+    "sectionQty": 38.6054,
+    "totalQty": 65.06540000000001
   },
   {
     "sl": 84,
@@ -1200,8 +1200,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Flaxible Cable 14x0.0076 - Yellow",
     "unit": "Mtr",
     "storeQty": 18100.0,
-    "sectionQty": 11034.32,
-    "totalQty": 29134.32
+    "sectionQty": 10073.875,
+    "totalQty": 28173.875
   },
   {
     "sl": 87,
@@ -1214,8 +1214,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Flaxible Cable 14x0.0076 - Black",
     "unit": "Mtr",
     "storeQty": 4500.0,
-    "sectionQty": 15189.0815,
-    "totalQty": 19689.0815
+    "sectionQty": 14198.7465,
+    "totalQty": 18698.7465
   },
   {
     "sl": 88,
@@ -1480,8 +1480,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Ball Bearing 6202 -(CnU)",
     "unit": "Pcs",
     "storeQty": 111600.0,
-    "sectionQty": 8487.0,
-    "totalQty": 120087.0
+    "sectionQty": 8438.0,
+    "totalQty": 120038.0
   },
   {
     "sl": 107,
@@ -1494,8 +1494,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Ball Bearing 6203 (CnU)",
     "unit": "Pcs",
     "storeQty": 112500.0,
-    "sectionQty": 8368.0,
-    "totalQty": 120868.0
+    "sectionQty": 8319.0,
+    "totalQty": 120819.0
   },
   {
     "sl": 108,
@@ -1508,8 +1508,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "MEP Cable Tie -2.5 x100mm",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 66906.0,
-    "totalQty": 66906.0
+    "sectionQty": 63757.0,
+    "totalQty": 63757.0
   },
   {
     "sl": 109,
@@ -1522,8 +1522,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "MEP Capacitor 2.5 \u00b5F (450VAC)",
     "unit": "Pcs",
     "storeQty": 176658.0,
-    "sectionQty": 152202.0,
-    "totalQty": 328860.0
+    "sectionQty": 143130.0,
+    "totalQty": 319788.0
   },
   {
     "sl": 110,
@@ -1633,9 +1633,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3102010005",
     "itemName": "Exhaust Fan Side Stand (8``)",
     "unit": "Pcs",
-    "storeQty": 85.0,
+    "storeQty": 1864.0,
     "sectionQty": 1369.0,
-    "totalQty": 1454.0
+    "totalQty": 3233.0
   },
   {
     "sl": 118,
@@ -1661,9 +1661,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3102010007",
     "itemName": "Exhaust Fan Capacitor Box",
     "unit": "Pcs",
-    "storeQty": 1925.0,
+    "storeQty": 12425.0,
     "sectionQty": 3765.0,
-    "totalQty": 5690.0
+    "totalQty": 16190.0
   },
   {
     "sl": 120,
@@ -3075,9 +3075,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3201010002",
     "itemName": "FAN Shank Paper",
     "unit": "Pcs",
-    "storeQty": 229105.0,
-    "sectionQty": 30558.0,
-    "totalQty": 259663.0
+    "storeQty": 248885.0,
+    "sectionQty": 19941.0,
+    "totalQty": 268826.0
   },
   {
     "sl": 221,
@@ -3090,8 +3090,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Tissue Paper",
     "unit": "Pcs",
     "storeQty": 22080.0,
-    "sectionQty": 29491.5,
-    "totalQty": 51571.5
+    "sectionQty": 25927.02,
+    "totalQty": 48007.020000000004
   },
   {
     "sl": 222,
@@ -3146,8 +3146,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Body Sticker-4801",
     "unit": "Pcs",
     "storeQty": 7500.0,
-    "sectionQty": 1093.0,
-    "totalQty": 8593.0
+    "sectionQty": 1044.0,
+    "totalQty": 8544.0
   },
   {
     "sl": 226,
@@ -3188,8 +3188,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Fan Canopy Sticker",
     "unit": "Pcs",
     "storeQty": 88500.0,
-    "sectionQty": 48582.0,
-    "totalQty": 137082.0
+    "sectionQty": 46782.0,
+    "totalQty": 135282.0
   },
   {
     "sl": 229,
@@ -3216,8 +3216,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Fan Down Pipe Sticker",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 41730.0,
-    "totalQty": 41730.0
+    "sectionQty": 40160.0,
+    "totalQty": 40160.0
   },
   {
     "sl": 231,
@@ -3229,9 +3229,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3201010014",
     "itemName": "Fan QC Sticker",
     "unit": "Pcs",
-    "storeQty": 98500.0,
-    "sectionQty": 27233.0,
-    "totalQty": 125733.0
+    "storeQty": 78500.0,
+    "sectionQty": 47184.0,
+    "totalQty": 125684.0
   },
   {
     "sl": 232,
@@ -3258,8 +3258,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Guarantee Card -4801",
     "unit": "Pcs",
     "storeQty": 5000.0,
-    "sectionQty": 1616.0,
-    "totalQty": 6616.0
+    "sectionQty": 1567.0,
+    "totalQty": 6567.0
   },
   {
     "sl": 234,
@@ -3299,9 +3299,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3201010019",
     "itemName": "Cork Sheet -5601````/4801````",
     "unit": "Pcs",
-    "storeQty": 0.0,
-    "sectionQty": 4813.0,
-    "totalQty": 4813.0
+    "storeQty": 3250.0,
+    "sectionQty": 4764.0,
+    "totalQty": 8014.0
   },
   {
     "sl": 237,
@@ -3341,9 +3341,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3201010022",
     "itemName": "Body Carton -Premium (5601)-263x264x213mm",
     "unit": "Pcs",
-    "storeQty": 8650.0,
-    "sectionQty": 6734.0,
-    "totalQty": 15384.0
+    "storeQty": 7650.0,
+    "sectionQty": 8734.0,
+    "totalQty": 16384.0
   },
   {
     "sl": 240,
@@ -3398,8 +3398,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Body Carton -Popular (4801)-264x262x200mm",
     "unit": "Pcs",
     "storeQty": 518.0,
-    "sectionQty": 392.0,
-    "totalQty": 910.0
+    "sectionQty": 343.0,
+    "totalQty": 861.0
   },
   {
     "sl": 244,
@@ -3439,9 +3439,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3201010030",
     "itemName": "Blade Carton-Premium (5601)-622x153x34mm",
     "unit": "Pcs",
-    "storeQty": 6900.0,
-    "sectionQty": 5680.0,
-    "totalQty": 12580.0
+    "storeQty": 7900.0,
+    "sectionQty": 4310.0,
+    "totalQty": 12210.0
   },
   {
     "sl": 247,
@@ -3482,8 +3482,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Blade Carton -Speed king (5602)-622x127x30mm",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 0.0,
-    "totalQty": 0.0
+    "sectionQty": 117.0,
+    "totalQty": 117.0
   },
   {
     "sl": 250,
@@ -3495,9 +3495,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3201010035",
     "itemName": "Blade Carton -Popular (4801)-528x144x32mm",
     "unit": "Pcs",
-    "storeQty": 2115.0,
-    "sectionQty": 130.0,
-    "totalQty": 2245.0
+    "storeQty": 315.0,
+    "sectionQty": 270.0,
+    "totalQty": 585.0
   },
   {
     "sl": 251,
@@ -3509,8 +3509,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "3201010036",
     "itemName": "Blade Carton -Hero (3601)-400x120x29mm",
     "unit": "Pcs",
-    "storeQty": 1250.0,
-    "sectionQty": 53.0,
+    "storeQty": 1210.0,
+    "sectionQty": 93.0,
     "totalQty": 1303.0
   },
   {
@@ -3524,8 +3524,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "HDPE Poly (L=15``, W=15``, T=0.035mm)",
     "unit": "KG",
     "storeQty": 650.0,
-    "sectionQty": 248.218,
-    "totalQty": 898.218
+    "sectionQty": 247.728,
+    "totalQty": 897.7280000000001
   },
   {
     "sl": 253,
@@ -3552,8 +3552,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "HDPE Poly (L=27``, W=8``, T=0.035mm)",
     "unit": "KG",
     "storeQty": 431.5,
-    "sectionQty": 150.767,
-    "totalQty": 582.267
+    "sectionQty": 120.576,
+    "totalQty": 552.076
   },
   {
     "sl": 255,
@@ -3580,8 +3580,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "HDPE Poly (L=9``, W=9``, T=0.025mm)",
     "unit": "KG",
     "storeQty": 124.4,
-    "sectionQty": 149.42,
-    "totalQty": 273.82
+    "sectionQty": 146.72,
+    "totalQty": 271.12
   },
   {
     "sl": 257,
@@ -3594,8 +3594,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "HDPE Poly (L=13``, W=4``, T=0.035mm)",
     "unit": "KG",
     "storeQty": 140.0,
-    "sectionQty": 217.092,
-    "totalQty": 357.092
+    "sectionQty": 208.362,
+    "totalQty": 348.36199999999997
   },
   {
     "sl": 258,
@@ -3608,8 +3608,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "PP Poly (L=5``, W=5``, T=0.045mm) With Logo Print",
     "unit": "KG",
     "storeQty": 87.46,
-    "sectionQty": 42.2191,
-    "totalQty": 129.6791
+    "sectionQty": 41.7763,
+    "totalQty": 129.2363
   },
   {
     "sl": 259,
@@ -3622,8 +3622,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Carton Tape - (W=60mm,L=200m, MEP Print)",
     "unit": "Mtr",
     "storeQty": 44952.0,
-    "sectionQty": 42595.779,
-    "totalQty": 87547.77900000001
+    "sectionQty": 40508.1198,
+    "totalQty": 85460.1198
   },
   {
     "sl": 260,
@@ -3776,8 +3776,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "MEP Hologram Sticker",
     "unit": "Pcs",
     "storeQty": 65300.0,
-    "sectionQty": 29860.0,
-    "totalQty": 95160.0
+    "sectionQty": 29811.0,
+    "totalQty": 95111.0
   },
   {
     "sl": 271,
@@ -3916,8 +3916,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Capacitor Master Carton-Fan",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 71.6256,
-    "totalQty": 71.6256
+    "sectionQty": 182.0208,
+    "totalQty": 182.0208
   },
   {
     "sl": 281,
@@ -3930,8 +3930,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Capacitor Inner box 2.5 \u00b5F -Fan",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 954.136,
-    "totalQty": 954.136
+    "sectionQty": 3697.5312,
+    "totalQty": 3697.5312
   },
   {
     "sl": 282,
@@ -3944,8 +3944,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Capacitor Inner box 3.5 \u00b5F -Fan",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 1744.4896,
-    "totalQty": 1744.4896
+    "sectionQty": 3744.4896,
+    "totalQty": 3744.4896
   },
   {
     "sl": 283,
@@ -3958,8 +3958,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "Capacitor Warranty Card 2.5 \u00b5F -Fan",
     "unit": "Pcs",
     "storeQty": 0.0,
-    "sectionQty": 9100.0,
-    "totalQty": 9100.0
+    "sectionQty": 28.0,
+    "totalQty": 28.0
   },
   {
     "sl": 284,
@@ -3986,8 +3986,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "LD Poly (L=4``, W=3``,T=0.035mm) -Zipper",
     "unit": "KG",
     "storeQty": 0.0,
-    "sectionQty": 26.77024,
-    "totalQty": 26.77024
+    "sectionQty": 18.96832,
+    "totalQty": 18.96832
   },
   {
     "sl": 286,
@@ -4084,8 +4084,8 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "itemName": "PP Band Fita",
     "unit": "KG",
     "storeQty": 102.07,
-    "sectionQty": 32.5335,
-    "totalQty": 134.6035
+    "sectionQty": 29.2114,
+    "totalQty": 131.2814
   },
   {
     "sl": 293,
@@ -4279,9 +4279,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "700000003",
     "itemName": "Hands Gloves - Cotton",
     "unit": "Pcs",
-    "storeQty": 2166.0,
+    "storeQty": 2070.0,
     "sectionQty": 3720.0,
-    "totalQty": 5886.0
+    "totalQty": 5790.0
   },
   {
     "sl": 307,
@@ -4447,9 +4447,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "700000015",
     "itemName": "Kerosene",
     "unit": "Ltr",
-    "storeQty": 70.0,
-    "sectionQty": 20.0,
-    "totalQty": 90.0
+    "storeQty": 43.0,
+    "sectionQty": 45.0,
+    "totalQty": 88.0
   },
   {
     "sl": 319,
@@ -4517,9 +4517,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "700000021",
     "itemName": "Thinner(Fan)",
     "unit": "Ltr",
-    "storeQty": 283.0,
+    "storeQty": 278.0,
     "sectionQty": 153.0,
-    "totalQty": 436.0
+    "totalQty": 431.0
   },
   {
     "sl": 324,
@@ -4657,9 +4657,9 @@ const RAW_STORE_POSITION_REPORT_DATA = [
     "fg": "700100032",
     "itemName": "Thermal QR Code sticker Roll 38 mm x 25 mm",
     "unit": "Pcs",
-    "storeQty": 57000.0,
-    "sectionQty": 13000.0,
-    "totalQty": 70000.0
+    "storeQty": 56000.0,
+    "sectionQty": 5000.0,
+    "totalQty": 61000.0
   },
   {
     "sl": 334,

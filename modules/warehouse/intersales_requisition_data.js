@@ -3,17 +3,838 @@ const RAW_INTERSALES_REQUISITION_DATA = {
     "title": "Inter Sales Requisition",
     "full_title": "Inter Sales Requisition (Warehouse -> Requisition Status -> FAN)",
     "f_date": "2026-09-01",
-    "t_date": "2026-09-19",
+    "t_date": "2026-09-21",
     "company_to": "FAN",
-    "total_requisitions": 1,
+    "total_requisitions": 8,
     "pending_requisitions": 1,
-    "total_items": 6,
-    "total_req_qty": 392500.0,
-    "total_issue_qty": 30947.0,
-    "total_pending_qty": 361553.0,
-    "collected_at": "2026-09-19 15:20:01"
+    "total_items": 84,
+    "total_req_qty": 1793180.0,
+    "total_issue_qty": 359012.0,
+    "total_pending_qty": 1434168.0,
+    "collected_at": "2026-09-21 09:41:37"
   },
   "requisitions": [
+    {
+      "req_no": "2339",
+      "req_date": "2026-09-20",
+      "company_for": "FAN",
+      "company_to": "Printing and Packaging",
+      "need_by": "2026-09-20",
+      "entry_by": "Md. Saiful Islam",
+      "status": "UNCHECKED",
+      "items": [
+        {
+          "sl": "1",
+          "item_code": "3202010001",
+          "item_name": "HDPE Poly (L=22``, W=18``, T=0.025mm)",
+          "unit": "KG",
+          "req_qty": 100.0,
+          "issue_qty": 0.0,
+          "pending_qty": 100.0
+        },
+        {
+          "sl": "2",
+          "item_code": "3202010008",
+          "item_name": "HDPE Poly (L=24``, W=20``, T=0.025mm)",
+          "unit": "KG",
+          "req_qty": 125.0,
+          "issue_qty": 0.0,
+          "pending_qty": 125.0
+        },
+        {
+          "sl": "3",
+          "item_code": "3201010079",
+          "item_name": "8 Inch Exhaust Fan Body Carton (Alu)",
+          "unit": "Pcs",
+          "req_qty": 5775.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5775.0
+        },
+        {
+          "sl": "4",
+          "item_code": "3201010080",
+          "item_name": "10 Inch Exhaust Fan Body Carton (Alu)",
+          "unit": "Pcs",
+          "req_qty": 6825.0,
+          "issue_qty": 0.0,
+          "pending_qty": 6825.0
+        },
+        {
+          "sl": "5",
+          "item_code": "3201010081",
+          "item_name": "Aero Flow Sticker",
+          "unit": "Pcs",
+          "req_qty": 15000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 15000.0
+        },
+        {
+          "sl": "6",
+          "item_code": "3201010083",
+          "item_name": "Warranty Card (Aero Flow)",
+          "unit": "Pcs",
+          "req_qty": 15000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 15000.0
+        }
+      ],
+      "total_req_qty": 42825.0,
+      "total_issue_qty": 0.0,
+      "total_pending_qty": 42825.0,
+      "materials_count": 6,
+      "from_warehouse": "FAN Floor",
+      "to_warehouse": "Ground Floor Fan Store (FAN-1)"
+    },
+    {
+      "req_no": "2338",
+      "req_date": "2026-09-20",
+      "company_for": "FAN",
+      "company_to": "MEP",
+      "need_by": "2026-09-20",
+      "entry_by": "Md. Saiful Islam",
+      "status": "UNCHECKED",
+      "items": [
+        {
+          "sl": "1",
+          "item_code": "3102010001",
+          "item_name": "Exhaust Fan Base (8``)",
+          "unit": "Pcs",
+          "req_qty": 5775.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5775.0
+        },
+        {
+          "sl": "2",
+          "item_code": "3102010002",
+          "item_name": "Exhaust Fan Cover (8``)",
+          "unit": "Pcs",
+          "req_qty": 5775.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5775.0
+        },
+        {
+          "sl": "3",
+          "item_code": "3102010003",
+          "item_name": "Exhaust Fan Shutter (8``)",
+          "unit": "Pcs",
+          "req_qty": 17325.0,
+          "issue_qty": 0.0,
+          "pending_qty": 17325.0
+        },
+        {
+          "sl": "4",
+          "item_code": "3102010004",
+          "item_name": "Exhaust Fan Blade (8``)",
+          "unit": "Pcs",
+          "req_qty": 5775.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5775.0
+        },
+        {
+          "sl": "5",
+          "item_code": "3102010005",
+          "item_name": "Exhaust Fan Side Stand (8``)",
+          "unit": "Pcs",
+          "req_qty": 5775.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5775.0
+        },
+        {
+          "sl": "6",
+          "item_code": "3102010006",
+          "item_name": "Exhaust Fan Show Cap With Pitol Bush",
+          "unit": "Pcs",
+          "req_qty": 12600.0,
+          "issue_qty": 0.0,
+          "pending_qty": 12600.0
+        },
+        {
+          "sl": "7",
+          "item_code": "3102010007",
+          "item_name": "Exhaust Fan Capacitor Box",
+          "unit": "Pcs",
+          "req_qty": 12600.0,
+          "issue_qty": 0.0,
+          "pending_qty": 12600.0
+        },
+        {
+          "sl": "8",
+          "item_code": "3102010008",
+          "item_name": "Exhaust Fan Stick (8``)",
+          "unit": "Pcs",
+          "req_qty": 20000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 20000.0
+        },
+        {
+          "sl": "9",
+          "item_code": "3102010009",
+          "item_name": "Exhaust Fan Clam",
+          "unit": "Pcs",
+          "req_qty": 100000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 100000.0
+        },
+        {
+          "sl": "10",
+          "item_code": "3102010011",
+          "item_name": "Exhaust Fan Spring Lock",
+          "unit": "Pcs",
+          "req_qty": 100000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 100000.0
+        },
+        {
+          "sl": "11",
+          "item_code": "3202010010",
+          "item_name": "Exhaust Fan Base (10``)",
+          "unit": "Pcs",
+          "req_qty": 6825.0,
+          "issue_qty": 0.0,
+          "pending_qty": 6825.0
+        },
+        {
+          "sl": "12",
+          "item_code": "3202010011",
+          "item_name": "Exhaust Fan Cover (10``)",
+          "unit": "Pcs",
+          "req_qty": 6825.0,
+          "issue_qty": 0.0,
+          "pending_qty": 6825.0
+        },
+        {
+          "sl": "13",
+          "item_code": "3202010012",
+          "item_name": "Exhaust Fan Side Stand (10``)",
+          "unit": "Pcs",
+          "req_qty": 6825.0,
+          "issue_qty": 0.0,
+          "pending_qty": 6825.0
+        },
+        {
+          "sl": "14",
+          "item_code": "3202010013",
+          "item_name": "Exhaust Fan Shutter (10``)",
+          "unit": "Pcs",
+          "req_qty": 20475.0,
+          "issue_qty": 0.0,
+          "pending_qty": 20475.0
+        },
+        {
+          "sl": "15",
+          "item_code": "3202010014",
+          "item_name": "Exhaust Fan Stick (10``)",
+          "unit": "Pcs",
+          "req_qty": 20000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 20000.0
+        },
+        {
+          "sl": "16",
+          "item_code": "3202010017",
+          "item_name": "Exhaust Fan Blade (10``)",
+          "unit": "Pcs",
+          "req_qty": 6825.0,
+          "issue_qty": 0.0,
+          "pending_qty": 6825.0
+        },
+        {
+          "sl": "17",
+          "item_code": "3102010019",
+          "item_name": "MEP Cable Tie -3.5x150mm",
+          "unit": "Pcs",
+          "req_qty": 100000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 100000.0
+        }
+      ],
+      "total_req_qty": 453400.0,
+      "total_issue_qty": 0.0,
+      "total_pending_qty": 453400.0,
+      "materials_count": 17,
+      "from_warehouse": "FAN Floor",
+      "to_warehouse": "Ground Floor Fan Store (FAN-1)"
+    },
+    {
+      "req_no": "2337",
+      "req_date": "2026-09-20",
+      "company_for": "FAN",
+      "company_to": "MEP",
+      "need_by": "2026-09-20",
+      "entry_by": "Md. Saiful Islam",
+      "status": "UNCHECKED",
+      "items": [
+        {
+          "sl": "1",
+          "item_code": "3101010107",
+          "item_name": "Nice Regulator Small White(FAN)",
+          "unit": "Pcs",
+          "req_qty": 30000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 30000.0
+        }
+      ],
+      "total_req_qty": 30000.0,
+      "total_issue_qty": 0.0,
+      "total_pending_qty": 30000.0,
+      "materials_count": 1,
+      "from_warehouse": "FAN Floor",
+      "to_warehouse": "Ground Floor Fan Store (FAN-1)"
+    },
+    {
+      "req_no": "2336",
+      "req_date": "2026-09-20",
+      "company_for": "FAN",
+      "company_to": "Printing and Packaging",
+      "need_by": "2026-09-20",
+      "entry_by": "Md. Saiful Islam",
+      "status": "UNCHECKED",
+      "items": [
+        {
+          "sl": "1",
+          "item_code": "3201010004",
+          "item_name": "Body Sticker-5601",
+          "unit": "Pcs",
+          "req_qty": 24675.0,
+          "issue_qty": 0.0,
+          "pending_qty": 24675.0
+        },
+        {
+          "sl": "2",
+          "item_code": "3201010006",
+          "item_name": "Body Sticker Speed King",
+          "unit": "Pcs",
+          "req_qty": 5250.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5250.0
+        },
+        {
+          "sl": "3",
+          "item_code": "3201010008",
+          "item_name": "Body Sticker-3601",
+          "unit": "Pcs",
+          "req_qty": 10500.0,
+          "issue_qty": 0.0,
+          "pending_qty": 10500.0
+        },
+        {
+          "sl": "4",
+          "item_code": "3201010010",
+          "item_name": "Fan Canopy Sticker",
+          "unit": "Pcs",
+          "req_qty": 50000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 50000.0
+        },
+        {
+          "sl": "5",
+          "item_code": "3201010011",
+          "item_name": "Canopy Sticker Speed King",
+          "unit": "Pcs",
+          "req_qty": 10500.0,
+          "issue_qty": 0.0,
+          "pending_qty": 10500.0
+        },
+        {
+          "sl": "6",
+          "item_code": "3201010013",
+          "item_name": "Fan Down Pipe Sticker",
+          "unit": "Pcs",
+          "req_qty": 25725.0,
+          "issue_qty": 0.0,
+          "pending_qty": 25725.0
+        },
+        {
+          "sl": "7",
+          "item_code": "3201010015",
+          "item_name": "Guarantee Card -5601",
+          "unit": "Pcs",
+          "req_qty": 25725.0,
+          "issue_qty": 0.0,
+          "pending_qty": 25725.0
+        },
+        {
+          "sl": "8",
+          "item_code": "3201010017",
+          "item_name": "Guarantee Card Speed King",
+          "unit": "Pcs",
+          "req_qty": 5250.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5250.0
+        },
+        {
+          "sl": "9",
+          "item_code": "3201010019",
+          "item_name": "Cork Sheet -5601````/4801````",
+          "unit": "Pcs",
+          "req_qty": 25725.0,
+          "issue_qty": 0.0,
+          "pending_qty": 25725.0
+        },
+        {
+          "sl": "10",
+          "item_code": "3201010020",
+          "item_name": "Cork Sheet -5602````",
+          "unit": "Pcs",
+          "req_qty": 5250.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5250.0
+        },
+        {
+          "sl": "11",
+          "item_code": "3201010021",
+          "item_name": "Cork Sheet -2401/3601",
+          "unit": "Pcs",
+          "req_qty": 10500.0,
+          "issue_qty": 0.0,
+          "pending_qty": 10500.0
+        },
+        {
+          "sl": "12",
+          "item_code": "3201010022",
+          "item_name": "Body Carton -Premium (5601)-263x264x213mm",
+          "unit": "Pcs",
+          "req_qty": 24675.0,
+          "issue_qty": 0.0,
+          "pending_qty": 24675.0
+        },
+        {
+          "sl": "13",
+          "item_code": "3201010023",
+          "item_name": "Body Carton Premium Gold (5603)",
+          "unit": "Pcs",
+          "req_qty": 1050.0,
+          "issue_qty": 0.0,
+          "pending_qty": 1050.0
+        },
+        {
+          "sl": "14",
+          "item_code": "3201010026",
+          "item_name": "Body Carton -Speed king (5602) -220x220x208mm",
+          "unit": "Pcs",
+          "req_qty": 5250.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5250.0
+        },
+        {
+          "sl": "15",
+          "item_code": "3201010028",
+          "item_name": "Body Carton -Hero (3601)-195x195x230mm",
+          "unit": "Pcs",
+          "req_qty": 10500.0,
+          "issue_qty": 0.0,
+          "pending_qty": 10500.0
+        },
+        {
+          "sl": "16",
+          "item_code": "3201010030",
+          "item_name": "Blade Carton-Premium (5601)-622x153x34mm",
+          "unit": "Pcs",
+          "req_qty": 24675.0,
+          "issue_qty": 0.0,
+          "pending_qty": 24675.0
+        },
+        {
+          "sl": "17",
+          "item_code": "3201010031",
+          "item_name": "Blade Carton-Premium Gold (5603)",
+          "unit": "Pcs",
+          "req_qty": 1050.0,
+          "issue_qty": 0.0,
+          "pending_qty": 1050.0
+        },
+        {
+          "sl": "18",
+          "item_code": "3201010034",
+          "item_name": "Blade Carton -Speed king (5602)-622x127x30mm",
+          "unit": "Pcs",
+          "req_qty": 5250.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5250.0
+        },
+        {
+          "sl": "19",
+          "item_code": "3201010036",
+          "item_name": "Blade Carton -Hero (3601)-400x120x29mm",
+          "unit": "Pcs",
+          "req_qty": 10500.0,
+          "issue_qty": 0.0,
+          "pending_qty": 10500.0
+        },
+        {
+          "sl": "20",
+          "item_code": "3201010037",
+          "item_name": "HDPE Poly (L=15``, W=15``, T=0.035mm)",
+          "unit": "KG",
+          "req_qty": 200.0,
+          "issue_qty": 0.0,
+          "pending_qty": 200.0
+        },
+        {
+          "sl": "21",
+          "item_code": "3201010038",
+          "item_name": "HDPE Poly (L=14``, W=12``,T=0.035mm)",
+          "unit": "KG",
+          "req_qty": 100.0,
+          "issue_qty": 0.0,
+          "pending_qty": 100.0
+        },
+        {
+          "sl": "22",
+          "item_code": "3201010039",
+          "item_name": "HDPE Poly (L=27``, W=8``, T=0.035mm)",
+          "unit": "KG",
+          "req_qty": 300.0,
+          "issue_qty": 0.0,
+          "pending_qty": 300.0
+        },
+        {
+          "sl": "23",
+          "item_code": "3201010041",
+          "item_name": "HDPE Poly (L=9``, W=9``, T=0.025mm)",
+          "unit": "KG",
+          "req_qty": 125.0,
+          "issue_qty": 0.0,
+          "pending_qty": 125.0
+        },
+        {
+          "sl": "24",
+          "item_code": "3201010042",
+          "item_name": "HDPE Poly (L=13``, W=4``, T=0.035mm)",
+          "unit": "KG",
+          "req_qty": 125.0,
+          "issue_qty": 0.0,
+          "pending_qty": 125.0
+        },
+        {
+          "sl": "25",
+          "item_code": "3201010043",
+          "item_name": "PP Poly (L=5``, W=5``, T=0.045mm) With Logo Print",
+          "unit": "KG",
+          "req_qty": 50.0,
+          "issue_qty": 0.0,
+          "pending_qty": 50.0
+        },
+        {
+          "sl": "26",
+          "item_code": "3201010051",
+          "item_name": "Body Sticker - 5603",
+          "unit": "Pcs",
+          "req_qty": 5000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5000.0
+        },
+        {
+          "sl": "27",
+          "item_code": "3201010057",
+          "item_name": "Body Carton - Crown (5607)",
+          "unit": "Pcs",
+          "req_qty": 200.0,
+          "issue_qty": 0.0,
+          "pending_qty": 200.0
+        },
+        {
+          "sl": "28",
+          "item_code": "3201010058",
+          "item_name": "Blade Carton - Crown (5607)",
+          "unit": "Pcs",
+          "req_qty": 200.0,
+          "issue_qty": 0.0,
+          "pending_qty": 200.0
+        },
+        {
+          "sl": "29",
+          "item_code": "3201010059",
+          "item_name": "Body Sticker (5607)",
+          "unit": "Pcs",
+          "req_qty": 2000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 2000.0
+        },
+        {
+          "sl": "30",
+          "item_code": "3201010060",
+          "item_name": "Guarantee Card - Crown (5607)",
+          "unit": "Pcs",
+          "req_qty": 2000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 2000.0
+        },
+        {
+          "sl": "31",
+          "item_code": "3201010064",
+          "item_name": "Guarantee Card -5603",
+          "unit": "Pcs",
+          "req_qty": 5000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 5000.0
+        },
+        {
+          "sl": "32",
+          "item_code": "3201010084",
+          "item_name": "Guarantee Card -3601",
+          "unit": "Pcs",
+          "req_qty": 10500.0,
+          "issue_qty": 0.0,
+          "pending_qty": 10500.0
+        }
+      ],
+      "total_req_qty": 307850.0,
+      "total_issue_qty": 0.0,
+      "total_pending_qty": 307850.0,
+      "materials_count": 32,
+      "from_warehouse": "FAN Floor",
+      "to_warehouse": "Ground Floor Fan Store (FAN-1)"
+    },
+    {
+      "req_no": "2335",
+      "req_date": "2026-09-20",
+      "company_for": "FAN",
+      "company_to": "MEP",
+      "need_by": "2026-09-20",
+      "entry_by": "Md. Rabbi Howladar",
+      "status": "CHECKED",
+      "items": [
+        {
+          "sl": "1",
+          "item_code": "3101010016",
+          "item_name": "Super Wire (SWG 33) / 0.253mm",
+          "unit": "KG",
+          "req_qty": 9000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 9000.0
+        },
+        {
+          "sl": "2",
+          "item_code": "3101010017",
+          "item_name": "Super Wire (SWG 34) / 0.233mm",
+          "unit": "KG",
+          "req_qty": 1000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 1000.0
+        },
+        {
+          "sl": "3",
+          "item_code": "3101010018",
+          "item_name": "Super Wire (SWG 35) / 0.213mm",
+          "unit": "KG",
+          "req_qty": 3000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 3000.0
+        },
+        {
+          "sl": "4",
+          "item_code": "3101010090",
+          "item_name": "Flaxible Cable 14x0.0076 - Red",
+          "unit": "Mtr",
+          "req_qty": 38400.0,
+          "issue_qty": 0.0,
+          "pending_qty": 38400.0
+        },
+        {
+          "sl": "5",
+          "item_code": "3101010111",
+          "item_name": "Flaxible Cable 14x0.0076 - Yellow",
+          "unit": "Mtr",
+          "req_qty": 12900.0,
+          "issue_qty": 0.0,
+          "pending_qty": 12900.0
+        },
+        {
+          "sl": "6",
+          "item_code": "3101010112",
+          "item_name": "Flaxible Cable 14x0.0076 - Black",
+          "unit": "Mtr",
+          "req_qty": 38400.0,
+          "issue_qty": 0.0,
+          "pending_qty": 38400.0
+        }
+      ],
+      "total_req_qty": 102700.0,
+      "total_issue_qty": 0.0,
+      "total_pending_qty": 102700.0,
+      "materials_count": 6,
+      "from_warehouse": "FAN Floor",
+      "to_warehouse": "Ground Floor Fan Store (FAN-1)"
+    },
+    {
+      "req_no": "2334",
+      "req_date": "2026-09-20",
+      "company_for": "FAN",
+      "company_to": "MEP",
+      "need_by": "2026-09-20",
+      "entry_by": "Md. Rabbi Howladar",
+      "status": "CHECKED",
+      "items": [
+        {
+          "sl": "1",
+          "item_code": "3101010071",
+          "item_name": "Down Pipe Bolt 8mm x 1.5```` (50/kg)",
+          "unit": "Pcs",
+          "req_qty": 93450.0,
+          "issue_qty": 0.0,
+          "pending_qty": 93450.0
+        },
+        {
+          "sl": "2",
+          "item_code": "3101010072",
+          "item_name": "Down Pipe Bolt 8mm x 2```` (45/kg)",
+          "unit": "Pcs",
+          "req_qty": 16275.0,
+          "issue_qty": 0.0,
+          "pending_qty": 16275.0
+        },
+        {
+          "sl": "3",
+          "item_code": "3101010073",
+          "item_name": "Down Pipe Sira Pin(Fan)",
+          "unit": "Pcs",
+          "req_qty": 30000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 30000.0
+        },
+        {
+          "sl": "4",
+          "item_code": "3101010074",
+          "item_name": "Shaft/XL /Safity lock Screw 3/16x3/8```` (400/kg)",
+          "unit": "KG",
+          "req_qty": 150.0,
+          "issue_qty": 0.0,
+          "pending_qty": 150.0
+        },
+        {
+          "sl": "5",
+          "item_code": "3101010075",
+          "item_name": "Body Screw  18x6mm,H=10mm (200/kg)",
+          "unit": "KG",
+          "req_qty": 20.0,
+          "issue_qty": 0.0,
+          "pending_qty": 20.0
+        },
+        {
+          "sl": "6",
+          "item_code": "3101010076",
+          "item_name": "Body Screw  15x6mm,H=10mm (230/kg)",
+          "unit": "KG",
+          "req_qty": 100.0,
+          "issue_qty": 0.0,
+          "pending_qty": 100.0
+        },
+        {
+          "sl": "7",
+          "item_code": "3101010077",
+          "item_name": "Blade/Body Screw 12.7x6mm,H=10mm (220/kg)",
+          "unit": "KG",
+          "req_qty": 1400.0,
+          "issue_qty": 0.0,
+          "pending_qty": 1400.0
+        },
+        {
+          "sl": "8",
+          "item_code": "3101010130",
+          "item_name": "Body screw- 3/16`` x 35mm",
+          "unit": "KG",
+          "req_qty": 20.0,
+          "issue_qty": 0.0,
+          "pending_qty": 20.0
+        },
+        {
+          "sl": "9",
+          "item_code": "3102010013",
+          "item_name": "5/32 Inch, 9mm Screw",
+          "unit": "KG",
+          "req_qty": 115.0,
+          "issue_qty": 0.0,
+          "pending_qty": 115.0
+        }
+      ],
+      "total_req_qty": 141530.0,
+      "total_issue_qty": 0.0,
+      "total_pending_qty": 141530.0,
+      "materials_count": 9,
+      "from_warehouse": "FAN Floor",
+      "to_warehouse": "Ground Floor Fan Store (FAN-1)"
+    },
+    {
+      "req_no": "2333",
+      "req_date": "2026-09-20",
+      "company_for": "FAN",
+      "company_to": "MEP",
+      "need_by": "2026-09-20",
+      "entry_by": "Md. Rabbi Howladar",
+      "status": "CHECKED",
+      "items": [
+        {
+          "sl": "1",
+          "item_code": "3101010078",
+          "item_name": "Canopy Big",
+          "unit": "Pcs",
+          "req_qty": 82950.0,
+          "issue_qty": 0.0,
+          "pending_qty": 82950.0
+        },
+        {
+          "sl": "2",
+          "item_code": "3101010080",
+          "item_name": "Capacitor Cover",
+          "unit": "Pcs",
+          "req_qty": 40000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 40000.0
+        },
+        {
+          "sl": "3",
+          "item_code": "3101010081",
+          "item_name": "Rubber Gasket (56`` 48``)",
+          "unit": "Pcs",
+          "req_qty": 50000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 50000.0
+        },
+        {
+          "sl": "4",
+          "item_code": "3101010084",
+          "item_name": "Plastic XL Cap",
+          "unit": "Pcs",
+          "req_qty": 41475.0,
+          "issue_qty": 0.0,
+          "pending_qty": 41475.0
+        },
+        {
+          "sl": "5",
+          "item_code": "3101010085",
+          "item_name": "Insulation Rubber",
+          "unit": "Pcs",
+          "req_qty": 10000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 10000.0
+        },
+        {
+          "sl": "6",
+          "item_code": "3101010086",
+          "item_name": "Canopy Rubber Ring",
+          "unit": "Pcs",
+          "req_qty": 82950.0,
+          "issue_qty": 0.0,
+          "pending_qty": 82950.0
+        },
+        {
+          "sl": "7",
+          "item_code": "3101010110",
+          "item_name": "Rubber Gasket (5602)",
+          "unit": "Pcs",
+          "req_qty": 15000.0,
+          "issue_qty": 0.0,
+          "pending_qty": 15000.0
+        }
+      ],
+      "total_req_qty": 322375.0,
+      "total_issue_qty": 0.0,
+      "total_pending_qty": 322375.0,
+      "materials_count": 7,
+      "from_warehouse": "FAN Floor",
+      "to_warehouse": "Ground Floor Fan Store (FAN-1)"
+    },
     {
       "req_no": "2326",
       "req_date": "2026-09-09",
@@ -29,8 +850,8 @@ const RAW_INTERSALES_REQUISITION_DATA = {
           "item_name": "Capacitor Master Carton-Fan",
           "unit": "Pcs",
           "req_qty": 6500.0,
-          "issue_qty": 128.0,
-          "pending_qty": 6372.0
+          "issue_qty": 2693.0,
+          "pending_qty": 3807.0
         },
         {
           "sl": "2",
@@ -38,8 +859,8 @@ const RAW_INTERSALES_REQUISITION_DATA = {
           "item_name": "Capacitor Inner box 2.5 \u00b5F -Fan",
           "unit": "Pcs",
           "req_qty": 13000.0,
-          "issue_qty": 327.0,
-          "pending_qty": 12673.0
+          "issue_qty": 7327.0,
+          "pending_qty": 5673.0
         },
         {
           "sl": "3",
@@ -47,8 +868,8 @@ const RAW_INTERSALES_REQUISITION_DATA = {
           "item_name": "Capacitor Inner box 3.5 \u00b5F -Fan",
           "unit": "Pcs",
           "req_qty": 13000.0,
-          "issue_qty": 492.0,
-          "pending_qty": 12508.0
+          "issue_qty": 8992.0,
+          "pending_qty": 4008.0
         },
         {
           "sl": "4",
@@ -56,8 +877,8 @@ const RAW_INTERSALES_REQUISITION_DATA = {
           "item_name": "Capacitor Warranty Card 2.5 \u00b5F -Fan",
           "unit": "Pcs",
           "req_qty": 155000.0,
-          "issue_qty": 0.0,
-          "pending_qty": 155000.0
+          "issue_qty": 155000.0,
+          "pending_qty": 0.0
         },
         {
           "sl": "5",
@@ -65,8 +886,8 @@ const RAW_INTERSALES_REQUISITION_DATA = {
           "item_name": "Capacitor Warranty Card 3.5 \u00b5F -Fan",
           "unit": "Pcs",
           "req_qty": 155000.0,
-          "issue_qty": 0.0,
-          "pending_qty": 155000.0
+          "issue_qty": 155000.0,
+          "pending_qty": 0.0
         },
         {
           "sl": "6",
@@ -79,8 +900,8 @@ const RAW_INTERSALES_REQUISITION_DATA = {
         }
       ],
       "total_req_qty": 392500.0,
-      "total_issue_qty": 30947.0,
-      "total_pending_qty": 361553.0,
+      "total_issue_qty": 359012.0,
+      "total_pending_qty": 33488.0,
       "materials_count": 6,
       "from_warehouse": "FAN Floor",
       "to_warehouse": "Ground Floor Fan Store (FAN-1)"

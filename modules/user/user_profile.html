@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="profile-dropdown-wrapper">
-                    <div class="user-brand-card" onclick="if(window.toggleProfileDropdown) toggleProfileDropdown(event)" role="button" tabindex="0" title="Profile Details">
+                    <div class="user-brand-card" style="cursor:default;" title="Official Profile">
                         <div class="user-avatar-frame" style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid #0284c7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                             <img src="../../shared/assets/profile.jpg" alt="Sayful Islam" id="navbarProfileImg" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='../../shared/assets/sayful_logo.png'">
                         </div>
@@ -49,7 +49,6 @@
                             <span class="user-brand-name" id="navbarProfileName">Sayful Islam</span>
                             <span class="user-brand-role" id="navbarProfileRole">Senior Supervisor</span>
                         </div>
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#64748b" stroke-width="2.2" class="user-brand-chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
                 </div>
 
@@ -66,7 +65,7 @@
 
     <!-- Shell Layout -->
     <div class="user-shell-layout">
-        <!-- Sidebar -->
+        <!-- Sidebar (Frozen 260px Dock) -->
         <aside class="user-sidebar" id="userSidebar">
             <div class="user-sidebar-top-actions">
                 <a href="../../index.html?view=user" class="mep-nav-3d-btn mep-btn-3d-dash" aria-label="User Hub" title="Return to User Module Hub">
@@ -101,11 +100,11 @@
                 </a>
             </div>
 
-            <!-- Dedicated User Page Menu -->
+            <!-- Dedicated User Module Menu (Strictly 2 Options) -->
             <div class="user-nav-menu">
                 <div class="user-nav-section-title">User Module Pages</div>
 
-                <!-- Page 1: User Profile Management (ACTIVE) -->
+                <!-- 1. User Profile Management (ACTIVE) -->
                 <a href="user_profile.html" class="user-nav-item active" id="userMenuProfile" title="User Profile Management">
                     <div class="user-nav-icon-box" style="background:#0284c7; color:#ffffff;">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -114,10 +113,9 @@
                         </svg>
                     </div>
                     <span>User Profile Management</span>
-                    <span class="user-nav-badge badge-blue" id="sidebarUserCountBadge">2</span>
                 </a>
 
-                <!-- Page 2: All Mapping -->
+                <!-- 2. All Mapping -->
                 <a href="all_mapping.html" class="user-nav-item" id="userMenuMapping" title="Complete ERP All Mapping Documentation">
                     <div class="user-nav-icon-box" style="background:#f3e8ff; color:#7e22ce;">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -128,7 +126,7 @@
                         </svg>
                     </div>
                     <span>All Mapping</span>
-                    <span class="user-nav-badge badge-purple">9 Bots</span>
+                    <span class="user-nav-badge badge-purple">3 Modules</span>
                 </a>
             </div>
 
@@ -143,413 +141,338 @@
             <!-- View-Only Warning Banner (if logged in as View User) -->
             <div class="view-only-lock-banner" id="viewUserLockBanner" style="display:none;">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span><strong>View-Only Account Mode:</strong> You are logged in with restricted viewing permissions. You can view user directories, but profile creation, editing, status changes, and role modifications are restricted to Administrators.</span>
+                <span><strong>View-Only Account Mode:</strong> You are logged in with restricted viewing permissions. Profile editing, photo update, and save actions are restricted to Administrators.</span>
             </div>
 
-            <!-- Page Header -->
-            <div class="user-page-header">
-                <div class="user-header-left">
-                    <div class="user-header-icon-box">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
+            <!-- Profile Management Layout Grid (Matches User's Screenshot 1 Exactly) -->
+            <div class="user-profile-layout-grid">
+                <!-- Left: Identity Overview Card -->
+                <div class="user-identity-card">
+                    <div class="user-avatar-upload-frame">
+                        <img src="../../shared/assets/profile.jpg" alt="Sayful Islam" id="userProfilePhotoPreview" class="dynamic-profile-img" onerror="this.src='../../shared/assets/sayful_logo.png'">
+                        <button type="button" class="btn-avatar-camera" onclick="document.getElementById('userProfilePhotoInput').click()" title="Change Profile Photo" id="btnChangeAvatarPhoto">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        </button>
+                        <input type="file" id="userProfilePhotoInput" accept="image/*" style="display:none;" onchange="handleProfilePhotoUpload(event)">
                     </div>
-                    <div>
-                        <h1 class="user-page-title">User Profile Management</h1>
-                        <p class="user-page-subtitle">Centralized Enterprise User Accounts, Role Assignments &amp; Access Control Matrix</p>
-                    </div>
-                </div>
-                <div class="user-header-actions">
-                    <button type="button" class="btn-primary" id="btnOpenAddUserModal" onclick="openAddUserModal()">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        <span>Add New User Profile</span>
-                    </button>
-                </div>
-            </div>
 
-            <!-- 4 Executive KPI Cards -->
-            <div class="kpi-summary-grid">
-                <div class="kpi-summary-card">
-                    <div class="kpi-label">Total Users <span>👥</span></div>
-                    <div class="kpi-value" id="kpiTotalUsers">2</div>
-                    <div class="kpi-sub">Configured Accounts</div>
-                </div>
-                <div class="kpi-summary-card">
-                    <div class="kpi-label">Active Administrators <span>🛡️</span></div>
-                    <div class="kpi-value" id="kpiActiveAdmins" style="color:#b91c1c;">1</div>
-                    <div class="kpi-sub" style="color:#b91c1c;">Full Access Level</div>
-                </div>
-                <div class="kpi-summary-card">
-                    <div class="kpi-label">View-Only Accounts <span>👁️</span></div>
-                    <div class="kpi-value" id="kpiViewUsers" style="color:#d97706;">1</div>
-                    <div class="kpi-sub" style="color:#d97706;">Read-Only Auditing</div>
-                </div>
-                <div class="kpi-summary-card">
-                    <div class="kpi-label">Account Security <span>🟢</span></div>
-                    <div class="kpi-value" id="kpiSecurityStatus" style="color:#059669; font-size:18px;">100% Active</div>
-                    <div class="kpi-sub">Strict Portal Guard</div>
-                </div>
-            </div>
+                    <h2 class="user-identity-title dynamic-profile-name" id="userModuleDisplayTitle">Sayful Islam</h2>
+                    <div class="user-identity-role-badge dynamic-profile-role" id="userModuleDisplayRole">Senior Supervisor</div>
+                    <div class="user-identity-id-tag">Employee ID: <strong class="dynamic-profile-id" id="userModuleDisplayId">10676</strong></div>
 
-            <!-- User Directory Table Card -->
-            <div class="table-container-card">
-                <div style="padding:14px 18px; border-bottom:1.5px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; background:#fafafa;">
-                    <div style="font-weight:800; font-size:15px; color:#0f172a; display:flex; align-items:center; gap:8px;">
-                        <span>📋</span>
-                        <span>Enterprise User &amp; Role Directory</span>
+                    <div class="user-identity-divider"></div>
+
+                    <div class="user-identity-stats-list">
+                        <div class="identity-stat-row">
+                            <span class="stat-row-label">Department:</span>
+                            <strong class="stat-row-val dynamic-profile-section" id="userModuleDisplaySection">Fan Assemble</strong>
+                        </div>
+                        <div class="identity-stat-row">
+                            <span class="stat-row-label">Join Date:</span>
+                            <strong class="stat-row-val dynamic-profile-joindate" id="userModuleDisplayJoinDate">01-Feb-2021</strong>
+                        </div>
+                        <div class="identity-stat-row">
+                            <span class="stat-row-label">Total Service:</span>
+                            <strong class="stat-row-val" style="color: #0284c7; font-weight: 800;">
+                                <span class="dynamic-profile-service profileServiceDuration" id="userProfileServiceVal">5 Years, 7 Months, 19 Days</span>
+                            </strong>
+                        </div>
                     </div>
-                    <div style="font-size:12.5px; color:#64748b; font-weight:700;" id="tableSubCount">
-                        Showing 2 registered accounts
+
+                    <div class="user-identity-auth-pill">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#059669" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <span>Enterprise Admin Identity</span>
                     </div>
                 </div>
 
-                <div style="overflow-x:auto;">
-                    <table class="user-table" id="usersDirectoryTable">
-                        <thead>
-                            <tr>
-                                <th style="text-align:center; width:50px;">SL</th>
-                                <th>User / Profile</th>
-                                <th>Username / Email</th>
-                                <th>Designation</th>
-                                <th>Role</th>
-                                <th>Department</th>
-                                <th>Status</th>
-                                <th>Created Date</th>
-                                <th>Last Login</th>
-                                <th style="text-align:right; width:130px;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="userTableBody">
-                            <!-- Injected dynamically by JavaScript -->
-                        </tbody>
-                    </table>
+                <!-- Right: Edit Profile Information Form Card -->
+                <div class="user-edit-details-card">
+                    <div class="edit-card-header">
+                        <div>
+                            <h3 class="edit-card-title">Official Profile Information</h3>
+                            <p class="edit-card-subtitle">Changes saved here will automatically synchronize with all header nameplates and user profiles across the ERP.</p>
+                        </div>
+                        <div class="live-sync-indicator" title="Single Source of Truth Active">
+                            <span class="sync-dot"></span>
+                            <span>Single Source of Truth</span>
+                        </div>
+                    </div>
+
+                    <form id="userProfileEditForm" onsubmit="handleSaveProfile(event)">
+                        <div class="user-form-grid">
+                            <!-- 1. Full Name -->
+                            <div class="user-form-group">
+                                <label class="user-field-label">Full Name *</label>
+                                <input type="text" id="editProfName" class="user-field-input" required placeholder="Full Name" value="Sayful Islam">
+                            </div>
+
+                            <!-- 2. Role / Designation -->
+                            <div class="user-form-group">
+                                <label class="user-field-label">Designation / Role *</label>
+                                <input type="text" id="editProfRole" class="user-field-input" required placeholder="Designation" value="Senior Supervisor">
+                            </div>
+
+                            <!-- 3. ID Number -->
+                            <div class="user-form-group">
+                                <label class="user-field-label">ID Number *</label>
+                                <input type="text" id="editProfId" class="user-field-input" required placeholder="ID Number" value="10676">
+                            </div>
+
+                            <!-- 4. Phone Number -->
+                            <div class="user-form-group">
+                                <label class="user-field-label">Phone Number *</label>
+                                <input type="tel" id="editProfPhone" class="user-field-input" required placeholder="Phone Number" value="01796444132">
+                            </div>
+
+                            <!-- 5. Section -->
+                            <div class="user-form-group">
+                                <label class="user-field-label">Section *</label>
+                                <input type="text" id="editProfSection" class="user-field-input" required placeholder="Section" value="Fan Assemble">
+                            </div>
+
+                            <!-- 6. Join Date -->
+                            <div class="user-form-group">
+                                <label class="user-field-label">Joining Date *</label>
+                                <input type="text" id="editProfJoinDate" class="user-field-input" required placeholder="DD-Mon-YYYY (e.g. 01-Feb-2021)" value="01-Feb-2021" oninput="handleDateChange(this.value)" onchange="handleDateChange(this.value)">
+                            </div>
+
+                            <!-- 7. Total Service (Auto-Calculated in Years, Months, and Days) -->
+                            <div class="user-form-group user-form-full">
+                                <label class="user-field-label" style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>Total Service (Duration) *</span>
+                                    <span class="policy-locked-tag" style="background:#eff6ff; color:#0284c7; border-color:#bfdbfe; font-weight:700;">⚡ Auto-Calculated (Years, Months, Days)</span>
+                                </label>
+                                <div class="service-fixed-input-wrap">
+                                    <input type="text" id="editProfTotalService" class="user-field-input" value="5 Years, 7 Months, 19 Days" readonly style="background:#f8fafc; color:#0284c7; font-weight:800; cursor:default;" title="Automatically calculated in Years, Months, and Days based on Joining Date and current date.">
+                                    <div class="lock-shield-icon" title="Live Auto-Calculated Duration" style="color:#0284c7;">⏱️</div>
+                                </div>
+                                <span class="field-hint-text" style="color:#64748b;">Automatically calculated in Years, Months, and Days based on your Joining Date and current date.</span>
+                            </div>
+                        </div>
+
+                        <!-- Footer Action Bar -->
+                        <div class="edit-card-footer">
+                            <button type="button" class="btn-user-secondary" onclick="handleResetProfile()" id="btnResetProfDefault">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                <span>Reset to Default</span>
+                            </button>
+                            <button type="submit" class="btn-user-primary" id="btnSaveUserProfile">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Save Profile Changes</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Modal: Add / Edit User Profile -->
-    <div class="modal-overlay" id="userFormModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 class="modal-title" id="userFormModalTitle">Add New User Profile</h3>
-                <button type="button" class="modal-close-btn" onclick="closeUserModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="userProfileForm" onsubmit="handleSaveUser(event)">
-                    <input type="hidden" id="formUserId" value="">
-
-                    <div class="form-grid-2">
-                        <div class="form-group">
-                            <label>Full Name *</label>
-                            <input type="text" id="formFullName" required placeholder="e.g. Sayful Islam">
-                        </div>
-                        <div class="form-group">
-                            <label>Username / Email *</label>
-                            <input type="text" id="formUsername" required placeholder="e.g. sayful.prd.fan@mepgroupbd.com">
-                        </div>
-                    </div>
-
-                    <div class="form-grid-2">
-                        <div class="form-group">
-                            <label>Designation *</label>
-                            <input type="text" id="formDesignation" required placeholder="e.g. Senior Supervisor">
-                        </div>
-                        <div class="form-group">
-                            <label>User Role *</label>
-                            <select id="formRole" required>
-                                <option value="ADMIN">ADMIN (Full Access &amp; Management)</option>
-                                <option value="VIEW USER">VIEW USER (Restricted Read-Only)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-grid-2">
-                        <div class="form-group">
-                            <label>Department / Section *</label>
-                            <input type="text" id="formDepartment" required placeholder="e.g. Fan Assemble (ERP)">
-                        </div>
-                        <div class="form-group">
-                            <label>Account Status *</label>
-                            <select id="formStatus" required>
-                                <option value="Active">Active</option>
-                                <option value="Disabled">Disabled</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Granted Permissions</label>
-                        <div class="permissions-checkbox-grid">
-                            <label class="perm-item"><input type="checkbox" id="permFull" checked> Full Administrative Access</label>
-                            <label class="perm-item"><input type="checkbox" id="permUserMgmt" checked> User &amp; Role Management</label>
-                            <label class="perm-item"><input type="checkbox" id="permMapping" checked> All Mapping Control &amp; Tests</label>
-                            <label class="perm-item"><input type="checkbox" id="permSync" checked> Live ERP Bot Execution &amp; Sync</label>
-                            <label class="perm-item"><input type="checkbox" id="permDb" checked> Database &amp; BOM Modifications</label>
-                            <label class="perm-item"><input type="checkbox" id="permAudit" checked> Security &amp; Audit Log Access</label>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer" style="margin:-20px; margin-top:20px;">
-                        <button type="button" class="btn-secondary" onclick="closeUserModal()">Cancel</button>
-                        <button type="submit" class="btn-primary" id="btnSubmitUserForm">Save User Profile</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Scripts -->
+    <script src="../../shared/js/portal_auth.js"></script>
     <script src="../../shared/js/sidebar_dynamic_models.js"></script>
-    <script src="user_module_engine.js"></script>
     <script>
-        function checkUserPermissionsUI() {
-            const isAdmin = window.USER_MODULE_ENGINE.isCurrentUserAdmin();
-            const isViewOnly = window.USER_MODULE_ENGINE.isCurrentUserViewOnly();
-
-            const badge = document.getElementById('userViewOnlyBadge');
-            const lockBanner = document.getElementById('viewUserLockBanner');
-            const addBtn = document.getElementById('btnOpenAddUserModal');
-
-            if (isViewOnly) {
-                if (badge) badge.style.display = 'flex';
-                if (lockBanner) lockBanner.style.display = 'flex';
-                if (addBtn) {
-                    addBtn.disabled = true;
-                    addBtn.style.opacity = '0.5';
-                    addBtn.style.cursor = 'not-allowed';
-                    addBtn.title = 'View-Only users cannot add new profiles';
-                }
-            } else {
-                if (badge) badge.style.display = 'none';
-                if (lockBanner) lockBanner.style.display = 'none';
-                if (addBtn) {
-                    addBtn.disabled = false;
-                    addBtn.style.opacity = '1';
-                    addBtn.style.cursor = 'pointer';
-                }
-            }
-
-            // Sync top navbar profile
-            const currentProfile = JSON.parse(localStorage.getItem('mep_user_profile') || '{}');
-            if (currentProfile.name) {
-                const nameEl = document.getElementById('navbarProfileName');
-                const roleEl = document.getElementById('navbarProfileRole');
-                if (nameEl) nameEl.innerText = isViewOnly ? 'View User' : currentProfile.name;
-                if (roleEl) roleEl.innerText = isViewOnly ? 'Restricted Access' : currentProfile.role;
-            }
-        }
-
-        function renderUsersTable() {
-            const accounts = window.USER_MODULE_ENGINE.getUserAccounts();
-            const tbody = document.getElementById('userTableBody');
-            const isAdmin = window.USER_MODULE_ENGINE.isCurrentUserAdmin();
-            const isViewOnly = window.USER_MODULE_ENGINE.isCurrentUserViewOnly();
-
-            if (!tbody) return;
-
-            let html = '';
-            accounts.forEach((u, idx) => {
-                const isUserAdmin = (u.role || '').toUpperCase().includes('ADMIN');
-                const roleBadge = isUserAdmin 
-                    ? `<span class="role-badge role-admin">🛡️ ADMIN</span>`
-                    : `<span class="role-badge role-view">👁️ VIEW USER</span>`;
-                
-                const statusBadge = (u.status === 'Active')
-                    ? `<span class="status-pill status-active">● Active</span>`
-                    : `<span class="status-pill status-disabled">● Disabled</span>`;
-
-                const actionControls = isAdmin ? `
-                    <div style="display:flex; align-items:center; justify-content:flex-end; gap:6px;">
-                        <button type="button" class="btn-secondary" style="padding:4px 9px; font-size:12px;" onclick="openEditUserModal('${u.id}')" title="Edit Profile">✏️ Edit</button>
-                        <button type="button" class="btn-secondary" style="padding:4px 9px; font-size:12px; color:#b91c1c;" onclick="handleToggleStatus('${u.id}')" title="Toggle Active/Disabled">⏻</button>
-                    </div>
-                ` : `
-                    <div style="display:flex; align-items:center; justify-content:flex-end;">
-                        <span style="font-size:11.5px; color:#64748b; font-weight:700;">🔒 View Only</span>
-                    </div>
-                `;
-
-                html += `
-                    <tr>
-                        <td style="text-align:center; font-family:monospace; font-weight:700; color:#64748b;">${idx + 1}</td>
-                        <td>
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                <div style="width:34px; height:34px; border-radius:50%; overflow:hidden; border:1.5px solid #0284c7; flex-shrink:0;">
-                                    <img src="${u.avatar}" alt="${u.fullName}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='../../shared/assets/sayful_logo.png'">
-                                </div>
-                                <div>
-                                    <div style="font-weight:800; color:#0f172a;">${u.fullName}</div>
-                                    <div style="font-size:11px; color:#64748b;">ID: ${u.id}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td style="font-family:monospace; font-weight:600; color:#0284c7;">${u.username}</td>
-                        <td style="font-weight:600; color:#334155;">${u.designation}</td>
-                        <td>${roleBadge}</td>
-                        <td style="color:#475569;">${u.department}</td>
-                        <td>${statusBadge}</td>
-                        <td style="font-size:12px; color:#64748b;">${u.createdDate}</td>
-                        <td style="font-size:12px; color:#059669; font-weight:700;">${u.lastLogin}</td>
-                        <td>${actionControls}</td>
-                    </tr>
-                `;
-            });
-
-            tbody.innerHTML = html;
-
-            // Update KPI numbers
-            const totalUsersEl = document.getElementById('kpiTotalUsers');
-            const adminsEl = document.getElementById('kpiActiveAdmins');
-            const viewUsersEl = document.getElementById('kpiViewUsers');
-            const subCountEl = document.getElementById('tableSubCount');
-            const sidebarBadge = document.getElementById('sidebarUserCountBadge');
-
-            const adminsCount = accounts.filter(a => (a.role || '').toUpperCase().includes('ADMIN')).length;
-            const viewCount = accounts.filter(a => !(a.role || '').toUpperCase().includes('ADMIN')).length;
-
-            if (totalUsersEl) totalUsersEl.innerText = accounts.length;
-            if (adminsEl) adminsEl.innerText = adminsCount;
-            if (viewUsersEl) viewUsersEl.innerText = viewCount;
-            if (subCountEl) subCountEl.innerText = `Showing ${accounts.length} registered accounts`;
-            if (sidebarBadge) sidebarBadge.innerText = accounts.length;
-        }
-
-        function openAddUserModal() {
-            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
-                alert("Access Denied: View-Only accounts cannot create new user profiles.");
-                return;
-            }
-            document.getElementById('userFormModalTitle').innerText = "Add New User Profile";
-            document.getElementById('formUserId').value = "";
-            document.getElementById('formFullName').value = "";
-            document.getElementById('formUsername').value = "";
-            document.getElementById('formDesignation').value = "";
-            document.getElementById('formRole').value = "ADMIN";
-            document.getElementById('formDepartment').value = "Fan Assemble (ERP)";
-            document.getElementById('formStatus').value = "Active";
-            document.getElementById('userFormModal').style.display = 'flex';
-        }
-
-        function openEditUserModal(userId) {
-            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
-                alert("Access Denied: View-Only accounts cannot edit user profiles.");
-                return;
-            }
-            const accounts = window.USER_MODULE_ENGINE.getUserAccounts();
-            const u = accounts.find(a => a.id === userId);
-            if (!u) return;
-
-            document.getElementById('userFormModalTitle').innerText = `Edit User: ${u.fullName}`;
-            document.getElementById('formUserId').value = u.id;
-            document.getElementById('formFullName').value = u.fullName;
-            document.getElementById('formUsername').value = u.username;
-            document.getElementById('formDesignation').value = u.designation;
-            document.getElementById('formRole').value = u.role;
-            document.getElementById('formDepartment').value = u.department;
-            document.getElementById('formStatus').value = u.status;
-            document.getElementById('userFormModal').style.display = 'flex';
-        }
-
-        function closeUserModal() {
-            document.getElementById('userFormModal').style.display = 'none';
-        }
-
-        function handleSaveUser(e) {
-            e.preventDefault();
-            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
-                alert("Access Denied: View-Only accounts cannot modify users.");
-                return;
-            }
-
-            const id = document.getElementById('formUserId').value;
-            const fullName = document.getElementById('formFullName').value.trim();
-            const username = document.getElementById('formUsername').value.trim();
-            const designation = document.getElementById('formDesignation').value.trim();
-            const role = document.getElementById('formRole').value;
-            const department = document.getElementById('formDepartment').value.trim();
-            const status = document.getElementById('formStatus').value;
-
-            let accounts = window.USER_MODULE_ENGINE.getUserAccounts();
-
-            if (id) {
-                // Update existing
-                accounts = accounts.map(a => {
-                    if (a.id === id) {
-                        return {
-                            ...a,
-                            fullName: fullName,
-                            username: username,
-                            designation: designation,
-                            role: role,
-                            department: department,
-                            status: status
-                        };
-                    }
-                    return a;
-                });
-            } else {
-                // Add new
-                const newId = `usr_${Date.now()}`;
-                accounts.push({
-                    id: newId,
-                    username: username,
-                    fullName: fullName,
-                    designation: designation,
-                    role: role,
-                    department: department,
-                    status: status,
-                    permissions: role === 'ADMIN' ? ["Full Access", "User Management", "Sync ERP"] : ["Restricted View"],
-                    createdDate: new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }),
-                    lastLogin: "Never",
-                    avatar: "../../shared/assets/profile.jpg",
-                    modules: ["Warehouse Module", "Production Module"],
-                    pages: "All Permitted Pages"
-                });
-            }
-
-            window.USER_MODULE_ENGINE.saveUserAccounts(accounts);
-            closeUserModal();
-            renderUsersTable();
-        }
-
-        function handleToggleStatus(userId) {
-            if (window.USER_MODULE_ENGINE.isCurrentUserViewOnly()) {
-                alert("Access Denied: View-Only accounts cannot modify user status.");
-                return;
-            }
-            let accounts = window.USER_MODULE_ENGINE.getUserAccounts();
-            accounts = accounts.map(a => {
-                if (a.id === userId) {
-                    const newStatus = (a.status === 'Active') ? 'Disabled' : 'Active';
-                    return { ...a, status: newStatus };
-                }
-                return a;
-            });
-            window.USER_MODULE_ENGINE.saveUserAccounts(accounts);
-            renderUsersTable();
-        }
-
+        // Live Clock
         function updateLiveClock() {
-            const dayEl = document.getElementById('userLiveDayText');
-            const timeEl = document.getElementById('userLiveTimeText');
             const now = new Date();
-            if (dayEl) {
-                dayEl.innerText = now.toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const dayStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            const timeStr = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+
+            const dEl = document.getElementById('userLiveDayText');
+            const tEl = document.getElementById('userLiveTimeText');
+            if (dEl) dEl.textContent = dayStr;
+            if (tEl) tEl.textContent = timeStr;
+        }
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+
+        // Calculate service duration
+        function calcServiceDuration(joinDateStr) {
+            try {
+                if (!joinDateStr) return '5 Years, 7 Months, 19 Days';
+                const parts = joinDateStr.split('-');
+                if (parts.length === 3) {
+                    const monthMap = { 'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5, 'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11 };
+                    const day = parseInt(parts[0], 10);
+                    const month = monthMap[parts[1].toLowerCase()] !== undefined ? monthMap[parts[1].toLowerCase()] : 1;
+                    const year = parseInt(parts[2], 10);
+                    const joinDate = new Date(year, month, day);
+                    const now = new Date();
+
+                    let years = now.getFullYear() - joinDate.getFullYear();
+                    let months = now.getMonth() - joinDate.getMonth();
+                    let days = now.getDate() - joinDate.getDate();
+
+                    if (days < 0) {
+                        months--;
+                        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                        days += prevMonth.getDate();
+                    }
+                    if (months < 0) {
+                        years--;
+                        months += 12;
+                    }
+                    return `${years} Years, ${months} Months, ${days} Days`;
+                }
+            } catch(e) {}
+            return '5 Years, 7 Months, 19 Days';
+        }
+
+        function handleDateChange(val) {
+            const dur = calcServiceDuration(val);
+            const totInp = document.getElementById('editProfTotalService');
+            const durSpan = document.getElementById('userProfileServiceVal');
+            if (totInp) totInp.value = dur;
+            if (durSpan) durSpan.textContent = dur;
+        }
+
+        function loadUserProfileData() {
+            const prof = (window.getUserProfile && window.getUserProfile()) || {
+                name: 'Sayful Islam',
+                role: 'Senior Supervisor',
+                idNumber: '10676',
+                phone: '01796444132',
+                section: 'Fan Assemble',
+                joinDate: '01-Feb-2021',
+                photo: '../../shared/assets/profile.jpg'
+            };
+
+            const nameInp = document.getElementById('editProfName');
+            const roleInp = document.getElementById('editProfRole');
+            const idInp = document.getElementById('editProfId');
+            const phoneInp = document.getElementById('editProfPhone');
+            const secInp = document.getElementById('editProfSection');
+            const joinInp = document.getElementById('editProfJoinDate');
+
+            if (nameInp) nameInp.value = prof.name || 'Sayful Islam';
+            if (roleInp) roleInp.value = prof.role || 'Senior Supervisor';
+            if (idInp) idInp.value = prof.idNumber || '10676';
+            if (phoneInp) phoneInp.value = prof.phone || '01796444132';
+            if (secInp) secInp.value = prof.section || 'Fan Assemble';
+            if (joinInp) joinInp.value = prof.joinDate || '01-Feb-2021';
+
+            handleDateChange(prof.joinDate || '01-Feb-2021');
+
+            // Sync left identity card
+            const dt = document.getElementById('userModuleDisplayTitle');
+            const dr = document.getElementById('userModuleDisplayRole');
+            const di = document.getElementById('userModuleDisplayId');
+            const ds = document.getElementById('userModuleDisplaySection');
+            const dj = document.getElementById('userModuleDisplayJoinDate');
+
+            if (dt) dt.textContent = prof.name || 'Sayful Islam';
+            if (dr) dr.textContent = prof.role || 'Senior Supervisor';
+            if (di) di.textContent = prof.idNumber || '10676';
+            if (ds) ds.textContent = prof.section || 'Fan Assemble';
+            if (dj) dj.textContent = prof.joinDate || '01-Feb-2021';
+
+            // View-only check
+            const isView = (sessionStorage.getItem('portal_auth_role') || '').toUpperCase() === 'VIEW USER';
+            if (isView) {
+                const banner = document.getElementById('viewUserLockBanner');
+                const badge = document.getElementById('userViewOnlyBadge');
+                if (banner) banner.style.display = 'flex';
+                if (badge) badge.style.display = 'inline-flex';
+
+                ['editProfName', 'editProfRole', 'editProfId', 'editProfPhone', 'editProfSection', 'editProfJoinDate'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.readOnly = true;
+                });
+                const saveBtn = document.getElementById('btnSaveUserProfile');
+                const resetBtn = document.getElementById('btnResetProfDefault');
+                const camBtn = document.getElementById('btnChangeAvatarPhoto');
+                if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; saveBtn.style.cursor = 'not-allowed'; }
+                if (resetBtn) { resetBtn.disabled = true; resetBtn.style.opacity = '0.5'; resetBtn.style.cursor = 'not-allowed'; }
+                if (camBtn) camBtn.style.display = 'none';
             }
-            if (timeEl) {
-                timeEl.innerText = now.toLocaleTimeString('en-US', { hour12: true });
+        }
+
+        function handleSaveProfile(e) {
+            e.preventDefault();
+            if ((sessionStorage.getItem('portal_auth_role') || '').toUpperCase() === 'VIEW USER') {
+                alert('Access Denied: View-Only accounts cannot modify profile settings.');
+                return;
             }
+
+            const joinVal = document.getElementById('editProfJoinDate').value.trim();
+            const updated = {
+                name: document.getElementById('editProfName').value.trim(),
+                role: document.getElementById('editProfRole').value.trim(),
+                idNumber: document.getElementById('editProfId').value.trim(),
+                phone: document.getElementById('editProfPhone').value.trim(),
+                section: document.getElementById('editProfSection').value.trim(),
+                joinDate: joinVal,
+                totalService: calcServiceDuration(joinVal)
+            };
+
+            try {
+                localStorage.setItem('mep_user_profile', JSON.stringify(updated));
+            } catch(err) {}
+
+            if (window.saveUserProfile) {
+                window.saveUserProfile(updated);
+            }
+
+            // Visual feedback
+            const btn = document.getElementById('btnSaveUserProfile');
+            if (btn) {
+                const prev = btn.innerHTML;
+                btn.innerHTML = `<span>Saved Successfully!</span>`;
+                btn.style.backgroundColor = '#16a34a';
+                setTimeout(() => {
+                    btn.innerHTML = prev;
+                    btn.style.backgroundColor = '';
+                }, 1800);
+            }
+            loadUserProfileData();
+        }
+
+        function handleResetProfile() {
+            if ((sessionStorage.getItem('portal_auth_role') || '').toUpperCase() === 'VIEW USER') {
+                alert('Access Denied: View-Only accounts cannot reset profile.');
+                return;
+            }
+            if (confirm('Reset profile information to factory default?')) {
+                const defaults = {
+                    name: 'Sayful Islam',
+                    role: 'Senior Supervisor',
+                    idNumber: '10676',
+                    phone: '01796444132',
+                    section: 'Fan Assemble',
+                    joinDate: '01-Feb-2021',
+                    totalService: '5 Years, 7 Months, 19 Days'
+                };
+                try {
+                    localStorage.setItem('mep_user_profile', JSON.stringify(defaults));
+                } catch(e) {}
+                loadUserProfileData();
+            }
+        }
+
+        function handleProfilePhotoUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('userProfilePhotoPreview');
+                const navImg = document.getElementById('navbarProfileImg');
+                if (img) img.src = e.target.result;
+                if (navImg) navImg.src = e.target.result;
+                try {
+                    localStorage.setItem('mep_user_profile_photo', e.target.result);
+                } catch(err) {}
+            };
+            reader.readAsDataURL(file);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateLiveClock();
-            setInterval(updateLiveClock, 1000);
-            checkUserPermissionsUI();
-            renderUsersTable();
+            loadUserProfileData();
         });
     </script>
 </body>

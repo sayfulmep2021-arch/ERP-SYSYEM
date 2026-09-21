@@ -17,9 +17,9 @@ const RAW_FG_SUMMARY_DATA = [
         "itemName": "56 Inch Premium Ceiling Fan - Ivory",
         "unit": "Pcs",
         "opening": 0,
-        "production": 7080,
-        "delivery": 7080,
-        "closing": 0
+        "production": 9380,
+        "delivery": 0,
+        "closing": 50
     },
     {
         "sl": 2,
@@ -30,7 +30,7 @@ const RAW_FG_SUMMARY_DATA = [
         "unit": "Pcs",
         "opening": 23,
         "production": 33,
-        "delivery": 56,
+        "delivery": 0,
         "closing": 0
     },
     {
@@ -41,9 +41,9 @@ const RAW_FG_SUMMARY_DATA = [
         "itemName": "56 Inch Speed King Ceiling Fan - Ivory",
         "unit": "Pcs",
         "opening": 0,
-        "production": 5500,
-        "delivery": 5000,
-        "closing": 500
+        "production": 5553,
+        "delivery": 0,
+        "closing": 0
     },
     {
         "sl": 4,
@@ -54,8 +54,8 @@ const RAW_FG_SUMMARY_DATA = [
         "unit": "Pcs",
         "opening": 8,
         "production": 1062,
-        "delivery": 1008,
-        "closing": 62
+        "delivery": 0,
+        "closing": 0
     },
     {
         "sl": 5,
@@ -89,8 +89,8 @@ const RAW_FG_SUMMARY_DATA = [
         "itemName": "48 Inch Popular Ceiling Fan - Ivory",
         "unit": "Pcs",
         "opening": 0,
-        "production": 2193,
-        "delivery": 2193,
+        "production": 2331,
+        "delivery": 0,
         "closing": 0
     },
     {
@@ -101,8 +101,8 @@ const RAW_FG_SUMMARY_DATA = [
         "itemName": "36 Inch Hero Ceiling Fan - Ivory",
         "unit": "Pcs",
         "opening": 0,
-        "production": 6546,
-        "delivery": 6546,
+        "production": 7602,
+        "delivery": 0,
         "closing": 0
     },
     {
@@ -114,7 +114,7 @@ const RAW_FG_SUMMARY_DATA = [
         "unit": "Pcs",
         "opening": 0,
         "production": 2188,
-        "delivery": 2188,
+        "delivery": 0,
         "closing": 0
     },
     {
@@ -126,7 +126,7 @@ const RAW_FG_SUMMARY_DATA = [
         "unit": "Pcs",
         "opening": 0,
         "production": 176,
-        "delivery": 176,
+        "delivery": 0,
         "closing": 0
     },
     {
@@ -184,10 +184,10 @@ const RAW_FG_SUMMARY_DATA = [
         "code": "CG5606/CG5606IV",
         "itemName": "56 Inch Premium Plus Ceiling Fan With Gang Regulator - Ivory",
         "unit": "Pcs",
-        "opening": 0,
+        "opening": 4,
         "production": 0,
         "delivery": 0,
-        "closing": 0
+        "closing": 4
     },
     {
         "sl": 16,
@@ -208,10 +208,10 @@ const RAW_FG_SUMMARY_DATA = [
         "code": "CR3601IV",
         "itemName": "36 Inch Hero Ceiling Fan- Ivory (Without Regulator)",
         "unit": "Pcs",
-        "opening": 0,
+        "opening": 15,
         "production": 0,
         "delivery": 0,
-        "closing": 0
+        "closing": 15
     },
 
     // 2. CEILING FAN FG BLADE SERIES

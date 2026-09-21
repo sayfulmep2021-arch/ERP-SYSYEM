@@ -78,6 +78,8 @@
             if (viewParam === 'hrm' || curView === 'hrm') return 'hrm';
             if (viewParam === 'hub' || curView === 'hub' || curView === 'warehouse' || viewParam === 'warehouse') return 'warehouse';
             
+            const path = (window.location.pathname || '').toLowerCase();
+
             // Standalone report pages check
             if (path.includes('warehouse') || path.includes('stock') || path.includes('intersales') || path.includes('received') || path.includes('spare')) return 'warehouse';
             if (path.includes('user')) return 'user';
@@ -93,8 +95,9 @@
     function renderSidebarDynamicModels(forcedActiveKey) {
         const activeKey = forcedActiveKey || resolveCurrentActiveModule();
         
-        // Strictly exclude Current Module, MIS Module AND User Module
-        const alternativeModules = CORE_MODULES.filter(function(m) { return m.key !== activeKey; });
+        // Strictly exclude Current Module, MIS Module AND User Module (limit to exactly 2 cards)
+        let alternativeModules = CORE_MODULES.filter(function(m) { return m.key !== activeKey; });
+        if (alternativeModules.length > 2) alternativeModules = alternativeModules.slice(0, 2);
 
         // Ensure any old headers are eliminated
         const headers = document.querySelectorAll('.mod-switcher-header');

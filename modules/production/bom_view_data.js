@@ -1,5 +1,5 @@
 const RAW_BOM_VIEW_DATA = {
-  "extracted_at": "2026-09-19 15:20:27",
+  "extracted_at": "2026-09-21 09:42:29",
   "total_boms": 96,
   "data": [
     {
