@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Monthly Attendence | MEP FAN LTD.</title>
+    <script src="../../shared/js/portal_guard.js"></script>
+    <script>
+        // Seamless entry router to HRM Report: Monthly Attendence
+        try {
+            sessionStorage.setItem('portal_current_view', 'hrm');
+            sessionStorage.setItem('portal_active_erp_module', 'hrm');
+        } catch(e) {}
+        window.location.replace("../../index.html?view=hrm&sub=monthly_attendance");
+    </script>
+</head>
+<body style="margin:0; padding:0; background:#f8fafc; font-family:'Times New Roman', serif; display:flex; align-items:center; justify-content:center; height:100vh;">
+    <div style="text-align:center; padding:28px; max-width:480px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <div style="font-size:40px; margin-bottom:12px;">📋</div>
+        <h2 style="font-size:20px; font-weight:700; color:#0f2942; margin-bottom:6px;">Monthly Attendence</h2>
+        <p style="font-size:13px; color:#64748b; margin-bottom:18px;">Loading HRM Monthly Staff Attendance Report...</p>
+        <a href="../../index.html?view=hrm&sub=monthly_attendance" style="display:inline-block; padding:9px 20px; background:#0284c7; color:#ffffff; text-decoration:none; border-radius:6px; font-size:14px; font-weight:600;">Open Report</a>
+    </div>
+</body>
+</html>

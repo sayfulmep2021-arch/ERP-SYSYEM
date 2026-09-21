@@ -1543,21 +1543,12 @@
                             <span>🟢 Sync:</span> <span class="highlight">100% In-Memory</span>
                         </div>
                         <div class="flash-stat-pill" title="Active Synchronized Reports">
-                            <span>📊 Modules:</span> <span class="highlight">9 Live</span>
+                            <span>📊 Modules:</span> <span class="highlight">11 Live</span>
                         </div>
                     </div>
 
                     <div class="flash-header-actions-cluster">
-                        <div class="flash-header-date-box" title="Date Range for Inter Sales Requisition Collection">
-                            <span class="flash-date-box-label">📅 Date Range:</span>
-                            <div class="flash-date-input-pair">
-                                <input type="text" id="headerDateFromInput" value="01-09-2026" placeholder="DD-MM-YYYY" title="From Date for Inter Sales Requisition">
-                                <span class="flash-date-arrow">⟶</span>
-                                <input type="text" id="headerDateToInput" value="17-09-2026" placeholder="DD-MM-YYYY" title="To Date for Inter Sales Requisition">
-                            </div>
-                        </div>
-
-                        <button type="button" class="flash-all-load-btn" id="flashAllLoadBtn" onclick="triggerRunAllBotsAction(this)" title="One Click: Automatically collect and sync all 9 ERP operational reports">
+                        <button type="button" class="flash-all-load-btn" id="flashAllLoadBtn" onclick="triggerRunAllBotsAction(this)" title="One Click: Automatically collect and sync all 11 ERP operational reports">
                             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                             </svg>
@@ -1566,11 +1557,59 @@
                     </div>
                 </div>
 
-                <!-- Status Strip for Live Progress Reporting across 9 Bots -->
+                <!-- Persistent Bot Date Ranges Panel (Top Header Controls for Bot 1, Bot 10, Bot 11) -->
+                <div class="flash-header-date-cluster" title="Persistent Date Range Settings for Bots">
+                    <!-- Bot 1: Inter Sales Requisition -->
+                    <div class="flash-header-date-card flash-hdc-bot1" id="headerDateCard_1" title="Persistent Date Range for Inter Sales Requisition (Warehouse Module)">
+                        <div class="flash-hdc-top">
+                            <span class="flash-hdc-badge">Bot 1</span>
+                            <span class="flash-hdc-name">Inter Sales Requisition</span>
+                        </div>
+                        <div class="flash-hdc-inputs">
+                            <input type="text" id="headerDateFrom_1" value="01-09-2026" placeholder="DD-MM-YYYY" class="flash-hdc-input" title="From Date (DD-MM-YYYY)">
+                            <span class="flash-hdc-sep">⟶</span>
+                            <input type="text" id="headerDateTo_1" value="17-09-2026" placeholder="DD-MM-YYYY" class="flash-hdc-input" title="To Date (DD-MM-YYYY)">
+                            <button type="button" class="flash-hdc-save-btn" onclick="validateAndSaveBotDateRange(1)" title="Save Date Range for Inter Sales Requisition">💾 Save</button>
+                        </div>
+                        <div class="flash-hdc-saved" id="headerDateBadge_1">Saved: 01-09-2026 to 17-09-2026</div>
+                    </div>
+
+                    <!-- Bot 10: Monthly Attendance -->
+                    <div class="flash-header-date-card flash-hdc-bot10" id="headerDateCard_10" title="Persistent Date Range for Monthly Attendance Sheet (HRM Module)">
+                        <div class="flash-hdc-top">
+                            <span class="flash-hdc-badge">Bot 10</span>
+                            <span class="flash-hdc-name">Monthly Attendance</span>
+                        </div>
+                        <div class="flash-hdc-inputs">
+                            <input type="text" id="headerDateFrom_10" value="26-08-2026" placeholder="DD-MM-YYYY" class="flash-hdc-input" title="From Date (DD-MM-YYYY)">
+                            <span class="flash-hdc-sep">⟶</span>
+                            <input type="text" id="headerDateTo_10" value="21-09-2026" placeholder="DD-MM-YYYY" class="flash-hdc-input" title="To Date (DD-MM-YYYY)">
+                            <button type="button" class="flash-hdc-save-btn" onclick="validateAndSaveBotDateRange(10)" title="Save Date Range for Monthly Attendance Sheet">💾 Save</button>
+                        </div>
+                        <div class="flash-hdc-saved" id="headerDateBadge_10">Saved: 26-08-2026 to 21-09-2026</div>
+                    </div>
+
+                    <!-- Bot 11: Monthly & Yearly Attendance -->
+                    <div class="flash-header-date-card flash-hdc-bot11" id="headerDateCard_11" title="Persistent Date Range for Monthly &amp; Yearly Attendance Report (HRM Module)">
+                        <div class="flash-hdc-top">
+                            <span class="flash-hdc-badge">Bot 11</span>
+                            <span class="flash-hdc-name">Monthly &amp; Yearly Attendance</span>
+                        </div>
+                        <div class="flash-hdc-inputs">
+                            <input type="text" id="headerDateFrom_11" value="26-12-2025" placeholder="DD-MM-YYYY" class="flash-hdc-input" title="From Date (DD-MM-YYYY)">
+                            <span class="flash-hdc-sep">⟶</span>
+                            <input type="text" id="headerDateTo_11" value="21-09-2026" placeholder="DD-MM-YYYY" class="flash-hdc-input" title="To Date (DD-MM-YYYY)">
+                            <button type="button" class="flash-hdc-save-btn" onclick="validateAndSaveBotDateRange(11)" title="Save Date Range for Monthly &amp; Yearly Attendance Report">💾 Save</button>
+                        </div>
+                        <div class="flash-hdc-saved" id="headerDateBadge_11">Saved: 26-12-2025 to 21-09-2026</div>
+                    </div>
+                </div>
+
+                <!-- Status Strip for Live Progress Reporting across 11 Bots -->
                 <div class="flash-bot-status-strip" id="flashBotStatusStrip" style="display: none;">
                     <div class="flash-status-main-col">
                         <div class="flash-status-header-row">
-                            <div class="flash-status-text" id="flashStatusText">Ready to run 9 bots</div>
+                            <div class="flash-status-text" id="flashStatusText">Ready to run 11 bots</div>
                             <div class="flash-status-percentage" id="flashStatusPercentage">0%</div>
                         </div>
                         <div class="flash-status-bar-track">
@@ -1584,7 +1623,7 @@
                 </div>
             </div>
 
-            <!-- Body Viewport with 9 Table Cards Grid (3x3 Symmetrical Hierarchy) -->
+            <!-- Body Viewport with 11 Table Cards Grid -->
             <div class="flash-body-viewport">
                 <div class="flash-cards-grid">
 
@@ -1741,6 +1780,40 @@
                         </div>
                     </div>
 
+                    <!-- 10. Monthly Attendance Sheet (Indigo Violet) — Bot 10 -->
+                    <div class="flash-card flash-theme-attendance" id="flashCard10">
+                        <div class="flash-card-header">
+                            <h4 class="flash-card-title">Monthly Attendance</h4>
+                            <div class="flash-card-source" title="Source: HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly Attendence Sheet">📍 HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly Attendence Sheet</div>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent10" style="display:none;"></div>
+                        <div class="flash-card-footer">
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn10" onclick="triggerBotRunAction(10, this)" title="Run Bot 10 to collect/sync live HRM attendance data">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn10" onclick="openCollectedDataAction(10)" title="View Collected Data for Bot 10">
+                                <span>📊 Collected Data</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 11. Monthly & Yearly Attendance Report (Ocean Cyan) — Bot 11 -->
+                    <div class="flash-card flash-theme-yearlyatt" id="flashCard11">
+                        <div class="flash-card-header">
+                            <h4 class="flash-card-title">Monthly &amp; Yearly Attendance</h4>
+                            <div class="flash-card-source" title="Source: HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly &amp; Yearly Attendence Report">📍 HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly &amp; Yearly Attendence Report</div>
+                        </div>
+                        <div class="flash-main-display-area" id="flashContent11" style="display:none;"></div>
+                        <div class="flash-card-footer">
+                            <button type="button" class="flash-load-btn flash-btn-run" id="flashBtn11" onclick="triggerBotRunAction(11, this)" title="Run Bot 11 to collect/sync live HRM attendance data (MEP FAN LIMITED, Production)">
+                                <span>⚡ Run Bot</span>
+                            </button>
+                            <button type="button" class="flash-load-btn flash-btn-collected" id="flashDataBtn11" onclick="openCollectedDataAction(11)" title="View Collected Data for Bot 11">
+                                <span>📊 Collected Data</span>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -1856,6 +1929,30 @@
                 ['3101010140', 'Super Enamelled Wire 0.32mm', 'KG', 'Local', '<span style="color:#0284c7;font-weight:700;">Active</span>']
             ],
             badgeText: 'Live BOM'
+        },
+        10: {
+            title: 'Monthly Attendance',
+            url: 'modules/hrm/hrm_section_assemble_line.html',
+            headers: ['EMP ID', 'Employee Name', 'Department', 'Present', 'Absent'],
+            rows: [
+                ['855', 'Md.Kausar Hossain Poran', 'Production', '16', '<span style="color:#16a34a;font-weight:700;">0</span>'],
+                ['856', 'Md. Sakhawat Hossain', 'Production', '16', '<span style="color:#16a34a;font-weight:700;">0</span>'],
+                ['857', 'Md. Rasel', 'Production', '15', '<span style="color:#d97706;font-weight:700;">1</span>'],
+                ['858', 'Md. Monirul Islam', 'Production', '14', '<span style="color:#dc2626;font-weight:700;">2</span>']
+            ],
+            badgeText: '126 Employees'
+        },
+        11: {
+            title: 'Monthly & Yearly Attendance',
+            url: 'modules/hrm/hrm_section_assemble_line.html',
+            headers: ['ID No', 'Name', 'Designation', 'Present Days', 'Absent Days'],
+            rows: [
+                ['569', 'Sudeb Baral', 'Assistant Engineer', '16', '<span style="color:#dc2626;font-weight:700;">6</span>'],
+                ['570', 'Md. Imran Hossain', 'Junior Officer', '16', '<span style="color:#16a34a;font-weight:700;">0</span>'],
+                ['571', 'Al Amin', 'Technician', '16', '<span style="color:#16a34a;font-weight:700;">0</span>'],
+                ['572', 'Md. Shakil', 'Operator', '15', '<span style="color:#d97706;font-weight:700;">1</span>']
+            ],
+            badgeText: '317 Staff'
         }
     };
 
@@ -1916,23 +2013,23 @@
     function loadAllFlashTables() {
         var allBtn = document.getElementById('flashAllLoadBtn');
         if (allBtn) {
-            allBtn.innerHTML = '<span>Loading All 9 Tables...</span>';
+            allBtn.innerHTML = '<span>Loading All 11 Tables...</span>';
             allBtn.style.pointerEvents = 'none';
         }
 
         var count = 0;
-        for (var i = 1; i <= 9; i++) {
+        for (var i = 1; i <= 11; i++) {
             (function(idx) {
                 setTimeout(function() {
                     loadFlashTable(idx);
                     count++;
-                    if (count === 9 && allBtn) {
+                    if (count === 11 && allBtn) {
                         setTimeout(function() {
-                            allBtn.innerHTML = '<span>All 9 Tables Loaded</span>';
+                            allBtn.innerHTML = '<span>All 11 Tables Loaded</span>';
                             allBtn.style.background = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
                             allBtn.style.pointerEvents = 'auto';
                             if (typeof window.showToast === 'function') {
-                                window.showToast('⚡ Flash Hub: All 9 operational report tables synchronized!');
+                                window.showToast('⚡ Flash Hub: All 11 operational report tables synchronized!');
                             }
                             setTimeout(function() {
                                 allBtn.style.background = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
@@ -1949,6 +2046,9 @@
         var modal = document.getElementById('flashSpeedModal');
         if (modal) {
             modal.style.display = 'flex';
+            if (typeof window.initAllBotDateInputs === 'function') {
+                window.initAllBotDateInputs();
+            }
         }
     }
 
@@ -1999,15 +2099,17 @@
 
     // Mapping bot ID to card ID for fallback execution (1:1 direct mapping)
     var BOT_TO_CARD_MAP = {
-        1: 1, // Inter Sales Requisition -> Card 1
-        2: 2, // Inter Sales Chalan Report -> Card 2
-        3: 3, // Spare Parts -> Card 3
-        4: 4, // Fan Assemble -> Card 4
-        5: 5, // Armature & Winding -> Card 5
-        6: 6, // Finish Good (FG) -> Card 6
-        7: 7, // Closing All SFG -> Card 7
-        8: 8, // Store Position Report -> Card 8
-        9: 9  // Bill Of Materials -> Card 9
+        1: 1,  // Inter Sales Requisition -> Card 1
+        2: 2,  // Inter Sales Chalan Report -> Card 2
+        3: 3,  // Spare Parts -> Card 3
+        4: 4,  // Fan Assemble -> Card 4
+        5: 5,  // Armature & Winding -> Card 5
+        6: 6,  // Finish Good (FG) -> Card 6
+        7: 7,  // Closing All SFG -> Card 7
+        8: 8,  // Store Position Report -> Card 8
+        9: 9,  // Bill Of Materials -> Card 9
+        10: 10, // Monthly Attendance -> Card 10
+        11: 11  // Monthly & Yearly Attendance -> Card 11
     };
 
     function triggerRunAllBotsAction(btn) {

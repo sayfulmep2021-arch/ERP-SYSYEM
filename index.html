@@ -1053,8 +1053,8 @@
                 <!-- Sidebar Nav Menu -->
                 <nav class="hrm-nav-list">
 
-                    <!-- 2. Data Base (Parent Menu) -->
-                    <div class="hrm-menu-group is-open" id="hrmNavDatabaseParent">
+                    <!-- 1. Data Base (Parent Menu) -->
+                    <div class="hrm-menu-group" id="hrmNavDatabaseParent">
                         <div class="hrm-menu-parent" onclick="toggleHrmDatabaseMenu()" title="Data Base Master Menu">
                             <div class="hrm-nav-item-left">
                                 <div class="hrm-nav-icon" style="background:#fef3c7; color:#d97706;">🗄️</div>
@@ -1070,9 +1070,9 @@
                         </div>
                     </div>
 
-                    <!-- 3. Section Summary (Parent Menu) -->
+                    <!-- 2. Section Summary (Parent Menu - Restored Exactly As Before) -->
                     <div class="hrm-menu-group" id="hrmNavSectionSummaryParent">
-                        <div class="hrm-menu-parent" onclick="toggleHrmSectionSummaryMenu()" title="Section Summary Master Menu">
+                        <div class="hrm-menu-parent" onclick="toggleHrmSectionSummaryMenu()" title="Section Summary">
                             <div class="hrm-nav-item-left">
                                 <div class="hrm-nav-icon" style="background:#e0f2fe; color:#0284c7;">📊</div>
                                 <span>Section Summary</span>
@@ -1080,17 +1080,39 @@
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" class="chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
                         </div>
                         <div class="hrm-sublist">
-                            <div class="hrm-subitem" id="hrmNavSectionAssemble" onclick="switchHrmSubPage('section_assemble')" title="Assemble Line Employee Summary">
+                            <div class="hrm-subitem" id="hrmNavSectionAssemble" onclick="switchHrmSubPage('section_assemble')" title="Assemble Line">
                                 <span class="sub-dot"></span>
                                 <span>Assemble Line</span>
                             </div>
-                            <div class="hrm-subitem" id="hrmNavSectionDimmer" onclick="switchHrmSubPage('section_dimmer')" title="Dimmer & Blade Employee Summary">
+                            <div class="hrm-subitem" id="hrmNavSectionDimmer" onclick="switchHrmSubPage('section_dimmer')" title="Dimmer &amp; Blade">
                                 <span class="sub-dot"></span>
                                 <span>Dimmer &amp; Blade</span>
                             </div>
-                            <div class="hrm-subitem" id="hrmNavSectionArmature" onclick="switchHrmSubPage('section_armature')" title="Armature & Winding Employee Summary">
+                            <div class="hrm-subitem" id="hrmNavSectionArmature" onclick="switchHrmSubPage('section_armature')" title="Armature &amp; Winding">
                                 <span class="sub-dot"></span>
                                 <span>Armature &amp; Winding</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Report (New Analytical Reports - Premium Theme) -->
+                    <div class="hrm-menu-group" id="hrmNavReportParent">
+                        <div class="hrm-menu-parent hrm-report-parent-btn" onclick="toggleHrmReportMenu()" title="HRM Analytical Reports">
+                            <div class="hrm-nav-item-left">
+                                <div class="hrm-nav-icon hrm-report-nav-icon" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#ffffff; box-shadow:0 2px 6px rgba(2,132,199,0.3);">📑</div>
+                                <span class="hrm-report-parent-label">Report</span>
+                                <span class="hrm-report-badge">PRO</span>
+                            </div>
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" class="chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="hrm-sublist">
+                            <div class="hrm-subitem" id="hrmNavMonthlyAttendance" onclick="switchHrmSubPage('monthly_attendance')" title="Monthly Attendence">
+                                <span class="sub-dot"></span>
+                                <span>Monthly Attendence</span>
+                            </div>
+                            <div class="hrm-subitem" id="hrmNavMonthlyYearlyReport" onclick="switchHrmSubPage('monthly_yearly_attendance_report')" title="Monthly &amp; Yearly Attendence Report">
+                                <span class="sub-dot"></span>
+                                <span>Monthly &amp; Yearly Attendence Report</span>
                             </div>
                         </div>
                     </div>
@@ -1124,85 +1146,143 @@
                 <!-- PANE 1: Human Resource Management Dashboard -->
                 <div id="hrmDashboardPane">
                     <div class="hrm-dash-header">
-                        <h1 class="hrm-dash-title">
-                            <span style="font-size:22px;">🗄️</span>
-                            <span>Human Resource Management Dashboard</span>
-                        </h1>
+                        <div class="hrm-dash-header-left">
+                            <h1 class="hrm-dash-title">
+                                <span class="hrm-title-icon-frame">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                </span>
+                                <span>Human Resource Management Dashboard</span>
+                            </h1>
+                            <p class="hrm-dash-subtitle">Enterprise Workforce Analytics • Sectional Allocation • Real-Time Attendance Roster</p>
+                        </div>
+                        <div class="hrm-dash-header-right">
+                            <div class="hrm-dash-kpi-pill">
+                                <span class="hrm-kpi-pill-dot green"></span>
+                                <span>Staff: <strong id="hrmDashMetaActive">107</strong></span>
+                            </div>
+                            <div class="hrm-dash-kpi-pill">
+                                <span class="hrm-kpi-pill-dot blue"></span>
+                                <span>Operations: <strong>4 Lines</strong></span>
+                            </div>
+                            <div class="hrm-dash-kpi-pill">
+                                <span class="hrm-kpi-pill-dot purple"></span>
+                                <span>Present: <strong id="hrmDashMetaAttRate">100%</strong></span>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Top 4 Floating KPI Cards matching reference screenshot -->
+                    <!-- Top 4 Floating KPI Cards matching reference screenshot & workforce requirements -->
                     <div class="hrm-floating-kpi-grid">
-                        <!-- 1. Active Employee -->
-                        <div class="hrm-floating-card hrm-card-active-emp">
-                            <div class="hrm-card-floating-icon icon-green" title="Active Employees">
-                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="8.5" cy="7" r="4"></circle>
-                                    <polyline points="17 11 19 13 23 9"></polyline>
+                        <!-- 1. ASSEMBLY LINE -->
+                        <div class="hrm-floating-card hrm-card-assemble-kpi" id="hrmCardAssembleLine">
+                            <div class="hrm-card-floating-icon icon-green" title="Assembly Line Workforce">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="6" width="20" height="8" rx="2"></rect>
+                                    <circle cx="6" cy="18" r="2"></circle>
+                                    <circle cx="12" cy="18" r="2"></circle>
+                                    <circle cx="18" cy="18" r="2"></circle>
+                                    <path d="M6 14v2m6-2v2m6-2v2"></path>
                                 </svg>
                             </div>
                             <div class="hrm-card-top-content">
-                                <span class="hrm-card-subtitle">LifeTime</span>
-                                <span class="hrm-card-metric" id="hrmKpiActiveCount">107</span>
+                                <div class="hrm-gender-stats-grid">
+                                    <div class="hrm-gender-row">
+                                        <span class="hrm-gender-label">Male</span>
+                                        <span class="hrm-gender-val" id="hrmKpiAssembleMale">14</span>
+                                    </div>
+                                    <div class="hrm-gender-row">
+                                        <span class="hrm-gender-label">Female</span>
+                                        <span class="hrm-gender-val" id="hrmKpiAssembleFemale">31</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="hrm-card-footer-line">
-                                <span class="hrm-card-label">Active Employee</span>
+                                <span class="hrm-card-label">ASSEMBLY LINE</span>
+                                <span class="hrm-card-sub-total" id="hrmKpiAssembleTotal">45 Total</span>
                             </div>
                         </div>
 
-                        <!-- 2. Inactive Employee -->
-                        <div class="hrm-floating-card hrm-card-inactive-emp">
-                            <div class="hrm-card-floating-icon icon-purple" title="Inactive Employees">
-                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        <!-- 2. DIMMER & BLADE -->
+                        <div class="hrm-floating-card hrm-card-dimmer-kpi" id="hrmCardDimmerBlade">
+                            <div class="hrm-card-floating-icon icon-purple" title="Dimmer & Blade Workforce">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M12 9V3c2.5 0 4 1.8 4 4.5S14.5 9 12 9z"></path>
+                                    <path d="M12 15v6c-2.5 0-4-1.8-4-4.5s1.5-1.5 4-1.5z"></path>
+                                    <path d="M15 12h6c0 2.5-1.8 4-4.5 4S15 14.5 15 12z"></path>
+                                    <path d="M9 12H3c0-2.5 1.8-4 4.5-4S9 9.5 9 12z"></path>
                                 </svg>
                             </div>
                             <div class="hrm-card-top-content">
-                                <span class="hrm-card-subtitle">LifeTime</span>
-                                <span class="hrm-card-metric" id="hrmKpiInactiveCount">0</span>
+                                <div class="hrm-gender-stats-grid">
+                                    <div class="hrm-gender-row">
+                                        <span class="hrm-gender-label">Male</span>
+                                        <span class="hrm-gender-val" id="hrmKpiDimmerMale">0</span>
+                                    </div>
+                                    <div class="hrm-gender-row">
+                                        <span class="hrm-gender-label">Female</span>
+                                        <span class="hrm-gender-val" id="hrmKpiDimmerFemale">21</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="hrm-card-footer-line">
-                                <span class="hrm-card-label">Inactive Employee</span>
+                                <span class="hrm-card-label">DIMMER & BLADE</span>
+                                <span class="hrm-card-sub-total" id="hrmKpiDimmerTotal">21 Total</span>
                             </div>
                         </div>
 
-                        <!-- 3. TOTAL LEAVE REQUEST -->
-                        <div class="hrm-floating-card hrm-card-leave-req">
-                            <div class="hrm-card-floating-icon icon-cyan" title="Leave Requests">
-                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                                    <line x1="9" y1="12" x2="15" y2="12"></line>
-                                    <line x1="9" y1="16" x2="13" y2="16"></line>
+                        <!-- 3. ARMATURE & WINDING -->
+                        <div class="hrm-floating-card hrm-card-armature-kpi" id="hrmCardArmatureWinding">
+                            <div class="hrm-card-floating-icon icon-cyan" title="Armature & Winding Workforce">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <ellipse cx="12" cy="12" rx="3.5" ry="9"></ellipse>
+                                    <ellipse cx="12" cy="12" rx="9" ry="3.5"></ellipse>
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
                                 </svg>
                             </div>
                             <div class="hrm-card-top-content">
-                                <span class="hrm-card-subtitle">Last 30 Days</span>
-                                <span class="hrm-card-metric" id="hrmKpiLeaveReqCount">0</span>
+                                <div class="hrm-gender-stats-grid">
+                                    <div class="hrm-gender-row">
+                                        <span class="hrm-gender-label">Male</span>
+                                        <span class="hrm-gender-val" id="hrmKpiArmatureMale">10</span>
+                                    </div>
+                                    <div class="hrm-gender-row">
+                                        <span class="hrm-gender-label">Female</span>
+                                        <span class="hrm-gender-val" id="hrmKpiArmatureFemale">23</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="hrm-card-footer-line">
-                                <span class="hrm-card-label">TOTAL LEAVE REQUEST</span>
+                                <span class="hrm-card-label">ARMATURE & WINDING</span>
+                                <span class="hrm-card-sub-total" id="hrmKpiArmatureTotal">33 Total</span>
                             </div>
                         </div>
 
-                        <!-- 4. NEXT HOLIDAY -->
-                        <div class="hrm-floating-card hrm-card-next-holiday">
-                            <div class="hrm-card-floating-icon icon-orange" title="Next Holiday">
-                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                        <!-- 4. UPCOMING FRIDAY -->
+                        <div class="hrm-floating-card hrm-card-next-holiday" id="hrmCardUpcomingFriday">
+                            <div class="hrm-card-floating-icon icon-orange" title="Upcoming Holiday">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"></path>
                                 </svg>
                             </div>
                             <div class="hrm-card-top-content">
-                                <span class="hrm-card-subtitle">Upcoming</span>
-                                <span class="hrm-card-metric" id="hrmKpiNextHoliday" style="font-size:1.25rem;">Friday</span>
+                                <span class="hrm-card-subtitle" id="hrmKpiHolidaySubtitle">Upcoming Friday</span>
+                                <span class="hrm-card-metric hrm-friday-countdown" id="hrmKpiFridayCountdown">4 days</span>
                             </div>
                             <div class="hrm-card-footer-line">
                                 <span class="hrm-card-label">NEXT HOLIDAY</span>
+                                <span class="hrm-card-sub-total" id="hrmKpiNextHolidayBadge">Weekly Off</span>
                             </div>
                         </div>
                     </div>
@@ -1532,6 +1612,326 @@
                                 </thead>
                                 <tbody id="hrmSectionTableBody">
                                     <!-- Rendered dynamically by HRM_ENGINE -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANE 4: HRM Report -> Monthly Attendence -->
+                <div id="hrmMonthlyAttendancePane" style="display:none;">
+                    <!-- Report Top Header Card -->
+                    <div class="hrm-report-header-card">
+                        <div class="hrm-report-header-main">
+                            <div class="hrm-report-header-titles">
+                                <div class="hrm-report-badge-row">
+                                    <span class="hrm-report-pill-badge blue">HRM Report • Report-20220522</span>
+                                    <span class="hrm-report-pill-badge green" id="hrmMonthAttActiveTag">Live ERP Data • 27 Days Recorded</span>
+                                    <span class="hrm-report-pill-badge purple">100% ERP Verified</span>
+                                </div>
+                                <h2 class="hrm-report-main-title">Monthly Attendence</h2>
+                                <p class="hrm-report-main-desc">Comprehensive Employee Attendance Register &amp; Daily Punch Matrix • Sourced directly from ERP Report 20220522</p>
+                            </div>
+                            <div class="hrm-report-header-actions">
+                                <button type="button" class="btn-hrm-report-action btn-sync" id="btnSyncHrmMonthAtt" onclick="syncHrmMonthlyAttendanceFromErp()" title="Sync Live Data from ERP" style="background:#0284c7; color:#fff;">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                                    <span>Sync Live ERP</span>
+                                </button>
+                                <button type="button" class="btn-hrm-report-action btn-excel" onclick="exportHrmMonthlyAttendanceExcel()" title="Export Monthly Attendance Matrix to Excel">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                    <span>Export Excel</span>
+                                </button>
+                                <button type="button" class="btn-hrm-report-action btn-print" onclick="printHrmMonthlyAttendance()" title="Print Monthly Attendance Sheet">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                    <span>Print</span>
+                                </button>
+                                <button type="button" class="btn-hrm-report-action btn-dash" onclick="switchHrmSubPage('dashboard')" title="Back to Dashboard">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                    <span>Dashboard</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 4 Monthly Attendance Highlight KPI Cards -->
+                        <div class="hrm-report-kpi-grid">
+                            <div class="hrm-rep-kpi-card blue">
+                                <div class="rep-kpi-icon">👥</div>
+                                <div class="rep-kpi-info">
+                                    <span class="rep-kpi-label">TOTAL STAFF</span>
+                                    <strong class="rep-kpi-val" id="hrmMonthKpiStaff">126</strong>
+                                    <span class="rep-kpi-sub">Registered Employees</span>
+                                </div>
+                            </div>
+                            <div class="hrm-rep-kpi-card green">
+                                <div class="rep-kpi-icon">📅</div>
+                                <div class="rep-kpi-info">
+                                    <span class="rep-kpi-label">RECORDED DAYS</span>
+                                    <strong class="rep-kpi-val" id="hrmMonthKpiWorkDays">27 Days</strong>
+                                    <span class="rep-kpi-sub" id="hrmMonthKpiDateRange">Aug 26 - Sep 21</span>
+                                </div>
+                            </div>
+                            <div class="hrm-rep-kpi-card emerald">
+                                <div class="rep-kpi-icon">✅</div>
+                                <div class="rep-kpi-info">
+                                    <span class="rep-kpi-label">TOTAL PRESENT</span>
+                                    <strong class="rep-kpi-val" id="hrmMonthKpiPresent">1,941</strong>
+                                    <span class="rep-kpi-sub">Man-Days Present</span>
+                                </div>
+                            </div>
+                            <div class="hrm-rep-kpi-card orange">
+                                <div class="rep-kpi-icon">❌</div>
+                                <div class="rep-kpi-info">
+                                    <span class="rep-kpi-label">TOTAL ABSENT</span>
+                                    <strong class="rep-kpi-val" id="hrmMonthKpiAbsent">702</strong>
+                                    <span class="rep-kpi-sub" id="hrmMonthKpiLeaveSub">Leaves: 22</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Attendance Filter Toolbar -->
+                    <div class="hrm-report-toolbar">
+                        <div class="hrm-toolbar-filters">
+                            <div class="hrm-filter-group">
+                                <label>Department:</label>
+                                <select id="hrmMonthDeptFilter" class="hrm-report-select" onchange="handleHrmMonthFilter()">
+                                    <option value="ALL">All Departments</option>
+                                </select>
+                            </div>
+                            <div class="hrm-filter-group">
+                                <label>Section:</label>
+                                <select id="hrmMonthSectionFilter" class="hrm-report-select" onchange="handleHrmMonthFilter()">
+                                    <option value="ALL">All Sections</option>
+                                </select>
+                            </div>
+                            <div class="hrm-filter-group">
+                                <label>Status:</label>
+                                <select id="hrmMonthStatusFilter" class="hrm-report-select" onchange="handleHrmMonthFilter()">
+                                    <option value="ALL">All Attendance Status</option>
+                                    <option value="present">With Presents (&gt;0)</option>
+                                    <option value="absent">With Absents (&gt;0)</option>
+                                    <option value="leave">With Leaves (&gt;0)</option>
+                                </select>
+                            </div>
+
+                            <!-- Quick Action Filter Buttons (Screenshot 4 Marked Area) -->
+                            <div class="hrm-quick-filter-group" style="display:flex; align-items:center; gap:4px; margin-left:4px;">
+                                <button type="button" class="btn-hrm-quick-filter active" id="btnHrmMonthFilterAll" onclick="setHrmMonthlyQuickFilter('ALL')" style="padding:5px 11px; font-size:0.78rem; font-weight:700; border-radius:6px; background:#0f172a; color:#ffffff; border:1px solid #0f172a; cursor:pointer; transition:all 0.15s ease;">ALL</button>
+                                <button type="button" class="btn-hrm-quick-filter" id="btnHrmMonthFilterLate" onclick="setHrmMonthlyQuickFilter('LATE')" style="padding:5px 11px; font-size:0.78rem; font-weight:700; border-radius:6px; background:#f8fafc; color:#ea580c; border:1px solid #fed7aa; cursor:pointer; transition:all 0.15s ease;">LATE</button>
+                                <button type="button" class="btn-hrm-quick-filter" id="btnHrmMonthFilterAbsent" onclick="setHrmMonthlyQuickFilter('ABSENT')" style="padding:5px 11px; font-size:0.78rem; font-weight:700; border-radius:6px; background:#f8fafc; color:#dc2626; border:1px solid #fecaca; cursor:pointer; transition:all 0.15s ease;">ABSENT</button>
+                                <button type="button" class="btn-hrm-quick-filter" id="btnHrmMonthFilterEarly" onclick="setHrmMonthlyQuickFilter('EARLY_OUT')" style="padding:5px 11px; font-size:0.78rem; font-weight:700; border-radius:6px; background:#f8fafc; color:#d97706; border:1px solid #fde68a; cursor:pointer; transition:all 0.15s ease;">EARLY OUT</button>
+                            </div>
+                        </div>
+                        <div class="hrm-toolbar-search">
+                            <div class="hrm-search-wrap">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#64748b" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="hrmMonthSearchInput" placeholder="Search employee ID, name, section..." oninput="handleHrmMonthSearch(this.value)">
+                            </div>
+                            <span class="hrm-summary-pill" id="hrmMonthFilteredCount">126 Records</span>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Attendance Table Card -->
+                    <div class="hrm-table-card" id="hrmMonthTableCard">
+                        <!-- Individual Daily Punch Grid View (Screenshot 2 100% Match) -->
+                        <div id="hrmMonthIndividualGridArea" style="display:none; padding:16px;">
+                            <!-- Populated dynamically when an individual ID is searched -->
+                        </div>
+
+                        <!-- Multi-Employee Matrix Table Wrapper -->
+                        <div class="hrm-table-wrapper att-matrix-wrapper" id="hrmMonthTableWrapper" style="overflow-x:auto; max-height: calc(100vh - 360px);">
+                            <table class="hrm-emp-table hrm-report-table att-matrix-table" id="hrmMonthlyAttendanceTable">
+                                <thead id="hrmMonthlyAttendanceTableHead">
+                                    <!-- Dynamic sticky matrix header with date columns -->
+                                </thead>
+                                <tbody id="hrmMonthlyAttendanceTableBody">
+                                    <!-- Dynamic rows with P/A/L/W pills -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANE 5: HRM Report -> Monthly & Yearly Attendence Report -->
+                <div id="hrmMonthlyYearlyReportPane" style="display:none;">
+                    <!-- Annual Report Top Header Card -->
+                    <div class="hrm-report-header-card">
+                        <div class="hrm-report-header-main">
+                            <div class="hrm-report-header-titles">
+                                <div class="hrm-report-badge-row">
+                                    <span class="hrm-report-pill-badge purple">HRM Report • Report-30082026</span>
+                                    <span class="hrm-report-pill-badge blue">Live ERP Data</span>
+                                    <span class="hrm-report-pill-badge green" id="hrmAnnualActiveTag">MEP FAN LIMITED. • Production</span>
+                                </div>
+                                <h2 class="hrm-report-main-title">Monthly &amp; Yearly Attendence Report</h2>
+                                <p class="hrm-report-main-desc">Comprehensive 41-Column Master Attendance, Working Hours, Overtime &amp; Leave Register • Sourced directly from ERP Report 30082026</p>
+                            </div>
+                            <div class="hrm-report-header-actions">
+                                <button type="button" class="btn-hrm-report-action btn-sync" id="btnSyncHrmYearlyReport" onclick="syncHrmMonthlyYearlyReportFromErp()" title="Sync Live Data from ERP" style="background:#0284c7; color:#fff;">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                                    <span>Sync Live ERP</span>
+                                </button>
+                                <button type="button" class="btn-hrm-report-action btn-excel" onclick="exportHrmAnnualReportExcel()" title="Export 41-Column Master Report to Excel">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                    <span>Export Excel</span>
+                                </button>
+                                <button type="button" class="btn-hrm-report-action btn-print" onclick="printHrmAnnualReport()" title="Print Attendance Report">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                    <span>Print</span>
+                                </button>
+                                <button type="button" class="btn-hrm-report-action btn-dash" onclick="switchHrmSubPage('dashboard')" title="Back to Dashboard">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                    <span>Dashboard</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 4 Annual Report Highlight KPI Cards -->
+                        <div class="hrm-report-kpi-grid">
+                            <div class="hrm-rep-kpi-card blue">
+                                <div class="rep-kpi-icon">👥</div>
+                                <div class="rep-kpi-info">
+                                    <span class="rep-kpi-label">TOTAL WORKFORCE</span>
+                                    <strong class="rep-kpi-val" id="hrmAnnualKpiTotal">2,539</strong>
+                                    <span class="rep-kpi-sub">Total Master Records</span>
+                                </div>
+                            </div>
+                            <div class="hrm-rep-kpi-card green">
+                                <div class="rep-kpi-icon">🏭</div>
+                                <div class="rep-kpi-info">
+                                    <span class="rep-kpi-label">PRODUCTION STAFF</span>
+                                    <strong class="rep-kpi-val" id="hrmAnnualKpiProduction">317</strong>
+                                    <span class="rep-kpi-sub">MEP FAN LIMITED.</span>
+                                </div>
+                            </div>
+                            <div class="hrm-rep-kpi-card purple">
+                                <div class="rep-kpi-icon">✅</div>
+                                <div class="rep-kpi-info">
+                                    <span class="rep-kpi-label">TOTAL PRESENT DAYS</span>
+                                    <strong class="rep-kpi-val" id="hrmAnnualKpiPresent">205,367</strong>
+                                    <span class="rep-kpi-sub">Audited Present Man-Days</span>
+                                </div>
+                            </div>
+                            <div class="hrm-rep-kpi-card orange">
+                                <div class="rep-kpi-icon">⏱️</div>
+                                <div class="rep-kpi-info">
+                                    <span class="rep-kpi-label">TOTAL OVERTIME</span>
+                                    <strong class="rep-kpi-val" id="hrmAnnualKpiOt">64,852 Hrs</strong>
+                                    <span class="rep-kpi-sub">Net Recorded OT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Annual Attendance Filter Toolbar -->
+                    <div class="hrm-report-toolbar">
+                        <div class="hrm-toolbar-filters">
+                            <div class="hrm-filter-group">
+                                <label>Department:</label>
+                                <select id="hrmAnnualDeptFilter" class="hrm-report-select" onchange="handleHrmAnnualFilter()">
+                                    <option value="ALL">All Departments</option>
+                                    <option value="Production" selected>Production</option>
+                                </select>
+                            </div>
+                            <div class="hrm-filter-group">
+                                <label>Section:</label>
+                                <select id="hrmAnnualSectionFilter" class="hrm-report-select" onchange="handleHrmAnnualFilter()">
+                                    <option value="ALL">All Sections</option>
+                                </select>
+                            </div>
+                            <div class="hrm-filter-group">
+                                <label>Designation:</label>
+                                <select id="hrmAnnualDesigFilter" class="hrm-report-select" onchange="handleHrmAnnualFilter()">
+                                    <option value="ALL">All Designations</option>
+                                </select>
+                            </div>
+                            <div class="hrm-filter-group">
+                                <label>View Mode:</label>
+                                <select id="hrmAnnualModeSelect" class="hrm-report-select" onchange="handleHrmAnnualModeChange()">
+                                    <option value="master" selected>41-Column ERP Register (HUBUHU)</option>
+                                    <option value="section">Section Summary Matrix</option>
+                                    <option value="individual">Individual ID Lookup (Search)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hrm-toolbar-search" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <div class="hrm-search-wrap">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#64748b" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="hrmAnnualSearchInput" placeholder="Search ID, name, designation, section..." oninput="handleHrmAnnualSearch(this.value)">
+                            </div>
+                            <span class="hrm-summary-pill" id="hrmAnnualFilteredCount">188 Employees (944 Monthly Records • 41 Columns)</span>
+
+                            <!-- Premium Individual ID Lookup Group (Screenshot 3 Exact Placement) -->
+                            <div class="hrm-id-lookup-box" style="display:inline-flex; align-items:center; gap:6px; background:#f8fafc; padding:3px 6px; border:1.5px solid #0284c7; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                                <input type="text" id="hrmIndividualIdInput" placeholder="Enter ID Number" style="padding:5px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.82rem; width:135px; outline:none; font-weight:600; color:#0f2942; background:#ffffff;" onkeydown="if(event.key==='Enter') executeIndividualIdLookup()">
+                                <button type="button" id="btnHrmIndividualOk" onclick="executeIndividualIdLookup()" style="background:#0284c7; color:#ffffff; border:none; border-radius:6px; padding:6px 14px; font-weight:700; font-size:0.82rem; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 4px rgba(2,132,199,0.3); transition:all 0.15s ease;" onmouseover="this.style.background='#0369a1'" onmouseout="this.style.background='#0284c7'">
+                                    <span>OK</span>
+                                </button>
+                                <button type="button" id="btnHrmResetLookup" onclick="clearIndividualIdLookup()" style="background:#e2e8f0; color:#475569; border:none; border-radius:6px; padding:6px 10px; font-weight:600; font-size:0.80rem; cursor:pointer; display:none;" title="Clear ID Search and View All">
+                                    <span>✕ Reset</span>
+                                </button>
+                            </div>
+
+                            <!-- Quick Action Filter Buttons (Screenshot 4 & 5 Logic: LATE / ABSENT / EARLY OUT) -->
+                            <div class="hrm-quick-filter-group" style="display:inline-flex; align-items:center; gap:4px; margin-left:4px;">
+                                <button type="button" class="btn-hrm-quick-filter active" id="btnHrmAnnualFilterAll" onclick="setHrmAnnualQuickFilter('ALL')" style="padding:5px 11px; font-size:0.78rem; font-weight:700; border-radius:6px; background:#0f172a; color:#ffffff; border:1px solid #0f172a; cursor:pointer; transition:all 0.15s ease;">ALL</button>
+                                <button type="button" class="btn-hrm-quick-filter" id="btnHrmAnnualFilterLate" onclick="setHrmAnnualQuickFilter('LATE')" style="padding:5px 11px; font-size:0.78rem; font-weight:700; border-radius:6px; background:#f8fafc; color:#ea580c; border:1px solid #fed7aa; cursor:pointer; transition:all 0.15s ease;">LATE</button>
+                                <button type="button" class="btn-hrm-quick-filter" id="btnHrmAnnualFilterAbsent" onclick="setHrmAnnualQuickFilter('ABSENT')" style="padding:5px 11px; font-size:0.78rem; font-weight:700; border-radius:6px; background:#f8fafc; color:#dc2626; border:1px solid #fecaca; cursor:pointer; transition:all 0.15s ease;">ABSENT</button>
+                                <button type="button" class="btn-hrm-quick-filter" id="btnHrmAnnualFilterEarly" onclick="setHrmAnnualQuickFilter('EARLY_OUT')" style="padding:5px 11px; font-size:0.78rem; font-weight:700; border-radius:6px; background:#f8fafc; color:#d97706; border:1px solid #fde68a; cursor:pointer; transition:all 0.15s ease;">EARLY OUT</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Premium Individual ID Lookup Result Card (Screenshot 3 Marked Area) -->
+                    <div class="hrm-table-card" id="hrmIndividualLookupCard" style="display:none; margin-top:14px;">
+                        <div id="hrmIndividualLookupResultArea">
+                            <!-- Populated dynamically by executeIndividualIdLookup() -->
+                        </div>
+                    </div>
+
+                    <!-- 41-Column Master ERP Register Table Card -->
+                    <div class="hrm-table-card" id="hrmAnnualMasterTableCard">
+                        <div class="hrm-table-wrapper" style="overflow-x:auto; max-height: calc(100vh - 360px);">
+                            <table class="hrm-emp-table hrm-report-table" id="hrmAnnualMasterTable">
+                                <thead id="hrmAnnualMasterTableHead">
+                                    <!-- 41 Dynamic ERP Headers with Sticky SL, ID, Name -->
+                                </thead>
+                                <tbody id="hrmAnnualMasterTableBody">
+                                    <!-- 41 Dynamic ERP Data Cells -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Optional Section-Wise Summary Card (when mode is 'section') -->
+                    <div class="hrm-table-card" id="hrmAnnualSectionTableCard" style="display:none; margin-top:14px;">
+                        <div class="hrm-table-header-strip">
+                            <h3>SECTION-WISE 12-MONTH ATTENDANCE MATRIX (%)</h3>
+                            <span class="badge-sub">Audited Real-Time Factory Records</span>
+                        </div>
+                        <div class="hrm-table-wrapper">
+                            <table class="hrm-emp-table hrm-annual-matrix-table" id="hrmAnnualMatrixTable">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width:180px; text-align:left;">Section Name</th>
+                                        <th style="width:70px; text-align:center;">Staff</th>
+                                        <th style="width:55px; text-align:center;">Jan</th>
+                                        <th style="width:55px; text-align:center;">Feb</th>
+                                        <th style="width:55px; text-align:center;">Mar</th>
+                                        <th style="width:55px; text-align:center;">Apr</th>
+                                        <th style="width:55px; text-align:center;">May</th>
+                                        <th style="width:55px; text-align:center;">Jun</th>
+                                        <th style="width:55px; text-align:center;">Jul</th>
+                                        <th style="width:55px; text-align:center;">Aug</th>
+                                        <th style="width:55px; text-align:center;">Sep</th>
+                                        <th style="width:55px; text-align:center;">Oct</th>
+                                        <th style="width:55px; text-align:center;">Nov</th>
+                                        <th style="width:55px; text-align:center;">Dec</th>
+                                        <th style="width:85px; text-align:center;">YTD Avg</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="hrmAnnualMatrixTableBody">
+                                    <!-- Rendered dynamically -->
                                 </tbody>
                             </table>
                         </div>
@@ -2771,7 +3171,10 @@
     <script src="shared/js/portal_modules_data.js"></script>
     <script src="shared/js/portal_performance_graph.js?v=20260915_cfs22778"></script>
     <script src="shared/js/portal_settings.js"></script>
+    <script src="shared/js/xlsx.full.min.js"></script>
     <script src="modules/hrm/hrm_database_data.js"></script>
+    <script src="modules/hrm/monthly_attendance_bot_data.js"></script>
+    <script src="modules/hrm/monthly_yearly_attendance_bot_data.js"></script>
     <script src="modules/hrm/hrm_module_engine.js"></script>
     <script src="modules/warehouse/intersales_requisition_data.js"></script>
     <script src="modules/warehouse/inter_sales_chalan_data.js"></script>

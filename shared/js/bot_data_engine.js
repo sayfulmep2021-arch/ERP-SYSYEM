@@ -398,6 +398,79 @@
                 { key: 'raw_materials_count', label: 'RM Items', type: 'badge-count' },
                 { key: 'action', label: 'RM Details', type: 'expand-btn' }
             ]
+        },
+        10: {
+            id: 10,
+            cardId: 'flashCard10',
+            name: 'Monthly Attendance',
+            fullTitle: 'Monthly Attendance Sheet (HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly Attendence Sheet)',
+            code: 'HRM-ATT-20220522',
+            module: 'HRM Module',
+            sourceModule: 'HRM Module',
+            sourcePage: 'Monthly Attendence Sheet',
+            sourcePath: 'HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly Attendence Sheet',
+            company: 'MEP Group / All Plants',
+            apiData: '/api/monthly-attendance/data',
+            apiSync: '/api/monthly-attendance/sync',
+            apiDownload: '/api/monthly-attendance/download',
+            cacheFile: 'monthly_attendance_cache.json',
+            excelFile: 'Monthly_Attendance_Sheet.xlsx',
+            themeClass: 'flash-theme-attendance',
+            categoryField: 'department',
+            kpiConfig: [
+                { label: 'Total Employees', key: 'total_employees', icon: '👥', format: 'number' },
+                { label: 'Recorded Days', key: 'total_days', icon: '📅', format: 'number' },
+                { label: 'Total Present', key: 'total_present', icon: '✅', format: 'number' },
+                { label: 'Total Absent', key: 'total_absent', icon: '❌', format: 'number' }
+            ],
+            columns: [
+                { key: 'sl', label: 'SL', type: 'serial' },
+                { key: 'emp_id', label: 'Emp Id', type: 'code' },
+                { key: 'emp_name', label: 'EMP Name', type: 'text' },
+                { key: 'company', label: 'Company', type: 'text' },
+                { key: 'department', label: 'Department', type: 'text' },
+                { key: 'section', label: 'Section', type: 'text' },
+                { key: 'unit', label: 'Unit', type: 'text' },
+                { key: 'job_location', label: 'Job Location', type: 'text' }
+            ]
+        },
+        11: {
+            id: 11,
+            cardId: 'flashCard11',
+            name: 'Monthly & Yearly Attendance',
+            fullTitle: 'Monthly & Yearly Attendance Report (HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly & Yearly Attendence Report)',
+            code: 'HRM-ATT-30082026',
+            module: 'HRM Module',
+            sourceModule: 'HRM Module',
+            sourcePage: 'Monthly & Yearly Attendence Report',
+            sourcePath: 'HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly & Yearly Attendence Report',
+            company: 'MEP FAN LIMITED. (Production Dept)',
+            apiData: '/api/monthly-yearly-attendance/data',
+            apiSync: '/api/monthly-yearly-attendance/sync',
+            apiDownload: '/api/monthly-yearly-attendance/download',
+            cacheFile: 'monthly_yearly_attendance_cache.json',
+            excelFile: 'Monthly_Yearly_Attendance_Report.xlsx',
+            themeClass: 'flash-theme-yearlyatt',
+            categoryField: 'designation',
+            kpiConfig: [
+                { label: 'Total Workforce', key: 'total_employees', icon: '👷', format: 'number' },
+                { label: 'Production Staff', key: 'total_records', icon: '🏭', format: 'number' },
+                { label: 'Company Filter', key: 'company_label', icon: '🏢', format: 'text' },
+                { label: 'Dept Filter', key: 'dept_label', icon: '🏷️', format: 'text' }
+            ],
+            columns: [
+                { key: 'sl', label: 'SL', type: 'serial' },
+                { key: 'emp_id', label: 'ID No', type: 'code' },
+                { key: 'emp_name', label: 'Name', type: 'text' },
+                { key: 'designation', label: 'Designation', type: 'text' },
+                { key: 'department', label: 'Department', type: 'text' },
+                { key: 'section', label: 'Section', type: 'text' },
+                { key: 'join_date', label: 'Joining Date', type: 'text' },
+                { key: 'present_days', label: 'Present Days', type: 'number' },
+                { key: 'absent_days', label: 'Absent Days', type: 'number' },
+                { key: 'total_ot', label: 'Total OT', type: 'number' },
+                { key: 'late_days', label: 'Late Days', type: 'number' }
+            ]
         }
     };
 
@@ -407,6 +480,194 @@
     let currentFilterText = '';
     let currentDateFilter = 'all';
     let currentCategoryFilter = 'all';
+
+    // ============================================================================
+    // PERSISTENT DATE RANGE STORAGE ENGINE
+    // Strict Invariance: Date once saved in localStorage MUST NEVER be changed by
+    // Auto Sync, Run Bot, Global Run Bot, Page Refresh, or navigation.
+    // Changes ONLY when user manually edits and clicks Save.
+    // ============================================================================
+    const BOT_DEFAULT_DATES = {
+        1: { fromDate: '01-09-2026', toDate: '17-09-2026' },
+        10: { fromDate: '26-08-2026', toDate: '21-09-2026' },
+        11: { fromDate: '26-12-2025', toDate: '21-09-2026' }
+    };
+
+    function getBotDateStorageKey(botId) {
+        return `flash_bot_date_range_${botId}`;
+    }
+
+    /**
+     * Retrieve persistent saved date range for a bot from localStorage.
+     * STRICT INVARIANCE: Never modifies or overwrites localStorage when reading.
+     */
+    function getBotSavedDateRange(botId) {
+        try {
+            const raw = localStorage.getItem(getBotDateStorageKey(botId));
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && parsed.fromDate && parsed.toDate) {
+                    return { fromDate: String(parsed.fromDate).trim(), toDate: String(parsed.toDate).trim() };
+                }
+            }
+        } catch (e) {
+            console.warn(`[Bot Engine] Could not read saved date range for Bot ${botId}:`, e);
+        }
+
+        // Return bot-specific default if not manually saved yet (does NOT write to localStorage)
+        const defaults = BOT_DEFAULT_DATES[botId] || { fromDate: '01-09-2026', toDate: '21-09-2026' };
+        return { fromDate: defaults.fromDate, toDate: defaults.toDate };
+    }
+
+    /**
+     * Parse date string (supports DD-MM-YYYY, YYYY-MM-DD, and standard Date strings)
+     */
+    function parseDateToTimestamp(str) {
+        if (!str) return null;
+        str = String(str).trim();
+        const ddmmyyyy = str.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+        if (ddmmyyyy) {
+            return new Date(parseInt(ddmmyyyy[3], 10), parseInt(ddmmyyyy[2], 10) - 1, parseInt(ddmmyyyy[1], 10)).getTime();
+        }
+        const yyyymmdd = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+        if (yyyymmdd) {
+            return new Date(parseInt(yyyymmdd[1], 10), parseInt(yyyymmdd[2], 10) - 1, parseInt(yyyymmdd[3], 10)).getTime();
+        }
+        const d = new Date(str);
+        return isNaN(d.getTime()) ? null : d.getTime();
+    }
+
+    /**
+     * Format date string to YYYY-MM-DD for backend ERP API payload
+     */
+    function formatToYyyyMmDd(str) {
+        if (!str) return '';
+        str = String(str).trim();
+        const ddmmyyyy = str.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+        if (ddmmyyyy) {
+            return `${ddmmyyyy[3]}-${ddmmyyyy[2].padStart(2, '0')}-${ddmmyyyy[1].padStart(2, '0')}`;
+        }
+        return str;
+    }
+
+    /**
+     * User clicks "💾 Save" button on a bot date card in top header:
+     * - Validates From Date <= To Date
+     * - Saves to localStorage (flash_bot_date_range_{botId})
+     * - Updates saved indicator badge
+     * - Shows confirmation toast
+     * - NEVER changes dates on Run Bot, Global Run Bot, Auto Sync, or Page Refresh!
+     */
+    function validateAndSaveBotDateRange(botId) {
+        const fromInput = document.getElementById(`headerDateFrom_${botId}`) || document.getElementById(`flashDateFrom_${botId}`);
+        const toInput = document.getElementById(`headerDateTo_${botId}`) || document.getElementById(`flashDateTo_${botId}`);
+        const badge = document.getElementById(`headerDateBadge_${botId}`) || document.getElementById(`flashDateBadge_${botId}`);
+
+        if (!fromInput || !toInput) {
+            console.warn(`[Bot Engine] Date inputs not found for Bot ${botId}`);
+            return false;
+        }
+
+        const fromVal = fromInput.value.trim();
+        const toVal = toInput.value.trim();
+
+        if (!fromVal || !toVal) {
+            if (typeof window.showToast === 'function') {
+                window.showToast(`⚠️ [Bot ${botId}] Please provide both From Date and To Date.`);
+            }
+            return false;
+        }
+
+        const tFrom = parseDateToTimestamp(fromVal);
+        const tTo = parseDateToTimestamp(toVal);
+
+        if (!tFrom || !tTo) {
+            if (typeof window.showToast === 'function') {
+                window.showToast(`⚠️ [Bot ${botId}] Invalid Date format. Please use DD-MM-YYYY.`);
+            }
+            return false;
+        }
+
+        if (tFrom > tTo) {
+            if (typeof window.showToast === 'function') {
+                window.showToast(`⚠️ [Bot ${botId}] Invalid Range: From Date (${fromVal}) cannot be later than To Date (${toVal}).`);
+            }
+            return false;
+        }
+
+        // Save persistently in localStorage
+        try {
+            const payload = {
+                fromDate: fromVal,
+                toDate: toVal,
+                savedAt: new Date().toISOString()
+            };
+            localStorage.setItem(getBotDateStorageKey(botId), JSON.stringify(payload));
+        } catch (e) {
+            console.error(`[Bot Engine] Failed to persist date range for Bot ${botId}:`, e);
+        }
+
+        if (badge) {
+            badge.innerText = `Saved: ${fromVal} to ${toVal}`;
+            badge.style.color = '#047857';
+            badge.style.background = 'rgba(16, 185, 129, 0.15)';
+        }
+
+        const altBadge = document.getElementById(`flashDateBadge_${botId}`);
+        if (altBadge && altBadge !== badge) {
+            altBadge.innerText = `Saved: ${fromVal} to ${toVal}`;
+        }
+
+        // If botId === 1, also mirror to legacy header inputs if present
+        if (botId === 1) {
+            const hFrom = document.getElementById('headerDateFromInput');
+            const hTo = document.getElementById('headerDateToInput');
+            if (hFrom) hFrom.value = fromVal;
+            if (hTo) hTo.value = toVal;
+        }
+
+        const botConfig = BOTS_CONFIG[botId];
+        const botName = botConfig ? botConfig.name : `Bot ${botId}`;
+
+        if (typeof window.showToast === 'function') {
+            window.showToast(`✅ [${botName}] Date Range Saved Successfully: ${fromVal} to ${toVal}`);
+        }
+
+        return true;
+    }
+
+    /**
+     * Populate all date inputs with their saved values from localStorage.
+     * STRICT INVARIANCE: Does not modify or overwrite localStorage.
+     */
+    function initAllBotDateInputs() {
+        [1, 10, 11].forEach(botId => {
+            const saved = getBotSavedDateRange(botId);
+            const fromInput = document.getElementById(`headerDateFrom_${botId}`) || document.getElementById(`flashDateFrom_${botId}`);
+            const toInput = document.getElementById(`headerDateTo_${botId}`) || document.getElementById(`flashDateTo_${botId}`);
+            const badge = document.getElementById(`headerDateBadge_${botId}`) || document.getElementById(`flashDateBadge_${botId}`);
+
+            if (fromInput) fromInput.value = saved.fromDate;
+            if (toInput) toInput.value = saved.toDate;
+            if (badge) {
+                badge.innerText = `Saved: ${saved.fromDate} to ${saved.toDate}`;
+            }
+
+            const altFrom = document.getElementById(`flashDateFrom_${botId}`);
+            const altTo = document.getElementById(`flashDateTo_${botId}`);
+            const altBadge = document.getElementById(`flashDateBadge_${botId}`);
+            if (altFrom && altFrom !== fromInput) altFrom.value = saved.fromDate;
+            if (altTo && altTo !== toInput) altTo.value = saved.toDate;
+            if (altBadge && altBadge !== badge) altBadge.innerText = `Saved: ${saved.fromDate} to ${saved.toDate}`;
+
+            if (botId === 1) {
+                const hFrom = document.getElementById('headerDateFromInput');
+                const hTo = document.getElementById('headerDateToInput');
+                if (hFrom && !hFrom.dataset.userEdited) hFrom.value = saved.fromDate;
+                if (hTo && !hTo.dataset.userEdited) hTo.value = saved.toDate;
+            }
+        });
+    }
 
     /**
      * Format a value as number with comma separators
@@ -464,6 +725,37 @@
             }
         } catch (e) {
             console.warn(`[Bot Engine] Failed to load static cache for Bot ${botId}:`, e);
+        }
+
+        // 3. Fallback: JavaScript in-memory globals or localStorage for offline / file:/// resilience
+        try {
+            if (botId === 10) {
+                const jsData = (typeof window !== 'undefined' && window.RAW_MONTHLY_ATTENDANCE_BOT_DATA) ? window.RAW_MONTHLY_ATTENDANCE_BOT_DATA : (typeof RAW_MONTHLY_ATTENDANCE_BOT_DATA !== 'undefined' ? RAW_MONTHLY_ATTENDANCE_BOT_DATA : null);
+                if (jsData) {
+                    botDataCache[botId] = normalizeBotData(botId, jsData, 'cache');
+                    return botDataCache[botId];
+                }
+                const ls = localStorage.getItem('mep_monthly_attendance_bot_data');
+                if (ls) {
+                    const parsed = JSON.parse(ls);
+                    botDataCache[botId] = normalizeBotData(botId, parsed, 'cache');
+                    return botDataCache[botId];
+                }
+            } else if (botId === 11) {
+                const jsData = (typeof window !== 'undefined' && window.RAW_MONTHLY_YEARLY_ATTENDANCE_BOT_DATA) ? window.RAW_MONTHLY_YEARLY_ATTENDANCE_BOT_DATA : (typeof RAW_MONTHLY_YEARLY_ATTENDANCE_BOT_DATA !== 'undefined' ? RAW_MONTHLY_YEARLY_ATTENDANCE_BOT_DATA : null);
+                if (jsData) {
+                    botDataCache[botId] = normalizeBotData(botId, jsData, 'cache');
+                    return botDataCache[botId];
+                }
+                const ls = localStorage.getItem('mep_monthly_yearly_attendance_bot_data');
+                if (ls) {
+                    const parsed = JSON.parse(ls);
+                    botDataCache[botId] = normalizeBotData(botId, parsed, 'cache');
+                    return botDataCache[botId];
+                }
+            }
+        } catch (e) {
+            console.warn(`[Bot Engine] In-memory JS fallback failed for Bot ${botId}:`, e);
         }
 
         return null;
@@ -524,6 +816,32 @@
                 f_date: '01-09-2023',
                 t_date: 'Running Date'
             };
+        } else if (botId === 10) {
+            // Bot 10: Monthly Attendance Sheet
+            items = rawData.items || [];
+            meta = rawData.meta || {};
+            meta.total_employees = meta.total_employees || items.length;
+            meta.total_days = meta.days_count || (rawData.day_headers ? rawData.day_headers.length : 21);
+            meta.total_present = meta.total_presents || items.reduce((sum, it) => sum + (parseInt(it.present_days, 10) || 0), 0);
+            meta.total_absent = meta.total_absents || items.reduce((sum, it) => sum + (parseInt(it.absent_days, 10) || 0), 0);
+            meta.total_leave = meta.total_leaves || items.reduce((sum, it) => sum + (parseInt(it.leave_days, 10) || 0), 0);
+            meta.f_date = meta.from_date || '01-09-2026';
+            meta.t_date = meta.to_date || '21-09-2026';
+            meta.collected_at = meta.collected_at || collectedAt;
+        } else if (botId === 11) {
+            // Bot 11: Monthly & Yearly Attendance Report
+            items = rawData.items || [];
+            meta = rawData.meta || {};
+            meta.total_employees = meta.total_employees || items.length;
+            meta.total_records = items.length;
+            meta.company_label = meta.filter_company || 'MEP FAN LIMITED.';
+            meta.dept_label = meta.filter_department || 'Production';
+            meta.total_present = meta.total_present_days || 0;
+            meta.total_absent = meta.total_absent_days || 0;
+            meta.total_ot = meta.total_ot_hours || 0;
+            meta.f_date = meta.from_date || '01-09-2026';
+            meta.t_date = meta.to_date || '21-09-2026';
+            meta.collected_at = meta.collected_at || collectedAt;
         } else {
             // Bots 3 to 8: Report collectors
             items = rawData.items || [];
@@ -536,6 +854,8 @@
             items: items,
             meta: meta,
             raw_data: rawData,
+            day_headers: rawData.day_headers || [],
+            headers: rawData.headers || [],
             date_sections: rawData.date_sections || [],
             all_memos: rawData.all_memos || items,
             raw_headers: rawData.raw_headers || (rawData.meta && rawData.meta.raw_headers) || null,
@@ -763,6 +1083,24 @@
                     localStorage.setItem('mep_bom_synced', nowStr);
                     break;
                 }
+                case 10: { // HRM Module ⟶ Monthly Attendance Sheet
+                    localStorage.setItem('mep_monthly_attendance_bot_data', JSON.stringify(refreshedData));
+                    localStorage.setItem('mep_monthly_attendance_synced', nowStr);
+                    window.RAW_MONTHLY_ATTENDANCE_BOT_DATA = refreshedData;
+                    if (window.HRM_ENGINE && typeof window.HRM_ENGINE.onBotSync === 'function') {
+                        window.HRM_ENGINE.onBotSync(10, refreshedData);
+                    }
+                    break;
+                }
+                case 11: { // HRM Module ⟶ Monthly & Yearly Attendance Report
+                    localStorage.setItem('mep_monthly_yearly_attendance_bot_data', JSON.stringify(refreshedData));
+                    localStorage.setItem('mep_monthly_yearly_attendance_synced', nowStr);
+                    window.RAW_MONTHLY_YEARLY_ATTENDANCE_BOT_DATA = refreshedData;
+                    if (window.HRM_ENGINE && typeof window.HRM_ENGINE.onBotSync === 'function') {
+                        window.HRM_ENGINE.onBotSync(11, refreshedData);
+                    }
+                    break;
+                }
             }
 
             // Dispatch global event for live page re-rendering
@@ -804,13 +1142,37 @@
             window.showToast(`🤖 [${config.name}] Connecting to: ${config.sourcePath}...`);
         }
 
-        // Build payload. For Bot 1 (Inter Sales Requisition), attach user From/To dates
+        // Build payload with persistent saved date ranges
         const payload = {};
+        if ([1, 10, 11].includes(botId)) {
+            const fromInput = document.getElementById(`headerDateFrom_${botId}`) || document.getElementById(`flashDateFrom_${botId}`);
+            const toInput = document.getElementById(`headerDateTo_${botId}`) || document.getElementById(`flashDateTo_${botId}`);
+            const savedDates = getBotSavedDateRange(botId);
+
+            const effFrom = (fromInput && fromInput.value.trim()) ? fromInput.value.trim() : savedDates.fromDate;
+            const effTo = (toInput && toInput.value.trim()) ? toInput.value.trim() : savedDates.toDate;
+
+            payload.f_date = formatToYyyyMmDd(effFrom);
+            payload.t_date = formatToYyyyMmDd(effTo);
+            payload.from_date = effFrom;
+            payload.to_date = effTo;
+        }
         if (botId === 1) {
-            const fromInput = document.getElementById('headerDateFromInput') || document.getElementById('reqDateFromInput');
-            const toInput = document.getElementById('headerDateToInput') || document.getElementById('reqDateToInput');
-            if (fromInput && fromInput.value) payload.f_date = fromInput.value.trim();
-            if (toInput && toInput.value) payload.t_date = toInput.value.trim();
+            // Also accept inputs from legacy header inputs if present
+            const fromInput = document.getElementById('headerDateFrom_1') || document.getElementById('headerDateFromInput') || document.getElementById('reqDateFromInput');
+            const toInput = document.getElementById('headerDateTo_1') || document.getElementById('headerDateToInput') || document.getElementById('reqDateToInput');
+            if (fromInput && fromInput.value) {
+                payload.f_date = formatToYyyyMmDd(fromInput.value.trim());
+                payload.from_date = fromInput.value.trim();
+            }
+            if (toInput && toInput.value) {
+                payload.t_date = formatToYyyyMmDd(toInput.value.trim());
+                payload.to_date = toInput.value.trim();
+            }
+        }
+        if (botId === 11) {
+            payload.pbi_org = '3';
+            payload.dept_id = '32';
         }
 
         try {
@@ -928,7 +1290,7 @@
                 <svg class="spin-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
                     <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-linecap="round"/>
                 </svg>
-                <span>Running 9 Bots...</span>
+                <span>Running 11 Bots...</span>
             `;
         }
 
@@ -987,20 +1349,20 @@
         timerInterval = setInterval(updateTimer, 250);
 
         if (typeof window.showToast === 'function') {
-            window.showToast('🚀 Master Bot Started: Sequentially collecting all 9 ERP modules...');
+            window.showToast('🚀 Master Bot Started: Sequentially collecting all 11 ERP modules...');
         }
 
         let successCount = 0;
         const failures = [];
 
-        for (let i = 1; i <= 9; i++) {
+        for (let i = 1; i <= 11; i++) {
             const config = BOTS_CONFIG[i];
             if (!config) continue;
 
             // In-flight status update
             if (statusText) {
                 statusText.style.color = '#1e40af';
-                statusText.innerHTML = `Collecting Bot ${i}/9: <strong>${config.name}</strong> <span style="font-size:0.75rem; color:#475569; font-weight:normal;">(📍 ${config.sourcePath})</span>...`;
+                statusText.innerHTML = `Collecting Bot ${i}/11: <strong>${config.name}</strong> <span style="font-size:0.75rem; color:#475569; font-weight:normal;">(📍 ${config.sourcePath})</span>...`;
             }
             if (percentBadge && i === 1) {
                 percentBadge.innerText = `0%`;
@@ -1015,7 +1377,7 @@
                 failures.push({ name: config.name, error: res ? res.error : 'Unknown' });
                 // If the very first bot failed because the backend is down, abort remaining to save time
                 if (res && res.isBackendDown && i === 1) {
-                    for (let rest = 2; rest <= 9; rest++) {
+                    for (let rest = 2; rest <= 11; rest++) {
                         const restBtn = document.getElementById(`flashBtn${rest}`);
                         if (restBtn) {
                             restBtn.innerHTML = `<span>❌ Backend Offline</span>`;
@@ -1024,13 +1386,13 @@
                             restBtn.style.borderColor = '#B91C1C';
                         }
                     }
-                    failures.push(...[2,3,4,5,6,7,8,9].map(k => ({ name: BOTS_CONFIG[k].name, error: 'Backend Offline' })));
+                    failures.push(...[2,3,4,5,6,7,8,9,10,11].map(k => ({ name: BOTS_CONFIG[k] ? BOTS_CONFIG[k].name : `Bot ${k}`, error: 'Backend Offline' })));
                     break;
                 }
             }
 
-            // Completed percentage after bot i finishes (e.g. 1/9 = 11.1%, 2/9 = 22.2%, ..., 9/9 = 100%)
-            const completedPct = (i === 9) ? '100%' : `${((i / 9) * 100).toFixed(1)}%`;
+            // Completed percentage after bot i finishes (e.g. 1/11 = 9.1%, 2/11 = 18.2%, ..., 11/11 = 100%)
+            const completedPct = (i === 11) ? '100%' : `${((i / 11) * 100).toFixed(1)}%`;
             if (barFill) {
                 barFill.style.width = completedPct;
             }
@@ -1054,7 +1416,7 @@
                 statusStrip.style.borderColor = '#10b981';
                 if (statusText) {
                     statusText.style.color = '#065f46';
-                    statusText.innerHTML = `✅ All 9 Reports Collected Successfully from ERP in <strong>${totalTimeStr}</strong>!`;
+                    statusText.innerHTML = `✅ All 11 Reports Collected Successfully from ERP in <strong>${totalTimeStr}</strong>!`;
                 }
                 if (barFill) {
                     barFill.style.width = '100%';
@@ -1104,7 +1466,7 @@
         if (btnElement) {
             btnElement.disabled = false;
             btnElement.style.background = failures.length === 0 ? '#10b981' : '#dc2626';
-            btnElement.innerHTML = failures.length === 0 ? `<span>✓ All 9 Collected (${totalTimeStr})</span>` : '<span>⚡ Run Bot (Retry)</span>';
+            btnElement.innerHTML = failures.length === 0 ? `<span>✓ All 11 Collected (${totalTimeStr})</span>` : '<span>⚡ Run Bot (Retry)</span>';
 
             setTimeout(() => {
                 btnElement.style.background = '';
@@ -1114,7 +1476,7 @@
 
         if (typeof window.showToast === 'function') {
             if (failures.length === 0) {
-                window.showToast(`🎉 All 9 MEP ERP Reports Collected Successfully in ${totalTimeStr}!`);
+                window.showToast(`🎉 All 11 MEP ERP Reports Collected Successfully in ${totalTimeStr}!`);
             } else {
                 window.showToast(`⚠️ Master Collection Result: ${successCount} succeeded, ${failures.length} failed in ${totalTimeStr}.`);
             }
@@ -2088,6 +2450,289 @@
     }
 
     /**
+     * Bot 10: Monthly Attendance Sheet — Exact 1:1 ERP Attendance Sheet Replica (Screenshot 2)
+     */
+     function renderMonthlyAttendanceMatrix(filtered, allItems, dataObj) {
+        const bodyEl = document.getElementById('collectedModalBody');
+        const countBadge = document.getElementById('collectedRecordCount');
+        if (!bodyEl) return;
+
+        const dayHeaders = (dataObj && dataObj.day_headers && dataObj.day_headers.length > 0)
+            ? dataObj.day_headers
+            : (filtered[0] && filtered[0].daily ? filtered[0].daily.map(d => d.day_header) : []);
+
+        if (countBadge) {
+            countBadge.innerText = `${filtered.length} Employees (${dayHeaders.length} Days Recorded)`;
+        }
+
+        const fromDateStr = dataObj?.meta?.from_date || (dayHeaders[0] ? dayHeaders[0].split(' ').slice(0, 2).join(' ') : 'Aug-2026');
+        const toDateStr = dataObj?.meta?.to_date || (dayHeaders.length > 0 ? dayHeaders[dayHeaders.length - 1].split(' ').slice(0, 2).join(' ') : 'Sep-2026');
+
+        // Group dayHeaders into month blocks for exact 2-row ERP header
+        const monthGroups = [];
+        dayHeaders.forEach(dh => {
+            const parts = dh.split(' ');
+            const mName = parts[0] || 'Month';
+            const subTitle = parts.slice(1).join(' ') || dh;
+            const lastG = monthGroups[monthGroups.length - 1];
+            if (lastG && lastG.name === mName) {
+                lastG.days.push({ full: dh, sub: subTitle });
+            } else {
+                monthGroups.push({ name: mName, days: [{ full: dh, sub: subTitle }] });
+            }
+        });
+
+        let html = `
+            <div style="text-align:center; padding:10px 0 14px 0; border-bottom:1px solid #cbd5e1; margin-bottom:12px; background:#f8fafc;">
+                <h3 style="margin:0; font-size:1.3rem; font-weight:800; color:#000; letter-spacing:0.5px;">ATTENDANCE SHEET</h3>
+                <div style="font-size:0.95rem; font-weight:700; color:#000; margin-top:3px;">Period : ${escapeHTML(fromDateStr)} - ${escapeHTML(toDateStr)}</div>
+            </div>
+            <div class="collected-table-wrapper att-matrix-wrapper" style="overflow-x:auto;">
+                <table class="report-table table-paste-striped att-matrix-table" id="collectedMasterTable" style="border-collapse:collapse; width:100%; border:1px solid #64748b;">
+                    <thead>
+                        <tr style="background:#ffffff; border-bottom:1px solid #64748b;">
+                            <th rowspan="2" style="width:40px; text-align:center; position:sticky; left:0; z-index:4; background:#ffffff; border:1px solid #64748b; padding:8px 4px; font-weight:bold; color:#000;">SL</th>
+                            <th rowspan="2" style="width:65px; text-align:center; position:sticky; left:40px; z-index:4; background:#ffffff; border:1px solid #64748b; padding:8px 6px; font-weight:bold; color:#000;">Emp Id</th>
+                            <th rowspan="2" style="min-width:160px; position:sticky; left:105px; z-index:4; background:#ffffff; border:1px solid #64748b; padding:8px 8px; font-weight:bold; color:#000;">EMP Name</th>
+                            <th rowspan="2" style="min-width:120px; border:1px solid #64748b; padding:8px 6px; font-weight:bold; color:#000; text-align:center; background:#ffffff;">Company</th>
+                            <th rowspan="2" style="min-width:100px; border:1px solid #64748b; padding:8px 6px; font-weight:bold; color:#000; text-align:center; background:#ffffff;">Department</th>
+                            <th rowspan="2" style="min-width:100px; border:1px solid #64748b; padding:8px 6px; font-weight:bold; color:#000; text-align:center; background:#ffffff;">Section</th>
+                            <th rowspan="2" style="min-width:110px; border:1px solid #64748b; padding:8px 6px; font-weight:bold; color:#000; text-align:center; background:#ffffff;">Unit</th>
+                            <th rowspan="2" style="min-width:110px; border:1px solid #64748b; padding:8px 6px; font-weight:bold; color:#000; text-align:center; background:#ffffff;">Job Location</th>
+        `;
+
+        monthGroups.forEach(mg => {
+            html += `<th colspan="${mg.days.length}" style="text-align:center; padding:6px 4px; border:1px solid #64748b; background:#ffffff; color:#000; font-weight:bold; font-size:0.85rem;">
+                        ${escapeHTML(mg.name)}
+                     </th>`;
+        });
+
+        html += `</tr><tr style="background:#ffffff; border-bottom:2px solid #64748b;">`;
+
+        monthGroups.forEach(mg => {
+            mg.days.forEach(dObj => {
+                const isFriday = dObj.full.toLowerCase().includes('fri');
+                const thStyle = isFriday ? 'background:#fee2e2; color:#b91c1c;' : 'background:#ffffff; color:#000;';
+                html += `<th style="min-width:76px; text-align:center; padding:4px 3px; border:1px solid #64748b; ${thStyle} white-space:nowrap; font-size:0.75rem; font-weight:bold;">
+                            ${escapeHTML(dObj.sub)}
+                         </th>`;
+            });
+        });
+
+        html += `</tr></thead><tbody>`;
+
+        filtered.forEach((emp, idx) => {
+            const rowClass = (idx % 2 === 0) ? 'att-row-even' : 'att-row-odd';
+            html += `<tr class="${rowClass}" style="border-bottom:1px solid #cbd5e1;">
+                <td style="text-align:center; font-family:monospace; position:sticky; left:0; z-index:2; background:inherit; border:1px solid #64748b; font-weight:600;">${emp.sl || (idx + 1)}</td>
+                <td class="col-itemcode-cell" style="position:sticky; left:40px; z-index:2; background:inherit; font-weight:700; text-align:center; border:1px solid #64748b;">${emp.emp_id || '-'}</td>
+                <td style="font-weight:700; color:#0f172a; position:sticky; left:105px; z-index:2; background:inherit; border:1px solid #64748b; white-space:nowrap; padding:6px 8px;">${escapeHTML(emp.emp_name || '-')}</td>
+                <td style="font-size:0.78rem; border:1px solid #64748b; white-space:nowrap; padding:6px 6px;">${escapeHTML(emp.company || 'MEP FAN LIMITED.')}</td>
+                <td style="font-size:0.78rem; border:1px solid #64748b; white-space:nowrap; padding:6px 6px;">${escapeHTML(emp.department || '-')}</td>
+                <td style="font-size:0.78rem; border:1px solid #64748b; white-space:nowrap; padding:6px 6px;">${escapeHTML(emp.section || '-')}</td>
+                <td style="font-size:0.78rem; border:1px solid #64748b; white-space:nowrap; padding:6px 6px;">${escapeHTML(emp.unit || emp.section || '-')}</td>
+                <td style="font-size:0.78rem; border:1px solid #64748b; white-space:nowrap; padding:6px 6px;">${escapeHTML(emp.job_location || 'Factory-Barishal')}</td>
+            `;
+
+            const dailyList = emp.daily || [];
+            dayHeaders.forEach(dh => {
+                const dayRecord = dailyList.find(d => d.day_header === dh);
+                let cellInnerHtml = '<span style="color:#94a3b8;">-</span>';
+
+                if (dayRecord) {
+                    const statusType = (dayRecord.status_type || dayRecord.status || '').toLowerCase();
+                    const inTime = dayRecord.in_time || '';
+                    const outTime = dayRecord.out_time || '';
+                    const details = dayRecord.details || '';
+
+                    if (statusType.includes('present') || statusType === 'p') {
+                        cellInnerHtml = `
+                            <div style="color:#059669; font-weight:bold; font-size:12px; line-height:1.2;">Present</div>
+                            ${inTime ? `<div style="font-size:10px; color:#1e293b; line-height:1.2; margin-top:2px;">${escapeHTML(inTime)}</div>` : ''}
+                            ${outTime ? `<div style="font-size:10px; color:#1e293b; line-height:1.2;">${escapeHTML(outTime)}</div>` : ''}
+                        `;
+                    } else if (statusType.includes('off') || statusType.includes('holiday') || statusType === 'w') {
+                        cellInnerHtml = `<div style="color:#2563eb; font-weight:bold; font-size:12px;">OFFDAY</div>`;
+                    } else if (statusType.includes('leave') || statusType === 'l') {
+                        const leaveLabel = details.toLowerCase().includes('casual') ? 'Casual<br>Leave' : 'Leave';
+                        cellInnerHtml = `<div style="color:#c026d3; font-weight:bold; font-size:11px; line-height:1.2;">${leaveLabel}</div>`;
+                    } else if (statusType.includes('late')) {
+                        cellInnerHtml = `
+                            <div style="color:#ea580c; font-weight:bold; font-size:12px; line-height:1.2;">Late</div>
+                            ${inTime ? `<div style="font-size:10px; color:#1e293b; line-height:1.2; margin-top:2px;">${escapeHTML(inTime)}</div>` : ''}
+                            ${outTime ? `<div style="font-size:10px; color:#1e293b; line-height:1.2;">${escapeHTML(outTime)}</div>` : ''}
+                        `;
+                    } else if (statusType.includes('early')) {
+                        cellInnerHtml = `
+                            <div style="color:#d97706; font-weight:bold; font-size:11px; line-height:1.2;">EarlyOut</div>
+                            ${inTime ? `<div style="font-size:10px; color:#1e293b; line-height:1.2; margin-top:2px;">${escapeHTML(inTime)}</div>` : ''}
+                            ${outTime ? `<div style="font-size:10px; color:#1e293b; line-height:1.2;">${escapeHTML(outTime)}</div>` : ''}
+                        `;
+                    } else if (statusType.includes('absent') || statusType === 'a') {
+                        cellInnerHtml = `<div style="color:#dc2626; font-weight:bold; font-size:12px;">Absent</div>`;
+                    } else {
+                        cellInnerHtml = `<div style="font-size:11px; color:#475569;">${escapeHTML(details || statusType)}</div>`;
+                    }
+                }
+
+                html += `<td style="text-align:center; padding:4px 3px; border:1px solid #64748b; vertical-align:middle; background:inherit;">${cellInnerHtml}</td>`;
+            });
+
+            html += `</tr>`;
+        });
+
+        html += `</tbody></table></div>`;
+        bodyEl.innerHTML = html;
+    }
+
+    /**
+     * Bot 11: Monthly & Yearly Attendance Report — Exact 1:1 ERP Multi-Month Rowspan Replica (Screenshot 4)
+     */
+    function renderMonthlyYearlyAttendanceTable(filtered, allItems, dataObj) {
+        const bodyEl = document.getElementById('collectedModalBody');
+        const countBadge = document.getElementById('collectedRecordCount');
+        if (!bodyEl) return;
+
+        const headers = (dataObj && dataObj.headers && dataObj.headers.length > 0)
+            ? dataObj.headers
+            : [
+                "SL", "Emp ID", "Emp Name", "Designation", "Department", "Section", "Sub-Section", "Grade", "Job Location", "Company",
+                "Join Date", "Month-Year", "Assigned working hour", "Total Days in Month", "Festival/Weekly  Holiday", "Total Working Days",
+                "Standard Working Hour", "Present Days", "Physical Working Hour", "Absent Days", "LWP", "CL", "ML", "EL", "NPL", "Paid Leave",
+                "OT", "Extra OT", "Total OT", "Late Days", "Late Min", "Early Days", "Early Min", "Compensatory Leave", "SP IOM Pay",
+                "SP IOM Leave", "Reg. IOM", "OD IOM", "Assaigned Night Duty Days", "Assaigned Night Duty Hours", "M-Grade Extra Duty Days"
+            ];
+
+        // Group filtered records by Employee (emp_id)
+        const empGroups = [];
+        let curGroup = null;
+
+        filtered.forEach(it => {
+            const empKey = String(it.emp_id || it.emp_name).trim();
+            if (!curGroup || curGroup.key !== empKey) {
+                curGroup = {
+                    key: empKey,
+                    emp: it,
+                    months: [it]
+                };
+                empGroups.push(curGroup);
+            } else {
+                curGroup.months.push(it);
+            }
+        });
+
+        if (countBadge) {
+            countBadge.innerText = `${empGroups.length} Employees (${filtered.length} Monthly Records &bull; 41 Columns)`;
+        }
+
+        const fromDateStr = dataObj?.meta?.from_date || '2025-12-26';
+        const toDateStr = dataObj?.meta?.to_date || '2026-09-21';
+
+        let html = `
+            <div style="text-align:center; padding:10px 0 14px 0; border-bottom:1px solid #cbd5e1; margin-bottom:12px; background:#f8fafc;">
+                <h3 style="margin:0; font-size:1.3rem; font-weight:800; color:#000; letter-spacing:0.5px;">Monthly and Yearly Attendence Sheet</h3>
+                <div style="font-size:0.95rem; font-weight:700; color:#000; margin-top:3px;">Period : ${escapeHTML(fromDateStr)} - ${escapeHTML(toDateStr)}</div>
+            </div>
+            <div class="collected-table-wrapper" style="overflow-x:auto;">
+                <table class="report-table table-paste-striped" id="collectedMasterTable" style="border-collapse:collapse; width:100%; border:1px solid #64748b;">
+                    <thead>
+                        <tr style="background:#ffffff; border-bottom:2px solid #64748b;">
+        `;
+
+        headers.forEach((h, hIdx) => {
+            let stickyStyle = '';
+            if (hIdx === 0) stickyStyle = 'position:sticky; left:0; z-index:4; width:45px; text-align:center; background:#ffffff;';
+            else if (hIdx === 1) stickyStyle = 'position:sticky; left:45px; z-index:4; width:70px; text-align:center; background:#ffffff;';
+            else if (hIdx === 2) stickyStyle = 'position:sticky; left:115px; z-index:4; min-width:160px; background:#ffffff;';
+            html += `<th style="${stickyStyle} white-space:nowrap; padding:8px 8px; border:1px solid #64748b; font-size:0.75rem; font-weight:bold; color:#000;">${escapeHTML(h)}</th>`;
+        });
+
+        html += `</tr></thead><tbody>`;
+
+        // Render each employee with rowspan across all their months
+        empGroups.forEach((group, gIdx) => {
+            const emp = group.emp;
+            const months = group.months;
+            const rowSpan = months.length;
+            const groupBg = (gIdx % 2 === 0) ? '#ffffff' : '#f8fafc';
+
+            months.forEach((mRow, mIdx) => {
+                html += `<tr style="background:${groupBg}; border-bottom:1px solid #cbd5e1;">`;
+
+                // If first month of this employee, render the 11 rowspanned employee cells
+                if (mIdx === 0) {
+                    html += `
+                        <td rowspan="${rowSpan}" style="text-align:center; font-family:monospace; position:sticky; left:0; z-index:2; background:${groupBg}; border:1px solid #64748b; vertical-align:middle; font-weight:700;">${emp.sl || (gIdx + 1)}</td>
+                        <td rowspan="${rowSpan}" class="col-itemcode-cell" style="position:sticky; left:45px; z-index:2; text-align:center; background:${groupBg}; font-weight:700; border:1px solid #64748b; vertical-align:middle;">${emp.emp_id || '-'}</td>
+                        <td rowspan="${rowSpan}" style="position:sticky; left:115px; z-index:2; font-weight:700; color:#000; background:${groupBg}; border:1px solid #64748b; white-space:nowrap; padding:6px 8px; vertical-align:middle;">${escapeHTML(emp.emp_name || '-')}</td>
+                        <td rowspan="${rowSpan}" style="border:1px solid #64748b; white-space:nowrap; padding:6px 8px; vertical-align:middle; font-size:0.80rem;">${escapeHTML(emp.designation || '-')}</td>
+                        <td rowspan="${rowSpan}" style="border:1px solid #64748b; white-space:nowrap; padding:6px 8px; vertical-align:middle; font-size:0.80rem;">${escapeHTML(emp.department || 'Production')}</td>
+                        <td rowspan="${rowSpan}" style="border:1px solid #64748b; white-space:nowrap; padding:6px 8px; vertical-align:middle; font-size:0.80rem;">${escapeHTML(emp.section || '-')}</td>
+                        <td rowspan="${rowSpan}" style="border:1px solid #64748b; white-space:nowrap; padding:6px 8px; vertical-align:middle; font-size:0.80rem;">${escapeHTML(emp.sub_section || '-')}</td>
+                        <td rowspan="${rowSpan}" style="border:1px solid #64748b; text-align:center; padding:6px 4px; vertical-align:middle; font-size:0.80rem;">${escapeHTML(emp.grade || '-')}</td>
+                        <td rowspan="${rowSpan}" style="border:1px solid #64748b; white-space:nowrap; padding:6px 8px; vertical-align:middle; font-size:0.80rem;">${escapeHTML(emp.job_location || 'Factory-Barishal')}</td>
+                        <td rowspan="${rowSpan}" style="border:1px solid #64748b; text-align:center; padding:6px 6px; vertical-align:middle; font-size:0.80rem;">${escapeHTML(emp.company || 'FAN')}</td>
+                        <td rowspan="${rowSpan}" style="border:1px solid #64748b; text-align:center; white-space:nowrap; padding:6px 6px; vertical-align:middle; font-size:0.80rem;">${escapeHTML(emp.join_date || '-')}</td>
+                    `;
+                }
+
+                // 30 Month-specific columns
+                const mCells = [
+                    mRow.month_year || '-',
+                    mRow.assigned_working_hour || '8',
+                    mRow.total_days_in_month || '0',
+                    mRow.festival_holiday || '0',
+                    mRow.total_working_days || '0',
+                    mRow.standard_working_hour || '0',
+                    mRow.present_days || '0',
+                    mRow.physical_working_hour || '0',
+                    mRow.absent_days || '0',
+                    mRow.lwp || '0',
+                    mRow.cl || '0',
+                    mRow.ml || '0',
+                    mRow.el || '0',
+                    mRow.npl || '0',
+                    mRow.paid_leave || '0',
+                    mRow.ot || '0',
+                    mRow.extra_ot || '0',
+                    mRow.total_ot || '0',
+                    mRow.late_days || '0',
+                    mRow.late_min || '0',
+                    mRow.early_days || '0',
+                    mRow.early_min || '0',
+                    mRow.compensatory_leave || '0',
+                    mRow.sp_iom_pay || '0',
+                    mRow.sp_iom_leave || '0',
+                    mRow.reg_iom || '0',
+                    mRow.od_iom || '0',
+                    mRow.night_duty_days || '0',
+                    mRow.night_duty_hours || '0',
+                    mRow.m_grade_extra_duty || '0'
+                ];
+
+                mCells.forEach((cVal, cIdx) => {
+                    let cStyle = 'padding:6px 8px; border:1px solid #64748b; white-space:nowrap; text-align:center; font-size:0.80rem;';
+                    if (cIdx === 0) { // Month-Year
+                        cStyle += 'font-weight:700; color:#000; background:inherit;';
+                    } else if (cIdx === 6) { // Present Days
+                        cStyle += 'font-weight:700; color:#059669;';
+                    } else if (cIdx === 8) { // Absent Days
+                        cStyle += 'font-weight:700; color:#dc2626;';
+                    } else if (cIdx === 17) { // Total OT
+                        cStyle += 'font-weight:700; color:#2563eb;';
+                    }
+                    html += `<td style="${cStyle}">${escapeHTML(String(cVal !== null && cVal !== undefined ? cVal : '-'))}</td>`;
+                });
+
+                html += `</tr>`;
+            });
+        });
+
+        html += `</tbody></table></div>`;
+        bodyEl.innerHTML = html;
+    }
+
+    /**
      * Render the exact table rows matching the Bot's structure
      */
     function renderTableRows(botId, allItems) {
@@ -2119,6 +2764,18 @@
                     <p>Try clearing your search term or filters to view all collected items.</p>
                 </div>
             `;
+            return;
+        }
+
+        // Bot 10: Monthly Attendance Sheet — Matrix Table
+        if (botId === 10) {
+            renderMonthlyAttendanceMatrix(filtered, allItems, botDataCache[botId]);
+            return;
+        }
+
+        // Bot 11: Monthly & Yearly Attendance Report — 41 Columns Table
+        if (botId === 11) {
+            renderMonthlyYearlyAttendanceTable(filtered, allItems, botDataCache[botId]);
             return;
         }
 
@@ -2434,6 +3091,76 @@
             }
         }
 
+        // Dedicated CSV Export for Bot 10 (Monthly Attendance Matrix)
+        if (botId === 10) {
+            const dataObj = botDataCache[10];
+            const dayHeaders = (dataObj && dataObj.day_headers) || [];
+            const csvHeaders = ['SL', 'Emp ID', 'Employee Name', 'Department', 'Section', 'Present Days', 'Absent Days', 'Leave Days', ...dayHeaders];
+            const rows = items.map((emp, idx) => {
+                const dailyList = emp.daily || [];
+                const dayCols = dayHeaders.map(dh => {
+                    const dr = dailyList.find(d => d.day_header === dh);
+                    return dr ? dr.status : '-';
+                });
+                const rCols = [
+                    emp.sl || idx + 1,
+                    emp.emp_id || '',
+                    emp.emp_name || '',
+                    emp.department || '',
+                    emp.unit || emp.section || '',
+                    emp.present_days || 0,
+                    emp.absent_days || 0,
+                    emp.leave_days || 0,
+                    ...dayCols
+                ];
+                return rCols.map(c => `"${String(c !== null && c !== undefined ? c : '').replace(/"/g, '""')}"`).join(',');
+            });
+            const csvContent = '\uFEFF' + csvHeaders.map(h => `"${h}"`).join(',') + '\n' + rows.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `HRM_Monthly_Attendance_Sheet_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            if (typeof window.showToast === 'function') window.showToast(`📥 Exported ${items.length} attendance records to CSV!`);
+            return;
+        }
+
+        // Dedicated CSV Export for Bot 11 (Monthly & Yearly Attendance Report 41 Columns)
+        if (botId === 11) {
+            const dataObj = botDataCache[11];
+            const headers = (dataObj && dataObj.headers) || config.columns.map(c => c.label);
+            const rows = items.map((row, idx) => {
+                const cells = row.all_cells || [
+                    row.sl || idx + 1, row.emp_id || '', row.emp_name || '', row.designation || '', row.department || '',
+                    row.section || '', row.sub_section || '', row.grade || '', row.job_location || '', row.company || '',
+                    row.join_date || '', row.month_year || '', row.assigned_working_hour || '', row.total_days_in_month || '',
+                    row.festival_holiday || '', row.total_working_days || '', row.standard_working_hour || '', row.present_days || '',
+                    row.physical_working_hour || '', row.absent_days || '', row.lwp || '', row.cl || '', row.ml || '', row.el || '',
+                    row.npl || '', row.paid_leave || '', row.ot || '', row.extra_ot || '', row.total_ot || '', row.late_days || '',
+                    row.late_min || '', row.early_days || '', row.early_min || '', row.compensatory_leave || '', row.sp_iom_pay || '',
+                    row.sp_iom_leave || '', row.reg_iom || '', row.od_iom || '', row.night_duty_days || '', row.night_duty_hours || '',
+                    row.m_grade_extra_duty || ''
+                ];
+                return cells.map(c => `"${String(c !== null && c !== undefined ? c : '').replace(/"/g, '""')}"`).join(',');
+            });
+            const csvContent = '\uFEFF' + headers.map(h => `"${h}"`).join(',') + '\n' + rows.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `HRM_Monthly_Yearly_Attendance_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            if (typeof window.showToast === 'function') window.showToast(`📥 Exported ${items.length} HRM records to CSV!`);
+            return;
+        }
+
         const items = getFilteredItems(botId);
         if (!items || items.length === 0) {
             if (typeof window.showToast === 'function') window.showToast('No records to export');
@@ -2491,6 +3218,9 @@
         if (fromInput) fromInput.value = defaultFrom;
         if (toInput) toInput.value = defaultTo;
         if (badge) badge.innerText = `${defaultFrom} ⟶ ${defaultTo}`;
+
+        // Also initialize card date inputs from persistent storage
+        initAllBotDateInputs();
     }
 
     if (document.readyState === 'loading') {
@@ -2517,5 +3247,9 @@
     window.toggleReqDateRangePicker = toggleReqDateRangePicker;
     window.applyReqDateRange = applyReqDateRange;
     window.initReqDateControls = initReqDateControls;
+    window.getBotSavedDateRange = getBotSavedDateRange;
+    window.validateAndSaveBotDateRange = validateAndSaveBotDateRange;
+    window.initAllBotDateInputs = initAllBotDateInputs;
+    window.getBotDataCache = function(botId) { return botDataCache[botId] || null; };
 
 })();

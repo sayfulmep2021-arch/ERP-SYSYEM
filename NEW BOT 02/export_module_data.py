@@ -4,6 +4,7 @@ from datetime import datetime
 BASE_DIR = os.path.abspath(r"c:\Users\User\OneDrive\My Work\ERP SYSYEM\NEW BOT 02")
 PROD_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "modules", "production"))
 WH_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "modules", "warehouse"))
+HRM_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "modules", "hrm"))
 
 def export_bot_1():
     p = os.path.join(BASE_DIR, "intersales_requisition_cache.json")
@@ -236,17 +237,38 @@ def export_bot_9():
     print(f"[+] Exported Bot 9 to {t}")
     return True
 
+def export_bot_10():
+    p = os.path.join(BASE_DIR, "monthly_attendance_cache.json")
+    if not os.path.exists(p): return False
+    with open(p, "r", encoding="utf-8") as f: data = json.load(f)
+    t = os.path.join(HRM_DIR, "monthly_attendance_bot_data.js")
+    with open(t, "w", encoding="utf-8") as f:
+        f.write("const RAW_MONTHLY_ATTENDANCE_BOT_DATA = " + json.dumps(data, indent=2) + ";\nif (typeof window !== 'undefined') { window.RAW_MONTHLY_ATTENDANCE_BOT_DATA = RAW_MONTHLY_ATTENDANCE_BOT_DATA; }\n")
+    print(f"[+] Exported Bot 10 to {t}")
+    return True
+
+def export_bot_11():
+    p = os.path.join(BASE_DIR, "monthly_yearly_attendance_cache.json")
+    if not os.path.exists(p): return False
+    with open(p, "r", encoding="utf-8") as f: data = json.load(f)
+    t = os.path.join(HRM_DIR, "monthly_yearly_attendance_bot_data.js")
+    with open(t, "w", encoding="utf-8") as f:
+        f.write("const RAW_MONTHLY_YEARLY_ATTENDANCE_BOT_DATA = " + json.dumps(data, indent=2) + ";\nif (typeof window !== 'undefined') { window.RAW_MONTHLY_YEARLY_ATTENDANCE_BOT_DATA = RAW_MONTHLY_YEARLY_ATTENDANCE_BOT_DATA; }\n")
+    print(f"[+] Exported Bot 11 to {t}")
+    return True
+
 def export_bot_by_id(b):
     fn_map = {
         1: export_bot_1, 2: export_bot_2, 3: export_bot_3,
         4: export_bot_4, 5: export_bot_5, 6: export_bot_6,
-        7: export_bot_7, 8: export_bot_8, 9: export_bot_9
+        7: export_bot_7, 8: export_bot_8, 9: export_bot_9,
+        10: export_bot_10, 11: export_bot_11
     }
     fn = fn_map.get(b)
     return fn() if fn else False
 
 def export_all_bots():
-    return {i: export_bot_by_id(i) for i in range(1, 10)}
+    return {i: export_bot_by_id(i) for i in range(1, 12)}
 
 if __name__ == "__main__":
     r = export_all_bots()

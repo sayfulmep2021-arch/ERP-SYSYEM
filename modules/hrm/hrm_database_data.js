@@ -1267,12 +1267,46 @@
             sections[sec] = (sections[sec] || 0) + 1;
         });
 
+        // 1. Assemble Line gender breakdown
+        const assembleEmployees = active.filter(it => String(it.section || '').toLowerCase().includes('assemble'));
+        const assembleMale = assembleEmployees.filter(it => it.gender === 'Male').length;
+        const assembleFemale = assembleEmployees.filter(it => it.gender === 'Female').length;
+
+        // 2. Dimmer & Blade gender breakdown
+        const dimmerEmployees = active.filter(it => {
+            const s = String(it.section || '').toLowerCase();
+            return s.includes('dimm') || s.includes('blade');
+        });
+        const dimmerMale = dimmerEmployees.filter(it => it.gender === 'Male').length;
+        const dimmerFemale = dimmerEmployees.filter(it => it.gender === 'Female').length;
+
+        // 3. Armature & Winding gender breakdown
+        const armatureEmployees = active.filter(it => {
+            const s = String(it.section || '').toLowerCase();
+            return s.includes('armature') || s.includes('winding');
+        });
+        const armatureMale = armatureEmployees.filter(it => it.gender === 'Male').length;
+        const armatureFemale = armatureEmployees.filter(it => it.gender === 'Female').length;
+
         // Designation counts
         const designations = {};
         active.forEach(it => {
             const des = it.designation || 'General';
             designations[des] = (designations[des] || 0) + 1;
         });
+
+        // 4. Dynamic Upcoming Friday countdown calculation based on real system clock
+        const now = new Date();
+        const currentDay = now.getDay(); // Sunday=0, Monday=1, ..., Friday=5, Saturday=6
+        const diffToFriday = (5 - currentDay + 7) % 7;
+        let fridayCountdownText = '';
+        if (diffToFriday === 0) {
+            fridayCountdownText = 'Today';
+        } else if (diffToFriday === 1) {
+            fridayCountdownText = '1 day';
+        } else {
+            fridayCountdownText = `${diffToFriday} days`;
+        }
 
         return {
             total: list.length,
@@ -1286,6 +1320,23 @@
             leaveApproved7Days: 0,
             leavePending7Days: 0,
             nextHoliday: 'Friday',
+            fridayCountdown: fridayCountdownText,
+            fridayRemainingDays: diffToFriday,
+            assemble: {
+                male: assembleMale,
+                female: assembleFemale,
+                total: assembleEmployees.length
+            },
+            dimmer: {
+                male: dimmerMale,
+                female: dimmerFemale,
+                total: dimmerEmployees.length
+            },
+            armature: {
+                male: armatureMale,
+                female: armatureFemale,
+                total: armatureEmployees.length
+            },
             sections: sections,
             designations: designations
         };

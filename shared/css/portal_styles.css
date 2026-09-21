@@ -8135,6 +8135,8 @@
     justify-content: space-between !important;
     min-height: 108px !important;
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    cursor: default !important;
+    user-select: none !important;
 }
 
 .hrm-floating-card:hover {
@@ -8224,10 +8226,71 @@
 }
 
 /* Underline Accents matching Screenshot */
-.hrm-card-active-emp { border-bottom: 3px solid #22c55e !important; }
-.hrm-card-inactive-emp { border-bottom: 3px solid #a855f7 !important; }
-.hrm-card-leave-req { border-bottom: 3px solid #06b6d4 !important; }
+.hrm-card-active-emp,
+.hrm-card-assemble-kpi { border-bottom: 3px solid #22c55e !important; }
+.hrm-card-inactive-emp,
+.hrm-card-dimmer-kpi { border-bottom: 3px solid #a855f7 !important; }
+.hrm-card-leave-req,
+.hrm-card-armature-kpi { border-bottom: 3px solid #06b6d4 !important; }
 .hrm-card-next-holiday { border-bottom: 3px solid #f97316 !important; }
+
+/* Sectional Gender Stats & Dynamic Friday Countdown */
+.hrm-gender-stats-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    align-items: flex-end !important;
+    min-width: 90px !important;
+}
+
+.hrm-gender-row {
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+.hrm-gender-label {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: #64748b !important;
+    text-transform: capitalize !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.hrm-gender-val {
+    font-size: 1.28rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    line-height: 1.15 !important;
+    font-family: 'Times New Roman', Times, serif, system-ui !important;
+    min-width: 20px !important;
+    text-align: right !important;
+}
+
+.hrm-card-sub-total {
+    font-size: 0.70rem !important;
+    font-weight: 700 !important;
+    color: #047857 !important;
+    background: #ecfdf5 !important;
+    padding: 2px 8px !important;
+    border-radius: 9999px !important;
+    border: 1px solid #a7f3d0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.3px !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    white-space: nowrap !important;
+}
+
+.hrm-friday-countdown {
+    font-size: 1.45rem !important;
+    font-weight: 850 !important;
+    color: #0f172a !important;
+    line-height: 1.2 !important;
+    margin-top: 4px !important;
+    font-family: 'Times New Roman', Times, serif, system-ui !important;
+}
 
 /* 5. Middle Grid (Attendance Donut + 6 Floating Cards) */
 .hrm-middle-grid {
@@ -14427,8 +14490,8 @@
    5. TOP ALL LOAD BUTTON: Master global action button in header
    ========================================================================== */
 .flash-modal-card {
-    width: 100% !important;
-    max-width: 860px !important;
+    width: 95vw !important;
+    max-width: 1050px !important;
     max-height: 94vh !important;
     background: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
@@ -14820,6 +14883,250 @@
 }
 .flash-card.flash-theme-bom .flash-card-title {
     color: #1e40af !important;
+}
+
+/* 10. Monthly Attendance: Deep Indigo / Violet */
+.flash-card.flash-theme-attendance {
+    background: linear-gradient(145deg, #ede9fe 0%, #ddd6fe 60%, #c4b5fd 100%) !important;
+    border: 1.5px solid #a78bfa !important;
+}
+.flash-card.flash-theme-attendance .flash-card-title {
+    color: #5b21b6 !important;
+}
+
+/* 11. Monthly & Yearly Attendance: Ocean Cyan */
+.flash-card.flash-theme-yearlyatt {
+    background: linear-gradient(145deg, #ecfeff 0%, #cffafe 60%, #a5f3fc 100%) !important;
+    border: 1.5px solid #38bdf8 !important;
+}
+.flash-card.flash-theme-yearlyatt .flash-card-title {
+    color: #0e7490 !important;
+}
+
+/* Multi-Bot Persistent Date Range Header Cluster */
+.flash-header-date-cluster {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+    margin-top: 14px !important;
+    padding: 10px 14px !important;
+    background: #f8fafc !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.flash-header-date-card {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 8px 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    box-sizing: border-box !important;
+}
+
+.flash-header-date-card.flash-hdc-bot1 {
+    border-color: #38bdf8 !important;
+    background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%) !important;
+}
+.flash-header-date-card.flash-hdc-bot10 {
+    border-color: #818cf8 !important;
+    background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%) !important;
+}
+.flash-header-date-card.flash-hdc-bot11 {
+    border-color: #06b6d4 !important;
+    background: linear-gradient(180deg, #ecfeff 0%, #ffffff 100%) !important;
+}
+
+.flash-header-date-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transform: translateY(-1px) !important;
+}
+
+.flash-hdc-top {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.flash-hdc-badge {
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    color: #ffffff !important;
+    background: #0284c7 !important;
+    letter-spacing: 0.2px !important;
+    text-transform: uppercase !important;
+}
+.flash-hdc-bot10 .flash-hdc-badge {
+    background: #4f46e5 !important;
+}
+.flash-hdc-bot11 .flash-hdc-badge {
+    background: #0891b2 !important;
+}
+
+.flash-hdc-name {
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    letter-spacing: -0.01em !important;
+}
+
+.flash-hdc-inputs {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+.flash-hdc-input {
+    width: 76px !important;
+    max-width: 80px !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding: 3px 4px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    text-align: center !important;
+    font-family: inherit !important;
+    outline: none !important;
+    transition: all 0.15s ease !important;
+    box-sizing: border-box !important;
+}
+
+.flash-hdc-input:focus {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2) !important;
+}
+
+.flash-hdc-sep {
+    font-size: 0.74rem !important;
+    font-weight: 800 !important;
+    color: #94a3b8 !important;
+    flex-shrink: 0 !important;
+}
+
+.flash-hdc-save-btn {
+    padding: 3px 9px !important;
+    font-size: 0.70rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    border: none !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.18s ease !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3) !important;
+    flex-shrink: 0 !important;
+}
+
+.flash-hdc-bot10 .flash-hdc-save-btn {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3) !important;
+}
+.flash-hdc-bot11 .flash-hdc-save-btn {
+    background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%) !important;
+    box-shadow: 0 2px 6px rgba(8, 145, 178, 0.3) !important;
+}
+
+.flash-hdc-save-btn:hover {
+    transform: translateY(-1px) !important;
+    filter: brightness(1.1) !important;
+}
+
+.flash-hdc-save-btn:active {
+    transform: translateY(0) !important;
+}
+
+.flash-hdc-saved {
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    color: #047857 !important;
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1px solid rgba(16, 185, 129, 0.25) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    text-align: center !important;
+    letter-spacing: 0.1px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+@media (max-width: 900px) {
+    .flash-header-date-cluster {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Backward compatibility fallback */
+.flash-card-date-box {
+    display: none !important;
+}
+
+/* Attendance Matrix Modal Badges */
+.att-pill {
+    display: inline-block !important;
+    width: 22px !important;
+    height: 22px !important;
+    line-height: 22px !important;
+    text-align: center !important;
+    border-radius: 4px !important;
+    font-size: 0.70rem !important;
+    font-weight: 800 !important;
+    font-family: inherit !important;
+}
+.att-pill.att-p {
+    background: #dcfce7 !important;
+    color: #15803d !important;
+    border: 1px solid #86efac !important;
+}
+.att-pill.att-a {
+    background: #fee2e2 !important;
+    color: #b91c1c !important;
+    border: 1px solid #fca5a5 !important;
+}
+.att-pill.att-l {
+    background: #fef3c7 !important;
+    color: #b45309 !important;
+    border: 1px solid #fde68a !important;
+}
+.att-pill.att-w {
+    background: #e0e7ff !important;
+    color: #4338ca !important;
+    border: 1px solid #c7d2fe !important;
+}
+.att-pill.att-o {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+.att-cell-empty {
+    color: #cbd5e1 !important;
+    font-size: 0.80rem !important;
+}
+.att-row-even {
+    background: #ffffff !important;
+}
+.att-row-odd {
+    background: #eaf5ea !important;
 }
 
 /* Card Header */
@@ -16286,4 +16593,454 @@
     .collected-modal-footer {
         display: none !important;
     }
+}
+
+/* ==========================================================================
+   HRM MODULE: REPORT SUBPAGES & PREMIUM DASHBOARD REFINEMENTS
+   ========================================================================== */
+
+/* 1. HRM Dashboard Header Layout & Live KPI Pills */
+.hrm-dash-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1.5px solid #e2e8f0 !important;
+}
+
+.hrm-dash-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.hrm-dash-title {
+    font-size: 1.45rem !important;
+    font-weight: 850 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.02em !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.hrm-title-icon-frame {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    color: #0284c7;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.2);
+    border: 1px solid #7dd3fc;
+}
+
+.hrm-dash-subtitle {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.2px;
+}
+
+.hrm-dash-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.hrm-dash-kpi-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.hrm-dash-kpi-pill strong {
+    color: #0f172a;
+    font-weight: 800;
+}
+
+.hrm-kpi-pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.hrm-kpi-pill-dot.green { background: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.5); }
+.hrm-kpi-pill-dot.blue { background: #0284c7; box-shadow: 0 0 6px rgba(2, 132, 199, 0.5); }
+.hrm-kpi-pill-dot.purple { background: #8b5cf6; box-shadow: 0 0 6px rgba(139, 92, 246, 0.5); }
+
+/* 2. Sidebar Report Parent Menu & Differentiation */
+.hrm-report-parent-btn {
+    border-left: 3px solid #0284c7 !important;
+    background: linear-gradient(90deg, rgba(2, 132, 199, 0.08) 0%, transparent 100%) !important;
+    transition: all 0.2s ease !important;
+}
+
+.hrm-report-parent-btn:hover {
+    background: linear-gradient(90deg, rgba(2, 132, 199, 0.15) 0%, rgba(2, 132, 199, 0.03) 100%) !important;
+}
+
+.hrm-report-parent-label {
+    font-weight: 750 !important;
+    color: #0f2942 !important;
+    letter-spacing: 0.2px !important;
+}
+
+.hrm-report-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: #ffffff;
+    margin-left: 6px;
+    box-shadow: 0 1px 4px rgba(2, 132, 199, 0.35);
+}
+
+/* 3. HRM Report Subpages: Header Card */
+.hrm-report-header-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1.5px solid #cbd5e1;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+}
+
+.hrm-report-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hrm-report-header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hrm-report-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.hrm-report-pill-badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.hrm-report-pill-badge.blue {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+.hrm-report-pill-badge.green {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #86efac;
+}
+
+.hrm-report-pill-badge.purple {
+    background: #f3e8ff;
+    color: #7e22ce;
+    border: 1px solid #d8b4fe;
+}
+
+.hrm-report-main-title {
+    font-size: 1.55rem;
+    font-weight: 900;
+    color: #0f2942;
+    margin: 0;
+    font-family: 'Times New Roman', serif;
+    letter-spacing: -0.3px;
+}
+
+.hrm-report-main-desc {
+    font-size: 0.86rem;
+    color: #64748b;
+    margin: 0;
+    font-weight: 600;
+}
+
+.hrm-report-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-hrm-report-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.btn-hrm-report-action.btn-excel {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.btn-hrm-report-action.btn-excel:hover {
+    background: #059669;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+}
+
+.btn-hrm-report-action.btn-print {
+    background: #ffffff;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+.btn-hrm-report-action.btn-print:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.btn-hrm-report-action.btn-dash {
+    background: #0284c7;
+    color: #ffffff;
+}
+
+.btn-hrm-report-action.btn-dash:hover {
+    background: #0369a1;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+}
+
+.btn-hrm-report-action.btn-sync {
+    background: #0284c7;
+    color: #ffffff;
+}
+
+.btn-hrm-report-action.btn-sync:hover {
+    background: #0369a1;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+}
+
+@keyframes hrmSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 4. Report Top Highlight KPI Grid (4 Cards) */
+.hrm-report-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 18px;
+}
+
+@media (max-width: 900px) {
+    .hrm-report-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .hrm-report-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.hrm-rep-kpi-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hrm-rep-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.07);
+}
+
+.hrm-rep-kpi-card.blue { border-left: 4px solid #0284c7; }
+.hrm-rep-kpi-card.green { border-left: 4px solid #10b981; }
+.hrm-rep-kpi-card.emerald { border-left: 4px solid #059669; }
+.hrm-rep-kpi-card.orange { border-left: 4px solid #f97316; }
+.hrm-rep-kpi-card.purple { border-left: 4px solid #8b5cf6; }
+
+.rep-kpi-icon {
+    font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border-radius: 10px;
+    flex-shrink: 0;
+    border: 1px solid #e2e8f0;
+}
+
+.rep-kpi-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.rep-kpi-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.rep-kpi-val {
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1.2;
+    font-family: 'Times New Roman', serif;
+}
+
+.rep-kpi-sub {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+/* 5. Report Toolbar: Filters & Live Search */
+.hrm-report-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 16px;
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 12px 18px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+}
+
+.hrm-toolbar-filters {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.hrm-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hrm-filter-group label {
+    font-size: 0.8rem;
+    font-weight: 750;
+    color: #475569;
+}
+
+.hrm-report-select {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0f172a;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hrm-report-select:focus {
+    border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.hrm-toolbar-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 6. Report Tables & Strip Header */
+.hrm-table-header-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #0f2942 0%, #1e3a5f 100%);
+    color: #ffffff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.hrm-table-header-strip h3 {
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 850;
+    letter-spacing: 0.5px;
+    font-family: 'Times New Roman', serif;
+}
+
+.hrm-table-header-strip .badge-sub {
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.18);
+    padding: 3px 9px;
+    border-radius: 12px;
+    letter-spacing: 0.3px;
+}
+
+.hrm-annual-matrix-table th {
+    background: #f1f5f9 !important;
+    color: #0f2942 !important;
+    font-weight: 800 !important;
+    font-size: 0.78rem !important;
+    padding: 10px 8px !important;
+    border-bottom: 2px solid #cbd5e1 !important;
+}
+
+.hrm-annual-matrix-table td {
+    padding: 9px 8px !important;
+    font-size: 0.85rem !important;
+    border-bottom: 1px solid #e2e8f0 !important;
 }

@@ -41,6 +41,16 @@ from erp_reports_collector import (
     FAN_STORE_CACHE, FAN_STORE_EXCEL,
     STOCK_MOVEMENT_CACHE, STOCK_MOVEMENT_EXCEL
 )
+from monthly_attendance_collector import (
+    MonthlyAttendanceCollector,
+    CACHE_FILE as MONTHLY_ATT_CACHE,
+    EXCEL_OUTPUT_FILE as MONTHLY_ATT_EXCEL
+)
+from monthly_yearly_attendance_collector import (
+    MonthlyYearlyAttendanceCollector,
+    CACHE_FILE as MONTHLY_YEARLY_ATT_CACHE,
+    EXCEL_OUTPUT_FILE as MONTHLY_YEARLY_ATT_EXCEL
+)
 
 # Exact ERP Source Mapping (100% strictly aligned with user specification)
 BOT_SOURCES = {
@@ -53,6 +63,8 @@ BOT_SOURCES = {
     7: {"name": "Closing All SFG", "module": "Production Module", "page": "Closing ERP ⟶ Closing All SFG", "source": "Production Module ⟶ Closing ERP ⟶ Closing All SFG"},
     8: {"name": "Store Position Report", "module": "Production Module", "page": "Closing ERP ⟶ Store Position Report", "source": "Production Module ⟶ Closing ERP ⟶ Store Position Report"},
     9: {"name": "Bill Of Materials", "module": "Production Module", "page": "Bill of Materials (BOM) ⟶ BOM VIEW", "source": "Production Module ⟶ Bill of Materials (BOM) ⟶ BOM VIEW"},
+    10: {"name": "Monthly Attendance", "module": "HRM Module", "page": "Monthly Attendence Sheet", "source": "HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly Attendence Sheet ⟶ SHOW"},
+    11: {"name": "Monthly & Yearly Attendance Report", "module": "HRM Module", "page": "Monthly & Yearly Attendence Report", "source": "HRM Module ⟶ New-HRM Report ⟶ Reports ⟶ Monthly & Yearly Attendence Report ⟶ SHOW"}
 }
 
 app = Flask(__name__)
@@ -4369,6 +4381,100 @@ def download_stock_movement_excel():
 
 
 # =============================================================================
+# BOT 10: MONTHLY ATTENDANCE ROUTES
+# =============================================================================
+@app.route("/api/monthly-attendance/data")
+def get_monthly_attendance_data():
+    if os.path.exists(MONTHLY_ATT_CACHE):
+        with open(MONTHLY_ATT_CACHE, "r", encoding="utf-8") as f:
+            return jsonify(json.load(f))
+    return jsonify({"items": [], "meta": {}, "summary": {"total_records": 0}})
+
+@app.route("/api/monthly-attendance/sync", methods=["POST"])
+def sync_monthly_attendance():
+    req_data = request.get_json(silent=True) or {}
+    f_date = req_data.get("f_date") or req_data.get("from_date") or "26-08-2026"
+    t_date = req_data.get("t_date") or req_data.get("to_date") or "21-09-2026"
+    try:
+        t0 = time.time()
+        shared_session = get_shared_erp_session()
+        collector = MonthlyAttendanceCollector(session=shared_session)
+        collector.login()
+        collector.collect(f_date_str=f_date, t_date_str=t_date)
+        collector.save_cache()
+        collector.export_to_excel()
+        export_bot_by_id(10)
+        return jsonify({
+            "success": True,
+            "bot_id": 10,
+            "records": len(collector.records),
+            "duration": round(time.time() - t0, 2),
+            "source": BOT_SOURCES[10]["source"]
+        })
+    except Exception as e:
+        return jsonify({"success": False, "bot_id": 10, "error": str(e)}), 500
+
+@app.route("/api/monthly-attendance/download")
+def download_monthly_attendance_excel():
+    if os.path.exists(MONTHLY_ATT_EXCEL):
+        return send_file(
+            os.path.abspath(MONTHLY_ATT_EXCEL),
+            as_attachment=True,
+            download_name="Monthly_Attendance_Sheet.xlsx",
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+    return jsonify({"error": "Excel file not found"}), 404
+
+
+# =============================================================================
+# BOT 11: MONTHLY & YEARLY ATTENDANCE REPORT ROUTES
+# =============================================================================
+@app.route("/api/monthly-yearly-attendance/data")
+def get_monthly_yearly_attendance_data():
+    if os.path.exists(MONTHLY_YEARLY_ATT_CACHE):
+        with open(MONTHLY_YEARLY_ATT_CACHE, "r", encoding="utf-8") as f:
+            return jsonify(json.load(f))
+    return jsonify({"items": [], "meta": {}, "summary": {"total_records": 0}})
+
+@app.route("/api/monthly-yearly-attendance/sync", methods=["POST"])
+def sync_monthly_yearly_attendance():
+    req_data = request.get_json(silent=True) or {}
+    f_date = req_data.get("f_date") or req_data.get("from_date") or "26-12-2025"
+    t_date = req_data.get("t_date") or req_data.get("to_date") or "21-09-2026"
+    company_id = req_data.get("company_id") or req_data.get("pbi_org") or "3"
+    dept_id = req_data.get("dept_id") or "32"
+    try:
+        t0 = time.time()
+        shared_session = get_shared_erp_session()
+        collector = MonthlyYearlyAttendanceCollector(session=shared_session)
+        collector.login()
+        collector.collect(f_date_str=f_date, t_date_str=t_date, company_id=company_id, dept_id=dept_id)
+        collector.save_cache()
+        collector.export_to_excel()
+        export_bot_by_id(11)
+        return jsonify({
+            "success": True,
+            "bot_id": 11,
+            "records": len(collector.records),
+            "duration": round(time.time() - t0, 2),
+            "source": BOT_SOURCES[11]["source"]
+        })
+    except Exception as e:
+        return jsonify({"success": False, "bot_id": 11, "error": str(e)}), 500
+
+@app.route("/api/monthly-yearly-attendance/download")
+def download_monthly_yearly_attendance_excel():
+    if os.path.exists(MONTHLY_YEARLY_ATT_EXCEL):
+        return send_file(
+            os.path.abspath(MONTHLY_YEARLY_ATT_EXCEL),
+            as_attachment=True,
+            download_name="Monthly_Yearly_Attendance_Report.xlsx",
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+    return jsonify({"error": "Excel file not found"}), 404
+
+
+# =============================================================================
 # OPEN WINDOWS FOLDER API
 # =============================================================================
 @app.route("/api/open/folder", methods=["GET", "POST"])
@@ -4460,6 +4566,26 @@ def sync_individual_bot(bot_id):
             extractor.save_cache()
             extractor.export_to_premium_excel()
             rec_count = len(extractor.boms)
+        elif bot_id == 10:
+            eff_f = f_date or req_data.get("from_date") or "26-08-2026"
+            eff_t = t_date or req_data.get("to_date") or "21-09-2026"
+            collector = MonthlyAttendanceCollector(session=shared_session)
+            collector.login()
+            collector.collect(f_date_str=eff_f, t_date_str=eff_t)
+            collector.save_cache()
+            collector.export_to_excel()
+            rec_count = len(collector.records)
+        elif bot_id == 11:
+            eff_f = f_date or req_data.get("from_date") or "26-12-2025"
+            eff_t = t_date or req_data.get("to_date") or "21-09-2026"
+            comp = req_data.get("company_id") or req_data.get("pbi_org") or "3"
+            dept = req_data.get("dept_id") or "32"
+            collector = MonthlyYearlyAttendanceCollector(session=shared_session)
+            collector.login()
+            collector.collect(f_date_str=eff_f, t_date_str=eff_t, company_id=comp, dept_id=dept)
+            collector.save_cache()
+            collector.export_to_excel()
+            rec_count = len(collector.records)
         else:
             return jsonify({"success": False, "error": f"Invalid bot_id {bot_id}"}), 400
 
@@ -4499,7 +4625,7 @@ def run_all_bots():
     # Reuse single shared authenticated session for all 9 bots
     shared_session = get_shared_erp_session()
 
-    for b_id in range(1, 10):
+    for b_id in range(1, 12):
         t0 = time.time()
         s_info = BOT_SOURCES.get(b_id, {})
         try:
@@ -4567,6 +4693,20 @@ def run_all_bots():
                 ext.save_cache()
                 ext.export_to_premium_excel()
                 rec = len(ext.boms)
+            elif b_id == 10:
+                col = MonthlyAttendanceCollector(session=shared_session)
+                col.login()
+                col.collect(f_date_str=req_data.get("att_f_date", "26-08-2026"), t_date_str=req_data.get("att_t_date", "21-09-2026"))
+                col.save_cache()
+                col.export_to_excel()
+                rec = len(col.records)
+            elif b_id == 11:
+                col = MonthlyYearlyAttendanceCollector(session=shared_session)
+                col.login()
+                col.collect(f_date_str=req_data.get("yearly_f_date", "26-12-2025"), t_date_str=req_data.get("yearly_t_date", "21-09-2026"), company_id="3", dept_id="32")
+                col.save_cache()
+                col.export_to_excel()
+                rec = len(col.records)
 
             # Export freshly scraped ERP data directly into modules/ directories
             try:

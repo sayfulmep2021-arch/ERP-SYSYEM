@@ -515,6 +515,10 @@
                     var h = c.querySelector('.accordion-header');
                     if (h) h.setAttribute('aria-expanded', 'false');
                 });
+                var hrmGroups = document.querySelectorAll('.hrm-menu-group');
+                hrmGroups.forEach(function(g) {
+                    g.classList.remove('is-open');
+                });
             } catch(e) {
                 console.warn('Error collapsing sidebar modules:', e);
             }
